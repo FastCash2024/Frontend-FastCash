@@ -427,11 +427,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                             {checkedArr.length === 1 && <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2" onClick={() => setModal('Asignar Asesor')}>Asignar usuario</button>}
 
-
-
-
-
-
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <div className='flex justify-between'>
@@ -852,10 +847,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                                 </div>
 
-
-
-
-
                                 <div className='flex justify-between'>
                                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         Numero de páginas:
@@ -865,9 +856,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                             </div>
                             <div className='w-[300px] space-y-2'>
-
-
-
 
                                 <div className='flex justify-between flex space-x-3'>
                                     <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>

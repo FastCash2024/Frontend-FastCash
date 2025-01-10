@@ -144,8 +144,8 @@ export default function Home() {
                 ? 'http://localhost:3000/api/verification?estadoDeCredito=Pendiente'
                 : 'https://api.fastcash-mx.com/api/verification?estadoDeCredito=Pendiente')
         const data = await res.json()
-        // console.log(data)
-        setCases(data)
+        console.log(data)
+        setCases(data.data)
     }
     function handlerSelectAllCheck(e, i) {
         if (e.target.checked) {

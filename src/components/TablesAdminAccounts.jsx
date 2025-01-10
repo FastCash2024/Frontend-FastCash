@@ -760,7 +760,7 @@ export default function Home() {
         <div className="overflow-x-auto">
           {user?.rol && (
             <div
-              className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth"
+              className="max-h-[calc(100vh-40px)] pb-2 overflow-y-auto relative scroll-smooth"
               ref={refFirst}
             >
               {/* ---------------------------------COLECCION DE CASOS--------------------------------- */}

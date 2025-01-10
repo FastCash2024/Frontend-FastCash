@@ -4,7 +4,7 @@ import { createContext, useState, useEffect, useContext } from 'react';
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('neutral');
 
   useEffect(() => {
     document.documentElement.classList.remove('light', 'dark', 'neutral');

@@ -142,7 +142,9 @@ export default function Home() {
     : "";
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [itemsPerPage, setItemsPerPage] = useState(5);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalDocuments, setTotalDocuments] = useState(0);
 
   function sortArray(x, y) {
     if (
@@ -181,42 +183,40 @@ export default function Home() {
       setCheckedArr(checkedArr.filter((item) => item.usuario !== i.usuario));
     }
   }
-  async function handlerFetch() {
+  async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
         ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
         : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
     );
-    const data = await res.json();
-    console.log(data);
-    setData(data);
+    const result = await res.json();
+    console.log("data: ", data);
+    setData(result.data);
   }
 
-  async function handlerFetchVerification() {
+  async function handlerFetchVerification(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? "http://localhost:3000/api/verification?estadoDeCredito=Dispersado"
+        ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado&${limit}&${page}`
         : "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado"
     );
-    const data = await res.json();
+    const result = await res.json();
     // console.log(data)
-    setCases(data);
+    setCases(result.data);
+    setCurrentPage(result.currentPage);
+    setTotalPages(result.totalPages);
+    setTotalDocuments(result.totalDocuments);
   }
   console.log("DATA2", cases);
 
   useEffect(() => {
     handlerFetch();
-    handlerFetchVerification();
-  }, [loader]);
+    handlerFetchVerification(itemsPerPage, currentPage);
+  }, [loader, itemsPerPage, currentPage]);
 
   useEffect(() => {
     setCheckedArr([]);
   }, []);
-
-  // Paginación
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -228,8 +228,8 @@ export default function Home() {
   };
 
   const handleReload = () => {
-    handlerFetch();
-  };
+    handlerFetch(itemsPerPage, currentPage);
+  }
 
   return (
     (user?.rol === "Admin" ||
@@ -256,26 +256,38 @@ export default function Home() {
 
                 <th className="px-4 py-2 text-yellow-500 ">PAGOS 10:00 am</th>
                 <th className="px-4 py-2 text-gray-700">PTP 10:00 am</th>
-                <th className="px-4 py-2 text-gray-700">Tasa de recuperación</th>
+                <th className="px-4 py-2 text-gray-700">
+                  Tasa de recuperación
+                </th>
 
                 <th className="px-4 py-2 text-yellow-500 ">PAGOS 12:00 am</th>
                 <th className="px-4 py-2 text-gray-700">PTP 12:00 am</th>
-                <th className="px-4 py-2 text-gray-700">Tasa de recuperación</th>
+                <th className="px-4 py-2 text-gray-700">
+                  Tasa de recuperación
+                </th>
 
                 <th className="px-4 py-2 text-yellow-500 ">PAGOS 2:00 pm</th>
                 <th className="px-4 py-2 text-gray-700">PTP 2:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">Tasa de recuperación</th>
+                <th className="px-4 py-2 text-gray-700">
+                  Tasa de recuperación
+                </th>
 
                 <th className="px-4 py-2 text-yellow-500 ">PAGOS 4:00 pm</th>
                 <th className="px-4 py-2 text-gray-700">PTP 4:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">Tasa de recuperación</th>
+                <th className="px-4 py-2 text-gray-700">
+                  Tasa de recuperación
+                </th>
 
                 <th className="px-4 py-2 text-yellow-500 ">PAGOS 6:00 pm</th>
                 <th className="px-4 py-2 text-gray-700">PTP 6:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">Tasa de recuperación</th>
+                <th className="px-4 py-2 text-gray-700">
+                  Tasa de recuperación
+                </th>
 
                 <th className="px-4 py-2 text-yellow-500">Pagos total</th>
-                <th className="px-4 py-2 text-gray-700">Tasa de recuperación</th>
+                <th className="px-4 py-2 text-gray-700">
+                  Tasa de recuperación
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -339,7 +351,7 @@ export default function Home() {
         </div>
         <div>
           <Paginator
-            totalItems={data.length}
+            totalItems={totalDocuments}
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             onPageChange={handlePageChange}

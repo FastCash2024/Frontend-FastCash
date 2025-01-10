@@ -75,7 +75,7 @@ function Home({ children }) {
             <div className="h-screen bg-gray-white">
 
 
-                <div className={`fixed top-0 w-[220px] lg:w-[280px] z-40 py-4  ${(theme == 'oscuro' || theme == 'neutro') && 'bg-gray-900'} ${theme === 'claro' && 'bg-gray-200'} shadow-white h-screen transition-all	z-40  ${nav ? 'left-0  ' : 'left-[-220px] lg:left-[-280px] '}`} >
+                <div className={`fixed top-0 w-[220px] lg:w-[280px] z-40 py-4  ${(theme == 'oscuro' || theme == 'neutro') && 'bg-[#28333E]'} ${theme === 'claro' && 'bg-gray-200'} shadow-white h-screen transition-all	z-40  ${nav ? 'left-0  ' : 'left-[-220px] lg:left-[-280px] '}`} >
                     {user && user !== undefined && <Navbar rol={user.rol} />}
                 </div>
 

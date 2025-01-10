@@ -64,7 +64,7 @@ export default function BottomNavigation({ rol }) {
             </div>}
         </li>
     }
-    return <ul className="space-y-3 text-[16px] flex flex-col  items-center text-gray-600 font-medium ">
+    return <ul className="space-y-1 text-[16px] flex flex-col  items-center text-gray-600 font-medium ">
         <Header />
         {
             menuArray?.[rol]?.map((element, index) => {
@@ -85,7 +85,7 @@ export default function BottomNavigation({ rol }) {
                     </button>}
 
                     <div
-                        className={`relative block w-[90%] right-0 mt-2  rounded-md transition-all shadow-lg ${Object.values(menuArray[rol]).length === 1 ? '' : 'bg-gray-100'} ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-hidden ${Object.values(menuArray[rol]).length === 1 ? 'h-auto' : focus === element.title ? element.length : 'h-0 overflow-hidden'}`}>
+                        className={`relative block w-[90%] right-0 mt-2 rounded-md transition-all shadow-lg ${Object.values(menuArray[rol]).length === 1 ? '' : 'bg-gray-100'} ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-hidden ${Object.values(menuArray[rol]).length === 1 ? 'h-auto' : focus === element.title ? element.length : 'h-0 overflow-hidden'}`}>
                         <div
                             className={`py-1 ${Object.values(menuArray[rol]).length === 1 && 'space-y-5 rounded-md'}`}>
                             {element.options.map((i, index) => {

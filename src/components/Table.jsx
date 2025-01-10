@@ -56,7 +56,9 @@ const Table = ({
   const item = searchParams.get("item");
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalDocuments, setTotalDocuments] = useState(0);
 
   const toCamelCase = (str) => {
     let cleanedStr = str.toLowerCase();
@@ -95,7 +97,7 @@ const Table = ({
   //         setLoader(false)
   //     }
   console.log(userDB);
-  async function handlerFetch(queryURL) {
+  async function handlerFetch(limit, page) {
     // Obtener los parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
     // Filtrar solo las queries que comiencen con "filter["
@@ -130,26 +132,39 @@ const Table = ({
 
     const query2 = roleQueries[user?.rol] || "";
 
+    const dataParams = `&limit=${limit}&page=${page}`;
+
     console.log("query2", query2);
+
     const urlLocal = stg
       ? local.includes("?")
-        ? `${local.split("?")[0]}?${stg}${query2}`
-        : `${local}?${stg}${query2}`
-      : `${local}${query2}`;
+        ? `${local.split("?")[0]}?${stg}${query2}${dataParams}`
+        : `${local}?${stg}${query2}${dataParams}`
+      : `${local}${query2}${dataParams}`;
+
+    console.log("url local solicitada: ", urlLocal);
 
     const urlServer = stg
       ? server.includes("?")
-        ? `${server.split("?")[0]}?${stg}${query2}`
-        : `${server}?${stg}${query2}`
-      : `${server}${query2}`;
+        ? `${server.split("?")[0]}?${stg}${query2}${dataParams}`
+        : `${server}?${stg}${query2}${dataParams}`
+      : `${server}${query2}${dataParams}`;
+
+    console.log("url servesolicitada: ", urlServer);
 
     const res = await fetch(
       window?.location?.href?.includes("localhost")
         ? `${urlLocal}`
         : `${urlServer}`
     );
-    const data = await res.json();
-    setData(data);
+
+    const result = await res.json();
+    console.log("resultado: ", result);
+
+    setData(result.data);
+    setCurrentPage(result.currentPage);
+    setTotalPages(result.totalPages);
+    setTotalDocuments(result.totalDocuments);
     setLoader(false);
   }
 
@@ -173,20 +188,15 @@ const Table = ({
       setCheckedArr([]);
     }
   }
-  console.log(data);
+  console.log("cantidad de registros: ", itemsPerPage);
 
   useEffect(() => {
-    handlerFetch();
-  }, [loader, searchParams]);
+    handlerFetch(itemsPerPage, currentPage);
+  }, [loader, searchParams, itemsPerPage, currentPage]);
 
   useEffect(() => {
     setCheckedArr([]);
   }, []);
-
-  // Paginación
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -198,59 +208,75 @@ const Table = ({
   };
 
   const handleReload = () => {
-    handlerFetch();
-  };
+    handlerFetch(itemsPerPage, currentPage);
+  }
 
   return (
     access && (
       <>
         <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
           <table className="min-w-full shadow border-collapse">
-            <thead className="bg-slate-200 text-[10px] uppercase sticky top-[0px] z-20">
+            <thead className="bg-[#F9F9F9] text-[10px] uppercase sticky top-[0px] z-20">
               <tr className="text-gray-700 min-w-[2500px]">
                 {headArray().map((i, index) => (
                   <th
-                  scope="col"
-                  key={index}
-                  className={`w-[50px] px-3 py-3 text-gray-950 border border-gray-700 ${
-                    index < 3 ? "sticky left-0 z-20 bg-slate-200" : ""
-                  } ${
-                    index >= headArray().length - 2
-                      ? "sticky right-0 z-20 bg-slate-200" 
-                      : ""
-                  }`}
-                  style={{
-                    left: index < 3 ? `${index * 50}px` : "auto",
-                    right:
+                    scope="col"
+                    key={index}
+                    className={`w-[50px] px-3 py-3 text-gray-950 border border-[#e6e6e6] ${
+                      index < 3 ? "sticky left-0 z-20 bg-[#F9F9F9]" : ""
+                    } ${
                       index >= headArray().length - 2
-                        ? `${(headArray().length - index - 1) * 50}px`
-                        : "auto",
-                  }}
-                >
-                  {i === "Seleccionar" ? (
-                    <input
-                      type="checkbox"
-                      onClick={(e) => handlerSelectAllCheck(e, i)}
-                    />
-                  ) : (
-                    i
-                  )}
-                </th>
+                        ? "sticky right-0 z-20 bg-[#F9F9F9]"
+                        : ""
+                    }`}
+                    style={{
+                      left: index < 3 ? `${index * 0}px` : "auto",
+                      right:
+                        index >= headArray().length - 2
+                          ? `${(headArray().length - index - 1) * 50}px`
+                          : "auto",
+                    }}
+                  >
+                    {i === "Seleccionar" ? (
+                      <input
+                        type="checkbox"
+                        onClick={(e) => handlerSelectAllCheck(e, i)}
+                      />
+                    ) : (
+                      i
+                    )}
+                  </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {currentItems &&
-                currentItems?.map((i, index) => {
+              {data &&
+                data?.map((i, index) => {
                   return (
                     dataFilter(i) && (
                       <tr key={index} className="text-[12px] border-b">
                         {headArray().map((it, index) => {
                           return (
                             <td
-                              className={`px-3 py-2 text-[12px] border border-gray-700 ${
-                                index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-                              } `}
+                              className={`px-3 py-2 text-[12px] border border-[#e6e6e6]  ${
+                                index % 2 === 0
+                                  ? "bg-[#FAFBFD]"
+                                  : "bg-[#FAFBFD]"
+                              }  ${
+                            index < 3 ? "sticky left-0 z-10 bg-[#FAFBFD]" : ""
+                          } ${
+                            index >= headArray().length - 2
+                              ? "sticky right-0 z-10 bg-[#FAFBFD]"
+                              : ""
+                          }`}
+                          style={{
+                            left: index < 3 ? `${index * 0}px` : "auto",
+                            right:
+                              index >= headArray().length - 2
+                                ? `${(headArray().length - index - 1) * 50}px`
+                                : "auto",
+                          }}
+
                             >
                               {it === "Seleccionar" && (
                                 <input
@@ -350,7 +376,7 @@ const Table = ({
                               {it.toLowerCase() === "operar" &&
                                 (item?.toLowerCase().includes("recolección") ||
                                   item?.toLowerCase().includes("lista")) && (
-                                  <div className="flex justify-between flex space-x-3">
+                                  <div className="flex justify-between space-x-3">
                                     <Link
                                       href={`/Home/Datos?caso=${i._id}&seccion=info`}
                                       className=""
@@ -487,9 +513,9 @@ const Table = ({
             </tbody>
           </table>
         </div>
-        <div>
+        <div className="mt-2">
           <Paginator
-            totalItems={data.length}
+            totalItems={totalDocuments}
             itemsPerPage={itemsPerPage}
             currentPage={currentPage}
             onPageChange={handlePageChange}
