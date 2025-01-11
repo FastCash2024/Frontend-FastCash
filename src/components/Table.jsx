@@ -97,6 +97,7 @@ const Table = ({
   //         setLoader(false)
   //     }
   console.log(userDB);
+  
   async function handlerFetch(limit, page) {
     // Obtener los parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -132,7 +133,7 @@ const Table = ({
 
     const query2 = roleQueries[user?.rol] || "";
 
-    const dataParams = `&limit=${limit}&page=${page}`;
+    const dataParams = `${stg || query2 ? '&' : '?'}limit=${limit}&page=${page}`;
 
     console.log("query2", query2);
 
@@ -211,6 +212,8 @@ const Table = ({
     handlerFetch(itemsPerPage, currentPage);
   }
 
+  console.log("data desde table", data); 
+
   return (
     access && (
       <>
@@ -251,7 +254,7 @@ const Table = ({
             </thead>
             <tbody>
               {data &&
-                data?.map((i, index) => {
+                data.map((i, index) => {
                   return (
                     dataFilter(i) && (
                       <tr key={index} className="text-[12px] border-b">

@@ -116,6 +116,62 @@ export default function Home() {
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
+
+  const [trabajo, setTrabajo] = useState([])
+  
+      async function handlerFetch(startDate = '', endDate = '') {
+          const local = 'http://localhost:3000/api/attendance';
+      
+          const urlParams = new URLSearchParams(window.location.search);
+          const filterParams = {};
+          urlParams.forEach((value, key) => {
+              if (
+                  key.startsWith("filter[") &&
+                  value !== "Elije por favor" &&
+                  value !== "Todo"
+              ) {
+                  const fieldName = key.slice(7, -1); // Extraer el nombre de la clave dentro de "filter[]"
+                  filterParams[fieldName] = value;
+              }
+          });
+      
+          const stg = Object.keys(filterParams)
+              .filter(
+                  (key) => filterParams[key] !== undefined && filterParams[key] !== null
+              ) // Filtrar valores nulos o indefinidos
+              .map(
+                  (key) =>
+                      `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`
+              ) // Codificar clave=valor
+              .join("&"); // Unir con &
+      
+          console.log(stg ? "existen" : "no existen");
+      
+          const dataParams = [];
+          if (startDate) dataParams.push(`startDate=${startDate}`);
+          if (endDate) dataParams.push(`endDate=${endDate}`);
+          const dataParamsString = dataParams.join('&');
+      
+          const urlLocal = stg
+              ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
+              : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
+      
+          console.log("url local solicitada: ", urlLocal);
+      
+          const res = await fetch(urlLocal);
+      
+          const result = await res.json();
+          console.log("resultado: ", result);
+      
+          setTrabajo(result);
+      }
+      
+      
+      useEffect(() => {
+          handlerFetch();
+      }, []);
+      console.log("trabajo: ", trabajo);
+
   let menu = user?.rol
     ? menuArray[user.rol].filter((i) => i.hash === seccion)
     : "";
@@ -170,565 +226,573 @@ export default function Home() {
     return { val: formatDate(dt), day: diasSemana[index] };
   }
 
+  function formatDateToISO(dateStr) {
+    const [day, month, year] = dateStr.split('/');
+    return `${year}-${month}-${day}`;
+}
+
+  console.log(formatDateToISO(getDay(-2).val));
+  
+
   const getBackgroundClass = (estado) => {
     switch (estado) {
-      case "operando":
+      case "Operando":
         return "bg-green-400";
-      case "atraso-1":
+      case "Atraso-1":
         return "bg-yellow-400";
-      case "atraso-2":
+      case "Aatraso-2":
         return "bg-orange-400";
-      case "falta":
+      case "Falta":
         return "bg-red-500";
-      case "libre":
+      case "Libre":
         return "bg-gray-300";
       default:
         return "";
     }
   };
 
-  const trabajo = [
-    {
-      nombre: "taipe alejandro cristina magaly",
-      lunes: "libre",
-      martes: "operando",
-      miercoles: "atraso-1",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "porozo aguirre brayan david",
-      lunes: "libre",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "atraso-1",
-      sabado: "falta",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "abad usiña jilson vladimir",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "atraso-2",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "falta",
-      domingo: "libre",
-    },
-    {
-      nombre: "castillo armas brandon alexis",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "libre",
-      jueves: "operando",
-      viernes: "atraso-1",
-      sabado: "libre",
-      domingo: "falta",
-    },
-    {
-      nombre: "benavides quiroz jazmín carolina",
-      lunes: "operando",
-      martes: "libre",
-      miercoles: "atraso-1",
-      jueves: "falta",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "leon cuchipe lady priscila",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "paucar alquinga andres steven",
-      lunes: "atraso-2",
-      martes: "operando",
-      miercoles: "libre",
-      jueves: "falta",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "arce mendez cristian santiago",
-      lunes: "falta",
-      martes: "libre",
-      miercoles: "atraso-1",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "murillo jerez josselyne michelle",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "alvarez puente gabriela geomar",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "libre",
-      domingo: "atraso-1",
-    },
-    {
-      nombre: "cuaspud gallegos katherine dayana",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "bernal ceron tobias bryan",
-      lunes: "libre",
-      martes: "operando",
-      miercoles: "libre",
-      jueves: "atraso-1",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "jimenez espinoza byron andres",
-      lunes: "libre",
-      martes: "libre",
-      miercoles: "atraso-2",
-      jueves: "operando",
-      viernes: "falta",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "ponce murillo yesika ariani",
-      lunes: "atraso-2",
-      martes: "falta",
-      miercoles: "libre",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "quijia sotalin valeria paulina",
-      lunes: "operando",
-      martes: "libre",
-      miercoles: "atraso-1",
-      jueves: "falta",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "encalada quishpe david andres",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "sigcha palango tania selena",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "libre",
-      jueves: "operando",
-      viernes: "falta",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "carrasco ortega bryan josue",
-      lunes: "libre",
-      martes: "operando",
-      miercoles: "atraso-1",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "montenegro villacis alan david",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "operando",
-      jueves: "falta",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "andrango allauca erick fabricio",
-      lunes: "falta",
-      martes: "libre",
-      miercoles: "atraso-2",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "blasio gonzalez tito jonathan",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "garnica robayo hernan garnica",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "libre",
-      jueves: "operando",
-      viernes: "falta",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "ramos sánchez janny joey",
-      lunes: "libre",
-      martes: "falta",
-      miercoles: "atraso-1",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "lobo sanchez miguel eduardo",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-1",
-    },
-    {
-      nombre: "andi andy silvana maritza",
-      lunes: "libre",
-      martes: "operando",
-      miercoles: "falta",
-      jueves: "libre",
-      viernes: "atraso-1",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "pulupa cornejo katty pamela",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "lopez morales tifany gissell",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "riera monard dayana andrea",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "marquez ayala marcos jeremias",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "lizano arauz fernando daniel",
-      lunes: "libre",
-      martes: "operando",
-      miercoles: "atraso-1",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "balderramo loor xavier sebastian",
-      lunes: "atraso-2",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-1",
-    },
-    {
-      nombre: "choque quinteros ariana mateo",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "sucari jara edward pablo",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "delgado barros rafael adrian",
-      lunes: "falta",
-      martes: "libre",
-      miercoles: "atraso-1",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "guzman tovar eric adrian",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "velasco masi losy jazmin",
-      lunes: "atraso-2",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "falta",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "gonzales perez brayan diego",
-      lunes: "libre",
-      martes: "falta",
-      miercoles: "libre",
-      jueves: "operando",
-      viernes: "atraso-1",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "carrasco salazar jaime roberto",
-      lunes: "operando",
-      martes: "atraso-1",
-      miercoles: "falta",
-      jueves: "libre",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "rivadeneira gonzalez laura",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-1",
-    },
-    {
-      nombre: "campos villavicencio brayan alexander",
-      lunes: "libre",
-      martes: "operando",
-      miercoles: "falta",
-      jueves: "atraso-1",
-      viernes: "libre",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "quebrada morales solymar",
-      lunes: "atraso-2",
-      martes: "libre",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "yucra ordonez jhonny erick",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "salazar rodriguez katherine vitory",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "operando",
-      jueves: "falta",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "rodriguez lopez jhonnatthan",
-      lunes: "falta",
-      martes: "libre",
-      miercoles: "atraso-1",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "aillón choque benjamin",
-      lunes: "atraso-2",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "acosta ramirez emily",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "flores veintimilla jose luis",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-    {
-      nombre: "toapanta tulcan nicole",
-      lunes: "atraso-2",
-      martes: "libre",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "moreno velasco milena",
-      lunes: "falta",
-      martes: "operando",
-      miercoles: "libre",
-      jueves: "atraso-1",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "verdugo lasso jhonny wilson",
-      lunes: "atraso-1",
-      martes: "libre",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "ingacochea haro eliana",
-      lunes: "libre",
-      martes: "atraso-2",
-      miercoles: "operando",
-      jueves: "falta",
-      viernes: "libre",
-      sabado: "atraso-1",
-      domingo: "libre",
-    },
-    {
-      nombre: "zapata aguilar cristian edward",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "falta",
-      jueves: "operando",
-      viernes: "libre",
-      sabado: "atraso-2",
-      domingo: "libre",
-    },
-    {
-      nombre: "de la torre muñoz luis andres",
-      lunes: "atraso-2",
-      martes: "libre",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-1",
-    },
-    {
-      nombre: "rios ávila diana carolina",
-      lunes: "libre",
-      martes: "atraso-1",
-      miercoles: "operando",
-      jueves: "libre",
-      viernes: "falta",
-      sabado: "libre",
-      domingo: "atraso-2",
-    },
-  ];
+  // const trabajo = [
+  //   {
+  //     nombre: "taipe alejandro cristina magaly",
+  //     lunes: "operando",
+  //     martes: "operando",
+  //     miercoles: "atraso-1",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "porozo aguirre brayan david",
+  //     lunes: "libre",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "atraso-1",
+  //     sabado: "falta",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "abad usiña jilson vladimir",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "atraso-2",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "falta",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "castillo armas brandon alexis",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "libre",
+  //     jueves: "operando",
+  //     viernes: "atraso-1",
+  //     sabado: "libre",
+  //     domingo: "falta",
+  //   },
+  //   {
+  //     nombre: "benavides quiroz jazmín carolina",
+  //     lunes: "operando",
+  //     martes: "libre",
+  //     miercoles: "atraso-1",
+  //     jueves: "falta",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "leon cuchipe lady priscila",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "paucar alquinga andres steven",
+  //     lunes: "atraso-2",
+  //     martes: "operando",
+  //     miercoles: "libre",
+  //     jueves: "falta",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "arce mendez cristian santiago",
+  //     lunes: "falta",
+  //     martes: "libre",
+  //     miercoles: "atraso-1",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "murillo jerez josselyne michelle",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "alvarez puente gabriela geomar",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "libre",
+  //     domingo: "atraso-1",
+  //   },
+  //   {
+  //     nombre: "cuaspud gallegos katherine dayana",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "bernal ceron tobias bryan",
+  //     lunes: "libre",
+  //     martes: "operando",
+  //     miercoles: "libre",
+  //     jueves: "atraso-1",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "jimenez espinoza byron andres",
+  //     lunes: "libre",
+  //     martes: "libre",
+  //     miercoles: "atraso-2",
+  //     jueves: "operando",
+  //     viernes: "falta",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "ponce murillo yesika ariani",
+  //     lunes: "atraso-2",
+  //     martes: "falta",
+  //     miercoles: "libre",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "quijia sotalin valeria paulina",
+  //     lunes: "operando",
+  //     martes: "libre",
+  //     miercoles: "atraso-1",
+  //     jueves: "falta",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "encalada quishpe david andres",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "sigcha palango tania selena",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "libre",
+  //     jueves: "operando",
+  //     viernes: "falta",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "carrasco ortega bryan josue",
+  //     lunes: "libre",
+  //     martes: "operando",
+  //     miercoles: "atraso-1",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "montenegro villacis alan david",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "operando",
+  //     jueves: "falta",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "andrango allauca erick fabricio",
+  //     lunes: "falta",
+  //     martes: "libre",
+  //     miercoles: "atraso-2",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "blasio gonzalez tito jonathan",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "garnica robayo hernan garnica",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "libre",
+  //     jueves: "operando",
+  //     viernes: "falta",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "ramos sánchez janny joey",
+  //     lunes: "libre",
+  //     martes: "falta",
+  //     miercoles: "atraso-1",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "lobo sanchez miguel eduardo",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-1",
+  //   },
+  //   {
+  //     nombre: "andi andy silvana maritza",
+  //     lunes: "libre",
+  //     martes: "operando",
+  //     miercoles: "falta",
+  //     jueves: "libre",
+  //     viernes: "atraso-1",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "pulupa cornejo katty pamela",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "lopez morales tifany gissell",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "riera monard dayana andrea",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "marquez ayala marcos jeremias",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "lizano arauz fernando daniel",
+  //     lunes: "libre",
+  //     martes: "operando",
+  //     miercoles: "atraso-1",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "balderramo loor xavier sebastian",
+  //     lunes: "atraso-2",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-1",
+  //   },
+  //   {
+  //     nombre: "choque quinteros ariana mateo",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "sucari jara edward pablo",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "delgado barros rafael adrian",
+  //     lunes: "falta",
+  //     martes: "libre",
+  //     miercoles: "atraso-1",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "guzman tovar eric adrian",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "velasco masi losy jazmin",
+  //     lunes: "atraso-2",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "falta",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "gonzales perez brayan diego",
+  //     lunes: "libre",
+  //     martes: "falta",
+  //     miercoles: "libre",
+  //     jueves: "operando",
+  //     viernes: "atraso-1",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "carrasco salazar jaime roberto",
+  //     lunes: "operando",
+  //     martes: "atraso-1",
+  //     miercoles: "falta",
+  //     jueves: "libre",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "rivadeneira gonzalez laura",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-1",
+  //   },
+  //   {
+  //     nombre: "campos villavicencio brayan alexander",
+  //     lunes: "libre",
+  //     martes: "operando",
+  //     miercoles: "falta",
+  //     jueves: "atraso-1",
+  //     viernes: "libre",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "quebrada morales solymar",
+  //     lunes: "atraso-2",
+  //     martes: "libre",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "yucra ordonez jhonny erick",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "salazar rodriguez katherine vitory",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "operando",
+  //     jueves: "falta",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "rodriguez lopez jhonnatthan",
+  //     lunes: "falta",
+  //     martes: "libre",
+  //     miercoles: "atraso-1",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "aillón choque benjamin",
+  //     lunes: "atraso-2",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "acosta ramirez emily",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "flores veintimilla jose luis",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  //   {
+  //     nombre: "toapanta tulcan nicole",
+  //     lunes: "atraso-2",
+  //     martes: "libre",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "moreno velasco milena",
+  //     lunes: "falta",
+  //     martes: "operando",
+  //     miercoles: "libre",
+  //     jueves: "atraso-1",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "verdugo lasso jhonny wilson",
+  //     lunes: "atraso-1",
+  //     martes: "libre",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "ingacochea haro eliana",
+  //     lunes: "libre",
+  //     martes: "atraso-2",
+  //     miercoles: "operando",
+  //     jueves: "falta",
+  //     viernes: "libre",
+  //     sabado: "atraso-1",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "zapata aguilar cristian edward",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "falta",
+  //     jueves: "operando",
+  //     viernes: "libre",
+  //     sabado: "atraso-2",
+  //     domingo: "libre",
+  //   },
+  //   {
+  //     nombre: "de la torre muñoz luis andres",
+  //     lunes: "atraso-2",
+  //     martes: "libre",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-1",
+  //   },
+  //   {
+  //     nombre: "rios ávila diana carolina",
+  //     lunes: "libre",
+  //     martes: "atraso-1",
+  //     miercoles: "operando",
+  //     jueves: "libre",
+  //     viernes: "falta",
+  //     sabado: "libre",
+  //     domingo: "atraso-2",
+  //   },
+  // ];
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -1222,13 +1286,31 @@ export default function Home() {
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
+                          {getDay(-5).val}
+                        </th>
+                        <th
+                          scope="col"
+                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
+                        >
+                          {getDay(-4).val}
+                        </th>
+                        <th
+                          scope="col"
+                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
+                        >
+                          {getDay(-3).val}
+                        </th>
+                        <th
+                          scope="col"
+                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
+                        >
                           {getDay(-2).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(11).val}
+                          {getDay(-1).val}
                         </th>
                         <th
                           scope="col"
@@ -1241,24 +1323,6 @@ export default function Home() {
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
                           {getDay(1).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDay(2).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDay(3).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDay(4).val}
                         </th>
                       </tr>
                     </thead>
@@ -1273,56 +1337,56 @@ export default function Home() {
                             <input type="checkbox" />
                           </td>
                           <td className="px-4 py-2 border border-gray-400 bg-white">
-                            {cobrador.nombre}
+                            {cobrador.usuario}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.lunes
+                              cobrador.asistencias[formatDateToISO(getDay(-5).val)]
                             )}`}
                           >
-                            {cobrador.lunes}
+                            {cobrador.asistencias[formatDateToISO(getDay(-5).val)]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.martes
+                              cobrador.asistencias[formatDateToISO(getDay(-4).val)]
                             )}`}
                           >
-                            {cobrador.martes}
+                            {cobrador.asistencias[formatDateToISO(getDay(-4).val)]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.miercoles
+                              cobrador.asistencias[formatDateToISO(getDay(-3).val)]
                             )}`}
                           >
-                            {cobrador.miercoles}
+                            {cobrador.asistencias[formatDateToISO(getDay(-3).val)]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.jueves
+                              cobrador.asistencias[formatDateToISO(getDay(-2).val)]
                             )}`}
                           >
-                            {cobrador.jueves}
+                            {cobrador.asistencias[formatDateToISO(getDay(-2).val)]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.viernes
+                              cobrador.asistencias[formatDateToISO(getDay(-1).val)]
                             )}`}
                           >
-                            {cobrador.viernes}
+                            {cobrador.asistencias[formatDateToISO(getDay(-1).val)]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.sabado
+                              cobrador.asistencias[formatDateToISO(getDay(0).val)]
                             )}`}
                           >
-                            {cobrador.sabado}
+                            {cobrador.asistencias[formatDateToISO(getDay(0).val)]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.domingo
+                              cobrador.asistencias[formatDateToISO(getDay(1).val)]
                             )}`}
                           >
-                            {cobrador.domingo}
+                            {cobrador.asistencias[formatDateToISO(getDay(1).val)]}
                           </td>
                         </tr>
                       ))}

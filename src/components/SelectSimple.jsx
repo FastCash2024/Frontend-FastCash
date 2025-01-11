@@ -18,7 +18,11 @@ export default function Select({ arr, name, click, defaultValue, uuid, label, po
     }
     function handlerUserState(name, i) {
         setState(i)
-        click(name, i, uuid)
+        if (typeof click === 'function') {
+            click(name, i, uuid)
+        } else {
+            console.error('no es una funcion');
+        }
     }
     return (
         <div className='relative '>

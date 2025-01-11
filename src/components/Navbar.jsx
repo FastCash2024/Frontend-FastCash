@@ -43,8 +43,32 @@ export default function BottomNavigation({ rol }) {
         router.push(ref)
     }
 
+    
+    
     const handlerAsistencia = async () => {
-       
+        try {
+            const userId = userDB.id;
+            console.log("userId: ", userId);
+            
+            const response = await fetch('http://localhost:3000/api/attendance/registerAttendance', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
+    
+            if (!response.status === 200) {
+                alert('Error en la solicitud');
+            }
+    
+            const result = await response.json();
+            console.log('result:', result.message);
+            
+            alert(result.message);
+        } catch (error) {
+            alert('Error al enviar la asistencia:', error);
+        }
     }
 
     const redirectHandlerWindow = () => {

@@ -39,10 +39,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         if (!obj || typeof obj !== "object") {
             throw new Error("La entrada debe ser un objeto.");
         }
-        return Object.keys(obj)
+    
+        const url = Object.keys(obj)
             .filter(key => obj[key] !== undefined && obj[key] !== null) // Filtrar valores nulos o indefinidos
-            .map(key => `filter[${encodeURIComponent(key)}]=${encodeURIComponent(obj[key])}`) // Codificar clave=valor
-            .join("&"); // Unir con &
+            .map((key, index) => `${index === 0 ? '' : '&'}filter[${encodeURIComponent(key)}]=${encodeURIComponent(obj[key])}`) // Codificar clave=valor
+            .join(""); // Unir con ""
+    
+        console.log("url: ", url);
+    
+        return url;
     }
 
     // function objectToQueryString(obj) {
