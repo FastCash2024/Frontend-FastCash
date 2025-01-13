@@ -1,0 +1,3 @@
+cambio a componentes de select y inputs 
+
+modificacion del backend para la tabla flujo de clientes
