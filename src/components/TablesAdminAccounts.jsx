@@ -168,9 +168,12 @@ export default function Home() {
       
       
       useEffect(() => {
+        if (item === "Asistencia") {
           handlerFetch();
+        }
       }, []);
       console.log("trabajo: ", trabajo);
+      console.log("item: ", item);
 
   let menu = user?.rol
     ? menuArray[user.rol].filter((i) => i.hash === seccion)
@@ -812,6 +815,9 @@ export default function Home() {
   };
 
   const handleReload = () => {};
+
+  console.log("filtro_1", filtro_1);
+  
 
   return (
     <div className="overflow-x-auto">

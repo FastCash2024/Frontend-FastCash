@@ -212,7 +212,8 @@ const Table = ({
     handlerFetch(itemsPerPage, currentPage);
   }
 
-  console.log("data desde table", data); 
+  console.log("data desde table: ", data); 
+  console.log("data filter: ", data); 
 
   return (
     access && (
@@ -256,7 +257,7 @@ const Table = ({
               {data &&
                 data.map((i, index) => {
                   return (
-                    dataFilter(i) && (
+                    (
                       <tr key={index} className="text-[12px] border-b">
                         {headArray().map((it, index) => {
                           return (
@@ -374,7 +375,6 @@ const Table = ({
                                   </a>
                                 </div>
                               )}
-
                               {/* Operar Verficador */}
                               {it.toLowerCase() === "operar" &&
                                 (item?.toLowerCase().includes("recolección") ||

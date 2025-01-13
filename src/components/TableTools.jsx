@@ -9,6 +9,7 @@ import Button from '@/components/Button'
 import VerificationTools from '@/components/VerificationTools'
 import AccessTools from '@/components/AccessTools'
 import ColectionCasesTools from '@/components/ColectionCasesTools'
+import SearchInput from "@/components/SearchInput";
 
 import {
     refunds, historial,
@@ -65,12 +66,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">
                         <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                             <div className='w-[330px] space-y-2'>
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Codigo del producto:
-                                    </label>
-                                    <SelectSimple arr={filtro_1} name='nombreProducto' click={handlerSelectClick} defaultValue={filter['nombreProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
+                                <SelectField
+                                    label="Codigo del producto:"
+                                    name="nombreProducto"
+                                    arr={filtro_1}
+                                    click={handlerSelectClick}
+                                    defaultValue={filter['nombreProducto']}
+                                    uuid="123"
+                                    position="absolute left-0 top-[25px]"
+                                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
+                                    theme={theme}
+                                    required
+                                />
                                 <div className='flex justify-between'>
                                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         Cobrador:
@@ -246,12 +253,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                         <div className='w-[320px] space-y-2'>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Número de prestamo:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name=' Número de prestamo' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+                            <SearchInput 
+                                label="Número de prestamo:"
+                                name="Número de prestamo"
+                                value={filter['Número de prestamo'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="Número de prestamo"
+                                required
+                            />
 
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
