@@ -134,7 +134,7 @@ const Table = ({
     const query2 = roleQueries[user?.rol] || "";
     console.log("query2", query2);
 
-    const dataParams = `${stg || query2 || local ? '&' : '?'}limit=${limit}&page=${page}`;
+    const dataParams = `${stg || query2 || local.includes("?") ? '&' : '?'}limit=${limit}&page=${page}`;
     console.log("dataParamas: ", dataParams);
 
     console.log("local: ", local);
