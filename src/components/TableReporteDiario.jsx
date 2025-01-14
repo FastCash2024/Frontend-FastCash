@@ -291,7 +291,7 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {data?.map((i, index) => (
+              {data?.data?.map((i, index) => (
                 <tr
                   key={index}
                   className={`bg-gray-200 border-b text-[12px] ${

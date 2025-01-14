@@ -198,7 +198,7 @@ export default function AddAccount() {
     }
     return (
         <FormLayout>
-            <h4>Distrinuir Casos Masivos</h4>
+            <h4 className="text-gray-950">Distrinuir Casos Masivos</h4>
             {!calculate &&
                 <div className='flex justify-between items-center w-[100%] '>
                     <label htmlFor="" className={`mr-5 text-[11px]  ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>

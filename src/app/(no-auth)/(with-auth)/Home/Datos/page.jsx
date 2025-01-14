@@ -318,15 +318,15 @@ const PaymentInfoCard = () => {
                         >
                             X
                         </button>
-                        <h4>Registro de cobro</h4>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <h4 className="text-gray-950">Registro de cobro</h4>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className="mr-5 text-[10px]">
                                 Estado de reembolso:
                             </label>
                             <SelectSimple arr={optionsArray} name='Estado de reembolso' click={handlerSelectClick} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg='white' required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className="mr-5 text-[10px]">
                                 Registro por:

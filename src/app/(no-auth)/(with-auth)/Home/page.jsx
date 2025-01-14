@@ -19,6 +19,8 @@ export default function Home() {
     // useEffect(() => {
     //     user === undefined && router.push('/')
     // }, [])
+
+    console.log(user)
     return (
         user?.rol &&
         <>
@@ -32,7 +34,7 @@ export default function Home() {
             {/* ---------------------------------TABLAS--------------------------------- */}
             <TablesAdminAccounts />
 
-            <TablesPersonalAccounts />
+           {user.rol==="Cuenta Personal"&& <TablesPersonalAccounts />}
         </>
     )
 }

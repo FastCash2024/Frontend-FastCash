@@ -166,7 +166,7 @@ export default function Home() {
         setCheckedArr([])
     }, [])
     return (
-        <table className="w-full min-w-[2000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
+        <table className="w-full min-w-[2000px] border-[1px] bg-white shadow-2xl text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
             <thead className="text-[10px] text-white uppercase bg-gray-900 sticky top-[0px] z-20">
 
                 <tr className=' bg-gray-800'>
@@ -199,10 +199,10 @@ export default function Home() {
                 </tr>
             </thead>
             <tbody>
-                {data.map((i, index) => (
-                    <tr key={index} className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'}`}>
+                {data?.data?.map((i, index) => (
+                    <tr key={index} className={`bg-white border-b text-[12px] ${index % 2 === 0 ? 'bg-white' : 'bg-white'}`}>
 
-                        <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} ${selectedLeft === 1 ? 'sticky left-0 z-10' : ''}`} >
+                        <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-white' : 'bg-white'} ${selectedLeft === 1 ? 'sticky left-0 z-10' : ''}`} >
                             <input type="checkbox"
                                 checked={checkedArr.some(value => value._id === i._id)}
                                 onClick={(e) => handlerSelectCheck(e, i)} />
