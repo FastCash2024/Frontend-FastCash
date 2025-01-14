@@ -142,7 +142,9 @@ export default function Home() {
         const result = await res.json();
         console.log("resultado: ", result);
     
-        setTrabajo(result);
+        if(item === "Asistencia"){
+            setTrabajo(result);
+        }
     }
     
     
