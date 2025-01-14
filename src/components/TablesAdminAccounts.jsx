@@ -315,10 +315,10 @@ export default function Home() {
                 */}
         {/* --------------------------------- TABLAS FASTCASH--------------------------------- */}
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto shadow-2xl">
           {user?.rol && (
             <div
-              className="max-h-[calc(100vh-40px)] pb-2 overflow-y-auto relative scroll-smooth"
+              className="max-h-[calc(100vh-40px)] pb-2 overflow-y-auto relative scroll-smooth  "
               ref={refFirst}
             >
               {/* ---------------------------------COLECCION DE CASOS--------------------------------- */}

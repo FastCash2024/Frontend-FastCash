@@ -32,7 +32,7 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
         pageNumbers.push(
           <button
             key={i}
-            className={`px-3 py-1 ${currentPage === i ? 'bg-blue-500 text-white border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100'}`}
+            className={`px-3 py-1 ${currentPage === i ? 'bg-blue-500 text-white border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100 text-black'}`}
             onClick={() => handlePageChange(i)}
           >
             {i}
@@ -43,7 +43,7 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
       pageNumbers.push(
         <button
           key={1}
-          className={`px-3 py-1 ${currentPage === 1 ? 'bg-blue-500 text-white border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100'}`}
+          className={`px-3 py-1 ${currentPage === 1 ? 'bg-blue-500 text-bla border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100 text-black'}`}
           onClick={() => handlePageChange(1)}
         >
           1
@@ -56,7 +56,7 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
         pageNumbers.push(
           <button
             key={i}
-            className={`px-3 py-1 ${currentPage === i ? 'bg-blue-500 text-white border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100'}`}
+            className={`px-3 py-1 ${currentPage === i ? 'bg-blue-500 text-white border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100 text-black'}`}
             onClick={() => handlePageChange(i)}
           >
             {i}
@@ -64,12 +64,12 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
         );
       }
       if (currentPage < totalPages - 2) {
-        pageNumbers.push(<span key="end-ellipsis" className="px-1">...</span>);
+        pageNumbers.push(<span key="end-ellipsis" className="px-1 text-black">...</span>);
       }
       pageNumbers.push(
         <button
           key={totalPages}
-          className={`px-3 py-1 ${currentPage === totalPages ? 'bg-blue-500 text-white border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100'}`}
+          className={`px-3 py-1 ${currentPage === totalPages ? 'bg-blue-500 text-white border border-gray-300 rounded-sm' : 'bg-white border border-gray-300 hover:bg-gray-100 text-black'}`}
           onClick={() => handlePageChange(totalPages)}
         >
           {totalPages}
@@ -83,12 +83,12 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
     <div className="flex items-center space-x-4 text-sm justify-end">
       <div className="flex items-center space-x-1">
         <span className="text-[#555]">Total</span>
-        <span>{totalItems}</span>
+        <span className="text-black">{totalItems}</span>
       </div>
 
       <div className="flex items-center">
         <button 
-          className="p-1.5 bg-white border border-gray-300 hover:bg-gray-100"
+          className="p-1.5 bg-white border border-gray-300 hover:bg-gray-100 text-black"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -100,7 +100,7 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
         {renderPageNumbers()}
 
         <button 
-          className="p-1.5 bg-white border border-gray-300 hover:bg-gray-100"
+          className="p-1.5 bg-white border border-gray-300 hover:bg-gray-100 text-black"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
@@ -111,7 +111,7 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
       </div>
 
       <button 
-        className="p-1.5 bg-white border border-gray-300 hover:bg-gray-100 rounded"
+        className="p-1.5 bg-white border border-gray-300 hover:bg-gray-100 rounded text-black"
         onClick={onReload}
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="h-4 w-4 text-gray-600">
@@ -125,7 +125,7 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
           type="text"
           value={goToPage}
           onChange={(e) => setGoToPage(e.target.value)}
-          className="w-12 h-7 px-2 text-center border border-gray-300 rounded"
+          className="w-12 h-7 px-2 text-center border border-gray-300 rounded text-black"
         />
       </div>
 
@@ -141,10 +141,10 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
         <select
           value={itemsPerPage}
           onChange={handleItemsPerPageChange}
-          className="w-20 h-7 px-2 text-center border border-gray-300 rounded"
+          className="w-20 h-7 px-2 text-center border border-gray-300 rounded  text-black"
         >
           {[5, 10, 20, 50].map((size) => (
-            <option key={size} value={size}>
+            <option key={size} value={size} className="text-black">
               {size}/page
             </option>
           ))}

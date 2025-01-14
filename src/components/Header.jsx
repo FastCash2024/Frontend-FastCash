@@ -72,7 +72,7 @@ function Home({ children }) {
 
         <div>
 
-            <div className="h-screen bg-gray-white">
+            <div className="h-screen bg-gray-white z-40">
 
 
                 <div className={`fixed top-0 w-[220px] lg:w-[280px] z-40 py-4  ${(theme == 'oscuro' || theme == 'neutro') && 'bg-[#28333E]'} ${theme === 'claro' && 'bg-gray-200'} shadow-white h-screen transition-all	z-40  ${nav ? 'left-0  ' : 'left-[-220px] lg:left-[-280px] '}`} >
