@@ -150,8 +150,8 @@ function Home({ children }) {
 
         <div>
 
-            <div className={`h-screen  ${theme === 'light' ? ' bg-gray-300' : 'bg-gray-300 '} dark:bg-gray-800`}>
-                <div className={`fixed top-0 w-[220px] lg:w-[280px] py-4 shadow-white  transition-all	z-50  h-screen overflow-y-scroll ${theme === 'light' ? 'bg-gray-300 text-black' : 'bg-gray-900 text-white '} ${nav ? 'left-0  ' : 'left-[-220px] lg:left-[-280px] '}`} >
+            <div className={`h-screen  ${theme === 'light' ? ' bg-gray-200' : 'bg-gray-300 '} dark:bg-gray-800`}>
+                <div className={`fixed top-0 w-[220px] lg:w-[280px] py-4 shadow-white  transition-all	z-50  h-screen overflow-y-scroll ${theme === 'light' ? 'bg-gray-300 text-black' : 'bg-gray-800 text-white '} ${nav ? 'left-0  ' : 'left-[-220px] lg:left-[-280px] '}`} >
                     {user && user !== undefined && <Navbar rol={user.rol} />}
                 </div>
 

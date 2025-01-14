@@ -7,12 +7,12 @@ import SelectSimple from '@/components/SelectSimple'
 import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 import { toast } from 'react-hot-toast';
-import FormLayout from '@/components/FormLayout'
+import FormLayout from '@/components/formModals/FormLayout'
 import Button from '@/components/Button'
 
 
 
-export default function AddAccount() {
+export default function AddAccount({query, estadoDeCredito,}) {
     const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const { theme, toggleTheme } = useTheme();
     const [maximoAsignacion, setMaximoAsignacion] = useState(2);
@@ -22,38 +22,6 @@ export default function AddAccount() {
     const [calculate, setCalculate] = useState(false);
     const [type, setType] = useState('');
 
-
-    const searchParams = useSearchParams()
-    const seccion = searchParams.get('seccion')
-    const item = searchParams.get('item')
-
-
-
-    const cuentaUpdate = seccion === 'Verificacion'
-        ? 'cuentaVerificador'
-        : seccion === 'coleccion'
-            ? 'cuentaCobrador'
-            : 'cuentaAuditor'
-
-    const tipoDeGrupo = seccion === 'Verificacion'
-        ? 'Asesor de Verificación'
-        : seccion === 'coleccion'
-            ? 'Asesor de Cobranza'
-            : 'Asesor de Auditoria'
-
-            const estadoDeCredito = seccion === 'Verificacion'
-            ? 'Pendiente'
-            : seccion === 'coleccion'
-                ? 'Dispersado'
-                : 'Pendiente'
-
-    const query = seccion === 'Verificacion'
-    ? 'Asesor de Verificación'
-    : seccion === 'coleccion'
-        ? 'Asesor de Cobranza'
-        : 'Asesor de Auditoria'
-
-    console.log(user)
     const countByItemsLength = (data) => {
         const counts = {};
         data.forEach((obj) => {
@@ -80,12 +48,12 @@ export default function AddAccount() {
         return cociente;
     }
     const assignMaximEqualy = async () => {
-        const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?${query}`)
+        const res = await fetch('https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
         const verificadores = await res.json()
         const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-        const resCases = await fetch(`https://api.fastcash-mx.com/api/verification/`)
+        const resCases = await fetch('https://api.fastcash-mx.com/api/verification/')
         const dataVerification = await resCases.json()
-        const casesVerification = dataVerification.filter(i => i.estadoDeCredito === estadoDeCredito)
+        const casesVerification = dataVerification.filter(i => i.estadoDeCredito === 'Pendiente')
         const resultado = dividir(casesVerification.length * 1, verificadores.length * 1);
         setMaximoAsignacion(resultado)
     }
@@ -93,13 +61,13 @@ export default function AddAccount() {
     const assignCasesEqually = async () => {
         setCalculate(true)
         setType('Equaly')
-        const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?${query}`)
+        const res = await fetch('https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
         const data = await res.json()
-        const verificadores = data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
+        const verificadores = data.filter(i => i.tipoDeGrupo === 'Asesor de Verificación')
         const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
         const resCases = await fetch('https://api.fastcash-mx.com/api/verification/')
         const dataVerification = await resCases.json()
-        const casesVerification = dataVerification.filter(i => i.estadoDeCredito === estadoDeCredito)
+        const casesVerification = dataVerification.filter(i => i.estadoDeCredito === 'Pendiente')
         let unassignedCases = [...casesVerification];
         updatedUsers.forEach(user => {
             if (unassignedCases.length >= maximoAsignacion) {
@@ -122,13 +90,13 @@ export default function AddAccount() {
     async function assignCasesTotally() {
         setCalculate(true)
         setType('Totaly')
-        const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?${query}`)
+        const res = await fetch('https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
         const data = await res.json()
-        const verificadores = data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
+        const verificadores = data.filter(i => i.tipoDeGrupo === 'Asesor de Verificación')
         const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
         const resCases = await fetch('https://api.fastcash-mx.com/api/verification/')
         const dataVerification = await resCases.json()
-        const asignaciones = dataVerification.filter(i => i.estadoDeCredito === estadoDeCredito)
+        const asignaciones = dataVerification.filter(i => i.estadoDeCredito === 'Pendiente')
         let usuarioIndex = 0; // Índice del usuario al que se asignará la siguiente tarea
         // Crear un mapa para rastrear las asignaciones por usuario
         const administracion = usuarios.map(usuario => ({ ...usuario, idCasosAsignados: [] }));
@@ -165,7 +133,6 @@ export default function AddAccount() {
         casosAsignados.map(async (i) => {
             if (i?.cuenta !== undefined, i?.nombreDeLaEmpresa !== undefined)
                 try {
-
                     const response = await fetch(window?.location?.href?.includes('localhost')
                         ? `http://localhost:3000/api/verification/${i._id}`
                         : `https://api.fastcash-mx.com/api/verification/${i._id}`, {
@@ -174,7 +141,7 @@ export default function AddAccount() {
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            [cuentaUpdate]: i.cuenta,
+                            cuentaVerificador: i.cuenta,
                             nombreDeLaEmpresa: i.nombreDeLaEmpresa
                         }), // Datos a enviar en el cuerpo de la petición
                     });

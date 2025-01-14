@@ -8,7 +8,7 @@ import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 
 import { toast } from 'react-hot-toast';
-import  FormLayout  from  '@/components/FormLayout'  
+import  FormLayout  from  '@/components/formModals/FormLayout'  
 
 
 export default function AddAccount() {
