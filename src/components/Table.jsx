@@ -132,10 +132,12 @@ const Table = ({
     };
 
     const query2 = roleQueries[user?.rol] || "";
-
-    const dataParams = `${stg || query2 ? '&' : '?'}limit=${limit}&page=${page}`;
-
     console.log("query2", query2);
+
+    const dataParams = `${stg || query2 || local ? '&' : '?'}limit=${limit}&page=${page}`;
+    console.log("dataParamas: ", dataParams);
+
+    console.log("local: ", local);
 
     const urlLocal = stg
       ? local.includes("?")
@@ -147,7 +149,7 @@ const Table = ({
 
     const urlServer = stg
       ? server.includes("?")
-        ? `${server.split("?")[0]}?${stg}${query2}${dataParams}`
+        ? `${server.split("?")[0]}${stg}${query2}${dataParams}`
         : `${server}?${stg}${query2}${dataParams}`
       : `${server}${query2}${dataParams}`;
 

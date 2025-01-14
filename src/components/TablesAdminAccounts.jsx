@@ -36,7 +36,7 @@ import {
   refunds,
   historial,
   menuArray,
-  filtro_1,
+  // filtro_1,
   rangesArray,
   cobrador,
   filterCliente,
@@ -118,6 +118,7 @@ export default function Home() {
   const item = searchParams.get("item");
 
   const [trabajo, setTrabajo] = useState([])
+  const [filtro_1, setFiltro_1] = useState([]);
   
       async function handlerFetch(startDate = '', endDate = '') {
           const local = 'http://localhost:3000/api/attendance';
@@ -166,7 +167,6 @@ export default function Home() {
           setTrabajo(result);
       }
       
-      
       useEffect(() => {
         if (item === "Asistencia") {
           handlerFetch();
@@ -174,6 +174,35 @@ export default function Home() {
       }, []);
       console.log("trabajo: ", trabajo);
       console.log("item: ", item);
+
+      const fetchCustomers = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/api/verification/customers', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+
+            const result = await response.json();
+            console.log('Clientes:', result);
+            
+            setFiltro_1(result);
+        } catch (error) {
+            console.error('Error al obtener los clientes:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCustomers();
+    }, []);
+
+    console.log("filtro_1: ", filtro_1);
+    
 
   let menu = user?.rol
     ? menuArray[user.rol].filter((i) => i.hash === seccion)
