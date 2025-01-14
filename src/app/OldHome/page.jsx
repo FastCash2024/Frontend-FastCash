@@ -16,15 +16,15 @@ import TableReporteDiario from '@/components/TableReporteDiario'
 
 // import Velocimetro from '@/components/Velocimetro'
 const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });
-import FormAddAccount from '@/components/FormAddAccount'
-import FormAddMasiveAccounts from '@/components/FormAddMasiveAccounts'
-import FormAddPersonalAccount from '@/components/FormAddPersonalAccount'
-import FormAddPersonalData from '@/components/FormAddPersonalData'
-import FormAddVerification from '@/components/FormAddVerification'
-import FormAdminAccount from '@/components/FormAdminAccount'
-import FormAddApplication from '@/components/FormAddApplication'
+import FormAddAccount from '@/components/formModals/FormAddAccount'
+import FormAddMasiveAccounts from '@/components/formModals/FormAddMasiveAccounts'
+import FormAddPersonalAccount from '@/components/formModals/FormAddPersonalAccount'
+import FormAddPersonalData from '@/components/formModals/FormAddPersonalData'
+import FormAddVerification from '@/components/formModals/FormAddVerification'
+import FormAdminAccount from '@/components/formModals/FormAdminAccount'
+import FormAddApplication from '@/components/formModals/FormAddApplication'
 
-import FormAsignarAsesor from '@/components/FormAsignarAsesor'
+import FormAsignarAsesor from '@/components/formModals/FormAsignarAsesor'
 import TableTools from '@/components/TableTools'
 
 import Alert from '@/components/Alert'

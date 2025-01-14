@@ -25,9 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
-*{
-  color: black
-}
+
 
 @layer utilities {
   .text-balance {
@@ -48,13 +46,13 @@ body {
 /* Track */
 ::-webkit-scrollbar-track {
     background: rgb(255, 255, 255);
-    border-radius: 5px;
+    border-radius: 8px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #a8a8a8;
-    border-radius: 5px;
+    border-radius: 8px;
     z-index: 10000000000000000000;
 }
 }

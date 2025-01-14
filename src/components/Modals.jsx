@@ -16,20 +16,20 @@ import TableReporteDiario from '@/components/TableReporteDiario'
 
 // import Velocimetro from '@/components/Velocimetro'
 const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });
-import FormAddAccount from '@/components/FormAddAccount'
-import FormAddMasiveAccounts from '@/components/FormAddMasiveAccounts'
-import FormAddPersonalAccount from '@/components/FormAddPersonalAccount'
-import FormAddPersonalData from '@/components/FormAddPersonalData'
-import FormAddVerification from '@/components/FormAddVerification'
-import FormAdminAccount from '@/components/FormAdminAccount'
-import FormAddApplication from '@/components/FormAddApplication'
-import FormDistributionCases from '@/components/FormDistributionCases'
-import FormAsignarAsesor from '@/components/FormAsignarAsesor'
+import FormAddAccount from '@/components/formModals/FormAddAccount'
+import FormAddMasiveAccounts from '@/components/formModals/FormAddMasiveAccounts'
+import FormAddPersonalAccount from '@/components/formModals/FormAddPersonalAccount'
+import FormAddPersonalData from '@/components/formModals/FormAddPersonalData'
+import FormAddVerification from '@/components/formModals/FormAddVerification'
+import FormAdminAccount from '@/components/formModals/FormAdminAccount'
+import FormAddApplication from '@/components/formModals/FormAddApplication'
+import FormDistributionCases from '@/components/formModals/FormDistributionCases'
+import FormAsignarAsesor from '@/components/formModals/FormAsignarAsesor'
 import TableTools from '@/components/TableTools'
-import FormAsignarCuenta from '@/components/FormAsignarCuenta'
-import FormAdminAsesor from '@/components/FormAdminAsesor'
-import FormRestablecimiento from '@/components/FormRestablecimiento'
-import FormRestablecimientoCuenta from '@/components/FormRestablecimientoCuenta'
+import FormAsignarCuenta from '@/components/formModals/FormAsignarCuenta'
+import FormAdminAsesor from '@/components/formModals/FormAdminAsesor'
+import FormRestablecimiento from '@/components/formModals/FormRestablecimiento'
+import FormRestablecimientoCuenta from '@/components/formModals/FormRestablecimientoCuenta'
 import {
     refunds, historial,
     menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
@@ -59,8 +59,8 @@ import {
     encabezadoGestionDeAccesos,
     encabezadoDeAplicaciones
 } from '@/constants/TableHeaders.jsx'
-import FormEditAccount from '@/components/FormEditAccount'
-import FormAddAuditor from '@/components/FormAddAuditor'
+import FormEditAccount from '@/components/formModals/FormEditAccount'
+import FormAddAuditor from '@/components/formModals/FormAddAuditor'
 
 
 

@@ -7,7 +7,7 @@ import SelectSimple from '@/components/SelectSimple'
 import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 import { toast } from 'react-hot-toast';
-import FormLayout from '@/components/FormLayout'
+import FormLayout from '@/components/formModals/FormLayout'
 
 
 
