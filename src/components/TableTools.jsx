@@ -58,7 +58,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     
 
     return (
-        <div>
+        <div className='pt-5'>
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
             {item === 'Casos de Cobranza' && <ColectionCasesTools/> }
             {item === 'Casos de Cobranza hay q borrar' &&

@@ -97,7 +97,7 @@ const Table = ({
   //         setLoader(false)
   //     }
   console.log(userDB);
-  
+
   async function handlerFetch(limit, page) {
     // Obtener los parámetros de la URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -212,34 +212,30 @@ const Table = ({
     handlerFetch(itemsPerPage, currentPage);
   }
 
-  console.log("data desde table: ", data); 
-  console.log("data filter: ", data); 
+  console.log("data desde table: ", data);
+  console.log("data filter: ", data);
 
   return (
     access && (
       <>
-        <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
-          <table className="min-w-full shadow border-collapse">
-            <thead className="bg-[#F9F9F9] text-[10px] uppercase sticky top-[0px] z-20">
+        <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth drop-shadow-2xl border">
+          <table className="min-w-full shadow border-collapse drop-shadow-2xl ">
+            <thead className="bg-[#e0e0e0] text-[10px] uppercase sticky top-[0px] z-10">
               <tr className="text-gray-700 min-w-[2500px]">
                 {headArray().map((i, index) => (
                   <th
                     scope="col"
                     key={index}
-                    className={`w-[50px] px-3 py-3 text-gray-950 border border-[#e6e6e6] ${
-                      index < 3 ? "sticky left-0 z-20 bg-[#F9F9F9]" : ""
-                    } ${
-                      index >= headArray().length - 2
-                        ? "sticky right-0 z-20 bg-[#F9F9F9]"
-                        : ""
-                    }`}
-                    style={{
-                      left: index < 3 ? `${index * 0}px` : "auto",
-                      right:
-                        index >= headArray().length - 2
-                          ? `${(headArray().length - index - 1) * 50}px`
-                          : "auto",
-                    }}
+                    className={`w-[50px] px-3 py-3 text-gray-950 border border-[#e6e6e6] 
+                      ${index < 3 ? `sticky z-20 bg-[#e0e0e0] 
+                        ${index == 0 && 'left-0'}  
+                        ${index == 1 && 'left-[37px]'} 
+                        ${index == 2 && 'left-[125px]'} ` : ""}
+                      ${index >= headArray().length - 2 ? `sticky z-20 bg-[#e0e0e0] 
+                        ${index == headArray().length - 2 && 'right-[65px]'} 
+                        ${index == headArray().length - 1 && 'right-[0px]'} ` : ""}
+                    `}
+
                   >
                     {i === "Seleccionar" ? (
                       <input
@@ -258,28 +254,24 @@ const Table = ({
                 data.map((i, index) => {
                   return (
                     (
-                      <tr key={index} className="text-[12px] border-b">
+                      <tr key={index} className="text-[12px] border-b ">
                         {headArray().map((it, index) => {
                           return (
+
+
                             <td
-                              className={`px-3 py-2 text-[12px] border border-[#e6e6e6]  ${
-                                index % 2 === 0
-                                  ? "bg-[#FAFBFD]"
-                                  : "bg-[#FAFBFD]"
-                              }  ${
-                            index < 3 ? "sticky left-0 z-10 bg-[#FAFBFD]" : ""
-                          } ${
-                            index >= headArray().length - 2
-                              ? "sticky right-0 z-10 bg-[#FAFBFD]"
-                              : ""
-                          }`}
-                          style={{
-                            left: index < 3 ? `${index * 0}px` : "auto",
-                            right:
-                              index >= headArray().length - 2
-                                ? `${(headArray().length - index - 1) * 50}px`
-                                : "auto",
-                          }}
+                              className={`px-3 py-2 text-[12px] border border-[#e6e6e6] text-black ${index % 2 === 0
+                                ? "bg-[#ffffff]"
+                                : "bg-[#ffffff]"} 
+                                ${index < 3 ? `sticky  bg-[#ffffff]
+                                  ${index == 0 && 'left-0'}  
+                                  ${index == 1 && 'left-[37px]'} 
+                                  ${index == 2 && 'left-[125px]'} ` : ""}
+                                ${index >= headArray().length - 2 ? `sticky  bg-[#ffffff]
+                                  ${index == headArray().length - 2 && 'right-[65px]'} 
+                                  ${index == headArray().length - 1 && 'right-[0px]'} ` : ""}
+                                `}
+
 
                             >
                               {it === "Seleccionar" && (
@@ -291,6 +283,7 @@ const Table = ({
                                   onClick={(e) => handlerSelectCheck(e, i)}
                                 />
                               )}
+
                               {it.toLowerCase() === "contactos" && (
                                 <div className="flex justify-around items-center">
                                   {/* {console.log( checkedArr.some(value => value._id === i._id))} */}
@@ -375,6 +368,7 @@ const Table = ({
                                   </a>
                                 </div>
                               )}
+
                               {/* Operar Verficador */}
                               {it.toLowerCase() === "operar" &&
                                 (item?.toLowerCase().includes("recolección") ||

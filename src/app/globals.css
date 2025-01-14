@@ -37,8 +37,8 @@ body {
 
   /* Designing for scroll-bar */
   ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
+    width: 10px;
+    height: 12px;
     z-index: 10000000000000000000;
 
 }
@@ -46,13 +46,13 @@ body {
 /* Track */
 ::-webkit-scrollbar-track {
     background: rgb(255, 255, 255);
-    border-radius: 8px;
+    border-radius: 3px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #a8a8a8;
-    border-radius: 8px;
+    border-radius: 3px;
     z-index: 10000000000000000000;
 }
 }
