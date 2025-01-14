@@ -601,15 +601,15 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Registro de cobro</h4>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <h4 className="text-gray-950">Registro de cobro</h4>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Estado de reembolso:
                             </label>
                             <SelectSimple arr={optionsArray} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Registro por:
@@ -635,14 +635,14 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Registro de Usuario</h4>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <h4 className="text-gray-950">Registro de Usuario</h4>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Estado de usuario:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Estado de usuario' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Acotación:
@@ -665,7 +665,7 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Distrinuir Casos Masivos</h4>
+                        <h4 className="text-gray-950">Distrinuir Casos Masivos</h4>
                         <div className='relative flex justify-center text-[12px] w-[300px]'>
                             Confirma la distribucion de casos masivos
                         </div>
@@ -685,34 +685,34 @@ export default function Home() {
                             onClick={() => setModal('')}
                         > X </button>
 
-                        <h4>Registro de Usuario</h4>
+                        <h4 className="text-gray-950">Registro de Usuario</h4>
 
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Cuenta Auditora:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Cuenta Auditora' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
 
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Id Auditor:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Id Auditor' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Tipo de multa:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Valor:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Acotación:
@@ -737,33 +737,33 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Registro Multa</h4>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <h4 className="text-gray-950">Registro Multa</h4>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Cuenta Auditora:
                             </label>
                             1323132132
                         </div>
 
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Id Auditor:
                             </label>
                             123132322
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Tipo de multa:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Valor:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Acotación:
@@ -787,20 +787,20 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Editar</h4>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <h4 className="text-gray-950">Editar</h4>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Estado de usuario:
                             </label>
                             <SelectSimple arr={['Activo', 'Inactivo']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`} required />
                         </div>
-                        {/* <div className='relative flex justify-between w-[300px]'>
+                        {/* <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Rol:
                             </label>
                             <SelectSimple arr={gestionDeRoles?.[user?.rol]} name='Rol' click={handlerSelectClick3} defaultValue={value} uuid='123456789' label='Filtro 4' position='absolute left-0 top-[25px]'  bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`} required />
                         </div> */}
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Acotación:
@@ -824,15 +824,15 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Solicitud de Información a Manager</h4>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <h4 className="text-gray-950">Solicitud de Información a Manager</h4>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Categoria:
                             </label>
                             <SelectSimple arr={['Nuemeros telefonicos']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Acotación:
@@ -857,14 +857,14 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Registro Auditor</h4>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <h4 className="text-gray-950">Registro Auditor</h4>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Categoria:
                             </label>
                             <SelectSimple arr={['Con Observación', 'Sin Observacion']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`} required />
                         </div>
-                        <div className='relative flex justify-between w-[300px]'>
+                        <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                                 Acotación:
@@ -888,7 +888,7 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4>Enviar SMS</h4>
+                        <h4 className="text-gray-950">Enviar SMS</h4>
 
                         <div className='relative flex flex-col w-full'>
 

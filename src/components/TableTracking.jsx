@@ -152,7 +152,7 @@ const Table = ({
                 </tr>
             </thead>
             <tbody>
-                {data && data?.map((i, index) => {
+                {data && data?.data?.map((i, index) => {
 
                     return (
                         <tr key={index} className="text-[12px] border-b">

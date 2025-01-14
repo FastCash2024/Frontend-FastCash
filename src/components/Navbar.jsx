@@ -119,7 +119,7 @@ export default function BottomNavigation({ rol }) {
                                 >
                                     <span className={`flex items-center w-full space-x-1.5 text-gray-100 ${item === i.subtitle && ' [&>*:nth-child(n)]:stroke-white  '}`}>
                                         {i.icon}
-                                        <span className={`${item === i.subtitle ?' text-white' : 'text-gray-300'}`}>
+                                        <span className={`hover:text-white ${item === i.subtitle ?' text-white' : 'text-gray-300'}`}>
                                             {i.subtitle}
                                         </span>
                                     </span>

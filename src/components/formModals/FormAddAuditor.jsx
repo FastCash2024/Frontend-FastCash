@@ -101,15 +101,15 @@ export default function AddAccount() {
 
     return (
         <FormLayout>
-            <h4>Registro de Auditor</h4>
-            {/* <div className='relative flex justify-between w-[300px]'>
+            <h4 className="text-gray-950">Registro de Auditor</h4>
+            {/* <div className='relative flex justify-between w-[300px] text-gray-950'>
                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                         Estado de Verificación:
                     </label>
                     <SelectSimple arr={['Aprobado', 'Reprobado']} name='Estado de reembolso' click={handlerSelectClick2} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]'
                         bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`} required />
                 </div> */}
-            <div className='relative flex justify-between w-[300px]'>
+            <div className='relative flex justify-between w-[300px] text-gray-950'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                     Acotación:
                 </label>

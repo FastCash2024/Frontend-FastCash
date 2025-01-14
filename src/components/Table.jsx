@@ -220,7 +220,7 @@ const Table = ({
   return (
     access && (
       <>
-        <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth drop-shadow-2xl border">
+        <div className="max-h-[calc(100vh-120px)] pb-2 overflow-y-auto relative scroll-smooth drop-shadow-2xl border">
           <table className="min-w-full shadow border-collapse drop-shadow-2xl ">
             <thead className="bg-[#e0e0e0] text-[10px] uppercase sticky top-[0px] z-10">
               <tr className="text-gray-700 min-w-[2500px]">
@@ -372,7 +372,7 @@ const Table = ({
                               )}
 
                               {/* Operar Verficador */}
-                              {it.toLowerCase() === "operar" &&
+                              {it.toLowerCase() === "operar" && seccion === "Verificacion"&&
                                 (item?.toLowerCase().includes("recolección") ||
                                   item?.toLowerCase().includes("lista")) && (
                                   <div className="flex justify-between space-x-3">
@@ -400,7 +400,7 @@ const Table = ({
                                 )}
 
                               {/* Operar Cobrador */}
-                              {it.toLowerCase() === "operar" &&
+                              {it.toLowerCase() === "operar" &&seccion === "coleccion"&&
                                 (item?.toLowerCase().includes("recolección") ||
                                   item?.toLowerCase().includes("lista")) && (
                                   <div className="flex justify-between flex space-x-3">
@@ -471,7 +471,6 @@ const Table = ({
                                         handlerAcount("Administrar Asesor", i)
                                       }
                                     />
-
                                     {/* <DocumentTextIcon className='h-6 w-6 fill-[#5c78d3] cursor-pointer' onClick={() => setModal('Registrar')} /> */}
                                     <ChatBubbleLeftEllipsisIcon
                                       className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"

@@ -208,7 +208,7 @@ export default function AddAccount() {
                 X
             </button>
             <h4 className='w-full text-center text-gray-950'>Añadir cuenta</h4>
-            <div className='relative flex justify-between w-[300px]'>
+            <div className='relative flex justify-between w-[300px] text-gray-950'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Origen de la cuenta:
                 </label>
@@ -229,7 +229,7 @@ export default function AddAccount() {
                     bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}
                     required />
             </div>
-            <div className='relative flex justify-between w-[300px]'>
+            <div className='relative flex justify-between w-[300px] text-gray-950'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Tipo de grupo:
                 </label>
@@ -244,7 +244,7 @@ export default function AddAccount() {
                     bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}
                     required />
             </div>
-            <div className='relative flex justify-between w-[300px]'>
+            <div className='relative flex justify-between w-[300px] text-gray-950'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Codificación de roles:
                 </label>

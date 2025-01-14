@@ -9,11 +9,11 @@ import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
 import { generarContrasena } from '@/utils'
 import { toast } from 'react-hot-toast';
-
+import Input from '@/components/Input'
 import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
 
 
-export default function AddAccount({section, query, cuenta}) {
+export default function AddAccount({ section, query, cuenta }) {
     const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({})
@@ -87,7 +87,7 @@ export default function AddAccount({section, query, cuenta}) {
         setLoader('Guardando...')
 
         checkedArr.map(async (i) => {
-            if (selectAccount?.cuenta !== undefined, selectAccount?.origenDeLaCuenta !== undefined)
+            if (selectAccount?.cuenta !== undefined && selectAccount?.origenDeLaCuenta !== undefined)
                 try {
                     const response = await fetch(window?.location?.href?.includes('localhost')
                         ? `http://localhost:3000/api/${section}/${i._id}`
@@ -102,8 +102,7 @@ export default function AddAccount({section, query, cuenta}) {
                         }), // Datos a enviar en el cuerpo de la petición
                     });
 
-
-
+                    console.log(response)
 
                     if (response.ok) {
                         checkedArr.length && setAlerta('Operación exitosa!')
@@ -125,13 +124,11 @@ export default function AddAccount({section, query, cuenta}) {
         })
     };
 
-
-
     const fetchUsers = async () => {
         try {
             const response = await axios.get(window?.location?.href?.includes('localhost')
                 ? `http://localhost:3000/api/auth/users?tipoDeGrupo=${query}`
-                : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}`, 
+                : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}`,
             );
             setFilterArr(response.data); // Actualiza la lista de usuarios
         } catch (error) {
@@ -140,7 +137,7 @@ export default function AddAccount({section, query, cuenta}) {
     };
 
     console.log(filterArr)
-
+console.log(selectAccount)
     useEffect(() => {
         fetchUsers()
     }, [loader])
@@ -157,14 +154,14 @@ export default function AddAccount({section, query, cuenta}) {
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar cuenta:
                 </label>
-                <input
+                <Input
                     type='text'
                     className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
                     name='email' onChange={onChangeHandler} placeholder='example@gmail.com' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
             </div>
             <div className="bg-white h-[200px] w-full p-3 overflow-y-auto">
-                {filterArr.map(i => i?.cuenta?.toLowerCase().includes(filter.toLowerCase()) && <div className={`border-b cursor-pointer flex items-center p-1  ${selectAccount?.cuenta === i.cuenta ? 'bg-cyan-500 ' : 'bg-white hover:bg-gray-100'}`} onClick={() => handlerSelectAccount(i)}>
-                    <span className=" flex items-center w-[50%] text-[10px] ">
+                {filterArr?.data?.map(i => i?.cuenta?.toLowerCase().includes(filter.toLowerCase()) && <div className={`border-b cursor-pointer flex items-center p-1  ${selectAccount?.cuenta === i.cuenta ? 'bg-cyan-500 ' : 'bg-white hover:bg-gray-100'}`} onClick={() => handlerSelectAccount(i)}>
+                    <span className=" flex items-center w-[50%] text-[10px] text-black">
                         <UserCircleIcon className='h-4 w-4 inline-block fill-[#000000] cursor-pointer    mx-[5px]' />
                         {i.cuenta}
                     </span>
