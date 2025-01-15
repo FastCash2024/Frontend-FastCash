@@ -392,6 +392,14 @@ const filtro_1 = [
   'Will Cash',
   'Clean Ticket',
 ]
+
+const tipoDeGrupo = [
+  'Admin',
+  'Asesor de Cobranza',
+  'Asesor de Verificación',
+  'Super Admin'
+]
+
 const rangesArray = [
   'D1(-1,-1)',
   'D2(-2,-2)',
@@ -538,7 +546,7 @@ const historial = [
 export {
   refunds,
   estado, menuArray,
-  filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso, historial
+  filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso, historial, tipoDeGrupo
 }
 
 

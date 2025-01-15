@@ -13,9 +13,10 @@ import SearchInput from "@/components/SearchInput";
 
 import {
     refunds, historial,
-    menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
+    menuArray, filtro_1, tipoDeGrupo, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
 } from '@/constants/index'
 import Link from 'next/link';
+import SelectField from './SelectField';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const searchParams = useSearchParams()
@@ -51,6 +52,32 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             .filter(key => obj[key] !== undefined && obj[key] !== null) // Filtrar valores nulos o indefinidos
             .map(key => `filter[${encodeURIComponent(key)}]=${encodeURIComponent(obj[key])}`) // Codificar clave=valor
             .join("&"); // Unir con &
+    }
+
+    function handlerWeekChange(event) {
+        const week = event.target.value;
+        const year = parseInt(week.substring(0, 4));
+        const weekNumber = parseInt(week.substring(6));
+    
+        // Calcula la fecha del primer día del año
+        const firstDayOfYear = new Date(year, 0, 1);
+        const daysOffset = (weekNumber - 1) * 7;
+        const firstDayOfWeek = new Date(firstDayOfYear.setDate(firstDayOfYear.getDate() + daysOffset));
+    
+        // Obtener el lunes de la semana seleccionada
+        const monday = new Date(firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay() + 1));
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+    
+        const startDate = monday.toISOString().split('T')[0];
+        const endDate = sunday.toISOString().split('T')[0];
+        const db = { ...filter, startDate, endDate };
+        setFilter(db);
+        setQuery(objectToQueryString(db));
+    
+        console.log("Fecha de lunes:", startDate);
+        console.log("Fecha de domingo:", endDate);
+ 
     }
 
     console.log("datos filtrados: ", filter);
@@ -861,14 +888,26 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             <div className='w-[330px] space-y-2'>
 
                                 <SearchInput 
-                                label="Buscar por Asesor:"
-                                name="Asesor"
-                                value={filter['Asesor'] || ''}
-                                onChange={onChangeHandler}
-                                theme={theme}
-                                placeholder="Buscar por asesor"
-                                required
-                            />
+                                    label="Buscar por Usuario:"
+                                    name="usuario"
+                                    value={filter['usuario'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="Buscar por usuario"
+                                    required
+                                />
+                                <SelectField
+                                    label="Tipo de grupo:"
+                                    name="Tipo de grupo"
+                                    arr={tipoDeGrupo}
+                                    click={handlerSelectClick}
+                                    defaultValue={filter['tipoDeGrupo']}
+                                    uuid="123"
+                                    position="absolute left-0 top-[25px]"
+                                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
+                                    theme={theme}
+                                    required
+                                />
                                 {/* <div className='flex justify-between'>
                                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         Buscar por Asesor:
@@ -883,23 +922,29 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         buscar por Fecha :
                                     </label>
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-
+                                    <input type='week' id="week" className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" onChange={handlerWeekChange} required />
                                 </div>
-
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Numero de páginas:
-                                    </label>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Numero de páginas' onChange={onChangeHandler} defaultValue={filter['Numero de páginas']} uuid='123' label='Numero de páginas' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
+                                
+                                <SearchInput 
+                                    label="Buscar por Pagina:"
+                                    name="page"
+                                    value={filter['page'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="Buscar por numero de pagina"
+                                    required
+                                />
 
                             </div>
                             <div className='w-[300px] space-y-2'>
 
                                 <div className='flex justify-between flex space-x-3'>
-                                    <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
-                                    <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                    <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                        <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+                                    </Link>
+                                    <Link href={`?seccion=${seccion}&item=${item}`}>
+                                        <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

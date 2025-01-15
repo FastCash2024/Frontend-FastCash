@@ -120,6 +120,15 @@ export default function Home() {
   const [trabajo, setTrabajo] = useState([])
   const [filtro_1, setFiltro_1] = useState([]);
   const [filtro_2, setFiltro_2] = useState({});
+  const [baseDate, setBaseDate] = useState(getMondayOfCurrentWeek());
+
+  function getMondayOfCurrentWeek() {
+    const today = new Date();
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Ajuste cuando el día es domingo
+    const monday = new Date(today.setDate(diff));
+    return monday.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+}
   
   function getStartAndEndOfWeek() {
     const today = new Date();
@@ -130,6 +139,23 @@ export default function Home() {
     const endDate = lastDayOfWeek.toISOString().split('T')[0];
 
     return { startDate, endDate };
+}
+
+function getDayWeek(baseDate, offset) {
+  console.log('baseDate: ', baseDate);
+  console.log('offset: ', offset);
+  
+  const targetDate = new Date(baseDate);
+  console.log('targetDate: ', targetDate.toISOString().split('T')[0]);
+  if (isNaN(targetDate.getTime())) {
+      throw new Error("Invalid baseDate");
+  }
+  targetDate.setDate(targetDate.getDate() + offset);
+  if (isNaN(targetDate.getTime())) {
+      throw new Error("Invalid targetDate");
+  }
+  
+  return { val: targetDate.toISOString().split('T')[0] };
 }
 
       async function handlerFetch(startDate, endDate) {
@@ -162,13 +188,21 @@ export default function Home() {
               ) // Codificar clave=valor
               .join("&"); // Unir con &
       
-          console.log(stg ? "existen" : "no existen");
-      
+              console.log('stg: ', stg);
+              
           const dataParams = [];
-          if (startDate) dataParams.push(`startDate=${startDate}`);
-          if (endDate) dataParams.push(`endDate=${endDate}`);
+          if (!stg.includes(`startDate=`)) {
+            dataParams.push(`startDate=${startDate}`)
+            setBaseDate(startDate);
+          } else { 
+            const params = new URLSearchParams(stg);
+            const existingStartDate = params.get('startDate');
+            setBaseDate(existingStartDate); 
+          };
+          if (!stg.includes(`endDate=`)) dataParams.push(`endDate=${endDate}`);
           const dataParamsString = dataParams.join('&');
-      
+          console.log("dataParamsString: ", dataParamsString);
+          
           const urlLocal = stg
               ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
               : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
@@ -188,10 +222,11 @@ export default function Home() {
         if (item == "Asistencia") {
           handlerFetch();
         }
-      }, [item]);
+      }, [item, searchParams]);
 
       console.log("trabajo: ", trabajo);
       console.log("item: ", item);
+      console.log("date: ", baseDate);
 
       const fetchCustomersFlow = async () => {
         try {
@@ -229,12 +264,18 @@ export default function Home() {
       return dates;
   };
 
-  function getDayWeek(offset) {
-    const today = new Date();
-    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes
-    const targetDate = new Date(firstDayOfWeek.setDate(firstDayOfWeek.getDate() + offset));
-    return { val: targetDate.toISOString().split('T')[0] };
-}
+//   function getDayWeek(offset) {
+//     const today = new Date();
+//     const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes
+//     const targetDate = new Date(firstDayOfWeek.setDate(firstDayOfWeek.getDate() + offset));
+//     return { val: targetDate.toISOString().split('T')[0] };
+// }
+
+// function getDayWeek(base, offset) {
+//   const targetDate = new Date(base);
+//   targetDate.setDate(targetDate.getDate() + offset);
+//   return { val: targetDate.toISOString().split('T')[0] };
+// }
 
     const fetchCustomers = async (dates) => {
       try {
@@ -855,43 +896,43 @@ export default function Home() {
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDayWeek(0).val}
+                          {getDayWeek(baseDate, 0).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDayWeek(1).val}
+                          {getDayWeek(baseDate, 1).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDayWeek(2).val}
+                          {getDayWeek(baseDate, 2).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDayWeek(3).val}
+                          {getDayWeek(baseDate, 3).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDayWeek(4).val}
+                          {getDayWeek(baseDate, 4).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDayWeek(5).val}
+                          {getDayWeek(baseDate, 5).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDayWeek(6).val}
+                          {getDayWeek(baseDate, 6).val}
                         </th>
                       </tr>
                     </thead>
@@ -910,52 +951,52 @@ export default function Home() {
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(0).val]
+                              cobrador.asistencias[getDayWeek(baseDate, 0).val]
                             )}`}
                           >
-                            {cobrador.asistencias[getDayWeek(0).val]}
+                            {cobrador.asistencias[getDayWeek(baseDate, 0).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(1).val]
+                              cobrador.asistencias[getDayWeek(baseDate, 1).val]
                             )}`}
                           >
-                            {cobrador.asistencias[getDayWeek(1).val]}
+                            {cobrador.asistencias[getDayWeek(baseDate, 1).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(2).val]
+                              cobrador.asistencias[getDayWeek(baseDate, 2).val]
                             )}`}
                           >
-                            {cobrador.asistencias[getDayWeek(2).val]}
+                            {cobrador.asistencias[getDayWeek(baseDate, 2).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(3).val]
+                              cobrador.asistencias[getDayWeek(baseDate, 3).val]
                             )}`}
                           >
-                            {cobrador.asistencias[getDayWeek(3).val]}
+                            {cobrador.asistencias[getDayWeek(baseDate, 3).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(4).val]
+                              cobrador.asistencias[getDayWeek(baseDate, 4).val]
                             )}`}
                           >
-                            {cobrador.asistencias[getDayWeek(4).val]}
+                            {cobrador.asistencias[getDayWeek(baseDate, 4).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(5).val]
+                              cobrador.asistencias[getDayWeek(baseDate, 5).val]
                             )}`}
                           >
-                            {cobrador.asistencias[getDayWeek(5).val]}
+                            {cobrador.asistencias[getDayWeek(baseDate, 5).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(6).val]
+                              cobrador.asistencias[getDayWeek(baseDate, 6).val]
                             )}`}
                           >
-                            {cobrador.asistencias[getDayWeek(6).val]}
+                            {cobrador.asistencias[getDayWeek(baseDate, 6).val]}
                           </td>
                         </tr>
                       ))}

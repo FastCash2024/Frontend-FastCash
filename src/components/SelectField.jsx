@@ -1,4 +1,5 @@
 import React from 'react'
+import SelectSimple from '@/components/SelectSimple'
 
 const SelectField = ({ label, name, arr, click, defaultValue, uuid, position, bg, theme, required = false}) => {
   return (
