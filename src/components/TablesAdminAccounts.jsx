@@ -264,18 +264,7 @@ function getDayWeek(baseDate, offset) {
       return dates;
   };
 
-//   function getDayWeek(offset) {
-//     const today = new Date();
-//     const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes
-//     const targetDate = new Date(firstDayOfWeek.setDate(firstDayOfWeek.getDate() + offset));
-//     return { val: targetDate.toISOString().split('T')[0] };
-// }
 
-// function getDayWeek(base, offset) {
-//   const targetDate = new Date(base);
-//   targetDate.setDate(targetDate.getDate() + offset);
-//   return { val: targetDate.toISOString().split('T')[0] };
-// }
 
     const fetchCustomers = async (dates) => {
       try {
@@ -644,9 +633,9 @@ function getDayWeek(baseDate, offset) {
                   access={true}
                   headArray={encabezadoIncurrirEnUnaEstaciónDeTrabajo}
                   dataArray={[""]}
-                  dataFilter={(i) => true}
-                  local={"http://localhost:3000/api/verification?estadoDeCredito=Dispersado"}
-                  server={"https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado"}
+                  dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
+                  local={"http://localhost:3000/api/verification"}
+                  server={"https://api.fastcash-mx.com/api/verification"}
                 />
               )}
               {item === "Gestión de cuentas de Colección" && (
@@ -654,7 +643,7 @@ function getDayWeek(baseDate, offset) {
                   access={true}
                   headArray={encabezadoGestionDeCuentasDeColección}
                   dataArray={[""]}
-                  dataFilter={(i) => true}
+                  dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
                   local={"http://localhost:3000/api/verification"}
                   server={"https://api.fastcash-mx.com/api/verification"}
                 />

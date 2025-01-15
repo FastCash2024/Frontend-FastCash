@@ -432,7 +432,7 @@ const Jumlah = [
 
 const estadoRembolso = [
   'Por favor elige',
-  'Pagado',
+  'Cobrado',
   'No pagado'
 
 ]

@@ -45,6 +45,11 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             .join("&"); // Unir con &
     }
 
+    function resetFilter() {
+        setFilter({});
+        setQuery('');
+    }
+
     // function objectToQueryString(obj) {
     //     if (!obj || typeof obj !== "object") {
     //         throw new Error("La entrada debe ser un objeto.");
@@ -111,8 +116,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Fecha de rembolso:
                                 </label>
                                 <div className='grid grid-cols-2 gap-2'>
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' onClick={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' onClick={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                                 </div>
 
                             </div>
@@ -120,7 +125,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <Button type="button" theme={'Success'} >Consultar</Button>
                                 </Link>
-                                <Button type="button" theme={'MiniPrimary'} >Restablecer</Button>
+                                <Link href={`?seccion=${seccion}&item=${item}`}>
+                                    <Button type="button" theme={'MiniPrimary'} click={resetFilter} >Restablecer</Button>
+                                </Link>
                             </div>
                         </div>
                     </div>

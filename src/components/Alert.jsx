@@ -37,15 +37,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
           {/* Iconos según el tipo */}
           {type === 'success' && (
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               stroke={"green"}
               d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           )}
           {type === 'error' && (
             <path 
-            stroke-linecap="round" 
-            stroke-linejoin="round" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
             stroke={"#ff6363"}
             d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
 

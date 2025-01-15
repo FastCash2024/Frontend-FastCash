@@ -74,12 +74,19 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         const db = { ...filter, startDate, endDate };
         setFilter(db);
         setQuery(objectToQueryString(db));
-    
-        console.log("Fecha de lunes:", startDate);
-        console.log("Fecha de domingo:", endDate);
  
     }
 
+    function handlerDateChange(event, name) {
+        const date = event.target.value;
+        const formattedDate = new Date(date).toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+        const db = { ...filter, [name]: formattedDate }; // Usar el nombre variable
+        setFilter(db);
+        setQuery(objectToQueryString(db));
+
+        console.log(`Fecha seleccionada (${name}):`, formattedDate);
+    }
     console.log("datos filtrados: ", filter);
     console.log("query: ", query);
     
@@ -133,6 +140,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                             </div>
                             <div className='w-[300px] space-y-2'>
+                                <SearchInput 
+                                    label="Número de teléfono:"
+                                    name="numeroDeTelefonoMovil"
+                                    value={filter['numeroDeTelefonoMovil'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="Buscar por numero de teléfono"
+                                    required
+                                />
                                 <div className='flex justify-between'>
                                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         Número de teléfono:
@@ -185,7 +201,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
 
                                 <div className='flex justify-between space-x-3'>
-                                    <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+                                    <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar ahoraaaa</button>
                                     <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
                                 </div>
                             </div>
@@ -254,17 +270,20 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </label>
                                 <SelectSimple click={handlerSelectClick} arr={['Opción 1', 'Opción 2', 'Opción 2']} name='Producto del proyecto' defaultValue={filter['Producto del proyecto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Número de teléfono:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de teléfono' onChange={onChangeHandler} defaultValue={filter['Número de teléfono'] || ''} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+                            <SearchInput 
+                                    label="Número de teléfono:"
+                                    name="numeroDeTelefonoMovil"
+                                    value={filter['numeroDeTelefonoMovil'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="Buscar por numero de teléfono"
+                                    required
+                                />
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de reembolso:
                                 </label>
-                                <SelectSimple arr={[...estadoRembolso, 'Reembolso Parcial']} name='Estado de reembolso' click={handlerSelectClick} defaultValue={filter['Estado de reembolso']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple arr={[...estadoRembolso, 'Reembolso Parcial']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
@@ -276,33 +295,43 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
                                 </Link>
-                                <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                <Link href={`?seccion=${seccion}&item=${item}`}>
+                                    <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                </Link>
                             </div>
                         </div>
                         <div className='w-[320px] space-y-2'>
                             <SearchInput 
                                 label="Número de prestamo:"
-                                name="Número de prestamo"
-                                value={filter['Número de prestamo'] || ''}
+                                name="numeroDePrestamo"
+                                value={filter['numeroDePrestamo'] || ''}
                                 onChange={onChangeHandler}
                                 theme={theme}
                                 placeholder="Número de prestamo"
                                 required
                             />
-
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Nombre del cliente:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' onChange={onChangeHandler} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+                            <SearchInput 
+                                label="Nombre del Cliente:"
+                                name="nombreDelCliente"
+                                value={filter['nombreDelCliente'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="Nombre del Cliente"
+                                required
+                            />
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Fecha de cancelación a cuenta:
                                 </label>
                                 <div className='grid grid-cols-2 gap-2'>
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                    <input 
+                                        type='date' 
+                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
+                                        name='fechaDeReembolso' 
+                                        onChange={(event) => handlerDateChange(event, 'fechaDeReembolso')} 
+                                        defaultValue={filter['fechaDeReembolso']} 
+                                        required 
+                                    />
                                 </div>
                             </div>
                             <div className='flex justify-between'>
@@ -313,12 +342,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                         <div className='w-[350px] space-y-2'>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    ID de sub-factura:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='filtro' click={handlerSelectClick} defaultValue={filter['filtro']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+                            <SearchInput 
+                                label="ID de sub-factura:"
+                                name="idDeSubFactura"
+                                value={filter['idDeSubFactura'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="ID de sub-factura"
+                                required
+                            />
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Dias vencidos:
@@ -333,8 +365,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Fecha de asignación:
                                 </label>
                                 <div className='grid grid-cols-2 gap-2'>
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                    <input 
+                                        type='date' 
+                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
+                                        name='fechaDeTramitacionDelCaso' 
+                                        onChange={(event) => handlerDateChange(event, 'fechaDeTramitacionDelCaso')} 
+                                        defaultValue={filter['fechaDeTramitacionDelCaso']} 
+                                        required 
+                                    />
                                 </div>
                             </div>
                             <div className='flex justify-between'>
@@ -350,6 +388,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {item === 'Gestión de cuentas de Colección' && <div>
                 <div className='grid grid-cols-3 gap-x-[50px] gap-y-2 w-[950px]'>
                     <div className='w-[300px] space-y-2'>
+                        
                         <div className='flex justify-between'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Cuenta:
@@ -843,12 +882,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                             </div>
                             <div className='w-[300px] space-y-2'>
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Número de teléfono:
-                                    </label>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de teléfono' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
+                                <SearchInput 
+                                    label="Número de teléfono:"
+                                    name="numeroDeTelefonoMovil"
+                                    value={filter['numeroDeTelefonoMovil'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="Buscar por numero de teléfono"
+                                    required
+                                />
 
 
                                 <div className='flex justify-between'>
