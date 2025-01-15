@@ -119,9 +119,25 @@ export default function Home() {
 
   const [trabajo, setTrabajo] = useState([])
   const [filtro_1, setFiltro_1] = useState([]);
+  const [filtro_2, setFiltro_2] = useState({});
   
-      async function handlerFetch(startDate = '', endDate = '') {
-          const local = 'http://localhost:3000/api/attendance';
+  function getStartAndEndOfWeek() {
+    const today = new Date();
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes
+    const lastDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 7)); // Domingo
+
+    const startDate = firstDayOfWeek.toISOString().split('T')[0];
+    const endDate = lastDayOfWeek.toISOString().split('T')[0];
+
+    return { startDate, endDate };
+}
+
+      async function handlerFetch(startDate, endDate) {
+
+        const { startDate: defaultStartDate, endDate: defaultEndDate } = getStartAndEndOfWeek();
+        startDate = startDate || defaultStartDate;
+        endDate = endDate || defaultEndDate;
+        const local = 'http://localhost:3000/api/attendance';
       
           const urlParams = new URLSearchParams(window.location.search);
           const filterParams = {};
@@ -163,21 +179,23 @@ export default function Home() {
       
           const result = await res.json();
           console.log("resultado: ", result);
-      
           setTrabajo(result);
       }
       
+      console.log("item: ", item);
+      
       useEffect(() => {
-        if (item === "Asistencia") {
+        if (item == "Asistencia") {
           handlerFetch();
         }
-      }, []);
+      }, [item]);
+
       console.log("trabajo: ", trabajo);
       console.log("item: ", item);
 
-      const fetchCustomers = async () => {
+      const fetchCustomersFlow = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/verification/customers', {
+            const response = await fetch(`http://localhost:3000/api/verification/customers`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -197,8 +215,68 @@ export default function Home() {
         }
     };
 
+    const getDays = (days) => {
+      const dates = [];
+      const today = new Date();
+      days.forEach(dayOffset => {
+          const date = new Date(today);
+          date.setDate(today.getDate() + dayOffset);
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          dates.push(`${year}-${month}-${day}`);
+      });
+      return dates;
+  };
+
+  function getDayWeek(offset) {
+    const today = new Date();
+    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes
+    const targetDate = new Date(firstDayOfWeek.setDate(firstDayOfWeek.getDate() + offset));
+    return { val: targetDate.toISOString().split('T')[0] };
+}
+
+    const fetchCustomers = async (dates) => {
+      try {
+          const results = await Promise.all(
+              dates.map(async (date) => {
+                  const response = await fetch(`http://localhost:3000/api/verification/customer?fechaDeReembolso=${date}`, {
+                      method: 'GET',
+                      headers: {
+                          'Content-Type': 'application/json',
+                      },
+                  });
+
+                  if (!response.ok) {
+                      throw new Error('Error en la solicitud');
+                  }
+
+                  const result = await response.json();
+                  return { date, data: result };
+              })
+          );
+
+          const combinedResults = results.reduce((acc, { date, data }) => {
+              acc[date] = data;
+              return acc;
+          }, {});
+
+          console.log('Resultados combinados:', combinedResults);
+          setFiltro_2(combinedResults);
+      } catch (error) {
+          console.error('Error al obtener los clientes:', error);
+      }
+  };
+
+  useEffect(() => {
+    const days = [0, 1, 2, 3, 4, 5, 6]; // Array de días a partir de la fecha actual
+    const dates = getDays(days);
+    fetchCustomers(dates);
+}, []);
+
     useEffect(() => {
-        fetchCustomers();
+      // fetchCustomers(formatDateToISO(getDay(0).val));
+      fetchCustomersFlow();
     }, []);
 
     console.log("filtro_1: ", filtro_1);
@@ -261,7 +339,7 @@ export default function Home() {
   function formatDateToISO(dateStr) {
     const [day, month, year] = dateStr.split('/');
     return `${year}-${month}-${day}`;
-}
+ }
 
   console.log(formatDateToISO(getDay(-2).val));
   
@@ -305,7 +383,8 @@ export default function Home() {
   const handleReload = () => {};
 
   console.log("filtro_1", filtro_1);
-  
+  console.log("filtro_2", filtro_2);
+  const dates = getDays([0, 1, 2, 3, 4, 5]);
 
   return (
     <div className="overflow-x-auto">
@@ -483,29 +562,25 @@ export default function Home() {
                                 className={`text-[12px] border-b bg-slate-50`}
                               >
                                 <td className="px-3 py-2">{item}</td>
+                                {
+                                  dates.map((date, idx) => (
+                                  <td className="px-3 py-2 text-center">
+                                    {filtro_2[date]?.[item]?.totalCobrado}/{filtro_2[date]?.[item]?.total}
+                                  </td>
+                                ))}
+                                {/* <td className="px-3 py-2">{item}</td> */}
+                                {/* <td className="px-3 py-2 text-center">
+                                {filtro_2[item]?.totalCobrado}/{filtro_2[item]?.total}
+                                </td>
                                 <td className="px-3 py-2 text-center">/</td>
                                 <td className="px-3 py-2 text-center">/</td>
                                 <td className="px-3 py-2 text-center">/</td>
-                                <td className="px-3 py-2 text-center">/</td>
-                                <td className="px-3 py-2 text-center">/</td>
-                                <td className="px-3 py-2 text-center">/</td>
+                                <td className="px-3 py-2 text-center">/</td> */}
                               </tr>
                             )
                         )}
                       </tbody>
                     </table>
-                  </div>
-                  <div>
-                    {item === "Flujo de Clientes" && (
-                      <Paginator
-                        totalItems={item.length}
-                        itemsPerPage={itemsPerPage}
-                        currentPage={currentPage}
-                        onPageChange={handlePageChange}
-                        onItemsPerPageChange={handleItemsPerPageChange}
-                        onReload={handleReload}
-                      />
-                    )}
                   </div>
                 </>
               )}
@@ -780,43 +855,43 @@ export default function Home() {
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(-5).val}
+                          {getDayWeek(0).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(-4).val}
+                          {getDayWeek(1).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(-3).val}
+                          {getDayWeek(2).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(-2).val}
+                          {getDayWeek(3).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(-1).val}
+                          {getDayWeek(4).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(0).val}
+                          {getDayWeek(5).val}
                         </th>
                         <th
                           scope="col"
                           className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
                         >
-                          {getDay(1).val}
+                          {getDayWeek(6).val}
                         </th>
                       </tr>
                     </thead>
@@ -835,52 +910,52 @@ export default function Home() {
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[formatDateToISO(getDay(-5).val)]
+                              cobrador.asistencias[getDayWeek(0).val]
                             )}`}
                           >
-                            {cobrador.asistencias[formatDateToISO(getDay(-5).val)]}
+                            {cobrador.asistencias[getDayWeek(0).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[formatDateToISO(getDay(-4).val)]
+                              cobrador.asistencias[getDayWeek(1).val]
                             )}`}
                           >
-                            {cobrador.asistencias[formatDateToISO(getDay(-4).val)]}
+                            {cobrador.asistencias[getDayWeek(1).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[formatDateToISO(getDay(-3).val)]
+                              cobrador.asistencias[getDayWeek(2).val]
                             )}`}
                           >
-                            {cobrador.asistencias[formatDateToISO(getDay(-3).val)]}
+                            {cobrador.asistencias[getDayWeek(2).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[formatDateToISO(getDay(-2).val)]
+                              cobrador.asistencias[getDayWeek(3).val]
                             )}`}
                           >
-                            {cobrador.asistencias[formatDateToISO(getDay(-2).val)]}
+                            {cobrador.asistencias[getDayWeek(3).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[formatDateToISO(getDay(-1).val)]
+                              cobrador.asistencias[getDayWeek(4).val]
                             )}`}
                           >
-                            {cobrador.asistencias[formatDateToISO(getDay(-1).val)]}
+                            {cobrador.asistencias[getDayWeek(4).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[formatDateToISO(getDay(0).val)]
+                              cobrador.asistencias[getDayWeek(5).val]
                             )}`}
                           >
-                            {cobrador.asistencias[formatDateToISO(getDay(0).val)]}
+                            {cobrador.asistencias[getDayWeek(5).val]}
                           </td>
                           <td
                             className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
-                              cobrador.asistencias[formatDateToISO(getDay(1).val)]
+                              cobrador.asistencias[getDayWeek(6).val]
                             )}`}
                           >
-                            {cobrador.asistencias[formatDateToISO(getDay(1).val)]}
+                            {cobrador.asistencias[getDayWeek(6).val]}
                           </td>
                         </tr>
                       ))}

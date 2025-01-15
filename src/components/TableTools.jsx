@@ -860,16 +860,21 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                             <div className='w-[330px] space-y-2'>
 
-                                <div className='flex justify-between'>
+                                <SearchInput 
+                                label="Buscar por Asesor:"
+                                name="Asesor"
+                                value={filter['Asesor'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="Buscar por asesor"
+                                required
+                            />
+                                {/* <div className='flex justify-between'>
                                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         Buscar por Asesor:
                                     </label>
                                     <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de teléfono' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
-
-
-
-
+                                </div> */}
 
                             </div>
                             <div className='w-[330px] space-y-2'>
