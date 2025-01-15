@@ -30,6 +30,7 @@ import FormAsignarCuenta from '@/components/formModals/FormAsignarCuenta'
 import FormAdminAsesor from '@/components/formModals/FormAdminAsesor'
 import FormRestablecimiento from '@/components/formModals/FormRestablecimiento'
 import FormRestablecimientoCuenta from '@/components/formModals/FormRestablecimientoCuenta'
+import FormSendSMS from "@/components/formModals/FormSendSms"
 import {
     refunds, historial,
     menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
@@ -479,35 +480,11 @@ export default function Home() {
                 </div>
             }
             {
-                modal === 'SMS' && <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50' onClick={() => setModal('')}>
-                    <div className='relative flex flex-col items-center justify-center bg-gray-200 w-[400px] h-[300px] p-5 space-y-5 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
-                        <button
-                            className="absolute top-5 right-5 flex items-center justify-center w-12 h-6 bg-red-500 text-white rounded-[5px] hover:bg-red-600 focus:outline-none"
-                            onClick={() => setModal('')}
-                        >
-                            X
-                        </button>
-
-                        <h4 className="text-gray-950">Enviar SMS</h4>
-
-                        <div className='relative flex flex-col w-full'>
-
-                            <label htmlFor="" className="mr-5 text-[10px] pb-2">
-                                Contenido {texto.length}/50
-
-                            </label>
-                            <textarea name="" maxLength={50} className='text-[10px] p-2 w-full focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px]' onChange={manejarCambio} id=""></textarea>                        </div>
-
-
-                        <button type="button" class="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => setModal('Registro de cobro')}>Enviar SMS</button>
-
-                    </div>
-
-                </div>
             }
+           { modal === 'SMS' && <FormSendSMS />}
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
 
-            {modal === 'Asignar Cuenta Cobrador' && <FormAsignarCuenta section='verification' query='Asesor de Cobranza' cuenta='cuentaCobrador' />}
+            {modal === 'Asignar Cuenta Cobrador' && <FormAsignarCuenta  query='Asesor de Cobranza' cuenta='cuentaCobrador' />}
 
 
 
@@ -523,12 +500,9 @@ export default function Home() {
             {modal === 'Restablecimiento Masivo Cuenta' && <FormRestablecimientoCuenta seccion="verificacion total" />}
 
             {modal === 'Asignar Asesor' && <FormAsignarAsesor />}
-            {modal === 'Asignar Cuenta' && <FormAsignarCuenta query="Asesor de Verificación"/>}
+            {modal === 'Asignar Cuenta' && <FormAsignarCuenta query="Asesor de Verificación" cuenta="cuentaVerificador"/>}
 
-            {
-                modal === 'Distribuir Casos' && <FormDistributionCases query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />
-
-            }
+            {  modal === 'Distribuir Casos' && <FormDistributionCases query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
             {modal === 'Registrar Verificacion' && <FormAddVerification />}
             {modal === 'Añadir cuenta masivas' && <FormAddMasiveAccounts />}
             {modal === 'Añadir cuenta' && <FormAddAccount />}

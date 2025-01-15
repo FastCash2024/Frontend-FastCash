@@ -644,9 +644,9 @@ function getDayWeek(baseDate, offset) {
                   access={true}
                   headArray={encabezadoIncurrirEnUnaEstaciónDeTrabajo}
                   dataArray={[""]}
-                  dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/verification"}
-                  server={"https://api.fastcash-mx.com/api/verification"}
+                  dataFilter={(i) => true}
+                  local={"http://localhost:3000/api/verification?estadoDeCredito=Dispersado"}
+                  server={"https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado"}
                 />
               )}
               {item === "Gestión de cuentas de Colección" && (
@@ -654,7 +654,7 @@ function getDayWeek(baseDate, offset) {
                   access={true}
                   headArray={encabezadoGestionDeCuentasDeColección}
                   dataArray={[""]}
-                  dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
+                  dataFilter={(i) => true}
                   local={"http://localhost:3000/api/verification"}
                   server={"https://api.fastcash-mx.com/api/verification"}
                 />
