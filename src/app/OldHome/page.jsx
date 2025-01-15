@@ -665,7 +665,7 @@ export default function Home() {
                             X
                         </button>
 
-                        <h4 className="text-gray-950">Distrinuir Casos Masivos</h4>
+                        <h4 className="text-gray-950">Distribuir Casos Masivos</h4>
                         <div className='relative flex justify-center text-[12px] w-[300px]'>
                             Confirma la distribucion de casos masivos
                         </div>

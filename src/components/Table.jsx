@@ -191,7 +191,7 @@ const Table = ({
       setCheckedArr([]);
     }
   }
-  console.log("cantidad de registros: ", itemsPerPage);
+  // console.log("cantidad de registros: ", itemsPerPage);
 
   useEffect(() => {
     handlerFetch(itemsPerPage, currentPage);
@@ -214,8 +214,8 @@ const Table = ({
     handlerFetch(itemsPerPage, currentPage);
   }
 
-  console.log("data desde table: ", data);
-  console.log("data filter: ", data);
+  // console.log("data desde table: ", data);
+  // console.log("data filter: ", data);
 
   return (
     access && (
@@ -438,9 +438,8 @@ const Table = ({
                                   </div>
                                 )}
 
-                              {item?.toLowerCase().includes("gestión de") &&
-                                !item?.toLowerCase().includes("personales") &&
-                                !item?.toLowerCase().includes("colección") &&
+                              {item == "Incurrir en una estación de trabajo"  &&
+                               
                                 it.toLowerCase() === "operar" && (
                                   <div className="flex justify-between flex space-x-3">
                                     <UserCircleIcon
