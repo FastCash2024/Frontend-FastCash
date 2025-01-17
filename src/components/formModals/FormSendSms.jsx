@@ -1,21 +1,101 @@
 'use client'
 import { useAppContext } from '@/context/AppContext.js'
 import { useState } from 'react'
+
+const templates = [
+    "Plantilla 1: Recordatorio amistoso\nHola, [name]. Te recordamos que el pago de [producto], con vencimiento el [fecha], está pendiente por un valor de [valor_de_pago]. Por favor, realiza tu pago para evitar inconvenientes. Si ya lo hiciste, ¡ignora este mensaje! 😊",
+    "Plantilla 2: Aviso de vencimiento próximo\nHola, [name]. Queremos informarte que el pago de [producto] vence el [fecha]. El monto es de [valor_de_pago]. Por favor, realiza tu pago antes de la fecha indicada para mantener todo en orden.",
+    "Plantilla 3: Pago vencido\nHola, [name]. El pago de [producto], con vencimiento el [fecha], aún no ha sido registrado. El monto pendiente es de [valor_de_pago]. Por favor, ponte en contacto con nosotros para regularizarlo lo antes posible.",
+    "Plantilla 4: Recordatorio firme\n[name], te recordamos que el pago de [producto] por un valor de [valor_de_pago], con vencimiento el [fecha], sigue pendiente. Es necesario que regularices tu situación inmediatamente para evitar acciones adicionales.",
+    "Plantilla 5: Última advertencia antes de medidas\nHola, [name]. El pago de [producto] con vencimiento el [fecha] aún no ha sido recibido. El monto pendiente es de [valor_de_pago]. Si no se realiza el pago, tomaremos medidas adicionales.",
+    "Plantilla 6: Notificación urgente\n[name], este es un aviso final sobre tu deuda de [producto], vencida desde el [fecha]. El monto de [valor_de_pago] debe ser pagado inmediatamente. De lo contrario, iniciaremos procedimientos de recuperación."
+];
+
+const templateIds = [
+    "7992bee2",
+    "5731a165",
+    "fae02113",
+    "231bfb0c",
+    "5452a72b",
+    "a82fda1d"
+];
+
 export default function FormSendSms() {
 
 
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const [smsText, setSmsText] = useState('')
+    const [selectedTemplate, setSelectedTemplate] = useState('');
 
-    function sendSmsHandler () {
+    // console.log("user data: ", userDB);
+    // console.log("destinatario data: ", destinatario);
+    
+    async function sendSmsHandler() {
+        const templateId = templateIds[selectedTemplate]
+        const smsData = {
+            to: destinatario.numeroDeTelefonoMovil,
+            templateId: templateId,
+            contenido: smsText,
+            codigoDeProducto: destinatario.nombreDeLaEmpresa,
+            remitenteDeSms: userDB.cuenta,
+            name: destinatario.nombreDelCliente,
+            producto: destinatario.nombreDelProducto,
+            fecha: destinatario.fechaDeReembolso,
+            valor_de_pago: destinatario.valorEnviado
+        };
+        // console.log("data sms: ", smsData);
         
+        try {
+            const response = await fetch('http://localhost:3000/api/sms/smsSend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(smsData)
+            });
+    
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+    
+            await response.json();
+            setAlerta('Operación exitosa!')
+            setModal('')
+            setLoader('')
+        } catch (error) {
+            setLoader('')
+            setAlerta('Error de datos!') 
+            console.error('Error:', error);
+        }
     }
 
-    function onChangeHandler(e) {
 
+    function onChangeHandler(e) {
         const value = e.target.value
         setSmsText(value)
     }
+
+    function onTemplateChange(e) {
+        const templateIndex = e.target.value;
+        setSelectedTemplate(templateIndex);
+        const template = templates[templateIndex];
+    
+        const templateLines = template.split('\n');
+        templateLines.shift(); 
+        const templateWithoutTitle = templateLines.join('\n');
+        console.log("template: ", templateWithoutTitle);
+        
+    
+        const filledTemplate = templateWithoutTitle
+            .replace('[name]', destinatario.nombreDelCliente)
+            .replace('[producto]', destinatario.nombreDelProducto)
+            .replace('[fecha]', destinatario.fechaDeReembolso)
+            .replace('[valor_de_pago]', destinatario.valorEnviado);
+        setSmsText(filledTemplate);
+    }
+
+    console.log("destinatario: ", destinatario);
+    
 
     return (
         <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50' onClick={() => setModal('')}>
@@ -30,20 +110,27 @@ export default function FormSendSms() {
                 <h4 className="text-gray-950">Enviar SMS</h4>
 
                 <div className='relative flex flex-col w-full'>
-
-                    <label htmlFor="" className="mr-5 text-[10px] pb-2 text-black">
-                        Contenido {smsText.length}/50
-
+                    <label htmlFor="templateSelect" className="mr-5 text-[10px] pb-2 text-black">
+                        Seleccionar Plantilla
                     </label>
-                    <textarea name="" maxLength={50} value={smsText} className='text-[10px] p-2 w-full focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px] text-black' onChange={onChangeHandler} id=""></textarea>
+                    <select id="templateSelect" className='text-[10px] p-2 w-full focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px] text-black' onChange={onTemplateChange}>
+                        <option value="">Selecciona una plantilla</option>
+                        {templates.map((template, index) => (
+                            <option key={index} value={index}>{template.split('\n')[0]}</option>
+                        ))}
+                    </select>
                 </div>
 
+                <div className='relative flex flex-col w-full'>
+                    <label htmlFor="smsContent" className="mr-5 text-[10px] pb-2 text-black">
+                        Contenido {smsText.length}/50
+                    </label>
+                    <textarea id="smsContent" maxLength={50} value={smsText} className='text-[10px] p-2 w-full focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px] text-black' onChange={onChangeHandler}></textarea>
+                </div>
 
-                <button type="button" class="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                <button type="button" className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center mr-2 mb-2"
                     onClick={sendSmsHandler}>Enviar SMS</button>
-
             </div>
-
         </div>
     )
 }

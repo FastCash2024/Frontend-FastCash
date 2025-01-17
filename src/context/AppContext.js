@@ -13,6 +13,7 @@ export function AppProvider({ children }) {
 
 	const [user, setUser] = useState(null)
 	const [users, setUsers] = useState(null)
+	const [data, setData] = useState(null)
 	const [userDB, setUserDB] = useState({cuenta: 'tester'})
 	const [subItemNav, setSubItemNav] = useState('Casos de Cobranza')
 	const [alerta, setAlerta] = useState('')
@@ -193,8 +194,7 @@ export function AppProvider({ children }) {
 		loader,
 		cambiosDB, time_stamp,
 		notificaciones])
-
-
+		
 	return (
 		<AppContext.Provider value={value} >
 			{children}

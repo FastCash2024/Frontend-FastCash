@@ -484,7 +484,7 @@ export default function Home() {
            { modal === 'SMS' && <FormSendSMS />}
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
 
-            {modal === 'Asignar Cuenta Cobrador' && <FormAsignarCuenta  query='Asesor de Cobranza' cuenta='cuentaCobrador' />}
+            {modal === 'Asignar Cuenta Cobrador' && <FormAsignarCuenta  query='Asesor de Cobranza' cuenta={users} />}
 
 
 

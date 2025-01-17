@@ -642,9 +642,9 @@ function getDayWeek(baseDate, offset) {
                 <Table
                   access={true}
                   headArray={encabezadoGestionDeCuentasDeColección}
-                  dataArray={[""]}
+                  // dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/verification"}
+                  local={"http://localhost:3000/api/auth/users"}
                   server={"https://api.fastcash-mx.com/api/verification"}
                 />
               )}
@@ -655,7 +655,7 @@ function getDayWeek(baseDate, offset) {
                   headArray={encabezadoRegistroDeSMS}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/verification"}
+                  local={"http://localhost:3000/api/sms/obtenersms"}
                   server={"https://api.fastcash-mx.com/api/verification"}
                 />
               )}

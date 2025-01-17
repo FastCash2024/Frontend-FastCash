@@ -1,3 +1,4 @@
-cambio a componentes de select y inputs 
+Correccion de la tabla de asistencia y actualziacion del backend.
 
-modificacion del backend para la tabla flujo de clientes
+colocar en un componente los inputs de los filtros
+

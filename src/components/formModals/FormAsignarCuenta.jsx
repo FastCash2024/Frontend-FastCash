@@ -75,8 +75,12 @@ export default function AddAccount({ section, query, cuenta }) {
 
 
     function handlerSelectAccount(i) {
+        console.log("cuente i: ", i);
+        
         setSelectAccount(i)
     }
+
+    console.log("cuenta seleccionada: ", cuenta);
 
     const saveAccount = (e) => {
         e.preventDefault();
@@ -137,7 +141,7 @@ export default function AddAccount({ section, query, cuenta }) {
     };
 
     console.log(filterArr)
-console.log(selectAccount)
+    console.log(selectAccount)
     useEffect(() => {
         fetchUsers()
     }, [loader])

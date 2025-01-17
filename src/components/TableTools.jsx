@@ -332,6 +332,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                         defaultValue={filter['fechaDeReembolso']} 
                                         required 
                                     />
+                                    <input 
+                                        type='date' 
+                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
+                                        name='fechaDeReembolso' 
+                                        onChange={(event) => handlerDateChange(event, 'fechaDeReembolso')} 
+                                        defaultValue={filter['fechaDeReembolso']} 
+                                        required 
+                                    />
                                 </div>
                             </div>
                             <div className='flex justify-between'>
@@ -365,6 +373,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Fecha de asignación:
                                 </label>
                                 <div className='grid grid-cols-2 gap-2'>
+                                    <input 
+                                        type='date' 
+                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
+                                        name='fechaDeTramitacionDelCaso' 
+                                        onChange={(event) => handlerDateChange(event, 'fechaDeTramitacionDelCaso')} 
+                                        defaultValue={filter['fechaDeTramitacionDelCaso']} 
+                                        required 
+                                    />
                                     <input 
                                         type='date' 
                                         className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 

@@ -115,12 +115,19 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     const query2 = roleQueries[user?.rol] || "";
     console.log("query2", query2);
 
+    const defaultLimit = 5; // Valor predeterminado para limit
+    const defaultPage = 1; // Valor predeterminado para page
+
+    const finalLimit = limit || defaultLimit;
+    const finalPage = page || defaultPage;
+
     const dataParams = `${
       stg || query2 || local.includes("?") ? "&" : "?"
-    }limit=${limit}&page=${page}`;
+    }limit=${finalLimit}&page=${finalPage}`;
     console.log("dataParamas: ", dataParams);
 
     console.log("local: ", local);
+    console.log("limit: ", limit);
 
     const urlLocal = stg
       ? local.includes("?")
@@ -156,6 +163,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
+      console.log("seleccion: ", e.target.checked);
       // Si está marcado, agrega el índice al array
       setCheckedArr([...checkedArr, i]);
     } else {
@@ -163,6 +171,12 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       setCheckedArr(checkedArr.filter((item) => item._id !== i._id));
     }
   }
+
+  function handlerMessage(i) {
+    setModal("SMS");
+    setDestinatario(i);
+  }
+  
   function handlerSelectAllCheck(e, i) {
     if (e.target.checked) {
       // Si está marcado, agrega el índice al array
@@ -197,7 +211,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     handlerFetch(itemsPerPage, currentPage);
   };
 
-  // console.log("data desde table: ", data);
+  console.log("data desde table: ", data);
   // console.log("data filter: ", data);
 
   return (
@@ -450,7 +464,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   {/* <DocumentTextIcon className='h-6 w-6 fill-[#5c78d3] cursor-pointer' onClick={() => setModal('Registrar')} /> */}
                                   <ChatBubbleLeftEllipsisIcon
                                     className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"
-                                    onClick={() => setModal("SMS")}
+                                    onClick={() => handlerMessage(i)}
                                   />
                                   <CurrencyDollarIcon className="h-6 w-6 fill-[#1ab418] cursor-pointer" />
                                   {/* <FolderPlusIcon className='h-6 w-6 fill-[#eba140]' /> */}

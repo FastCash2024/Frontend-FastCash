@@ -32,15 +32,19 @@ export const encabezadoIncurrirEnUnaEstaciónDeTrabajo = () => [
 ];
 
 export const encabezadoGestionDeCuentasDeColección = () => [
-    "Seleccionar", "Cuenta de usuario", "Apodo del usuario", "Codigo del producto", "Codificación de roles",
-    "Tanda Koleksi", "Nombre del rol", "Situación laboral", "Nombre del grupo",
-    "Origen de la cuenta", "Fecha de creación", "Operar"
+    "Seleccionar", "Nombre Personal", "Email Personal", "(Usuario asignado) cuenta", "Origen de la cuenta", "Tipo de grupo",
+    "Codificación de roles", "Situación laboral", "Operar"
 ];
+
+// export const encabezadoGestionDeCuentasDeColección = () => [
+//     "Seleccionar", "Cuenta de usuario", "Apodo del usuario", "Codigo del producto", "Codificación de roles",
+//     "Tanda Koleksi", "Nombre del rol", "Situación laboral", "Nombre del grupo",
+//     "Origen de la cuenta", "Fecha de creación", "Operar"
+// ];
 
 export const encabezadoRegistroDeSMS = () => [
     "Seleccionar", "Remitente de sms", "número de teléfono móvil", "Canal de envío",
-    "Código de producto", "Contenido", "Fecha de envío", "Estado de envío de SMS",
-    "Estado de llegada por SMS"
+    "Código de producto", "Contenido", "Fecha de envío", "Estado de envío de SMS"
 ];
 
 export const encabezadoCobroYValance = () => [
@@ -110,7 +114,7 @@ export const encabezadoGestionDeAccesosPersonales = () => [
 
 
 
-export const encabezadoDeAplicaciones = () => ["icon", "Nombre", "Prestamo Maximo", "Interes Diario", "calificacion", "Operar"
+export const encabezadoDeAplicaciones = () => ["icon", "Nombre", "Valor prestado", "Interes Diario", "calificacion", "Operar"
 ];
 
 
