@@ -54,15 +54,16 @@ export default function Home() {
             ? `http://localhost:3000/api/auth/users?emailPersonal=${user?.email}`
             : `https://api.fastcash-mx.com/api/auth/users?emailPersonal=${user?.email}`)
         const resData = await res.json()
+        console.log("resData: ", resData);
+        
         setData(resData)
     }
 
-
-
-
     useEffect(() => {
-        user === undefined && router.push('/')
-        user && user?.email && handlerFetch()
+        if (item === "Informacion personal") {
+            user === undefined && router.push('/')
+            user && user?.email && handlerFetch()
+        }
     }, [user])
 
     return (
@@ -82,7 +83,7 @@ export default function Home() {
                     <span className={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} > {user?.email}</span>
                 </div >
                 {
-                    data.map(item => {
+                    data?.data?.map(item => {
                         return <div className='relative w-[350px]  items-between flex   justify-between'>
                             <span className={`${theme === 'light' ? ' text-green-500' : ' text-green-500 '} dark:text-green-500`} > Rol asignado hoy:</span>
                             <span className={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} > {item.cuenta}</span>

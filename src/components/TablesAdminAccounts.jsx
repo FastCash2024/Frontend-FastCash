@@ -230,7 +230,7 @@ function getDayWeek(baseDate, offset) {
 
       const fetchCustomersFlow = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/verification/customers`, {
+            const response = await fetch(`http://localhost:3000/api/applications/customers`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -594,7 +594,7 @@ function getDayWeek(baseDate, offset) {
                                 <td className="px-3 py-2">{item}</td>
                                 {
                                   dates.map((date, idx) => (
-                                  <td className="px-3 py-2 text-center">
+                                  <td key={idx} className="px-3 py-2 text-center">
                                     {filtro_2[date]?.[item]?.totalCobrado}/{filtro_2[date]?.[item]?.total}
                                   </td>
                                 ))}
@@ -994,7 +994,7 @@ function getDayWeek(baseDate, offset) {
                 )}
             </div>
           )}
-          {trabajo.length > 0 && item === "Asistencia" && (
+          {trabajo.length > 0 && item === "Asistencia" && user.rol !== "Cuenta Personal" && (
             <Paginator
               totalItems={trabajo.length}
               itemsPerPage={itemsPerPage}

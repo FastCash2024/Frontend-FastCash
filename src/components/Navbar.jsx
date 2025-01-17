@@ -43,12 +43,13 @@ export default function BottomNavigation({ rol }) {
         router.push(ref)
     }
 
+    console.log("user navbar: ", user);
     
     
     const handlerAsistencia = async () => {
         try {
-            const userId = userDB.id;
-            console.log("userId: ", userId);
+            const userId = userDB?.id || user?.id;
+            console.log("userId", userId);
             
             const response = await fetch('http://localhost:3000/api/attendance/registerAttendance', {
                 method: 'POST',

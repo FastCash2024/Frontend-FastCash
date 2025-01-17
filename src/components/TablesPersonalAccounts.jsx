@@ -97,6 +97,7 @@ export default function Home() {
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [trabajo, setTrabajo] = useState([])
+    const [attendance, setAttendace] = useState({})
 
     async function handlerFetch(startDate = '', endDate = '') {
         const local = 'http://localhost:3000/api/attendance';
@@ -146,8 +147,64 @@ export default function Home() {
             setTrabajo(result);
         }
     }
+
+    console.log("user desde tables: ", user);
+    
+
+    async function handlerFetchPersonalAttendance(personId, limit = 6, page = 1) {
+        const local = `http://localhost:3000/api/attendance/${personId}`;
+    
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterParams = {};
+        urlParams.forEach((value, key) => {
+            if (
+                key.startsWith("filter[") &&
+                value !== "Elije por favor" &&
+                value !== "Todo"
+            ) {
+                const fieldName = key.slice(7, -1); // Extraer el nombre de la clave dentro de "filter[]"
+                filterParams[fieldName] = value;
+            }
+        });
+    
+        const stg = Object.keys(filterParams)
+            .filter(
+                (key) => filterParams[key] !== undefined && filterParams[key] !== null
+            ) // Filtrar valores nulos o indefinidos
+            .map(
+                (key) =>
+                    `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`
+            ) // Codificar clave=valor
+            .join("&"); // Unir con &
+    
+        console.log(stg ? "existen" : "no existen");
+    
+        const dataParams = [];
+        if (limit) dataParams.push(`limit=${limit}`);
+        if (page) dataParams.push(`page=${page}`);
+        const dataParamsString = dataParams.join('&');
+    
+        const urlLocal = stg
+            ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
+            : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
+    
+        console.log("url local solicitada: ", urlLocal);
+    
+        const res = await fetch(urlLocal);
+    
+        const result = await res.json();
+        console.log("attendaceResult: ", result);
+    
+        setAttendace(result);
+    }
     
     
+    useEffect(() => {
+        if (item === "Asistencia") {
+            handlerFetchPersonalAttendance(user.id);
+        }
+    }, [item]);
+
     useEffect(() => {
         handlerFetch();
     }, []);
@@ -293,20 +350,21 @@ export default function Home() {
 
     const getBackgroundClass = (estado) => {
         switch (estado) {
-            case 'operando':
-                return 'bg-green-400';
-            case 'atraso-1':
-                return 'bg-yellow-400';
-            case 'atraso-2':
-                return 'bg-orange-400';
-            case 'falta':
-                return 'bg-red-500';
-            case 'libre':
-                return 'bg-gray-300';
-            default:
-                return '';
+          case "Operando":
+            return "bg-green-400";
+          case "Atraso-1":
+            return "bg-yellow-400";
+          case "Atraso-2":
+            return "bg-orange-400";
+          case "Falta":
+            return "bg-red-500";
+          case "Libre":
+            return "bg-gray-300";
+          default:
+            return "";
         }
     };
+
     const auditoriaPeriodica2 = [
         "16184477",
         "Alan Montenegro",
@@ -932,7 +990,7 @@ export default function Home() {
                         <thead className="text-[10px] text-white uppercase bg-gray-900 sticky top-[0px] z-20">
                             <tr>
 
-                                <th colSpan="1" className="px-4 py-2 text-white text-center"></th>
+                                <th colSpan="1" className="px-4 py-2 text-white text-center">SEMANA</th>
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">LUNES</th>
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">MARTES</th>
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">MIÉRCOLES</th>
@@ -941,7 +999,7 @@ export default function Home() {
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">SÁBADO</th>
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">DOMINGO</th>
                             </tr>
-                            <tr>
+                            {/* <tr>
 
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">SEMANA</th>
                                 <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
@@ -966,20 +1024,16 @@ export default function Home() {
                                     {getDay((4)).val}
                                 </th>
 
-                            </tr>
+                            </tr> */}
                         </thead>
                         <tbody>
-                            {trabajo.map((cobrador, index) => (
+                            {attendance.data?.map((item, index) => (
                                 <tr key={index} className='text-[12px]'>
-
-                                    <td className="px-4 py-2 border border-gray-200 bg-gray-300">Semana {index + 1}</td>
-                                    <td className={`px-4 py-2 border border-gray-200 ${getBackgroundClass(cobrador.lunes)}`}>{cobrador.lunes}</td>
-                                    <td className={`px-4 py-2 border border-gray-200 ${getBackgroundClass(cobrador.martes)}`}>{cobrador.martes}</td>
-                                    <td className={`px-4 py-2 border border-gray-200 ${getBackgroundClass(cobrador.miercoles)}`}>{cobrador.miercoles}</td>
-                                    <td className={`px-4 py-2 border border-gray-200 ${getBackgroundClass(cobrador.jueves)}`}>{cobrador.jueves}</td>
-                                    <td className={`px-4 py-2 border border-gray-200 ${getBackgroundClass(cobrador.viernes)}`}>{cobrador.viernes}</td>
-                                    <td className={`px-4 py-2 border border-gray-200 ${getBackgroundClass(cobrador.sabado)}`}>{cobrador.sabado}</td>
-                                    <td className={`px-4 py-2 border border-gray-200 ${getBackgroundClass(cobrador.domingo)}`}>{cobrador.domingo}</td>
+                                    <td className="px-4 py-2 border border-gray-200 bg-gray-300">{item.semana} {item.startWeek} - {item.endWeek}</td>
+                                    { Object.keys(item.asistencias).map((date, idx) => (
+                                        <td key={idx} className={`px-4 py-2 border border-gray-200 bg-gray-300 ${getBackgroundClass(item.asistencias[date])}`}>{item.asistencias[date]}</td>
+                                    ))
+                                    }
                                 </tr>
                             ))}
                         </tbody>
