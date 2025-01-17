@@ -31,7 +31,7 @@ export default function Select({ arr, name, click, defaultValue, uuid, label, po
                     onClick={handlerSelect}>
                     {defaultValue === 'Seleccionar' && <span className='absolute top-2'>Seleccionar</span>}
                     <input type="text" readOnly className='relative top-[0px] w-full h-full border-transparent outline-none focus:outline-none bg-transparent caret-transparent cursor-pointer' value={defaultValue !== undefined && defaultValue !== 'Seleccionar' ? defaultValue : arr[0]} minLength={2} required={required} />
-                    <span className={select === name ? `absolute top-[4px] right-[10px] rotate-[270deg]  ${theme === 'light' ? ' text-gray-950' : ' text-white'} dark:text-white` : `absolute top-[4.5px] right-[10px] rotate-90 ${theme === 'light' ? ' text-gray-950' : ' text-white'} dark:text-white`}>{'>'}</span>
+                    <span className={select === name ? `absolute top-[4px] right-[10px] rotate-[270deg]  ${theme === 'light' ? ' text-gray-950' : ' text-white'} dark:text-white` : `absolute top-[4.5px] right-[10px] rotate-90 ${theme === 'neutro' ? ' text-gray-950' : ' text-gray-950'} dark:text-white`}>{'>'}</span>
                     <ul
                         className={` ${position ? position : 'relative'} ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-gray-950  bg-gray-200 '} dark:text-white mt-0  transition-all rounded-[5px]  w-full  ${select === name ? ` ${arr.length > 2 && 'h-[75px] border-t z-10 border border-gray-400   overflow-auto '} ${arr.length == 2 && 'h-[48px] border-t overflow-hidden border border-gray-400   z-10'} ${arr.length == 1 && 'h-[25px] border-t overflow-hidden border border-gray-400   z-10'}  ` : 'h-[0] overflow-hidden'}`}  >
                         {

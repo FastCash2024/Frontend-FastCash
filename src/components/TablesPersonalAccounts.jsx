@@ -151,7 +151,7 @@ export default function Home() {
     console.log("user desde tables: ", user);
     
 
-    async function handlerFetchPersonalAttendance(personId, limit = 6, page = 1) {
+    async function handlerFetchPersonalAttendance(personId, limit = 52, page = 1) {
         const local = `http://localhost:3000/api/attendance/${personId}`;
     
         const urlParams = new URLSearchParams(window.location.search);

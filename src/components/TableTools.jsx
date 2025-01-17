@@ -10,6 +10,7 @@ import VerificationTools from '@/components/VerificationTools'
 import AccessTools from '@/components/AccessTools'
 import ColectionCasesTools from '@/components/ColectionCasesTools'
 import SearchInput from "@/components/SearchInput";
+import MultipleInput from "@/components/MultipleInput";
 
 import {
     refunds, historial,
@@ -319,29 +320,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 placeholder="Nombre del Cliente"
                                 required
                             />
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Fecha de cancelación a cuenta:
-                                </label>
-                                <div className='grid grid-cols-2 gap-2'>
-                                    <input 
-                                        type='date' 
-                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
-                                        name='fechaDeReembolso' 
-                                        onChange={(event) => handlerDateChange(event, 'fechaDeReembolso')} 
-                                        defaultValue={filter['fechaDeReembolso']} 
-                                        required 
-                                    />
-                                    <input 
-                                        type='date' 
-                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
-                                        name='fechaDeReembolso' 
-                                        onChange={(event) => handlerDateChange(event, 'fechaDeReembolso')} 
-                                        defaultValue={filter['fechaDeReembolso']} 
-                                        required 
-                                    />
-                                </div>
-                            </div>
+                            <MultipleInput
+                                defaultValue1={filter['fechaDeReembolso']}
+                                defaultValue2={filter['fechaDeReembolso']}
+                                handlerSelectClick={(event) => handlerDateChange(event, 'fechaDeReembolso')}
+                                name1="fechaDeReembolso"
+                                name2="fechaDeReembolso"
+                                label="Fecha de cancelación a cuenta: "
+                                required
+                            />
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Número de etapas:
@@ -368,29 +355,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Maximo dias vencido' onChange={onChangeHandler} placeholder='Maximo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                                 </div>
                             </div>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Fecha de asignación:
-                                </label>
-                                <div className='grid grid-cols-2 gap-2'>
-                                    <input 
-                                        type='date' 
-                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
-                                        name='fechaDeTramitacionDelCaso' 
-                                        onChange={(event) => handlerDateChange(event, 'fechaDeTramitacionDelCaso')} 
-                                        defaultValue={filter['fechaDeTramitacionDelCaso']} 
-                                        required 
-                                    />
-                                    <input 
-                                        type='date' 
-                                        className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" 
-                                        name='fechaDeTramitacionDelCaso' 
-                                        onChange={(event) => handlerDateChange(event, 'fechaDeTramitacionDelCaso')} 
-                                        defaultValue={filter['fechaDeTramitacionDelCaso']} 
-                                        required 
-                                    />
-                                </div>
-                            </div>
+                            <MultipleInput
+                                defaultValue1={filter['fechaDeTramitacionDelCaso']}
+                                defaultValue2={filter['fechaDeTramitacionDelCaso']}
+                                handlerSelectClick={(event) => handlerDateChange(event, 'fechaDeTramitacionDelCaso')}
+                                name1="fechaDeReembolso"
+                                name2="fechaDeReembolso"
+                                label="Fecha de asignación: "
+                                required
+                            />
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Collected employee ID:
@@ -404,13 +377,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {item === 'Gestión de cuentas de Colección' && <div>
                 <div className='grid grid-cols-3 gap-x-[50px] gap-y-2 w-[950px]'>
                     <div className='w-[300px] space-y-2'>
-                        
-                        <div className='flex justify-between'>
-                            <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                Cuenta:
-                            </label>
-                            <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                        </div>
+                        <SearchInput 
+                            label="Cuenta:"
+                            name="cuenta"
+                            value={filter['cuenta'] || ''}
+                            onChange={onChangeHandler}
+                            theme={theme}
+                            placeholder="Buscar por cuenta"
+                            required
+                        />
                         <div className='flex justify-between'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Situación laboral:
@@ -419,12 +394,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                     </div>
                     <div className='w-[300px] space-y-2'>
-                        <div className='flex justify-between'>
-                            <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                Nombre del cliente:
-                            </label>
-                            <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                        </div>
+                        <SearchInput 
+                            label="Nombre del cliente:"
+                            name="apodo"
+                            value={filter['apodo'] || ''}
+                            onChange={onChangeHandler}
+                            theme={theme}
+                            placeholder="Buscar por nombre de cuenta "
+                            required
+                        />
                         <div className='flex justify-between'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Tipo de agrupación:
@@ -600,26 +578,36 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 </div>
             </div>}
             {item === 'Gestion de aplicaciones' && <div>
-                <div className='grid grid-cols-3 gap-x-[50px] gap-y-2 w-[950px]'>
-                    <div className='w-[300px] space-y-2'>
-                        <div className='flex justify-between'>
-                            <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                Aplicación:
-                            </label>
-                            <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                        </div>
-                    </div>
 
-                </div>
-                <div className='grid grid-cols-3 gap-x-[50px] gap-y-2 w-[950px]'>
+                <div className='grid grid-cols-3 gap-x-[50px] gap-y-4 w-[950px]'>
                     <div className='w-[300px] space-y-2'>
+                        <SearchInput 
+                            label="Aplicación:"
+                            name="nombre"
+                            value={filter['nombre'] || ''}
+                            onChange={onChangeHandler}
+                            theme={theme}
+                            placeholder="Buscar por nombre"
+                            required
+                            />
                         <div className='flex justify-between'>
                             <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Categoria:
                             </label>
-                            <SelectSimple arr={['Super Administrador', 'Manager', 'Lider', 'Agente de cobro', 'Auditor', 'Cliente']} name='ID de sub-factura' click={handlerSelectClick} defaultValue={filter['ID de sub-factura']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                            <SelectSimple arr={['Libre', 'Estandar', 'Premium']} name='ID de sub-factura' click={handlerSelectClick} defaultValue={filter['ID de sub-factura']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
                     </div>
+                    <div className='w-[300px] space-y-2'>
+                        <div className='flex justify-center space-x-3'>
+                            <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+                            </Link>
+                            <Link href={`?seccion=${seccion}&item=${item}`}>
+                                <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                            </Link>
+                        </div>
+                    </div>
+
                 </div>
                 <div className='pt-3 flex space-x-3'>
                     <Button type="button" theme="Success" click={() => setModal('Añadir aplicacion')}>
@@ -980,7 +968,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         buscar por Fecha :
                                     </label>
-                                    <input type='week' id="week" className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]" onChange={handlerWeekChange} required />
+                                    <input type='week' id="week" className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px] text-gray-950" onChange={handlerWeekChange} required />
                                 </div>
                                 
                                 <SearchInput 
@@ -996,7 +984,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                             <div className='w-[300px] space-y-2'>
 
-                                <div className='flex justify-between flex space-x-3'>
+                                <div className='flex justify-center space-x-3'>
                                     <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                         <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
                                     </Link>
