@@ -205,7 +205,7 @@ export default function AddAccount() {
                     <label htmlFor="" className={`mr-5 text-[11px]  ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                         Cantidad:
                     </label>
-                    <input name='cantidadAsignacionIgualitaria' value={maximoAsignacion} className={` mr-2 max-w-[173px] w-full px-3 py-1.5 border border-gray-400 rounded-[5px] text-[10px] text-black ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='2' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                    <input name='cantidadAsignacionIgualitaria' value={maximoAsignacion} className={` mr-2 max-w-[173px] w-full px-3 py-1.5 border border-gray-400 rounded-[5px] text-[10px] text-black ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='2' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
                     <Button theme="MiniPrimary" click={assignMaximEqualy}> Get</Button>
                 </div>
             }

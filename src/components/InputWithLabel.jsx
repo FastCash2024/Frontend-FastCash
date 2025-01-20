@@ -5,7 +5,7 @@ export default function InputWithLabels({ label, onchange, arr }) {
                 {label}
             </label>
             <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  
-                ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-white  dark:bg-transparent`}
+                ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`}
                 onChange={onchange}
                 defaultValue={defaultValue}
                 uuid='123'

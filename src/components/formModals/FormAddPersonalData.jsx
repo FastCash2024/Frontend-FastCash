@@ -89,7 +89,7 @@ export default function AddAccount() {
                 </label>
                 <input
                     type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
+                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
                     name='nombreCompleto' onChange={onChangeHandler} placeholder='Pepe' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
             </div>
             <div className='flex justify-between'>
@@ -98,7 +98,7 @@ export default function AddAccount() {
                 </label>
                 <input
                     type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
+                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
                     name='dni' onChange={onChangeHandler} placeholder='45645664' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
             </div>
             <div className='flex justify-between'>
@@ -107,7 +107,7 @@ export default function AddAccount() {
                 </label>
                 <input
                     type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
+                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
                     name='numeroDeTelefonoMovil' onChange={onChangeHandler} placeholder='+12313143' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
             </div>
             <button type="button"
