@@ -179,7 +179,7 @@ export default function AddAccount() {
                 </label>
                 <input
                     type='email'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
+                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'}  dark:bg-transparent`}
                     name='email'
                     value={checkedArr[0].email}
                     placeholder='example@gmail.com'
@@ -195,7 +195,7 @@ export default function AddAccount() {
                 </label>
                 <input
                     type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
+                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'}  dark:bg-transparent`}
                     name='numeroDeTelefonoMovil'
                     defaultValue={checkedArr[0].numeroDeTelefonoMovil}
                     placeholder=''
@@ -213,7 +213,7 @@ export default function AddAccount() {
                 <span className='relative inline-block '>
                     <input
                         type={showPassword ? 'text' : 'password'}
-                        className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
+                        className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'}  dark:bg-transparent`}
                         placeholder={'**********'}
                         required
                         value={data.password}
