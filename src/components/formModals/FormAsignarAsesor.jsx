@@ -218,7 +218,6 @@ export default function AddAccount() {
                     <span className="flex items-center w-[50%] text-[10px]">{i.email}</span>
                 </div>)}
             </div>
-
             <button type="button"
                 class="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"
                 onClick={saveAccount}>Asignar Asesor</button>

@@ -91,7 +91,7 @@ export default function BottomNavigation({ rol }) {
             <h1 className='16px font-medium text-center text-gray-100 py-[10px]'></h1>
             <h3 className={` text-center  ${theme === 'light' ? ' text-black' : 'text-gray-100 '} dark:text-gray-100`}>{user.nombreCompleto}</h3>
             <h3 className={` text-center text-[12px]  ${theme === 'light' ? ' text-black' : 'text-gray-100 '} dark:text-gray-100`}>{rol}</h3>
-            {user?.rol !== "Super Admin" && <div className='mt-3'>
+            {user?.rol !== "Super Admin" && user?.rol !== "Cuenta Personal" && <div className='mt-3'>
                 <Button theme="Success" click={handlerAsistencia}>Marcar asitencia</Button>
             </div>}
         </li>
@@ -119,11 +119,11 @@ export default function BottomNavigation({ rol }) {
                     <div
                         className={`relative block w-[100%] right-0 mt-2 rounded-md transition-all shadow-lg ${Object.values(menuArray[rol]).length === 1 ? '' : 'bg-gray-950'} ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-hidden ${Object.values(menuArray[rol]).length === 1 ? 'h-auto' : focus === element.title ? element.length : 'h-0 overflow-hidden'}`}>
                         <div
-                            className={`py-1 ${Object.values(menuArray[rol]).length === 1 && 'space-y-5 rounded-md'} text-gray-100`}>
+                            className={`py-1 ${Object.values(menuArray[rol]).length === 1 && ' rounded-md'} text-gray-100`}>
                             {element.options.map((i, index) => {
                                 return <span
                                     onClick={() => router.replace(`/Home?seccion=${element.hash}&item=${i.subtitle}`)}
-                                    className={`block px-4 py-2 cursor-pointer text-[12px]  text-gray-50 space-y-5 rounded-md ${item === i.subtitle && Object.values(menuArray[rol]).length !== 1 ? ' bg-blue-500' : 'bg-gray-950'} `}
+                                    className={`block px-4 py-2 cursor-pointer text-[12px]  text-gray-50 space-y-5 rounded-md ${item === i.subtitle ? ' bg-blue-500' : 'bg-gray-950'} `}
                                 >
                                     <span className={`flex items-center w-full space-x-1.5 text-gray-100 ${item === i.subtitle && ' [&>*:nth-child(n)]:stroke-white  '}`}>
                                         {i.icon}
