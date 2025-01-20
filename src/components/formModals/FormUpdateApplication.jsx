@@ -72,11 +72,6 @@ export default function FormUpdateAplication() {
         event.preventDefault();
         setLoader('Guardando...')
 
-        if (!selectedFile) {
-            alert('Por favor selecciona un archivo');
-            return;
-        }
-
         const formData = new FormData();
         formData.append('file', selectedFile); // Archivo
         formData.append('nombre', data.nombre); // Datos adicionales
