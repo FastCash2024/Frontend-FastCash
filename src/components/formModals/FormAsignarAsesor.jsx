@@ -220,14 +220,13 @@ export default function AddAccount() {
             </div>
             <div className="bg-white h-[200px] w-full p-3 overflow-y-auto">
                 {filterArr.map(i => <div className={`border-b cursor-pointer flex items-center p-1  ${selectAccount?.email === i.email ? 'bg-cyan-500 ' : 'bg-white hover:bg-gray-100'}`} onClick={() => handlerSelectAccount(i)}>
-                    <span className=" flex items-center w-[50%] text-[10px] ">
+                    <span className=" flex items-center w-[50%] text-[10px] text-black">
                         <UserCircleIcon className='h-4 w-4 inline-block fill-[#000000] cursor-pointer    mx-[5px]' />
                         {i.nombreCompleto}
                     </span>
                     <span className="flex items-center w-[50%] text-[10px]">{i.email}</span>
                 </div>)}
             </div>
-
             <button type="button"
                 class="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"
                 onClick={saveAccount}>Asignar Asesor</button>

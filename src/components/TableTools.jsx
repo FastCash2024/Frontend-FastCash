@@ -520,7 +520,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                             {user?.rol === 'Manager de Verificación' && <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Distribuir</button>}
 
-                            {checkedArr.length === 1 && <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2" onClick={() => setModal('Asignar Asesor')}>Asignar usuario</button>}
+                            {checkedArr.length === 1 && <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2" onClick={() => setModal('Asignar Asesor')}>Asignar Asesor</button>}
 
                         </div>
                         <div className='w-[300px] space-y-2'>
@@ -724,7 +724,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                             <div className='flex justify-between flex space-x-3'>
                                 {/* {<Button type="button" theme={checkedArr.length === 1 ? 'Danger' : 'Disable'} click={() => checkedArr.length === 1 && setModal('Restablecer Asesor')}>Restablecer usuario</Button>} */}
-                                {<Button type="button" theme={checkedArr.length === 1 ? 'Success' : 'Disable'} click={() => checkedArr.length === 1 && setModal('Asignar Asesor')}>Asignar usuario</Button>}
+                                {<Button type="button" theme={checkedArr.length === 1 ? 'Success' : 'Disable'} click={() => checkedArr.length === 1 && setModal('Asignar Asesor')}>Asignar Asesor</Button>}
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>

@@ -12,7 +12,6 @@ import dynamic from 'next/dynamic';
 import { useTheme } from '@/context/ThemeContext';
 import InputPass from '@/components/InputPass'
 import Table from '@/components/Table'
-import TableReporteDiario from '@/components/TableReporteDiario'
 
 // import Velocimetro from '@/components/Velocimetro'
 const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });
@@ -62,8 +61,8 @@ import {
 } from '@/constants/TableHeaders.jsx'
 import FormEditAccount from '@/components/formModals/FormEditAccount'
 import FormAddAuditor from '@/components/formModals/FormAddAuditor'
-import FormUpdateAplication from './FormModals/FormUpdateApplication'
-import ModalDeleteApplication from './modals/ModalDeleteApplication'
+import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
+import ModalDeleteApplication from '@/components/modals/ModalDeleteApplication'
 
 
 

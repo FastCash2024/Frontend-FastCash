@@ -190,8 +190,8 @@ export default function Home() {
         : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
     );
     const result = await res.json();
-    console.log("data: ", data);
-    setData(result.data);
+    console.log("data: ", result);
+    setData(result);
   }
 
   async function handlerFetchVerification(limit, page) {
