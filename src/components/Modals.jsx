@@ -62,7 +62,7 @@ import {
 } from '@/constants/TableHeaders.jsx'
 import FormEditAccount from '@/components/formModals/FormEditAccount'
 import FormAddAuditor from '@/components/formModals/FormAddAuditor'
-import FormUpdateAplication from '@/components/FormModals/FormUpdateApplication'
+import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
 import ModalDeleteApplication from '@/components/modals/ModalDeleteApplication'
 
 
