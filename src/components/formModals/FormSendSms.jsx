@@ -46,7 +46,9 @@ export default function FormSendSms() {
         // console.log("data sms: ", smsData);
         
         try {
-            const response = await fetch('http://localhost:3000/api/sms/smsSend', {
+            const response = await fetch(window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3000/api/sms/smsSend'
+                : 'https://api.fastcash-mx.com/api/sms/smsSend',  {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -114,7 +116,6 @@ export default function FormSendSms() {
                         Seleccionar Plantilla
                     </label>
                     <select id="templateSelect" className='text-[10px] p-2 w-full focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px] text-black' onChange={onTemplateChange}>
-                        <option value="">Selecciona una plantilla</option>
                         {templates.map((template, index) => (
                             <option key={index} value={index}>{template.split('\n')[0]}</option>
                         ))}

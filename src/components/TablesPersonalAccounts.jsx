@@ -153,6 +153,7 @@ export default function Home() {
 
     async function handlerFetchPersonalAttendance(personId, limit = 52, page = 1) {
         const local = `http://localhost:3000/api/attendance/${personId}`;
+        const server = `https://api.fastcash-mx.com/api/attendance/${personId}`;
     
         const urlParams = new URLSearchParams(window.location.search);
         const filterParams = {};
@@ -187,10 +188,18 @@ export default function Home() {
         const urlLocal = stg
             ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
             : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
+        
+        const urlServer = stg
+            ? `${server}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
+            : `${server}${dataParamsString ? `?${dataParamsString}` : ''}`;
     
         console.log("url local solicitada: ", urlLocal);
     
-        const res = await fetch(urlLocal);
+        const res = await fetch(
+            window?.location?.href?.includes("localhost")
+              ? `${urlLocal}`
+              : `${urlServer}`
+          );
     
         const result = await res.json();
         console.log("attendaceResult: ", result);
@@ -208,6 +217,7 @@ export default function Home() {
     useEffect(() => {
         handlerFetch();
     }, []);
+    
     console.log("trabajo: ", trabajo);
 
     let menu = user?.rol ? menuArray[user.rol].filter(i => i.hash === seccion) : ''

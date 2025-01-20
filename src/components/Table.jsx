@@ -40,6 +40,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setExchange,
     destinatario,
     setDestinatario,
+    setApplication,
     theme,
   } = useAppContext();
   const searchParams = useSearchParams();
@@ -175,6 +176,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   function handlerMessage(i) {
     setModal("SMS");
     setDestinatario(i);
+  }
+
+  function handlerApplication(modal, i) {
+    setModal(modal);
+    setApplication(i);
   }
   
   function handlerSelectAllCheck(e, i) {
@@ -495,12 +501,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex max-w-[150px] justify-between space-x-3">
                                   <button
-                                    type="button"
+                                    type="button" 
+                                    onClick={() => handlerApplication ("Eliminar aplicacion", i)}
                                     class="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                   >
                                     Eliminar
                                   </button>
                                   <button
+                                    onClick={() => handlerApplication ("Actualizar aplicacion", i)}
                                     type="button"
                                     class="w-full max-w-[70px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >

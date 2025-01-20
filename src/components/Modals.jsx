@@ -62,6 +62,8 @@ import {
 } from '@/constants/TableHeaders.jsx'
 import FormEditAccount from '@/components/formModals/FormEditAccount'
 import FormAddAuditor from '@/components/formModals/FormAddAuditor'
+import FormUpdateAplication from './FormModals/FormUpdateApplication'
+import ModalDeleteApplication from './modals/ModalDeleteApplication'
 
 
 
@@ -488,6 +490,9 @@ export default function Home() {
 
 
 
+            {modal === 'Añadir aplicacion' && <FormAddApplication />}
+            {modal === 'Actualizar aplicacion' && <FormUpdateAplication />}
+            {modal === 'Eliminar aplicacion' && <ModalDeleteApplication  />}
             {modal === 'Añadir aplicacion' && <FormAddApplication />}
             {modal === 'Registrar Auditoria Tracking' && <FormAddAuditor />}
 

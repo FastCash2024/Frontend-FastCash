@@ -164,6 +164,7 @@ function getDayWeek(baseDate, offset) {
         startDate = startDate || defaultStartDate;
         endDate = endDate || defaultEndDate;
         const local = 'http://localhost:3000/api/attendance';
+        const server = 'https://api.fastcash-mx.com/api/attendance';
       
           const urlParams = new URLSearchParams(window.location.search);
           const filterParams = {};
@@ -206,10 +207,18 @@ function getDayWeek(baseDate, offset) {
           const urlLocal = stg
               ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
               : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
+          
+          const urlServer = stg
+              ? `${server}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
+              : `${server}${dataParamsString ? `?${dataParamsString}` : ''}`;
       
           console.log("url local solicitada: ", urlLocal);
       
-          const res = await fetch(urlLocal);
+          const res = await fetch(
+            window?.location?.href?.includes("localhost")
+              ? `${urlLocal}`
+              : `${urlServer}`
+          );
       
           const result = await res.json();
           console.log("resultado: ", result);
@@ -229,18 +238,24 @@ function getDayWeek(baseDate, offset) {
       console.log("date: ", baseDate);
 
       const fetchCustomersFlow = async () => {
+        const local = 'http://localhost:3000/api/applications/customers';
+        const server = 'https://api.fastcash-mx.com/api/applications/customers';
+        
         try {
-            const response = await fetch(`http://localhost:3000/api/applications/customers`, {
+            // Seleccionar la URL correcta
+            const url = window?.location?.href?.includes("localhost") ? local : server;
+    
+            const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-
+    
             if (!response.ok) {
                 throw new Error('Error en la solicitud');
             }
-
+    
             const result = await response.json();
             console.log('Clientes:', result);
             
@@ -264,39 +279,43 @@ function getDayWeek(baseDate, offset) {
       return dates;
   };
 
+  const fetchCustomers = async (dates) => {
+    const local = `http://localhost:3000/api/verification/customer?fechaDeReembolso=${dates}`;
+    const server = `https://api.fastcash-mx.com/api/verification/customer?fechaDeReembolso=${dates}`;
 
+    try {
+        // Seleccionar la URL correcta
+        const baseUrl = window?.location?.href?.includes("localhost") ? local : server;
 
-    const fetchCustomers = async (dates) => {
-      try {
-          const results = await Promise.all(
-              dates.map(async (date) => {
-                  const response = await fetch(`http://localhost:3000/api/verification/customer?fechaDeReembolso=${date}`, {
-                      method: 'GET',
-                      headers: {
-                          'Content-Type': 'application/json',
-                      },
-                  });
+        const results = await Promise.all(
+            dates.map(async (date) => {
+                const response = await fetch(`${baseUrl}?fechaDeReembolso=${date}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
 
-                  if (!response.ok) {
-                      throw new Error('Error en la solicitud');
-                  }
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud');
+                }
 
-                  const result = await response.json();
-                  return { date, data: result };
-              })
-          );
+                const result = await response.json();
+                return { date, data: result };
+            })
+        );
 
-          const combinedResults = results.reduce((acc, { date, data }) => {
-              acc[date] = data;
-              return acc;
-          }, {});
+        const combinedResults = results.reduce((acc, { date, data }) => {
+            acc[date] = data;
+            return acc;
+        }, {});
 
-          console.log('Resultados combinados:', combinedResults);
-          setFiltro_2(combinedResults);
-      } catch (error) {
-          console.error('Error al obtener los clientes:', error);
-      }
-  };
+        console.log('Resultados combinados:', combinedResults);
+        setFiltro_2(combinedResults);
+    } catch (error) {
+        console.error('Error al obtener los clientes:', error);
+    }
+};
 
   useEffect(() => {
     const days = [0, 1, 2, 3, 4, 5, 6]; // Array de días a partir de la fecha actual
@@ -656,7 +675,7 @@ function getDayWeek(baseDate, offset) {
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
                   local={"http://localhost:3000/api/sms/obtenersms"}
-                  server={"https://api.fastcash-mx.com/api/verification"}
+                  server={"https://api.fastcash-mx.com/api/sms/obtenersms"}
                 />
               )}
               {(user?.rol === "Admin" ||
@@ -797,7 +816,7 @@ function getDayWeek(baseDate, offset) {
                   local={
                     "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor"
                   }
-                  server={"https://api.fastcash-mx.com/api/auth/users"}
+                  server={"https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor"}
                 />
               )}
               {item === "Gestión de cuentas personales" && (

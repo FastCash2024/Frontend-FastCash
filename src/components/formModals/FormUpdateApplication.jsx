@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
@@ -11,21 +11,30 @@ import FormLayout from '@/components/formModals/FormLayout'
 
 
 
-export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+export default function FormUpdateAplication() {
+    const { setAlerta, application , setModal, setLoader } = useAppContext()
+    
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({categoria:'libre'})
-    const [value1, setValue1] = useState('Por favor elige')
-    const [value2, setValue2] = useState('Por favor elige')
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-    const searchParams = useSearchParams()
-    const [interesTotal, setInteresTotal] = useState(0);
-    const [interesDiario, setInteresDiario] = useState(0);
 
-
-    const seccion = searchParams.get('seccion')
-    const item = searchParams.get('item')
+    useEffect(() => {
+        if (application) {
+            setData({
+                nombre: application.nombre,
+                valorPrestado: application.valorPrestado,
+                valorDepositoLiquido: application.valorDepositoLiquido,
+                interesTotal: application.interesTotal,
+                interesDiario: application.interesDiario,
+                calificacion: application.calificacion,
+                categoria: application.categoria,
+            });
+            if (application.icon) {
+                setSelectedImage(application.icon);
+            }
+        }
+    }, [application]);
 
     console.log("data register: ", data)
     const handleImageUpload = (event) => {
@@ -41,6 +50,7 @@ export default function AddAccount() {
             reader.readAsDataURL(file); // Leer la imagen como una URL Base64
         }
     };
+
     function onChangeHandler(e) {
         const {name, value} = e.target;
         const updatedData = {...data, [name]: value};
@@ -57,18 +67,7 @@ export default function AddAccount() {
         setData({ ...data, [name]: i })
 
     }
-
-    // function convertToBase64(file) {
-    //     const reader = new FileReader();
-    //     reader.readAsDataURL(file);
-    //     reader.onload = () => {
-    //         setBase64(reader.result);
-    //     };
-    //     reader.onerror = (error) => {
-    //         console.error('Error converting file to Base64:', error);
-    //     };
-    // }
-
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoader('Guardando...')
@@ -91,9 +90,9 @@ export default function AddAccount() {
         try {
             // url: https://api.fastcash-mx.com/api/authApk/register
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/applications/register'
-                : 'https://api.fastcash-mx.com/api/applications/register', {
-                method: 'POST',
+                ? `http://localhost:3000/api/applications/update/${application._id}`
+                : `https://api.fastcash-mx.com/api/applications/update/${application._id}`, {
+                method: 'PUT',
                 body: formData,
             });
 
@@ -113,7 +112,7 @@ export default function AddAccount() {
  
     return (
         <FormLayout>
-            <h4 className='w-full text-center text-gray-950'>Añadir cuenta</h4>
+            <h4 className='w-full text-center text-gray-950'>Editar Aplicación</h4>
             <div className="relative left-0 right-0 mx-auto w-[100px] h-[100px] flex flex-col items-center justify-center border border-dotted border-gray-700 rounded-lg bg-gray-100 hover:bg-gray-200">
                 <label
                     htmlFor="image-upload"
@@ -146,19 +145,19 @@ export default function AddAccount() {
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Nombre:
                 </label>
-                <input name='nombre' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='Mathew' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <input name='nombre' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.nombre || ''} placeholder='Mathew' required />
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                    Valor Prestamo:
                 </label>
-                <input name='valorPrestado' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='Mathew' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <input name='valorPrestado' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.valorPrestado || ''} placeholder='Mathew' required />
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Valor depositado liquido:
                 </label>
-                <input name='valorDepositoLiquido' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='Mathew' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <input name='valorDepositoLiquido' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.valorDepositoLiquido || ''} placeholder='Mathew' required />
             </div>
 
             <div className='flex justify-between w-[100%]'>
@@ -169,7 +168,7 @@ export default function AddAccount() {
                     name='interesTotal' 
                     className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} 
                     onChange={onChangeHandler} 
-                    value={data.interesTotal}
+                    value={data.interesTotal || ''} 
                     placeholder='Mathew' 
                     required 
                 />
@@ -181,7 +180,7 @@ export default function AddAccount() {
                 <input 
                     name='interesDiario' 
                     className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} 
-                    value={data.interesDiario} 
+                    value={data.interesDiario || ''} 
                     readOnly 
                     placeholder='Mathew' 
                     required 
@@ -191,7 +190,7 @@ export default function AddAccount() {
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Calificación:
                 </label>
-                <input name='calificacion' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='Mathew' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <input name='calificacion' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.calificacion || ''} placeholder='Mathew' required />
             </div>
             <div className='relative flex justify-between  w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
@@ -209,8 +208,9 @@ export default function AddAccount() {
                     required />
             </div>
             <button type="button"
-                class="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"
-                onClick={handleSubmit}>Registrar Aplicacion
+                className="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"
+                onClick={handleSubmit}>Actualizar Aplicación
             </button>
-        </FormLayout>)
+        </FormLayout>
+    );
 }

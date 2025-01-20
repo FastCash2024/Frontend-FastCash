@@ -50,8 +50,15 @@ export default function BottomNavigation({ rol }) {
         try {
             const userId = userDB?.id || user?.id;
             console.log("userId", userId);
+
+            const urlLocal = "http://localhost:3000";
+            const urlServer = "https://api.fastcash-mx.com";
+
+            const url = window?.location?.href?.includes("localhost")
+            ? `${urlLocal}/api/attendance/registerAttendance`
+            : `${urlServer}/api/attendance/registerAttendance`;
             
-            const response = await fetch('http://localhost:3000/api/attendance/registerAttendance', {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

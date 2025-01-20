@@ -40,6 +40,7 @@ export function AppProvider({ children }) {
 	const [divisas, setDivisas] = useState(undefined)
 	const [envios, setEnvios] = useState(undefined)
 	const [exchange, setExchange] = useState(undefined)
+	const [application, setApplication] = useState(undefined)
 	const [destinatario, setDestinatario] = useState(undefined)
 	const [destinatarios, setDestinatarios] = useState(undefined)
 
@@ -155,6 +156,7 @@ export function AppProvider({ children }) {
 			fecha, setFecha, qr, setQr, QRurl,
 			select3, setSelect3,
 			countries, setCountries,
+			application, setApplication,
 			destinatarios, setDestinatarios,
 			enviosDB, setEnviosDB,
 			cambiosDB, setCambiosDB,
@@ -180,7 +182,7 @@ export function AppProvider({ children }) {
 		alerta,
 		fondoPrimario,
 		fondoSecundario,
-		fondoTerciario, subItemNav, success, state, nav, userNav, modal, transferencia, currency, select, select2, select3, isSelect, isSelect2, isSelect3, isSelect4, isSelect5, users, destinatario, image1, image2, image3, item, webcamRef1,
+		fondoTerciario, subItemNav, success, state, nav, userNav, modal, transferencia, currency, select, select2, select3, isSelect, isSelect2, isSelect3, isSelect4, isSelect5, users, destinatario, application, image1, image2, image3, item, webcamRef1,
 		webcamRef2,
 		idioma,
 		webcamRef3,
