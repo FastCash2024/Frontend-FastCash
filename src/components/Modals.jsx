@@ -12,7 +12,6 @@ import dynamic from 'next/dynamic';
 import { useTheme } from '@/context/ThemeContext';
 import InputPass from '@/components/InputPass'
 import Table from '@/components/Table'
-import TableReporteDiario from '@/components/TableReporteDiario'
 
 // import Velocimetro from '@/components/Velocimetro'
 const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });

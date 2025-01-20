@@ -165,6 +165,7 @@ export default function Home() {
     useEffect(() => {
         setCheckedArr([])
     }, [])
+    console.log("reporte",data)
     return (
         <table className="w-full min-w-[2000px] border-[1px] bg-white shadow-2xl text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
             <thead className="text-[10px] text-white uppercase bg-gray-900 sticky top-[0px] z-20">
@@ -211,7 +212,7 @@ export default function Home() {
                         <td className="px-4 py-2">{i.nombrePersonal}</td>
                         <td className="px-4 py-2">{i.cuenta}</td>
 
-                        <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length}</td>
+                        <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length > 0 ? cases?.filter(it => it.cuentaVerificador === i.cuenta).length : 0}</td>
                         <td className="px-4 py-2  bg-yellow-400">{i.clientesSinResponder}</td>
                         <td className="px-4 py-2">{i.VERIFICACIONESHoy}</td>
                         <td className="px-4 py-2 bg-yellow-400">{i.ptp2pm}</td>
