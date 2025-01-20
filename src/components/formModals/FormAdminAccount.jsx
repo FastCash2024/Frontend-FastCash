@@ -6,6 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
 import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
+import Input from "@/components/Input";
 
 import { toast } from 'react-hot-toast';
 
@@ -182,13 +183,17 @@ export default function AddAccount() {
             <h4 className='w-full text-center text-gray-950'>Asignar email</h4>
 
             <div className='flex justify-between'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="emailPersonal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Email:
                 </label>
-                <input
-                    type='email'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='emailPersonal' onChange={onChangeHandler} placeholder='example@gmail.com' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="email"
+                    name="emailPersonal"
+                    onChange={onChangeHandler}
+                    placeholder="example@gmail.com"
+                    uuid='123'
+                    required
+                />
             </div>
 
             <div className='flex justify-between items-center space-x-2'>

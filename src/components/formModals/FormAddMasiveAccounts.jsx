@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
+import Input from '@/components/Input'
 import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 
@@ -329,15 +330,18 @@ export default function AddAccount() {
             </button>
             <h4 className='w-full text-center text-gray-950'>Generar cuenta masivas</h4>
 
-
-            <div className='flex justify-between'>
-                <label htmlFor="" className={`mr-5 text-[10px] w-[200px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+            <div className='flex justify-between w-[300px]'>
+                <label htmlFor="cantidad" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Cantidad:
                 </label>
-                <input
-                    type='number'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='cantidad' onChange={onChangeHandler} placeholder='5' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="cantidad"
+                    name="cantidad"
+                    onChange={onChangeHandler}
+                    placeholder="0"
+                    uuid='123'
+                    required
+                />
             </div>
 
             <div className='relative flex justify-between w-[300px] text-gray-950'>
@@ -394,7 +398,7 @@ export default function AddAccount() {
                     required />
             </div>
 
-            <div className="flex  space-x-2"><span className='text-[10px] pr-5'>Situacion laboral:</span>
+            <div className="flex text-gray-950 space-x-2"><span className='text-[10px] pr-5'>Situacion laboral:</span>
                 {['En el trabajo', 'Dimitir', 'Reposo'].map((num, index) => (
                     <label key={index} className="flex items-center space-x-2">
                         <input

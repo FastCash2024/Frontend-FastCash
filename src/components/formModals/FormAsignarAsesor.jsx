@@ -8,6 +8,7 @@ import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
 import { generarContrasena } from '@/utils'
+import Input from "@/components/Input";
 import { toast } from 'react-hot-toast';
 
 import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
@@ -192,22 +193,30 @@ export default function AddAccount() {
             <h4 className='w-full text-center text-gray-950'>Asignar Asesor</h4>
 
             <div className='flex justify-between w-full max-w-[300px]'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="email" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar por Email:
                 </label>
-                <input
-                    type='email'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='email' onChange={onChangeHandler} placeholder='example@gmail.com' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="email"
+                    name="email"
+                    onChange={onChangeHandler}
+                    placeholder="example@gmail.com"
+                    uuid='123'
+                    required
+                />
             </div>
             <div className='flex justify-between w-full max-w-[300px] '>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="nombreCompleto" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar por nombre:
                 </label>
-                <input
-                    type='email'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='email' onChange={onChangeHandler} placeholder='example@gmail.com' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="text"
+                    name="nombreCompleto"
+                    onChange={onChangeHandler}
+                    placeholder="Pepe Arevalo Fuentes"
+                    uuid='123'
+                    required
+                />
             </div>
             <div className="bg-white h-[200px] w-full p-3 overflow-y-auto">
                 {filterArr.map(i => <div className={`border-b cursor-pointer flex items-center p-1  ${selectAccount?.email === i.email ? 'bg-cyan-500 ' : 'bg-white hover:bg-gray-100'}`} onClick={() => handlerSelectAccount(i)}>

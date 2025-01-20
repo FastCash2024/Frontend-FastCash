@@ -251,9 +251,9 @@ export default function AddAccount() {
             </button>
         </div>
 
-        <div className="flex  space-x-2"><span className='text-[10px] pr-5'>Situacion laboral:</span>
+        <div className="flex  space-x-2"><span className='text-[10px] pr-5 text-gray-950'>Situacion laboral:</span>
             {['En el trabajo', 'Dimitir', 'Reposo'].map((num, index) => (
-                <label key={index} className="flex items-center space-x-2">
+                <label key={index} className="flex items-center space-x-2 text-gray-950">
                     <input
                         name={num}
                         type="checkbox"

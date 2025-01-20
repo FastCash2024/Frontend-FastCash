@@ -84,31 +84,43 @@ export default function AddAccount() {
                 <input className="hidden" id='file' name='name' onChange={handleImageUpload} accept=".jpg, .jpeg, .png, .mp4, webm" type="file" required />
             </div>
             <div className='flex justify-between'>
-                <label htmlFor="" className={`mr-5 text-[10px] w-[200px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="nombreCompleto" className={`mr-5 text-[10px] w-[200px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Nombre Completo:
                 </label>
-                <input
-                    type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='nombreCompleto' onChange={onChangeHandler} placeholder='Pepe' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="text"
+                    name="nombreCompleto"
+                    onChange={onChangeHandler}
+                    placeholder="Pepe"
+                    uuid='123'
+                    required
+                />
             </div>
             <div className='flex justify-between'>
-                <label htmlFor="" className={`mr-5 text-[10px] w-[200px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="dni" className={`mr-5 text-[10px] w-[200px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     DNI:
                 </label>
-                <input
-                    type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='dni' onChange={onChangeHandler} placeholder='45645664' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="text"
+                    name="dni"
+                    onChange={onChangeHandler}
+                    placeholder="5258462"
+                    uuid='123'
+                    required
+                />
             </div>
             <div className='flex justify-between'>
-                <label htmlFor="" className={`mr-5 text-[10px] w-[200px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="numeroDeTelefonoMovil" className={`mr-5 text-[10px] w-[200px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Telefono:
                 </label>
-                <input
-                    type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-[#adadad] rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='numeroDeTelefonoMovil' onChange={onChangeHandler} placeholder='+12313143' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="text"
+                    name="numeroDeTelefonoMovil"
+                    onChange={onChangeHandler}
+                    placeholder="+59172584628"
+                    uuid='123'
+                    required
+                />
             </div>
             <button type="button"
                 class="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"

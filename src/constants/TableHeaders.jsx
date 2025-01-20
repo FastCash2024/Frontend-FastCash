@@ -44,7 +44,7 @@ export const encabezadoGestionDeCuentasDeColección = () => [
 
 export const encabezadoRegistroDeSMS = () => [
     "Seleccionar", "Remitente de sms", "número de teléfono móvil", "Canal de envío",
-    "Código de producto", "Contenido", "Fecha de envío", "Estado de envío de SMS"
+    "Código de producto", "Contenido", "Fecha de envío", "Estado de envio de SMS"
 ];
 
 export const encabezadoCobroYValance = () => [

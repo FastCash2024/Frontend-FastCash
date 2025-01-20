@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
+import Input from '@/components/Input'
 import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 
@@ -265,7 +266,14 @@ export default function AddAccount() {
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Cuenta:
                 </label>
-                <input name='cuenta' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='Mathew' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="cuenta"
+                    name="cuenta"
+                    onChange={onChangeHandler}
+                    placeholder="Mat28"
+                    uuid='123'
+                    required
+                />
             </div>
 
             <div className='flex justify-between items-center space-x-2'>
@@ -299,25 +307,34 @@ export default function AddAccount() {
                 </button>
             </div>
             <div className='flex justify-between'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="apodo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Apodo:
                 </label>
-                <input
-                    name='apodo' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    arr={['Opción 1', 'Opción 2']} onChange={onChangeHandler} placeholder='user123' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="apodo"
+                    name="apodo"
+                    onChange={onChangeHandler}
+                    placeholder="user123"
+                    uuid='123'
+                    required
+                />
             </div>
             <div className='flex justify-between'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="email" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Email:
                 </label>
-                <input
-                    type='email'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='email' onChange={onChangeHandler} placeholder='example@gmail.com' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
+                <Input
+                    type="email"
+                    name="email"
+                    onChange={onChangeHandler}
+                    placeholder="example@gmail.com"
+                    uuid='123'
+                    required
+                />
             </div>
-            <div className="flex  space-x-2"><span className='text-[10px] pr-5'>Situacion laboral:</span>
+            <div className="flex  space-x-2"><span className='text-[10px] pr-5 text-gray-950'>Situacion laboral:</span>
                 {['En el trabajo', 'Dimitir', 'Reposo'].map((num, index) => (
-                    <label key={index} className="flex items-center space-x-2">
+                    <label key={index} className="flex items-center space-x-2 text-gray-950">
                         <input
                             name={num}
                             type="checkbox"

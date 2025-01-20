@@ -664,7 +664,7 @@ function getDayWeek(baseDate, offset) {
                   // dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
                   local={"http://localhost:3000/api/auth/users"}
-                  server={"https://api.fastcash-mx.com/api/verification"}
+                  server={"https://api.fastcash-mx.com/api/auth/users"}
                 />
               )}
               {/* numero de prestamo, apodo de usuario, codigo de producto = arl fac, codico de operacion, contenido (descripcion), resultado de la operacion (true , false reporte actual), fecha */}

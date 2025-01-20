@@ -4,12 +4,8 @@ import { useEffect, useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
-import { useSearchParams } from 'next/navigation'
-import { toast } from 'react-hot-toast';
 import FormLayout from '@/components/formModals/FormLayout'
-
-
+import Input from "@/components/Input";
 
 export default function FormUpdateAplication() {
     const { setAlerta, application , setModal, setLoader } = useAppContext()
@@ -36,7 +32,7 @@ export default function FormUpdateAplication() {
         }
     }, [application]);
 
-    console.log("data register: ", data)
+    console.log("data update: ", data)
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         setSelectedFile(file); // Mostrar vista previa
@@ -50,6 +46,9 @@ export default function FormUpdateAplication() {
             reader.readAsDataURL(file); // Leer la imagen como una URL Base64
         }
     };
+
+    console.log("File selected: ", selectedFile)
+    console.log("Image selected: ", selectedImage)
 
     function onChangeHandler(e) {
         const {name, value} = e.target;
@@ -140,31 +139,50 @@ export default function FormUpdateAplication() {
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Nombre:
                 </label>
-                <input name='nombre' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.nombre || ''} placeholder='Mathew' required />
+                <Input
+                    name='nombre' 
+                    onChange={onChangeHandler} 
+                    value={data.nombre || ''} 
+                    placeholder='Fast Money' 
+                    required 
+                />
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                    Valor Prestamo:
                 </label>
-                <input name='valorPrestado' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.valorPrestado || ''} placeholder='Mathew' required />
+                <Input 
+                    type="number"
+                    name='valorPrestado' 
+                    onChange={onChangeHandler} 
+                    value={data.valorPrestado || ''} 
+                    placeholder='5000' 
+                    required />
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Valor depositado liquido:
                 </label>
-                <input name='valorDepositoLiquido' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.valorDepositoLiquido || ''} placeholder='Mathew' required />
+                <Input 
+                    type="number"
+                    name='valorDepositoLiquido' 
+                    onChange={onChangeHandler} 
+                    value={data.valorDepositoLiquido || ''} 
+                    placeholder='1200' 
+                    required 
+                    />
             </div>
 
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="interesTotal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Interes Total:
                 </label>
-                <input 
+                <Input
+                    type="text" 
                     name='interesTotal' 
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} 
                     onChange={onChangeHandler} 
                     value={data.interesTotal || ''} 
-                    placeholder='Mathew' 
+                    placeholder='5000' 
                     required 
                 />
             </div>
@@ -185,7 +203,13 @@ export default function FormUpdateAplication() {
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Calificación:
                 </label>
-                <input name='calificacion' className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} onChange={onChangeHandler} value={data.calificacion || ''} placeholder='Mathew' required />
+                <Input 
+                    type="text"
+                    name='calificacion' 
+                    onChange={onChangeHandler} 
+                    value={data.calificacion || ''} 
+                    placeholder='4.3' 
+                    required />
             </div>
             <div className='relative flex justify-between  w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>

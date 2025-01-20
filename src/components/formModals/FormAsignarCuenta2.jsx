@@ -7,6 +7,7 @@ import SelectSimple from '@/components/SelectSimple'
 import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
+import Input from "@/components/Input";
 import { generarContrasena } from '@/utils'
 import { toast } from 'react-hot-toast';
 
@@ -158,11 +159,14 @@ export default function AddAccount() {
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar cuenta:
                 </label>
-                <input
-                    type='text'
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
-                    name='email' onChange={onChangeHandler} placeholder='example@gmail.com' uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`} required />
-            </div>
+                <Input
+                    type="email"
+                    name="email"
+                    onChange={onChangeHandler}
+                    placeholder="example@gmail.com"
+                    uuid='123'
+                    required
+                />            </div>
             <div className="bg-white h-[200px] w-full p-3 overflow-y-auto">
                 {filterArr.map(i => i?.cuenta?.toLowerCase().includes(filter.toLowerCase()) && <div className={`border-b cursor-pointer flex items-center p-1  ${selectAccount?.cuenta === i.cuenta ? 'bg-cyan-500 ' : 'bg-white hover:bg-gray-100'}`} onClick={() => handlerSelectAccount(i)}>
                     <span className=" flex items-center w-[50%] text-[10px] ">
