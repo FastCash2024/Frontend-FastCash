@@ -80,14 +80,23 @@ export default function AddAccount({ section, query, cuenta }) {
         setSelectAccount(i)
     }
 
-    console.log("cuenta seleccionada: ", cuenta);
+    console.log("cuenta seleccionada: ", selectAccount);
 
     const saveAccount = (e) => {
         e.preventDefault();
-        // console.log({
-        //     cuentaVerificador: selectAccount.cuenta,
-        //     nombreDeLaEmpresa: selectAccount.origenDeLaCuenta
-        // })
+
+        let body = {
+            nombreDeLaEmpresa: selectAccount.origenDeLaCuenta
+          };
+        
+          if (selectAccount.tipoDeGrupo === "Asesor de Verificación") {
+            body.cuentaVerificador = selectAccount.cuenta;
+          } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
+            body.cuentaCobrador = selectAccount.cuenta;
+          }
+
+        console.log("data enviada: ", body)
+
         setLoader('Guardando...')
 
         checkedArr.map(async (i) => {
@@ -100,10 +109,7 @@ export default function AddAccount({ section, query, cuenta }) {
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify({
-                            [cuenta]: selectAccount.cuenta,
-                            nombreDeLaEmpresa: selectAccount.origenDeLaCuenta
-                        }), // Datos a enviar en el cuerpo de la petición
+                        body: JSON.stringify(body), // Datos a enviar en el cuerpo de la petición
                     });
 
                     console.log(response)
@@ -153,7 +159,7 @@ export default function AddAccount({ section, query, cuenta }) {
             >
                 X
             </button>
-            <h4 className='w-full text-center text-gray-950'>Asignar Cuenta</h4>
+            <h4 className='w-full text-center text-gray-950'>Asignar Cuenta Cobrador</h4>
             <div className='flex justify-between w-full max-w-[300px]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar cuenta:

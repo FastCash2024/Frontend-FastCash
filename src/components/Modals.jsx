@@ -30,6 +30,8 @@ import FormAdminAsesor from '@/components/formModals/FormAdminAsesor'
 import FormRestablecimiento from '@/components/formModals/FormRestablecimiento'
 import FormRestablecimientoCuenta from '@/components/formModals/FormRestablecimientoCuenta'
 import FormSendSMS from "@/components/formModals/FormSendSms"
+import FormAttendance from "@/components/formModals/FormAttendance"
+
 import {
     refunds, historial,
     menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
@@ -516,6 +518,10 @@ export default function Home() {
             {modal === 'Administrar cuenta' && <FormAdminAccount />}
             {modal === 'Editar cuenta' && <FormEditAccount />}
             {modal === 'Administrar Asesor' && <FormAdminAsesor />}
+
+            {/* ---------------------------------'GESTION DE ACCESOS' --------------------------------- */}
+
+            {modal === 'Asistencia' && <FormAttendance />}
 
         </div>
     )

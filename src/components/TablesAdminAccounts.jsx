@@ -111,6 +111,7 @@ export default function Home() {
     setDestinatario,
     itemSelected,
     setItemSelected,
+    setAttendance
   } = useAppContext();
   const refFirst = useRef(null);
   const searchParams = useSearchParams();
@@ -399,7 +400,7 @@ function getDayWeek(baseDate, offset) {
         return "bg-green-400";
       case "Atraso-1":
         return "bg-yellow-400";
-      case "Aatraso-2":
+      case "Atraso-2":
         return "bg-orange-400";
       case "Falta":
         return "bg-red-500";
@@ -431,9 +432,12 @@ function getDayWeek(baseDate, offset) {
 
   const handleReload = () => {};
 
-  console.log("filtro_1", filtro_1);
-  console.log("filtro_2", filtro_2);
   const dates = getDays([0, 1, 2, 3, 4, 5]);
+
+  const handleSelecAttendance = (selectModal, userId, date, status) => {
+    setModal(selectModal);
+    setAttendance({userId, date, status});
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -958,49 +962,56 @@ function getDayWeek(baseDate, offset) {
                             {cobrador.usuario}
                           </td>
                           <td
-                            className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
+                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 0).val, cobrador.asistencias[getDayWeek(baseDate, 0).val])}
+                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
                               cobrador.asistencias[getDayWeek(baseDate, 0).val]
                             )}`}
                           >
                             {cobrador.asistencias[getDayWeek(baseDate, 0).val]}
                           </td>
                           <td
-                            className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
+                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 1).val, cobrador.asistencias[getDayWeek(baseDate, 1).val])}
+                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
                               cobrador.asistencias[getDayWeek(baseDate, 1).val]
                             )}`}
                           >
                             {cobrador.asistencias[getDayWeek(baseDate, 1).val]}
                           </td>
                           <td
-                            className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
+                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 2).val, cobrador.asistencias[getDayWeek(baseDate, 2).val])}
+                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
                               cobrador.asistencias[getDayWeek(baseDate, 2).val]
                             )}`}
                           >
                             {cobrador.asistencias[getDayWeek(baseDate, 2).val]}
                           </td>
                           <td
-                            className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
+                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 3).val, cobrador.asistencias[getDayWeek(baseDate, 3).val])}
+                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
                               cobrador.asistencias[getDayWeek(baseDate, 3).val]
                             )}`}
                           >
                             {cobrador.asistencias[getDayWeek(baseDate, 3).val]}
                           </td>
                           <td
-                            className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
+                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 4).val, cobrador.asistencias[getDayWeek(baseDate, 4).val])}
+                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
                               cobrador.asistencias[getDayWeek(baseDate, 4).val]
                             )}`}
                           >
                             {cobrador.asistencias[getDayWeek(baseDate, 4).val]}
                           </td>
                           <td
-                            className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
+                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 5).val, cobrador.asistencias[getDayWeek(baseDate, 5).val])}
+                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
                               cobrador.asistencias[getDayWeek(baseDate, 5).val]
                             )}`}
                           >
                             {cobrador.asistencias[getDayWeek(baseDate, 5).val]}
                           </td>
                           <td
-                            className={`px-4 py-2 border border-gray-400 ${getBackgroundClass(
+                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 6).val, cobrador.asistencias[getDayWeek(baseDate, 6).val])}
+                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
                               cobrador.asistencias[getDayWeek(baseDate, 6).val]
                             )}`}
                           >

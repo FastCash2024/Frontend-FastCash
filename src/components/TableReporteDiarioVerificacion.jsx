@@ -64,6 +64,7 @@ export default function Home() {
     const [texto, setTexto] = useState('');
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const [cases, setCases] = useState([])
+    const [details, setDetails] = useState([])
 
     const [state, setState] = useState({})
     const [editItem, setEditItem] = useState(undefined)
@@ -147,6 +148,18 @@ export default function Home() {
         console.log(data)
         setCases(data.data)
     }
+
+    
+    async function handlerFetchDetails() {
+        const res = await fetch(
+            window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3000/api/verification/reporte?estadoDeCredito=Aprobado,Reprobado'
+                : 'https://api.fastcash-mx.com/api/verification/reporte?estadoDeCredito=Aprobado,Reprobado')
+        const data = await res.json()
+        console.log(data)
+        setDetails(data.data)
+    }
+
     function handlerSelectAllCheck(e, i) {
         if (e.target.checked) {
             // Si está marcado, agrega el índice al array
@@ -158,6 +171,7 @@ export default function Home() {
 
     }
     useEffect(() => {
+        handlerFetchDetails()
         handlerFetch()
         handlerFetchVerification()
     }, [loader])
@@ -213,17 +227,17 @@ export default function Home() {
                         <td className="px-4 py-2">{i.cuenta}</td>
 
                         <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length > 0 ? cases?.filter(it => it.cuentaVerificador === i.cuenta).length : 0}</td>
-                        <td className="px-4 py-2  bg-yellow-400">{i.clientesSinResponder}</td>
-                        <td className="px-4 py-2">{i.VERIFICACIONESHoy}</td>
-                        <td className="px-4 py-2 bg-yellow-400">{i.ptp2pm}</td>
-                        <td className="px-4 py-2">{i.ptp6pm}</td>
-                        <td className="px-4 py-2 bg-yellow-400">{i.llamadas3pm}</td>
-                        <td className="px-4 py-2">{i.ptp10am}</td>
-                        <td className="px-4 py-2 bg-yellow-400">{i.llamadasFinales}</td>
-                        <td className="px-4 py-2">{i.tasaFinal}</td>
-
-                        <td className="px-4 py-2 bg-yellow-400">{i.porcentajeTasaFinal}</td>
-                        <td className="px-4 py-2">{i.tasaFinal}</td>
+                        
+                        <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.aprobados10am}</td>
+                        <td className="px-4 py-2">{details[i.cuenta]?.reprobados10am}</td>
+                        <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.aprobados12am}</td>
+                        <td className="px-4 py-2">{details[i.cuenta]?.reprobados12am}</td>
+                        <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.aprobados14pm}</td>
+                        <td className="px-4 py-2">{details[i.cuenta]?.reprobados14pm}</td>
+                        <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.aprobados16pm}</td>
+                        <td className="px-4 py-2">{details[i.cuenta]?.reprobados16pm}</td>
+                        <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.aprobadosTotal}</td>
+                        <td className="px-4 py-2">{details[i.cuenta]?.reprobadosTotal}</td>
 
                     </tr>
                 ))}

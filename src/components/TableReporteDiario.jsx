@@ -145,6 +145,7 @@ export default function Home() {
     const [itemsPerPage, setItemsPerPage] = useState(5);
     const [totalPages, setTotalPages] = useState(1);
     const [totalDocuments, setTotalDocuments] = useState(0);
+  const [details, setDetails] = useState([])
 
   function sortArray(x, y) {
     if (
@@ -214,10 +215,7 @@ export default function Home() {
     handlerFetchVerification(itemsPerPage, currentPage);
   }, [loader, itemsPerPage, currentPage]);
 
-  useEffect(() => {
-    setCheckedArr([]);
-  }, []);
-
+  
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -226,6 +224,21 @@ export default function Home() {
     setItemsPerPage(itemsPerPage);
     setCurrentPage(1);
   };
+
+  async function handlerFetchDetails() {
+    const res = await fetch(
+        window?.location?.href?.includes('localhost')
+        ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
+            : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
+    const data = await res.json()
+    console.log("data detalle: ", data)
+    setDetails(data.data)
+  }
+  
+  useEffect(() => {
+    handlerFetchDetails();
+    setCheckedArr([]);
+  }, []);
 
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
@@ -319,31 +332,24 @@ export default function Home() {
                     }
                   </td>
                   <td className="px-4 py-2">{i.llamadasRealizadas}</td>
-                  <td className="px-4 py-2  bg-yellow-400">
-                    {i.clientesSinResponder}
-                  </td>
-                  <td className="px-4 py-2">{i.pagosHoy}</td>
-                  <td className="px-4 py-2">{i.porcentajeHoy}</td>
-                  <td className="px-4 py-2 bg-yellow-400">{i.ptp2pm}</td>
-                  <td className="px-4 py-2">{i.ptp6pm}</td>
-                  <td className="px-4 py-2">{i.porcentajePTP}</td>
-                  <td className="px-4 py-2 bg-yellow-400">{i.llamadas3pm}</td>
-                  <td className="px-4 py-2">{i.ptp10am}</td>
-                  <td className="px-4 py-2">{i.porcentajeLlamadas}</td>
-                  <td className="px-4 py-2 bg-yellow-400">
-                    {i.llamadasFinales}
-                  </td>
-                  <td className="px-4 py-2">{i.tasaFinal}</td>
-                  <td className="px-4 py-2">{i.porcentajeFinal}</td>
+                  <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.pagos10am}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.ptp10am}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion10am}</td>
+                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos12am}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.ptp12am}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion12am}</td>
+                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos2pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.ptp2pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion2pm}</td>
+                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos4pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.ptp4pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion4pm}</td>
+                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos6pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.ptp6pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion6pm}</td>
+                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagosTotal}</td>
 
-                  <td className="px-4 py-2 bg-yellow-400">
-                    {i.porcentajeTasaFinal}
-                  </td>
-                  <td className="px-4 py-2">{i.tasaFinal}</td>
-                  <td className="px-4 py-2">{i.porcentajeFinal}</td>
-                  <td className="px-4 py-2 bg-yellow-400">{i.tasaFinal}</td>
-
-                  <td className="px-4 py-2">{i.porcentajeTasaFinal}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.pagosTotal}</td>
                 </tr>
               ))}
             </tbody>

@@ -62,7 +62,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       .replace(/^[A-Z]/, (firstChar) => firstChar.toLowerCase());
   };
 
-  function handlerVerification(i, seccion) {
+  function handlerVerification(i, seccion) {    
     if (seccion === "Verificacion") {
       setModal("Registrar Verificacion");
       setItemSelected(i);
@@ -390,7 +390,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
                             {/* Operar Verficador */}
                             {it.toLowerCase() === "operar" &&
-                              seccion === "Verificacion" &&
+                              seccion.toLowerCase() === "verificacion" &&
                               (item?.toLowerCase().includes("recolección") ||
                                 item?.toLowerCase().includes("lista")) && (
                                 <div className="flex justify-between space-x-3">
@@ -419,9 +419,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
                             {/* Operar Cobrador */}
                             {it.toLowerCase() === "operar" &&
-                              seccion === "coleccion" &&
-                              (item?.toLowerCase().includes("recolección") ||
-                                item?.toLowerCase().includes("lista")) && (
+                              seccion.toLowerCase() === "coleccion"  && (
                                 <div className="flex justify-between flex space-x-3">
                                   <Link
                                     href={`/Home/Datos?caso=${i._id}&seccion=info`}

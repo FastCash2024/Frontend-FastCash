@@ -3,9 +3,7 @@
 import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-
-import { useSearchParams } from 'next/navigation'
-
+import Input from "@/components/Input";
 
 
 export default function AddAccount() {
@@ -17,10 +15,9 @@ export default function AddAccount() {
     const [selectedFile, setSelectedFile] = useState(null);
 
     function onChangeHandler(e) {
-        // console.log(e.target.value)
         setData({ ...data, [e.target.name]: e.target.value })
     }
-
+    
     const saveAccount = async (e) => {
         e.preventDefault();
         try {
@@ -28,13 +25,14 @@ export default function AddAccount() {
                 alert('Por favor selecciona un archivo');
                 return;
             }
+            
             setLoader('Guardando...')
             const formData = new FormData();
             formData.append('file', selectedFile); // Archivo
             formData.append('nombreCompleto', data.nombreCompleto); // Datos adicionales
             formData.append('dni', data.dni);
             formData.append('numeroDeTelefonoMovil', data.numeroDeTelefonoMovil);
-            const id = userDB.id
+            const id = userDB.id ?? user.id;
             const response = await fetch(window?.location?.href?.includes('localhost')
                 ? `http://localhost:3000/api/auth/registerPersonal/${id}`
                 : `https://api.fastcash-mx.com/api/auth/registerPersonal/${id}`, {
