@@ -95,6 +95,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
         filterParams[fieldName] = value;
       }
     });
+    console.log("filter params ", filterParams);
 
     const stg = Object.keys(filterParams)
       .filter(
@@ -106,6 +107,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       ) // Codificar clave=valor
       .join("&"); // Unir con &
     console.log(stg ? "existen" : "no existen");
+    console.log("stg: ", stg);
 
     const roleQueries = {
       "Asesor de Verificación": `&cuentaVerificador=${userDB.cuenta}`,
@@ -419,7 +421,9 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
                             {/* Operar Cobrador */}
                             {it.toLowerCase() === "operar" &&
-                              seccion.toLowerCase() === "coleccion"  && (
+                              seccion.toLowerCase() === "coleccion" &&
+                              (item?.toLowerCase().includes("recolección") ||
+                              item?.toLowerCase().includes("lista")) && (
                                 <div className="flex justify-between flex space-x-3">
                                   <Link
                                     href={`/Home/Datos?caso=${i._id}&seccion=info`}

@@ -1004,19 +1004,3 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 };
 
 export default Alert;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
