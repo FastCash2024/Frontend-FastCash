@@ -37,10 +37,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setQuery(objectToQueryString(db))
     }
 
-    console.log("filter: ", filter);
-    console.log("filter key: ", filter);
-    console.log("filter query: ", query);
-
     function resetFilter() {
         setFilter({});
         setQuery('');
