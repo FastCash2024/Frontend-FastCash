@@ -377,6 +377,7 @@ const menuArray = {
       title: "Verificación de Créditos",
       options: [
         { subtitle: "Recolección y Validación de Datos", icon: <OutlineDocumentTextIcon className="h-5 w-5" /> },
+        { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Lista final", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
       ],
       length: 'h-[150px]'

@@ -81,6 +81,7 @@ import {
   encabezadoDeAplicaciones,
 } from "@/constants/TableHeaders.jsx";
 import { Paginator } from "./Paginator";
+import TableAtencionAlCliente from "./TableAtencionAlCliente";
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -750,7 +751,7 @@ function getDayWeek(baseDate, offset) {
                   dataArray={[""]}
                   dataFilter={(i) => true}
                   local={
-                    "http://localhost:3000/api/verification?estadoDeCredito=Pendiente"
+                    "http://localhost:3000/api/verification?estadoDeCredito=Aprobado,Pendiente"
                   }
                   server={
                     "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Aprobado,Pendiente"
@@ -763,9 +764,11 @@ function getDayWeek(baseDate, offset) {
                 user.rol === "Manager de Cobranza" ||
                 user.rol === "Manager de Cobranza" ||
                 user.rol === "Manager de Auditoria" ||
-                user.rol === "Manager de Verificación") &&
-                seccion === "Verificacion" &&
+                user.rol === "Manager de Verificación" ||
+                user.rol === "Asesor de Verificación") &&
+                (seccion === "Verificacion" || seccion === "verificacion") &&
                 item === "Reporte diario" && <TableReporteDiarioVerificacion />}
+
               {item === "Lista final" && (
                 <Table
                   access={true}
@@ -833,6 +836,9 @@ function getDayWeek(baseDate, offset) {
                     "https://api.fastcash-mx.com/api/auth/personalAccounts"
                   }
                 />
+              )}
+              {item === "Atención al Cliente" && seccion === "auditoria" && (
+                <TableAtencionAlCliente />
               )}
               {/* --------------------------------- TABLAS EN MAS DE DOS SECCIONES --------------------------------- */}
               {(user?.rol === "Admin" ||

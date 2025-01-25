@@ -423,6 +423,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                             {it.toLowerCase() === "operar" &&
                               seccion.toLowerCase() === "coleccion" &&
                               (item?.toLowerCase().includes("recolección") ||
+                              item?.toLowerCase().includes("casos") ||
                               item?.toLowerCase().includes("lista")) && (
                                 <div className="flex justify-between flex space-x-3">
                                   <Link

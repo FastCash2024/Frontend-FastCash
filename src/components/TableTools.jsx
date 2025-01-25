@@ -28,6 +28,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [filter, setFilter] = useState({})
     const [query, setQuery] = useState('')
 
+    // console.log("filter: ", filter);
+    // console.log("filter query: ", query);
+    
+
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }
         setFilter(db)
@@ -749,48 +753,55 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">
                         <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                             <div className='w-[330px] space-y-2'>
-
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Buscar por Usuario:
-                                    </label>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de teléfono' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Buscar por nombre:
-                                    </label>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de teléfono' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
+                                <SearchInput 
+                                    label="Buscar Por Nombre:"
+                                    name="nombreCompleto"
+                                    value={filter['nombreCompleto'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="Juan Perez"
+                                    required
+                                />
+                                <SearchInput 
+                                    label="Buscar Por DNI:"
+                                    name="dni"
+                                    value={filter['dni'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="3245641"
+                                    required
+                                />
                                 <Button type="button" theme="MiniPrimary" click={() => setModal('Añadir cuenta personal')} >Crear Asesor</Button>
                             </div>
                             <div className='w-[300px] space-y-2'>
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Número de teléfono:
-                                    </label>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de teléfono' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Numero de páginas:
-                                    </label>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Numero de páginas' onChange={onChangeHandler} defaultValue={filter['Numero de páginas']} uuid='123' label='Numero de páginas' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
-                                {/* <button type="button" onClick={() => generateCuentasMasivas()} class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Crear Usuarios Masivos</button> */}
-
+                                <SearchInput 
+                                    label="Buscar Por Número de teléfono:"
+                                    name="numeroDeTelefonoMovil"
+                                    value={filter['numeroDeTelefonoMovil'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="+5915646546"
+                                    required
+                                />
+                                <SearchInput 
+                                    label="Número de páginas:"
+                                    name="page"
+                                    value={filter['page'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="5"
+                                    required
+                                />
                             </div>
                             <div className='w-[300px] space-y-2'>
 
-                                <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Estado de Usuario:
-                                    </label>
-                                    <SelectSimple arr={['Activo', 'Inactivo']} name='Estado de reembolso' click={handlerSelectClick} defaultValue={filter['Estado de reembolso']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
                                 <div className='flex justify-between flex space-x-3'>
-                                    <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
-                                    <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                    <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                        <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+                                    </Link>
+                                    <Link href={`?seccion=${seccion}&item=${item}`}>
+                                        <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

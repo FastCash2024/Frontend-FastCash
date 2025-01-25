@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 import {
     refunds, historial,
-    menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
+    menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
 } from '@/constants/index'
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
@@ -20,9 +20,11 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
+    const [filtro_1, setFiltro_1] = useState([]);
     const [query, setQuery] = useState('')
 
-
+    console.log("filtro 1: ", filtro_1);
+    
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }
         setFilter(db)
@@ -34,6 +36,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setQuery(objectToQueryString(db))
     }
 
+    function resetFilter() {
+        setFilter({});
+        setQuery('');
+    }
 
     function objectToQueryString(obj) {
         if (!obj || typeof obj !== "object") {
@@ -50,32 +56,40 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         return url;
     }
 
-    // function objectToQueryString(obj) {
-    //     if (!obj || typeof obj !== "object") {
-    //         throw new Error("La entrada debe ser un objeto.");
-    //     }
-    //     return Object.keys(obj)
-    //         .filter(key => obj[key] !== undefined && obj[key] !== null) // Filtrar valores nulos o indefinidos
-    //         .map(key => {
-    //             const createQueryString = useCallback(
-    //                 (name, value) => {
-    //                     const params = new URLSearchParams(searchParams.toString())
-    //                     params.set(name, value)
+    const fetchCustomersFlow = async () => {
+        const local = 'http://localhost:3000/api/applications/customers';
+        const server = 'https://api.fastcash-mx.com/api/applications/customers';
+        
+        try {
+            // Seleccionar la URL correcta
+            const url = window?.location?.href?.includes("localhost") ? local : server;
+    
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+    
+            const result = await response.json();
+            console.log('Clientes:', result);
+            
+            setFiltro_1(result);
+        } catch (error) {
+            console.error('Error al obtener los clientes:', error);
+        }
+    };
 
-    //                     return params.toString()
-    //                 },
-    //                 [searchParams]
-    //             )
-    //         }) // Codificar clave=valor
-    // }
-
-    // Get a new searchParams string by merging the current
-    // searchParams with a provided key/value pair
-
-
-    function handlerFetch() {
-        setLoader(true)
-    }
+    useEffect(() => {
+      if (item === "Recolección y Validación de Datos") {
+        void fetchCustomersFlow();
+      }
+    }, [item])
+    
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
@@ -125,7 +139,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <Button type="button" theme={'Success'} >Consultar</Button>
                                 </Link>
-                                <Button type="button" theme={'MiniPrimary'} >Restablecer</Button>
+                                <Link href={`?seccion=${seccion}&item=${item}`}>
+                                    <Button click={resetFilter} type="button" theme={'MiniPrimary'} >Restablecer</Button>
+                                </Link>
                             </div>
                         </div>
                     </div>

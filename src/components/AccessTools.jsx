@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import Velocimetro from '@/components/Velocimetro'
 import Button from '@/components/Button'
 import Link from 'next/link';
+import SearchInput from '@/components/SearchInput';
 
 import {
     refunds, historial,
@@ -22,6 +23,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [filter, setFilter] = useState({})
     const [query, setQuery] = useState('')
 
+    
+    console.log("filter: ", filter);
+    console.log("filter query: ", query);
 
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }
@@ -31,8 +35,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     
     function handlerSelectClick(name, i, uuid) {
         const db = { ...filter, [name]: i }
-        console.log("db: ", db);
-        
         setFilter(db)
         setQuery(objectToQueryString(db))
     }
@@ -45,15 +47,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         if (!obj || typeof obj !== "object") {
             throw new Error("La entrada debe ser un objeto.");
         }
-
         return Object.keys(obj)
             .filter(key => obj[key] !== undefined && obj[key] !== null) // Filtrar valores nulos o indefinidos
-            .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`) // Codificar clave=valor
+            .map(key => `filter[${encodeURIComponent(key)}]=${encodeURIComponent(obj[key])}`) // Codificar clave=valor
             .join("&"); // Unir con &
     }
-    function handlerFetch() {
-        setLoader(true)
-    }
+    // function handlerFetch() {
+    //     setLoader(true)
+    // }
 
     return (
         <div>
@@ -63,27 +64,35 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
 
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Buscar por Usuario:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='cuenta' onChange={onChangeHandler} defaultValue={filter['cuenta']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Buscar por nombre:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='nombre' onChange={onChangeHandler} defaultValue={filter['nombre']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+                            <SearchInput
+                                label="Buscar por cuenta:"
+                                name="cuenta"
+                                value={filter['cuenta'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="user123"
+                                required
+                            />
+                            <SearchInput 
+                                label="Buscar por nombre:"
+                                name="nombrePersonal"
+                                value={filter['nombrePersonal'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="Juan Perez"
+                                required
+                            />
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Numero de páginas:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['page']} name='pages' onChange={onChangeHandler} defaultValue={filter['pages']} uuid='123' label='Numero de páginas' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+                            <SearchInput 
+                                label="Número de páginas:"
+                                name="page"
+                                value={filter['page'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="5"
+                                required
+                            />
                             <div className='flex justify-between'>
                                 <label htmlFor="situacionLaboral" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de Usuario:
@@ -98,7 +107,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </label>
                                 <SelectSimple arr={['Asesor de Verificación', 'Asesor de Cobranza']} name='tipoDeGrupo' click={handlerSelectClick} defaultValue={filter['tipoDeGrupo']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
                                 </Link>
@@ -106,27 +115,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
                                 </Link>
                             </div>
-                            {/* <div className='flex justify-between flex space-x-3'>
-                                <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
-                                <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
-                            </div> */}
                         </div>
                     </div>
                     {/*-------- BUTTONS */}
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme="Success" click={() => setModal('Añadir cuenta')} >Crear Usuarios</Button>
                                 <Button type="button" theme="Success" click={() => setModal('Añadir cuenta masivas')} >Crear Usuarios Masivos</Button>
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Editar cuenta')}>Editar</Button>
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                             </div>
                         </div>
                     </div>

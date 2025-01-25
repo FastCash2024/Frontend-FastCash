@@ -305,8 +305,8 @@ const PaymentInfoCard = () => {
         };
         fetchData()
     }, [])
-    console.log(caseData)
-    console.log(clientData)
+    console.log("case Data: ", caseData)
+    console.log("case cliente: ",clientData)
     return (
         <div className="relative mx-auto bg-gray-100 ">
             {
@@ -349,7 +349,7 @@ const PaymentInfoCard = () => {
                     <Link className={` inline-block border-l border-t border-r py-2 px-4  transition-all  rounded-t-[5px] ${seccion === 'contactos' ? 'text-blue-700 font-semibold bg-white' : 'text-gray-700 font-semibold'}`} href={`?caso=${caso}&seccion=contactos`}>Contactos</Link>
                 </li>
                 <li className="mr-1">
-                    <Link className={` inline-block border-l border-t border-r py-2 px-4  transition-all  rounded-t-[5px] ${seccion === 'contactos' ? 'text-blue-700 font-semibold bg-white' : 'text-gray-700 font-semibold'}`} href={`?caso=${caso}&seccion=sms`}>SMS</Link>
+                    <Link className={` inline-block border-l border-t border-r py-2 px-4  transition-all  rounded-t-[5px] ${seccion === 'sms' ? 'text-blue-700 font-semibold bg-white' : 'text-gray-700 font-semibold'}`} href={`?caso=${caso}&seccion=sms`}>SMS</Link>
                 </li>
                 <li className="mr-1">
                     <button type="button" className="w-full mt-2 text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => setModal(true)}>Registro de cobro</button>
@@ -363,7 +363,7 @@ const PaymentInfoCard = () => {
                 <div className="p-6">
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Información basica</h3>
 
-                    <div className="space-y-2 grid grid-cols-3">
+                    <div className="space-y-2 grid text-gray-950 grid-cols-3">
                         <p><strong>ID de Cliente:</strong> {caseData?._id}</p>
                         <p><strong>ID de Pedido:</strong> {paymentInfo.orderId}</p>
                         <p><strong>Teléfono:</strong> {paymentInfo.phone}</p>
@@ -433,76 +433,43 @@ const PaymentInfoCard = () => {
 
                 <div className="p-6">
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Datos personales</h3>
-                    <div className="space-y-2  grid grid-cols-3">
-                        <p><strong>Nombre:</strong> {caseData?.nombreDelCliente}</p>
-                        <p><strong>Número de Documento de Identidad:</strong> {clientData?.numeroDocumento}</p>
+                    <div className="space-y-2 text-gray-950 grid grid-cols-3">
+                        <p><strong>Nombre:</strong> {caseData?.nombreDelCliente} {caseData?.apellidos}</p>
+                        <p><strong>Número de Cédula de Identidad:</strong> {caseData?.numeroDeCedulaDeIdentidad}</p>
                         {/* <p><strong>Tipo de Documento de Identidad:</strong></p> */}
-                        <p><strong>Género:</strong> {clientData?.sexo}</p>
+                        <p><strong>Fecha de Nacimiento:</strong> {caseData?.fechaDeNacimiento && calcularEdad(caseData.fechaDeNacimiento)}</p>
+                        <p><strong>Genero:</strong> {caseData?.sexo}</p>
                         {/* <p><strong>Nivel Educativo:</strong> {clientData?.educationLevel}</p>
                         <p><strong>Estado Civil:</strong> {clientData?.maritalStatus}</p> */}
                         {/* <p><strong>Situación de los Hijos:</strong> {clientData?.childrenStatus}</p> */}
-                        <p><strong>Edad:</strong> {clientData?.fechaNacimiento && calcularEdad(clientData?.fechaNacimiento)} años</p>
-                        <p><strong>Fecha de Nacimiento:</strong> {clientData?.fechaNacimiento}</p>
+                        <p><strong>Estado Civil:</strong>{caseData?.estadoCivil}</p>
+                        <p><strong>Provincia/Ciudad:</strong> {caseData?.provinciaCiudad}</p>
                         {/* <p><strong>Creencia Religiosa:</strong> {clientData?.religiousBelief || 'No disponible'}</p> */}
-                        <p><strong>WhatsApp:</strong> {clientData?.phoneNumber}</p>
-                        <p><strong>Tiempo de Residencia:</strong> {clientData?.residenceTime || 'No disponible'}</p>
-                        <p><strong>Dirección Residencial:</strong> {clientData?.residentialAddress}</p>
+                        <p><strong>Nivel Educativo:</strong> {caseData?.nivelEducativo}</p>
+                        <p><strong>Número de Tarjeta Bancaria:</strong> {caseData?.numeroDeTarjetaBancari || 'No disponible'}</p>
+                        {/* <p><strong>Dirección Residencial:</strong> {clientData?.residentialAddress}</p>
                         <p><strong>Dirección de la Empresa:</strong> {clientData?.companyAddress}</p>
-                        <p><strong>Ubicación de la Aplicación Móvil:</strong> {clientData?.appLocation || 'No disponible'}</p>
+                        <p><strong>Ubicación de la Aplicación Móvil:</strong> {clientData?.appLocation || 'No disponible'}</p> */}
                     </div>
                 </div>
                 <div className="p-6">
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Información de empleo</h3>
 
-                    <div className="space-y-2 grid grid-cols-3 gap-4">
-                        <p><strong>Nombre de la Empresa:</strong> {companyInfo.companyName}</p>
-                        <p><strong>Tipo de Trabajos:</strong> {companyInfo.jobType}</p>
-                        <p><strong>Ingresos Mensuales:</strong> {companyInfo.monthlyIncome}</p>
-                        <p><strong>Ámbito de Negocio de la Empresa:</strong> {companyInfo.businessScope}</p>
-                        <p><strong>Teléfono de la Empresa:</strong> {companyInfo.companyPhone}</p>
-                        <p><strong>Fecha de Inicio:</strong> {renderValue(companyInfo.startDate)}</p>
-                        <p><strong>Naturaleza del Trabajo:</strong> {companyInfo.jobNature}</p>
-                        <p><strong>Frecuencia de Nómina:</strong> {companyInfo.payFrequency}</p>
+                    <div className="space-y-2 text-gray-950 grid grid-cols-3 gap-4">
+                        <p><strong>Trabajo Actual :</strong> {caseData?.trabajo}</p>
+                        <p><strong>Ingreso Mensual:</strong> {caseData?.ingreso}</p>
+                        <p><strong>Nombre del Banco:</strong> {caseData?.nombreBanco}</p>
+                        <p><strong>Tipo de Cuenta:</strong> {caseData?.tipoCuenta}</p>
+                        <p><strong>Cantidad de Préstamos:</strong> {caseData?.cantidadPrestamos}</p>
+                        <p><strong>Préstamo en Línea?:</strong> {renderValue(caseData?.prestamosEnLinea)}</p>
+                        <p><strong>Préstamos Pendientes:</strong> {caseData?.prestamosPendientes}</p>
+                        {/* <p><strong>Frecuencia de Nómina:</strong> {companyInfo.payFrequency}</p>
                         <p><strong>Fecha de Pago:</strong> {companyInfo.payDate}</p>
                         <p><strong>Fuente de Ingreso:</strong> {companyInfo.incomeSource}</p>
                         <p><strong>Provincia:</strong> {companyInfo.province}</p>
                         <p><strong>Ciudad:</strong> {companyInfo.city}</p>
-                        <p><strong>Dirección:</strong> {companyInfo.address}</p>
+                        <p><strong>Dirección:</strong> {companyInfo.address}</p> */}
                     </div>
-                </div>
-                <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Resultados del Reconocimiento OCR</h3>
-
-                    <div className="space-y-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-                        <p><strong>Resultado del Reconocimiento:</strong> {ocrRecognition.result}</p>
-                        <p><strong>Nombre de Reconocimiento de OCR:</strong> {ocrRecognition.ocrRecognitionName}</p>
-                        <p><strong>Número de Documento de Identificación:</strong> {ocrRecognition.idNumber}</p>
-                        <p><strong>Nombre del Cliente Enviado:</strong> {ocrRecognition.clientName}</p>
-                        <p><strong>ID del Cliente Enviado:</strong> {ocrRecognition.clientId}</p>
-                        <p><strong>Resultado de Comparación de OCR:</strong> {ocrRecognition.ocrComparison}</p>
-                    </div>
-                </div>
-                <div className=" grid grid-cols-3">
-
-                    <div className="p-6">
-                        <ImageCard
-                            imageUrl={clientData?.photoURLs?.[0]}
-                            altText="Descripción de la imagen"
-                        />
-                    </div>
-                    <div className="p-6">
-                        <ImageCard
-                            imageUrl={clientData?.photoURLs?.[1]}
-                            altText="Descripción de la imagen"
-                        />
-                    </div>
-                    <div className="p-6">
-                        <ImageCard
-                            imageUrl={clientData?.photoURLs?.[2]}
-                            altText="Descripción de la imagen"
-                        />
-                    </div>
-
                 </div>
 
             </div>}
