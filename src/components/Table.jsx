@@ -425,7 +425,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               (item?.toLowerCase().includes("recolección") ||
                               item?.toLowerCase().includes("casos") ||
                               item?.toLowerCase().includes("lista")) && (
-                                <div className="flex justify-between flex space-x-3">
+                                <div className="flex justify-between space-x-3">
                                   <Link
                                     href={`/Home/Datos?caso=${i._id}&seccion=info`}
                                     className=""

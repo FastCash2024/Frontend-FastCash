@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { Paginator } from "./Paginator";
+import Link from "next/link";
 
 export default function TableAtencionAlCliente() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -45,6 +46,10 @@ export default function TableAtencionAlCliente() {
     setCurrentPage(result.currentPage);
   }
 
+  useEffect(() => {
+    handlerFetch(itemsPerPage, currentPage);
+  }, [loader, itemsPerPage, currentPage]);
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -54,9 +59,6 @@ export default function TableAtencionAlCliente() {
     setCurrentPage(1);
   };
 
-  useEffect(() => {
-    handlerFetch(itemsPerPage, currentPage);
-  }, [loader, itemsPerPage, currentPage]);
 
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
@@ -78,7 +80,7 @@ export default function TableAtencionAlCliente() {
           <tbody>
             {data?.map((i, index) => (
               <tr
-                key={i._id}  // Usamos el _id como key
+                key={i._id}
                 className={`border-b text-[12px] ${
                   index % 2 === 0 ? "bg-white" : "bg-gray-100"
                 }`}
@@ -93,12 +95,17 @@ export default function TableAtencionAlCliente() {
                 <td className="px-4 py-2">{i.contacto}</td>
                 <td className="px-4 py-2">{i.cantidadSms}</td>
                 <td className="flex justify-center items-center px-4 py-2">
+                <Link
+                  href={`/Home/Chat?caso=${i._id}&seccion=chat`}
+                  className=""
+                >
                   <button
-                    onClick={() => handleVer(i)}
-                    className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                    type="button"
+                    class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                   >
-                    Ver
+                    Visitar
                   </button>
+                </Link>
                 </td>
               </tr>
             ))}

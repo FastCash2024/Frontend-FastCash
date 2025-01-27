@@ -5,7 +5,7 @@ export const encabezadoCasosDeCobranza = () => {
         ? [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
-            "Cliente nuevo", "Importe reembolsable (Rp)", "Importe pagado (Rp)",
+            "Cliente nuevo", "Valor Enviado" /*, Importe reembolsable (Rp)*/, "Importe pagado (Rp)",
             "Registro de notas", "Nombre del producto", "Fecha de reembolso",
             "Días Vencidos", "Fecha de cancelación a cuenta", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Cuenta Cobrador (Asesor)",
@@ -13,9 +13,9 @@ export const encabezadoCasosDeCobranza = () => {
         ]
         : [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
-            "Estado de reembolso", "Nombre del cliente", "Número de teléfono móvil",
-            "Cliente nuevo", "Importe reembolsable (Rp)", "Importe pagado (Rp)",
-            "Registro de notas", "Nombre del producto", "Fecha de reembolso",
+            "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
+            "Cliente nuevo", "Valor Enviado"/*"Importe reembolsable (Rp)"*/, "Importe pagado (Rp)",
+            "Registro de notas", "nombreDelProducto", "Fecha de reembolso",
             "Días Vencidos", "Fecha de cancelación a cuenta", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Operar"
         ];
@@ -23,9 +23,9 @@ export const encabezadoCasosDeCobranza = () => {
 
 export const encabezadoIncurrirEnUnaEstaciónDeTrabajo = () => [
     "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
-    "Estado de reembolso", "Nombre del cliente", "Número de teléfono móvil",
-    "Clientes nuevos", "Importe adeudado (MXN)", "Importe pagado (MXN)",
-    "Registro de notas", "Código de producto", "Fecha de reembolso", "Días Vencidos",
+    "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
+    "Cliente nuevo", "Importe adeudado (MXN)", "Importe pagado (MXN)",
+    "Registro de notas", "Nombre Del Producto (Código de producto)", "Fecha de reembolso", "Días Vencidos",
     "Fecha de cancelación a cuenta", "Fecha de creación de la tarea",
     "Fecha de tramitación del caso", "Nombre de la empresa", "Apodo de usuario de cobro",
     "Operar"
