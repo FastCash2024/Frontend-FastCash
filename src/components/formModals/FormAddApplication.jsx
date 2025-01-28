@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useState, useEffect} from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
@@ -22,20 +22,20 @@ export default function AddAccount() {
     // console.log("image selected: ", selectedFile)
     
     console.log("data register: ", data)
-
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
-        setSelectedFile(file);
+        setSelectedFile(file); // Mostrar vista previa
         if (file) {
             const reader = new FileReader();
             // Convertir la imagen a Base64
             reader.onload = () => {
-                const base64String = reader.result.split(",")[1]; // Eliminar el encabezado de Base64  
-                setSelectedImage(reader.result)
+                const base64String = reader.result.split(",")[1]; // Eliminar el encabezado de Base64
+                setSelectedImage(reader.result); // Mostrar vista previa
             };
             reader.readAsDataURL(file); // Leer la imagen como una URL Base64
         }
     };
+
     function onChangeHandler(e) {
         const {name, value} = e.target;
         const updatedData = {...data, [name]: value};
@@ -97,14 +97,17 @@ export default function AddAccount() {
         }
     };
  
+
+
     return (
         <FormLayout>
-            <h4 className='w-full text-center text-gray-950'>Añadir cuenta</h4>
+            <h4 className='w-full text-center text-gray-950'>Añadir aplicacion</h4>
             <div className="relative left-0 right-0 mx-auto w-[100px] h-[100px] flex flex-col items-center justify-center border border-dotted border-gray-700 rounded-lg bg-gray-100 hover:bg-gray-200">
                 <label
                     htmlFor="image-upload"
                     className="cursor-pointer flex flex-col items-center p-2"
                 >
+           
                     {selectedImage ? (
                         <img
                             src={selectedImage}
@@ -130,7 +133,7 @@ export default function AddAccount() {
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="nombre" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Nombre:
+                    Nombre: 
                 </label>
                 <Input
                     type="text"

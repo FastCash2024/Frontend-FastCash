@@ -24,7 +24,6 @@ import FormAddPersonalAccount from "@/components/formModals/FormAddPersonalAccou
 import FormAddPersonalData from "@/components/formModals/FormAddPersonalData";
 import FormAddVerification from "@/components/formModals/FormAddVerification";
 import FormAdminAccount from "@/components/formModals/FormAdminAccount";
-import FormAddApplication from "@/components/formModals/FormAddApplication";
 import FormDistributionCases from "@/components/formModals/FormDistributionCases";
 import FormAsignarAsesor from "@/components/formModals/FormAsignarAsesor";
 import TableTools from "@/components/TableTools";
