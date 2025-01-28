@@ -22,7 +22,7 @@ export default function Page() {
         const res = await fetch(
             window?.location?.href?.includes("localhost")
                 ? `http://localhost:3000/api/chat/${id}?limit=${limit}&page=${page}`
-                : `https://api.fastcash-mx.com/api/${id}?limit=${limit}&page=${page}`
+                : `https://api.fastcash-mx.com/api/chat/${id}?limit=${limit}&page=${page}`
         );
       const response = await res.json();
       setMessages(response.mensajes);
