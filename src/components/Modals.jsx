@@ -66,7 +66,7 @@ import FormEditAccount from '@/components/formModals/FormEditAccount'
 import FormAddAuditor from '@/components/formModals/FormAddAuditor'
 import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
 import ModalDeleteApplication from '@/components/modals/ModalDeleteApplication'
-import FormAddCobranza from '@/components/FormModals/formAddCobranza'
+import FormAddCobranza from '@/components/formModals/formAddCobranza'
 
 
 
