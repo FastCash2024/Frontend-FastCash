@@ -27,10 +27,47 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
     const [query, setQuery] = useState('')
-
-    // console.log("filter: ", filter);
-    // console.log("filter query: ", query);
     
+    const [horaEntrada, setHoraEntrada] = useState(null); // Estado para almacenar la hora de entrada
+
+    const obtenerHoraEntrada = async () => {
+        try {
+            // Determinar la ruta dependiendo del entorno (local o producción)
+            const endpoint = window?.location?.href.includes("localhost")
+                ? "http://localhost:3000/api/entryhour/gethour"
+                : "https://api.fastcash-mx.com/api/entryhour/gethour";
+    
+            const response = await fetch(endpoint, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`, // Si usas autenticación JWT
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error("Error al obtener la hora de entrada");
+            }
+    
+            const responseData = await response.json();
+            console.log("Respuesta API:", responseData);
+    
+            if (responseData?.data?.horaEntrada) {
+                setHoraEntrada(responseData.data.horaEntrada);
+            } else {
+                const horaActual = new Date().toISOString().split("T")[1].slice(0, 5);
+                setHoraEntrada(horaActual);
+            }
+        } catch (error) {
+            console.error("Error al obtener la hora de entrada:", error);
+            setHoraEntrada(""); // Limpia la hora en caso de error
+        }
+    };
+    
+
+    useEffect(() => {
+        obtenerHoraEntrada();
+    }, [horaEntrada, loader]);
 
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }
@@ -965,12 +1002,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     theme={theme}
                                     required
                                 />
-                                {/* <div className='flex justify-between'>
-                                    <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                        Buscar por Asesor:
-                                    </label>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de teléfono' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div> */}
+                                
 
                             </div>
                             <div className='w-[330px] space-y-2'>
@@ -1003,6 +1035,24 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                         <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
                                     </Link>
                                 </div>
+                            </div>
+                            <div className='flex flex-row w-[500px] space-y-2'>
+                                <div className='flex justify-center space-x-3'>
+                                    <button
+                                        type="button"
+                                        onClick={() => setModal("Hora de Entrada")}
+                                        className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    >
+                                        Registrar Hora de Entrada
+                                    </button>
+                                </div>
+
+                                {/* Mostrar la hora de entrada con la fecha */}
+                                {horaEntrada && (
+                                <div className="text-gray-950 dark:text-white mt-2">
+                                    <p className="text-[12px]">Hora de entrada: {horaEntrada}</p>
+                                </div>
+                                )}
                             </div>
                         </div>
 

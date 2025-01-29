@@ -31,6 +31,7 @@ import FormRestablecimiento from '@/components/formModals/FormRestablecimiento'
 import FormRestablecimientoCuenta from '@/components/formModals/FormRestablecimientoCuenta'
 import FormSendSMS from "@/components/formModals/FormSendSms"
 import FormAttendance from "@/components/formModals/FormAttendance"
+import FormTimeEntry from "@/components/formModals/FormTimeEntry"
 
 import {
     refunds, historial,
@@ -65,6 +66,7 @@ import FormEditAccount from '@/components/formModals/FormEditAccount'
 import FormAddAuditor from '@/components/formModals/FormAddAuditor'
 import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
 import ModalDeleteApplication from '@/components/modals/ModalDeleteApplication'
+import FormAddCobranza from '@/components/FormModals/FormAddCobranza'
 
 
 
@@ -510,6 +512,7 @@ export default function Home() {
 
             {  modal === 'Distribuir Casos' && <FormDistributionCases query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
             {modal === 'Registrar Verificacion' && <FormAddVerification />}
+            {modal === 'Registrar Cobranza' && <FormAddCobranza />}
             {modal === 'Añadir cuenta masivas' && <FormAddMasiveAccounts />}
             {modal === 'Añadir cuenta' && <FormAddAccount />}
             {modal === 'Añadir cuenta personal' && <FormAddPersonalAccount />}
@@ -522,6 +525,7 @@ export default function Home() {
             {/* ---------------------------------'GESTION DE ACCESOS' --------------------------------- */}
 
             {modal === 'Asistencia' && <FormAttendance />}
+            {modal === 'Hora de Entrada' && <FormTimeEntry/>}
 
         </div>
     )
