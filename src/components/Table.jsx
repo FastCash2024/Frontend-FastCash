@@ -67,7 +67,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       setModal("Registrar Verificacion");
       setItemSelected(i);
     }
-    if (seccion === "Cobranza") {
+    if (seccion === "coleccion") {
       setModal("Registrar Cobranza");
       setItemSelected(i);
     }
@@ -389,7 +389,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 item?.toLowerCase().includes("lista")) && (
                                 <div className="flex justify-between space-x-3">
                                   <Link
-                                    href={`/Home/Datos?caso=${i._id}&seccion=info`}
+                                    href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
                                     className=""
                                   >
                                     <button
@@ -419,7 +419,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 item?.toLowerCase().includes("lista")) && (
                                 <div className="flex justify-between space-x-3">
                                   <Link
-                                    href={`/Home/Datos?caso=${i._id}&seccion=info`}
+                                    href={`/Home/Datos?caso=${i._id}&seccion=info&item=Cobranza`}
                                     className=""
                                   >
                                     <button
@@ -433,7 +433,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     type="button"
                                     class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     onClick={() =>
-                                      handlerVerification(i, "Cobranza")
+                                      handlerVerification(i, "coleccion")
                                     }
                                   >
                                     Registrar

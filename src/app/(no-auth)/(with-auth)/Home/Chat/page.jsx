@@ -5,25 +5,25 @@ import { useAppContext } from "@/context/AppContext";
 import { useSearchParams } from "next/navigation";
 
 export default function Page() {
-  const {loader, setLoader, setAlerta, setModal} = useAppContext();
-  const [messages, setMessages] = useState([]); 
-  const [activeMessage, setActiveMessage] = useState(null); 
-  const [showModal, setShowModal] = useState(false); 
+  const { loader, setLoader, setAlerta } = useAppContext();
+  const [messages, setMessages] = useState([]);
+  const [activeMessage, setActiveMessage] = useState(null);
+  const [showModal, setShowModal] = useState(false);
   const [response, setResponse] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [totalPages, setTotalPages] = useState(1); 
+  const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const searchParams = useSearchParams();
   const caso = searchParams.get("caso");
 
   const fetchData = async (limit, page, id) => {
     try {
-        const res = await fetch(
-            window?.location?.href?.includes("localhost")
-                ? `http://localhost:3000/api/chat/${id}?limit=${limit}&page=${page}`
-                : `https://api.fastcash-mx.com/api/chat/${id}?limit=${limit}&page=${page}`
-        );
+      const res = await fetch(
+        window?.location?.href?.includes("localhost")
+          ? `http://localhost:3000/api/chat/${id}?limit=${limit}&page=${page}`
+          : `https://api.fastcash-mx.com/api/chat/${id}?limit=${limit}&page=${page}`
+      );
       const response = await res.json();
       setMessages(response.mensajes);
       setTotalDocuments(response.totalDocuments);
@@ -33,9 +33,9 @@ export default function Page() {
       console.error("Error al cargar los mensajes:", error);
     }
   };
-  
+
   useEffect(() => {
-      fetchData(itemsPerPage, currentPage, caso);
+    fetchData(itemsPerPage, currentPage, caso);
   }, [loader, itemsPerPage, currentPage]);
 
   const handlePageChange = (pageNumber) => {
@@ -47,29 +47,25 @@ export default function Page() {
     setCurrentPage(1);
   };
 
-  const handleReload = () => {
-    handlerFetch(itemsPerPage, currentPage);
-  };
-
   const handleSendResponse = async () => {
     if (response.trim() === "") {
       alert("Por favor, escribe una respuesta antes de enviar.");
       return;
     }
-  
-    const subId = caso; 
-    const sender = "Respuesta"; 
-    const body = response; 
+
+    const subId = caso;
+    const sender = "Respuesta";
+    const body = response;
     const messageData = {
       subId: subId,
       sender: sender,
       body: body,
     };
-  
+
     const apiUrl = window?.location?.href?.includes("localhost")
       ? "http://localhost:3000/api/chat/savechat"
       : "https://api.fastcash-mx.com/api/chat/savechat";
-  
+
     try {
       setLoader("Guardando....");
       const response = await fetch(apiUrl, {
@@ -79,25 +75,24 @@ export default function Page() {
         },
         body: JSON.stringify(messageData),
       });
-      console.log("response: ", response.ok);
-      
-      if (response.ok == true) {
-        setAlerta('Operación exitosa!');
-        setLoader('');
-        setShowModal(false); 
+
+      if (response.ok) {
+        setAlerta("Operación exitosa!");
+        setLoader("");
+        setShowModal(false);
         setResponse("");
       } else {
-        setLoader('');
-        setAlerta('Error de datos!');
-        throw new Error('Error al guardar la respuesta');
+        setLoader("");
+        setAlerta("Error de datos!");
+        throw new Error("Error al guardar la respuesta");
       }
     } catch (error) {
-      setLoader('');
-      setAlerta('Error de datos!');
+      setLoader("");
+      setAlerta("Error de datos!");
       console.error("Error al enviar la respuesta:", error);
     }
   };
-  
+
   const handleCancelResponse = () => {
     setShowModal(false); 
     setResponse(""); 
@@ -121,11 +116,16 @@ export default function Page() {
               {messages?.map((message) => (
                 <tr
                   key={message._id}
-                  onClick={() => setActiveMessage(message)}
+                  onClick={() => {
+                    setActiveMessage(message);
+                    setShowModal(true);
+                  }}
                   className="border-b hover:bg-gray-50 cursor-pointer"
                 >
                   <td className="px-4 py-2 text-gray-500">{message.sender}</td>
-                  <td className="px-4 py-2 text-gray-500 truncate">{message.body}</td>
+                  <td className="px-4 py-2 text-gray-500 truncate">
+                    {message.body.length > 50 ? `${message.body.slice(0, 50)}...` : message.body}
+                  </td>
                   <td className="px-4 py-2 text-gray-500">
                     {new Date(message.fecha).toLocaleString()}
                   </td>
@@ -141,73 +141,49 @@ export default function Page() {
               currentPage={currentPage}
               onPageChange={handlePageChange}
               onItemsPerPageChange={handleItemsPerPageChange}
-              onReload={handleReload}
             />
           </div>
         </div>
 
-        {activeMessage && (
-          <div className="mt-6 bg-white shadow rounded-lg p-4">
-            <h2 className="text-xl font-bold">{activeMessage.sender}</h2>
-            <p className="text-gray-500">
-              {new Date(activeMessage.fecha).toLocaleString()}
-            </p>
-            <p className="mt-4 text-gray-600">{activeMessage.body}</p>
-            <button
-                onClick={() => setShowModal(true)}
-                class="w-[10%] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
-            >
-              Reponder
-            </button>
-          </div>
-        )}
-
         {showModal && (
-        <div
+          <div
             className="fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50"
-            onClick={() => setShowModal(false)} 
-        >
+            onClick={() => setShowModal(false)}
+          >
             <div
-            className="relative flex flex-col items-center justify-center bg-gray-200 w-[400px] h-[300px] p-5 space-y-5 rounded-[5px]"
-            onClick={(e) => e.stopPropagation()}
+              className="relative flex flex-col items-center justify-center bg-gray-200 w-[400px] p-5 space-y-5 rounded-[5px]"
+              onClick={(e) => e.stopPropagation()}
             >
-
-            <button
+              <button
                 className="absolute top-5 right-5 flex items-center justify-center w-12 h-6 bg-red-500 text-white rounded-[5px] hover:bg-red-600 focus:outline-none"
                 onClick={handleCancelResponse}
-            >
+              >
                 X
-            </button>
-            <h4 className="text-gray-950 font-bold text-lg">Responder a {activeMessage.sender}</h4>
-            <div className="relative flex flex-col w-full">
-                <label
-                htmlFor="responseContent"
-                className="mr-5 text-[10px] pb-2 text-black"
-                >
-                Contenido del mensaje
-                </label>
-                <textarea
-                id="responseContent"
+              </button>
+
+              <h4 className="text-gray-950 font-bold text-lg">Mensaje de {activeMessage.sender}</h4>
+              <p className="text-gray-600">{new Date(activeMessage.fecha).toLocaleString()}</p>
+              <p className="text-gray-600">{activeMessage.body}</p>
+
+              <textarea
                 value={response}
                 rows="4"
-                maxLength={250} 
+                maxLength={250}
                 placeholder="Escribe tu respuesta aquí..."
                 className="text-[10px] p-2 w-full focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px] text-black"
                 onChange={(e) => setResponse(e.target.value)}
-                />
-            </div>
+              />
 
-            <button
+              <button
                 type="button"
-                className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center"
+                className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:outline-none font-medium rounded-lg text-[10px] px-5 py-1.5 text-center"
                 onClick={handleSendResponse}
-            >
+              >
                 Enviar Respuesta
-            </button>
+              </button>
             </div>
-        </div>
+          </div>
         )}
-
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ import {
     menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
 } from '@/constants/index'
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const { user, userDB, setUserProfile, users, checkedArr, setModal, loader } = useAppContext()
     const searchParams = useSearchParams()
     const [copied, setCopied] = useState(false);
     const { theme, toggleTheme } = useTheme();
@@ -21,9 +21,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
     const [filtro_1, setFiltro_1] = useState([]);
-    const [query, setQuery] = useState('')
-
-    console.log("filtro 1: ", filtro_1);
+    const [query, setQuery] = useState('');
     
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }

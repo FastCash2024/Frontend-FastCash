@@ -5,15 +5,17 @@ import Link from 'next/link';
 import { PhoneIcon, XIcon, DocumentTextIcon, DevicePhoneMobileIcon, StatusOnlineIcon, DevicePhoneIcon, DocumentDuplicateIcon, KeyIcon, ClipboardListIcon, GlobeAltIcon, CheckCircleIcon, XCircleIcon, CalendarIcon } from '@heroicons/react/24/outline';
 import { useSearchParams } from 'next/navigation'
 import SelectSimple from '@/components/SelectSimple'
+import { useAppContext } from '@/context/AppContext';
 
 
 const PaymentInfoCard = () => {
 
     const [value, setValue] = useState('Por favor elige')
-
-    const [modal, setModal] = useState()
+    const {setModal, setItemSelected, modal} = useAppContext();
+    // const [modal, setModal] = useState()
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
+    const item = searchParams.get('item')
     const caso = searchParams.get('caso')
     const [caseData, setcaseData] = useState(null)
     const [clientData, setClientData] = useState(null)
@@ -85,14 +87,6 @@ const PaymentInfoCard = () => {
         clientId: "HESM900117HVZRLG04",
         ocrComparison: "Igual"
     };
-
-
-
-
-
-    function handlerSelectClick(name, i, uuid) {
-        setValue(i)
-    }
 
     const recordData = [
         {
@@ -259,7 +253,11 @@ const PaymentInfoCard = () => {
         }
     ];
 
-
+    function handlerCobranza(i) {    
+        setItemSelected(i);
+        setModal("Registrar Cobranza");
+        console.log("Registrar Cobranza: ", modal);
+    }
 
     function calcularEdad(fechaNacimiento) {
         // Dividir la fecha en día, mes y año
@@ -308,8 +306,8 @@ const PaymentInfoCard = () => {
     console.log("case Data: ", caseData)
     console.log("case cliente: ",clientData)
     return (
-        <div className="relative mx-auto bg-gray-100 ">
-            {
+        <div className="mx-auto bg-gray-100 ">
+            {/* {
                 modal && <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50' onClick={() => setModal(false)}>
                     <div className='relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[300px] p-5 space-y-5 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
                         <button
@@ -335,7 +333,7 @@ const PaymentInfoCard = () => {
                         <button type="button" className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => setModal(true)}>Registro de cobro</button>
                     </div>
                 </div>
-            }
+            } */}
 
 
             <ul className="flex ">
@@ -351,9 +349,12 @@ const PaymentInfoCard = () => {
                 <li className="mr-1">
                     <Link className={` inline-block border-l border-t border-r py-2 px-4  transition-all  rounded-t-[5px] ${seccion === 'sms' ? 'text-blue-700 font-semibold bg-white' : 'text-gray-700 font-semibold'}`} href={`?caso=${caso}&seccion=sms`}>SMS</Link>
                 </li>
-                <li className="mr-1">
-                    <button type="button" className="w-full mt-2 text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => setModal(true)}>Registro de cobro</button>
-                </li>
+                {
+                    item === 'Cobranza' &&
+                    <li className="mr-1">
+                        <button type="button" className="w-full mt-2 text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handlerCobranza(caseData)} >Registro de cobro</button>
+                    </li> 
+                }
 
             </ul>
             {seccion === 'info' && <div className={`mx-auto bg-white shadow-lg rounded-b-lg overflow-hidden`}>
@@ -429,24 +430,48 @@ const PaymentInfoCard = () => {
     </div>
 </div>
 </div> */}
+{/* apellidos: "Choque Romero "
+cantidadPrestamos: "1"
+contactNameAmigo: "Abdom"
+contactNameFamiliar: ".. ¡¡ Maciel. !!!"
+contacto: "69941749"
+estadoCivil: "Soltero"
+fechaNacimiento: "22/5/1996"
+ingreso: "Entre 15 000 y 19 999"
+nivelEducativo: "Colegio"
+nombreBanco: "BANOBRAS"
+nombres: "Raul"
+numeroDeCedulaDeIdentidad: "7512877"
+numeroDeTarjetaBancari: "82828282929"
+phoneNumberAmigo: "+59171443219"
+phoneNumberFamiliar: "+59170541636"
+photoURLs: 
+["https://api.fastcash-mx.com/undefined", "https://api.fastcash-mx.com/undefined",…]
+prestamoEnLinea: "Si"
+prestamosPendientes: "2"
+provinciaCiudad: "Baja California Sur"
+sexo: "Masculino"
+tipoCuenta: Tarjeta de debito"
+trabajo: "Baja California Sur"
+userID: "678ee6b9694a2e87172cb1c2" */}
 
 
                 <div className="p-6">
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Datos personales</h3>
                     <div className="space-y-2 text-gray-950 grid grid-cols-3">
-                        <p><strong>Nombre:</strong> {caseData?.nombreDelCliente} {caseData?.apellidos}</p>
-                        <p><strong>Número de Cédula de Identidad:</strong> {caseData?.numeroDeCedulaDeIdentidad}</p>
+                        <p><strong>Nombre:</strong> {clientData?.nombres} {clientData?.apellidos}</p>
+                        <p><strong>Número de Cédula de Identidad:</strong> {clientData?.numeroDeCedulaDeIdentidad}</p>
                         {/* <p><strong>Tipo de Documento de Identidad:</strong></p> */}
-                        <p><strong>Fecha de Nacimiento:</strong> {caseData?.fechaDeNacimiento && calcularEdad(caseData.fechaDeNacimiento)}</p>
-                        <p><strong>Genero:</strong> {caseData?.sexo}</p>
+                        <p><strong>Fecha de Nacimiento:</strong> {clientData?.fechaNacimiento && calcularEdad(clientData.fechaNacimiento)}</p>
+                        <p><strong>Genero:</strong> {clientData?.sexo}</p>
                         {/* <p><strong>Nivel Educativo:</strong> {clientData?.educationLevel}</p>
                         <p><strong>Estado Civil:</strong> {clientData?.maritalStatus}</p> */}
                         {/* <p><strong>Situación de los Hijos:</strong> {clientData?.childrenStatus}</p> */}
-                        <p><strong>Estado Civil:</strong>{caseData?.estadoCivil}</p>
-                        <p><strong>Provincia/Ciudad:</strong> {caseData?.provinciaCiudad}</p>
+                        <p><strong>Estado Civil:</strong>{clientData?.estadoCivil}</p>
+                        <p><strong>Provincia/Ciudad:</strong> {clientData?.provinciaCiudad}</p>
                         {/* <p><strong>Creencia Religiosa:</strong> {clientData?.religiousBelief || 'No disponible'}</p> */}
-                        <p><strong>Nivel Educativo:</strong> {caseData?.nivelEducativo}</p>
-                        <p><strong>Número de Tarjeta Bancaria:</strong> {caseData?.numeroDeTarjetaBancari || 'No disponible'}</p>
+                        <p><strong>Nivel Educativo:</strong> {clientData?.nivelEducativo}</p>
+                        <p><strong>Número de Tarjeta Bancaria:</strong> {clientData?.numeroDeTarjetaBancari || 'No disponible'}</p>
                         {/* <p><strong>Dirección Residencial:</strong> {clientData?.residentialAddress}</p>
                         <p><strong>Dirección de la Empresa:</strong> {clientData?.companyAddress}</p>
                         <p><strong>Ubicación de la Aplicación Móvil:</strong> {clientData?.appLocation || 'No disponible'}</p> */}
@@ -456,13 +481,13 @@ const PaymentInfoCard = () => {
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Información de empleo</h3>
 
                     <div className="space-y-2 text-gray-950 grid grid-cols-3 gap-4">
-                        <p><strong>Trabajo Actual :</strong> {caseData?.trabajo}</p>
-                        <p><strong>Ingreso Mensual:</strong> {caseData?.ingreso}</p>
-                        <p><strong>Nombre del Banco:</strong> {caseData?.nombreBanco}</p>
-                        <p><strong>Tipo de Cuenta:</strong> {caseData?.tipoCuenta}</p>
-                        <p><strong>Cantidad de Préstamos:</strong> {caseData?.cantidadPrestamos}</p>
-                        <p><strong>Préstamo en Línea?:</strong> {renderValue(caseData?.prestamosEnLinea)}</p>
-                        <p><strong>Préstamos Pendientes:</strong> {caseData?.prestamosPendientes}</p>
+                        <p><strong>Trabajo Actual :</strong> {clientData?.trabajo}</p>
+                        <p><strong>Ingreso Mensual:</strong> {clientData?.ingreso}</p>
+                        <p><strong>Nombre del Banco:</strong> {clientData?.nombreBanco}</p>
+                        <p><strong>Tipo de Cuenta:</strong> {clientData?.tipoCuenta}</p>
+                        <p><strong>Cantidad de Préstamos:</strong> {clientData?.cantidadPrestamos}</p>
+                        <p><strong>Préstamo en Línea?:</strong> {renderValue(clientData?.prestamoEnLinea)}</p>
+                        <p><strong>Préstamos Pendientes:</strong> {clientData?.prestamosPendientes}</p>
                         {/* <p><strong>Frecuencia de Nómina:</strong> {companyInfo.payFrequency}</p>
                         <p><strong>Fecha de Pago:</strong> {companyInfo.payDate}</p>
                         <p><strong>Fuente de Ingreso:</strong> {companyInfo.incomeSource}</p>
@@ -709,7 +734,7 @@ const PaymentInfoCard = () => {
                             </thead>
                             <tbody>
                                 {caseData?.contactos.map((contact) => (
-                                    <tr key={contact.id} className="hover:bg-gray-100">
+                                    <tr key={contact.id} className="hover:bg-gray-100 text-gray-950">
                                         <td className="py-2 px-4 border-b">{contact.name}</td>
                                         <td className="py-2 px-4 border-b">{contact.phoneNumber}</td>
                                         <td className="py-2 px-4 border-b flex items-center space-x-2">
@@ -752,7 +777,7 @@ const PaymentInfoCard = () => {
                             </thead>
                             <tbody>
                                 {caseData?.sms.map((contact) => (
-                                    <tr key={contact.id} className="hover:bg-gray-100">
+                                    <tr key={contact.id} className="hover:bg-gray-100 text-gray-950">
                                         <td className="py-2 px-4 border-b">{contact.sender}</td>
                                         <td className="py-2 px-4 border-b">{contact.body}</td>
                                         {/* <td className="py-2 px-4 border-b flex items-center space-x-2">

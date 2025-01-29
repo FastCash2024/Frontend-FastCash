@@ -232,7 +232,7 @@ function getDayWeek(baseDate, offset) {
         if (item == "Asistencia") {
           handlerFetch();
         }
-      }, [item, searchParams]);
+      }, [item, searchParams, loader]);
 
       console.log("trabajo: ", trabajo);
       console.log("item: ", item);
@@ -966,65 +966,32 @@ function getDayWeek(baseDate, offset) {
                           <td className="px-4 py-2 border border-gray-400 bg-white">
                             {cobrador.usuario}
                           </td>
-                          <td
-                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 0).val, cobrador.asistencias[getDayWeek(baseDate, 0).val])}
-                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(baseDate, 0).val]
-                            )}`}
-                          >
-                            {cobrador.asistencias[getDayWeek(baseDate, 0).val]}
-                          </td>
-                          <td
-                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 1).val, cobrador.asistencias[getDayWeek(baseDate, 1).val])}
-                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(baseDate, 1).val]
-                            )}`}
-                          >
-                            {cobrador.asistencias[getDayWeek(baseDate, 1).val]}
-                          </td>
-                          <td
-                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 2).val, cobrador.asistencias[getDayWeek(baseDate, 2).val])}
-                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(baseDate, 2).val]
-                            )}`}
-                          >
-                            {cobrador.asistencias[getDayWeek(baseDate, 2).val]}
-                          </td>
-                          <td
-                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 3).val, cobrador.asistencias[getDayWeek(baseDate, 3).val])}
-                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(baseDate, 3).val]
-                            )}`}
-                          >
-                            {cobrador.asistencias[getDayWeek(baseDate, 3).val]}
-                          </td>
-                          <td
-                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 4).val, cobrador.asistencias[getDayWeek(baseDate, 4).val])}
-                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(baseDate, 4).val]
-                            )}`}
-                          >
-                            {cobrador.asistencias[getDayWeek(baseDate, 4).val]}
-                          </td>
-                          <td
-                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 5).val, cobrador.asistencias[getDayWeek(baseDate, 5).val])}
-                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(baseDate, 5).val]
-                            )}`}
-                          >
-                            {cobrador.asistencias[getDayWeek(baseDate, 5).val]}
-                          </td>
-                          <td
-                            onClick={() => handleSelecAttendance("Asistencia",cobrador.id, getDayWeek(baseDate, 6).val, cobrador.asistencias[getDayWeek(baseDate, 6).val])}
-                            className={`px-4 py-2 border border-gray-400 cursor-pointer ${getBackgroundClass(
-                              cobrador.asistencias[getDayWeek(baseDate, 6).val]
-                            )}`}
-                          >
-                            {cobrador.asistencias[getDayWeek(baseDate, 6).val]}
-                          </td>
+                          {[...Array(7)].map((_, dayIndex) => {
+                            const asistencia = cobrador.asistencias[getDayWeek(baseDate, dayIndex).val];
+                            return (
+                              <td
+                                key={dayIndex}
+                                onClick={() =>
+                                  (asistencia === "Libre" || asistencia === "Falta") &&
+                                  handleSelecAttendance(
+                                    "Asistencia",
+                                    cobrador.id,
+                                    getDayWeek(baseDate, dayIndex).val,
+                                    asistencia
+                                  )
+                                }
+                                className={`px-4 py-2 border border-gray-400 ${(asistencia === "Libre" || asistencia === "Falta") ? 'cursor-pointer': ""} ${getBackgroundClass(
+                                  asistencia
+                                )}`}
+                              >
+                                {asistencia}
+                              </td>
+                            );
+                          })}
                         </tr>
                       ))}
                     </tbody>
+
                   </table>
                 )}
             </div>
