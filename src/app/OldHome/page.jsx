@@ -2051,7 +2051,7 @@ export default function Home() {
                 <TableTools></TableTools>
             }
 
-            {modal === 'Añadir aplicacion' && <FormAddApplication />}
+            {/* {modal === 'Añadir aplicacion' && <FormAddApplication />} */}
 
             {modal === 'Asignar Asesor' && <FormAsignarAsesor />}
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}

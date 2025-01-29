@@ -103,7 +103,7 @@ export default function FormUpdateAplication() {
             console.error('Error al subir archivo:', error.message);
         }
     };
- 
+ console.log(selectedImage)
     return (
         <FormLayout>
             <h4 className='w-full text-center text-gray-950'>Editar Aplicación</h4>

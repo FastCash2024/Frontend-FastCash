@@ -496,7 +496,6 @@ export default function Home() {
             {modal === 'Añadir aplicacion' && <FormAddApplication />}
             {modal === 'Actualizar aplicacion' && <FormUpdateAplication />}
             {modal === 'Eliminar aplicacion' && <ModalDeleteApplication  />}
-            {modal === 'Añadir aplicacion' && <FormAddApplication />}
             {modal === 'Registrar Auditoria Tracking' && <FormAddAuditor />}
 
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
