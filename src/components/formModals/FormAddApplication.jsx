@@ -40,6 +40,13 @@ export default function AddAccount() {
         const {name, value} = e.target;
         const updatedData = {...data, [name]: value};
 
+        // if (name === 'interesTotal') {
+        //     const dias = 7;
+        //     const interesTotal = parseFloat(value);
+        //     const interesDiario = (interesTotal / dias).toFixed(2);
+        //     updatedData.interesDiario = interesDiario;
+        // }
+        
         if (name === 'interesTotal') {
             const dias = 7;
             const interesTotal = parseFloat(value);
@@ -71,6 +78,8 @@ export default function AddAccount() {
         formData.append('valorDepositoLiquido', data.valorDepositoLiquido);
         formData.append('interesTotal', data.interesTotal);
         formData.append('interesDiario', data.interesDiario);
+        formData.append('valorPrestamoMenosInteres', data?.valorPrestado*1 - data?.interesTotal*1);
+        formData.append('valorExtencion', data?.valorPrestado*1 - data?.valorDepositoLiquido*1);
         formData.append('calificacion', data.calificacion);
         formData.append('categoria', data.categoria);
 
@@ -88,6 +97,7 @@ export default function AddAccount() {
             }
 
             const result = await response.json();
+
             setModal('')
             setLoader('')
             setAlerta('Operación exitosa!')
@@ -145,7 +155,7 @@ export default function AddAccount() {
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="valorPrestado" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                   Valor Prestamo:
+                   Valor Prestamo mas interes:
                 </label>
                 <Input
                     type="number"
@@ -167,7 +177,7 @@ export default function AddAccount() {
                     required
                 />
             </div>
-
+          
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="interesTotal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Interes Total:
@@ -192,6 +202,33 @@ export default function AddAccount() {
                     readOnly 
                     placeholder='Mathew' 
                     required 
+                />
+            </div>
+            
+            <div className='flex justify-between w-[100%]'>
+                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    Prestamo menos interes:
+                </label>
+                <Input
+                    type="number"
+                    name="prestamoMenosInteres"
+                    value={data?.valorPrestado*1 - data?.interesTotal*1}
+                    onChange={onChangeHandler}
+                    placeholder="Valor de deposito liquido" 
+                    required
+                />
+            </div>
+            <div className='flex justify-between w-[100%]'>
+                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    Extension de pago:
+                </label>
+                <Input
+                    type="number"
+                    name="extencionDePago"
+                    value={data?.valorPrestado*1 - data?.valorDepositoLiquido*1}
+                    onChange={onChangeHandler}
+                    placeholder="Valor de deposito liquido" 
+                    required
                 />
             </div>
             <div className='flex justify-between  w-[100%]'>
