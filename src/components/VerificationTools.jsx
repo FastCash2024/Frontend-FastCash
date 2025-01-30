@@ -12,6 +12,7 @@ import {
     refunds, historial,
     menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
 } from '@/constants/index'
+import MultipleInput from '@/components/MultipleInput';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setUserProfile, users, checkedArr, setModal, loader } = useAppContext()
     const searchParams = useSearchParams()
@@ -24,10 +25,24 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [query, setQuery] = useState('');
     
     function onChangeHandler(e) {
-        const db = { ...filter, [e.target.name]: e.target.value }
-        setFilter(db)
-        setQuery(objectToQueryString(db))
+        const { name, value } = e.target;
+    
+        setFilter((prevFilter) => {
+            const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
+            
+            let updatedValues;
+            if (prevValue.length >= 2) {
+                updatedValues = [prevValue[0], value];
+            } else {
+                updatedValues = [...prevValue, value];
+            }
+    
+            const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
+            setQuery(objectToQueryString(updatedFilter));
+            return updatedFilter;
+        });
     }
+    
     function handlerSelectClick(name, i, uuid) {
         const db = { ...filter, [name]: i }
         setFilter(db)
@@ -83,7 +98,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     };
 
     useEffect(() => {
-      if (item === "Recolección y Validación de Datos") {
+      if (item === "Recolección y Validación de Datos" || item === "Lista final") {
         void fetchCustomersFlow();
       }
     }, [item])
@@ -123,16 +138,16 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Fecha de rembolso:
-                                </label>
-                                <div className='grid grid-cols-2 gap-2'>
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                    <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='Nombre del cliente' click={handlerSelectClick} defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
-
-                            </div>
+                            <MultipleInput
+                                key={query}
+                                defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
+                                defaultValue2={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[1] : ""}
+                                handlerSelectClick={onChangeHandler}
+                                handlerSelectClick2={onChangeHandler}
+                                name1="fechaDeReembolso"
+                                name2="fechaDeReembolso"
+                                label="Fecha de Reembolso: "
+                            />
                             <div className='flex justify-between flex space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <Button type="button" theme={'Success'} >Consultar</Button>

@@ -697,8 +697,8 @@ function getDayWeek(baseDate, offset) {
                   headArray={encabezadoCobroYValance}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/verification"}
-                  server={"https://api.fastcash-mx.com/api/verification"}
+                  local={"http://localhost:3000/api/verification?estadoDeCredito=Dispersado"}
+                  server={"https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado"}
                 />
               )}
               {/* --------------------------------- AUDITORIA Y CONTROL DE CALIDAD --------------------------------- */}

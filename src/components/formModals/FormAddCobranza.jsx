@@ -2,9 +2,7 @@
 
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
-import { useTheme } from "@/context/ThemeContext";
 import SelectSimple from "@/components/SelectSimple";
-import { useSearchParams } from "next/navigation";
 
 const optionsArray = [
     "Por favor elige",
@@ -23,33 +21,30 @@ export default function FormAddCobranza() {
         userDB,
         itemSelected,
         setAlerta,
-        users,
-        modal,
         setModal,
-        setUsers,
-        loader,
         setLoader,
     } = useAppContext();
-    const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({});
     const [value, setValue] = useState("Por favor elige");
-
-    const searchParams = useSearchParams();
-    const seccion = searchParams.get("seccion");
-    const item = searchParams.get("item");
 
     function onChangeHandler(e) {
         setData({ ...data, [e.target.name]: e.target.value });
     }
+    
     function handlerSelectClick(name, i, uuid) {
         setValue(i);
+        setData((prevData) => ({
+            ...prevData,
+            estadoDeCredito: i,
+        }));
     }
     
-    console.log("itemSelected: ", itemSelected);
     
+    console.log("itemSelected: ", itemSelected);
 
-    async function updateUser() {
-        if (!data.acotacionVerificador) {
+    async function updateCobro() {
+
+        if (!data.acotacionCobrador) {
             setAlerta("Falta acotación!");
             return;
         }
@@ -58,12 +53,12 @@ export default function FormAddCobranza() {
             return;
         }
         const upadateData = {
-            estadoDeCredito: value,
-            asesorVerificador: userDB.cuenta,
-            acotaciones: [
+            fechaRegistroComunicacion: new Date().toISOString(),
+            estadoDeComunicacion: value,
+            acotacionesCobrador: [
                 ...itemSelected.acotaciones,
                 {
-                    acotacion: data.acotacionVerificador,
+                    acotacion: data.acotacionCobrador,
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,
                     emailAsesor: user.email,
@@ -73,7 +68,7 @@ export default function FormAddCobranza() {
             trackingDeOperaciones: [
                 ...itemSelected.trackingDeOperaciones,
                 {
-                    operacion: "Registro Estado De Verificación",
+                    operacion: "Registro Estado De Cobranza",
                     modificacion: value,
                     fecha: new Date().toISOString(),
 
@@ -83,6 +78,8 @@ export default function FormAddCobranza() {
                 },
             ],
         };
+        console.log("update data: ", upadateData);
+        
         try {
             setLoader("Guardando...");
             const response = await fetch(
@@ -143,7 +140,7 @@ export default function FormAddCobranza() {
                     </label>
                     <SelectSimple
                         arr={optionsArray}
-                        name="Estado de reembolso"
+                        name="estadodeReembolso"
                         click={handlerSelectClick}
                         defaultValue={value}
                         uuid="123"
@@ -155,20 +152,19 @@ export default function FormAddCobranza() {
                 </div>
                 <div className="relative flex justify-between w-[300px] text-gray-950">
                     <label htmlFor="" className="mr-5 text-[10px]">
-                        Registro por:{" "}
+                        Registro por:
                     </label>
                     <textarea
-                        name=""
-                        className="text-[10px] p-2 w-[200px] focus:outline-none bg-gray-100 border-[1px] border-gray-300 rounded-[5px]"
-                        id=""
-                    ></textarea>{" "}
+                        name="acotacionCobrador"
+                        className="text-[10px] p-2 w-[200px] focus:outline-none bg-gray-100 border-[1px] border-gray-300 rounded-[5px]" onChange={onChangeHandler}
+                    ></textarea>
                 </div>
                 <button
                     type="button"
                     className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
-                    onClick={() => setModal(true)}
+                    onClick={updateCobro}
                 >
-                    Registro de cobro
+                    Registrar
                 </button>
             </div>
         </div>

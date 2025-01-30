@@ -12,7 +12,7 @@ import MultipleInput from '@/components/MultipleInput';
 
 import {
     refunds, historial,
-    menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
+    menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
 } from '@/constants/index'
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
@@ -23,19 +23,37 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
     const [query, setQuery] = useState('')
+    const [filtro_1, setFiltro_1] = useState([]);
 
 
     function onChangeHandler(e) {
-        const db = { ...filter, [e.target.name]: e.target.value }
-        setFilter(db)
-        setQuery(objectToQueryString(db))
+        const { name, value } = e.target;
+    
+        setFilter((prevFilter) => {
+            const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
+            
+            let updatedValues;
+            if (prevValue.length >= 2) {
+                updatedValues = [prevValue[0], value];
+            } else {
+                updatedValues = [...prevValue, value];
+            }
+    
+            const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
+            setQuery(objectToQueryString(updatedFilter));
+            return updatedFilter;
+        });
     }
+    
+
     function handlerSelectClick(name, i, uuid) {
         const db = { ...filter, [name]: i }
         setFilter(db)
         setQuery(objectToQueryString(db))
     }
 
+    console.log('query:', setQuery);
+    
 
     function objectToQueryString(obj) {
         if (!obj || typeof obj !== "object") {
@@ -73,6 +91,40 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     // Get a new searchParams string by merging the current
     // searchParams with a provided key/value pair
+
+    const fetchCustomersFlow = async () => {
+        const local = 'http://localhost:3000/api/applications/customers';
+        const server = 'https://api.fastcash-mx.com/api/applications/customers';
+        
+        try {
+            // Seleccionar la URL correcta
+            const url = window?.location?.href?.includes("localhost") ? local : server;
+    
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+    
+            const result = await response.json();
+            console.log('Clientes:', result);
+            
+            setFiltro_1(result);
+        } catch (error) {
+            console.error('Error al obtener los clientes:', error);
+        }
+    };
+
+    useEffect(() => {
+      if (item === "Casos de Cobranza") {
+        void fetchCustomersFlow();
+      }
+    }, [item])
 
 
     function handlerFetch() {
@@ -118,9 +170,11 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div> 
                         <div className='w-[300px] space-y-2'>
                             <MultipleInput
-                                defaultValue1={filter['fechaDeReembolso']}
-                                defaultValue2={filter['fechaDeReembolso']}
-                                handlerSelectClick={handlerSelectClick}
+                                key={query}
+                                defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
+                                defaultValue2={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[1] : ""}
+                                handlerSelectClick={onChangeHandler}
+                                handlerSelectClick2={onChangeHandler}
                                 name1="fechaDeReembolso"
                                 name2="fechaDeReembolso"
                                 label="Fecha de Reembolso: "

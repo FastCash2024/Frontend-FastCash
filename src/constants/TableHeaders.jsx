@@ -48,10 +48,11 @@ export const encabezadoRegistroDeSMS = () => [
 ];
 
 export const encabezadoCobroYValance = () => [
-    "Seleccionar", "Seleccionar", "ID de pedido", "ID de préstamo", "Cantidad prestada",
-    "Cantidad recibida", "Código del proyecto", "número de tarjeta", "Nombre del banco",
-    "Titular de la tarjeta", "Estado final"
+    "Seleccionar", "Número de préstamo", "ID de sub-factura", "Valor enviado (Liquido)",
+    "Valor prestado (mas interes)", "Cantidad recibida", "Código del producto", "número de tarjeta",
+    "Nombre del banco", "Titular de la tarjeta", "Estado del credito", "operar"
 ];
+
 {/* --------------------------------- AUDITORIA DE CREDITOS --------------------------------- */ }
 
 export const encabezadoRegistroHistorico = () => [

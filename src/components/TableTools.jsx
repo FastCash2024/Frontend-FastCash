@@ -14,7 +14,7 @@ import MultipleInput from "@/components/MultipleInput";
 
 import {
     refunds, historial,
-    menuArray, filtro_1, tipoDeGrupo, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
+    menuArray, tipoDeGrupo, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
 } from '@/constants/index'
 import Link from 'next/link';
 import SelectField from './SelectField';
@@ -26,23 +26,53 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
+    const [filtro_1, setFiltro_1] = useState([]);
     const [query, setQuery] = useState('')
     
-    const [horaEntrada, setHoraEntrada] = useState(null); // Estado para almacenar la hora de entrada
+    const [horaEntrada, setHoraEntrada] = useState(null);
+
+    const fetchCustomersFlow = async () => {
+            const local = 'http://localhost:3000/api/applications/customers';
+            const server = 'https://api.fastcash-mx.com/api/applications/customers';
+            
+            try {
+                // Seleccionar la URL correcta
+                const url = window?.location?.href?.includes("localhost") ? local : server;
+        
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+        
+                if (!response.ok) {
+                    throw new Error('Error en la solicitud');
+                }
+        
+                const result = await response.json();
+                console.log('Clientes:', result);
+                
+                setFiltro_1(result);
+            } catch (error) {
+                console.error('Error al obtener los clientes:', error);
+            }
+        };
+    
+        useEffect(() => {
+          if (item === "Recolección y Validación de Datos") {
+            void fetchCustomersFlow();
+          }
+        }, [item])
 
     const obtenerHoraEntrada = async () => {
         try {
-            // Determinar la ruta dependiendo del entorno (local o producción)
             const endpoint = window?.location?.href.includes("localhost")
                 ? "http://localhost:3000/api/entryhour/gethour"
                 : "https://api.fastcash-mx.com/api/entryhour/gethour";
     
             const response = await fetch(endpoint, {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`, // Si usas autenticación JWT
-                },
             });
     
             if (!response.ok) {
@@ -70,9 +100,22 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }, [horaEntrada, loader]);
 
     function onChangeHandler(e) {
-        const db = { ...filter, [e.target.name]: e.target.value }
-        setFilter(db)
-        setQuery(objectToQueryString(db))
+        const { name, value } = e.target;
+    
+        setFilter((prevFilter) => {
+            const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
+            
+            let updatedValues;
+            if (prevValue.length >= 2) {
+                updatedValues = [prevValue[0], value];
+            } else {
+                updatedValues = [...prevValue, value];
+            }
+    
+            const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
+            setQuery(objectToQueryString(updatedFilter));
+            return updatedFilter;
+        });
     }
     
     function handlerSelectClick(name, i, uuid) {
@@ -362,13 +405,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 required
                             />
                             <MultipleInput
-                                defaultValue1={filter['fechaDeReembolso']}
-                                defaultValue2={filter['fechaDeReembolso']}
-                                handlerSelectClick={(event) => handlerDateChange(event, 'fechaDeReembolso')}
+                                key={query}
+                                defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
+                                defaultValue2={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[1] : ""}
+                                handlerSelectClick={onChangeHandler}
+                                handlerSelectClick2={onChangeHandler}
                                 name1="fechaDeReembolso"
                                 name2="fechaDeReembolso"
-                                label="Fecha de cancelación a cuenta: "
-                                required
+                                label="Fecha de Reembolso: "
                             />
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
@@ -397,17 +441,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </div>
                             </div>
                             <MultipleInput
-                                defaultValue1={filter['fechaDeTramitacionDelCaso']}
-                                defaultValue2={filter['fechaDeTramitacionDelCaso']}
-                                handlerSelectClick={(event) => handlerDateChange(event, 'fechaDeTramitacionDelCaso')}
-                                name1="fechaDeReembolso"
-                                name2="fechaDeReembolso"
+                                key={query}
+                                defaultValue1={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[0] : ""}
+                                defaultValue2={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[1] : ""}
+                                handlerSelectClick={onChangeHandler}
+                                handlerSelectClick2={onChangeHandler}
+                                name1="fechaDeTramitacionDelCaso"
+                                name2="fechaDeTramitacionDelCaso"
                                 label="Fecha de asignación: "
-                                required
                             />
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Collected employee ID:
+                                    Collected employe ID:
                                 </label>
                                 <SelectSimple arr={['Opción 1', 'Opción 2']} name='Collected employee ID' click={handlerSelectClick} defaultValue={filter['Collected employee ID']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
@@ -657,7 +702,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 </div>
             </div>}
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
-            {item === 'Recolección y Validación de Datos' && <VerificationTools />}
+            {item === 'Recolección y Validación de Datos' && <VerificationTools filtro_1={filtro_1} />}
 
             {/* {item === 'Recolección y Validación de Datos' && <div>
                 <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">
