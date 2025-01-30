@@ -8,10 +8,10 @@ import FormLayout from '@/components/formModals/FormLayout'
 import Input from "@/components/Input";
 
 export default function FormUpdateAplication() {
-    const { setAlerta, application , setModal, setLoader } = useAppContext()
-    
+    const { setAlerta, application, setModal, setLoader } = useAppContext()
+
     const { theme, toggleTheme } = useTheme();
-    const [data, setData] = useState({categoria:'libre'})
+    const [data, setData] = useState({ categoria: 'libre' })
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -51,8 +51,8 @@ export default function FormUpdateAplication() {
     console.log("Image selected: ", selectedImage)
 
     function onChangeHandler(e) {
-        const {name, value} = e.target;
-        const updatedData = {...data, [name]: value};
+        const { name, value } = e.target;
+        const updatedData = { ...data, [name]: value };
 
         if (name === 'interesTotal') {
             const dias = 7;
@@ -66,7 +66,7 @@ export default function FormUpdateAplication() {
         setData({ ...data, [name]: i })
 
     }
-    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoader('Guardando...')
@@ -78,6 +78,8 @@ export default function FormUpdateAplication() {
         formData.append('valorDepositoLiquido', data.valorDepositoLiquido);
         formData.append('interesTotal', data.interesTotal);
         formData.append('interesDiario', data.interesDiario);
+        formData.append('valorPrestamoMenosInteres', data?.valorPrestado * 1 - data?.interesTotal * 1);
+        formData.append('valorExtencion', data?.valorPrestado * 1 - data?.valorDepositoLiquido * 1);
         formData.append('calificacion', data.calificacion);
         formData.append('categoria', data.categoria);
 
@@ -103,7 +105,7 @@ export default function FormUpdateAplication() {
             console.error('Error al subir archivo:', error.message);
         }
     };
- console.log(selectedImage)
+    console.log(selectedImage)
     return (
         <FormLayout>
             <h4 className='w-full text-center text-gray-950'>Editar Aplicación</h4>
@@ -140,37 +142,37 @@ export default function FormUpdateAplication() {
                     Nombre:
                 </label>
                 <Input
-                    name='nombre' 
-                    onChange={onChangeHandler} 
-                    value={data.nombre || ''} 
-                    placeholder='Fast Money' 
-                    required 
+                    name='nombre'
+                    onChange={onChangeHandler}
+                    value={data.nombre || ''}
+                    placeholder='Fast Money'
+                    required
                 />
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                   Valor Prestamo:
+                    Valor Prestamo:
                 </label>
-                <Input 
+                <Input
                     type="number"
-                    name='valorPrestado' 
-                    onChange={onChangeHandler} 
-                    value={data.valorPrestado || ''} 
-                    placeholder='5000' 
+                    name='valorPrestado'
+                    onChange={onChangeHandler}
+                    value={data.valorPrestado || ''}
+                    placeholder='5000'
                     required />
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Valor depositado liquido:
                 </label>
-                <Input 
+                <Input
                     type="number"
-                    name='valorDepositoLiquido' 
-                    onChange={onChangeHandler} 
-                    value={data.valorDepositoLiquido || ''} 
-                    placeholder='1200' 
-                    required 
-                    />
+                    name='valorDepositoLiquido'
+                    onChange={onChangeHandler}
+                    value={data.valorDepositoLiquido || ''}
+                    placeholder='1200'
+                    required
+                />
             </div>
 
             <div className='flex justify-between w-[100%]'>
@@ -178,37 +180,63 @@ export default function FormUpdateAplication() {
                     Interes Total:
                 </label>
                 <Input
-                    type="text" 
-                    name='interesTotal' 
-                    onChange={onChangeHandler} 
-                    value={data.interesTotal || ''} 
-                    placeholder='5000' 
-                    required 
+                    type="text"
+                    name='interesTotal'
+                    onChange={onChangeHandler}
+                    value={data.interesTotal || ''}
+                    placeholder='5000'
+                    required
                 />
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="interesDiario" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Interes Diario:
                 </label>
-                <input 
-                    name='interesDiario' 
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-white bg-gray-200'} dark:text-gray-950  dark:bg-transparent`} 
-                    value={data.interesDiario || ''} 
-                    readOnly 
-                    placeholder='Mathew' 
-                    required 
+                <input
+                    name='interesDiario'
+                    className={`h-[25px] max-w-[173px] w-full text-black px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
+                    value={data.interesDiario || ''}
+                    readOnly
+                    placeholder='Mathew'
+                    required
+                />
+            </div>
+            <div className='flex justify-between w-[100%]'>
+                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    Prestamo menos interes:
+                </label>
+                <Input
+                    type="number"
+                    name="prestamoMenosInteres"
+                    value={data?.valorPrestado * 1 - data?.interesTotal * 1}
+                    onChange={onChangeHandler}
+                    placeholder="Valor de deposito liquido"
+                    required
+                />
+            </div>
+            <div className='flex justify-between w-[100%]'>
+                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    Extension de pago:
+                </label>
+                <Input
+                    type="number"
+                    name="extencionDePago"
+                    value={data?.valorPrestado * 1 - data?.valorDepositoLiquido * 1}
+                    onChange={onChangeHandler}
+                    placeholder="Valor de deposito liquido"
+                    required
                 />
             </div>
             <div className='flex justify-between  w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Calificación:
                 </label>
-                <Input 
+                <Input
                     type="text"
-                    name='calificacion' 
-                    onChange={onChangeHandler} 
-                    value={data.calificacion || ''} 
-                    placeholder='4.3' 
+                    name='calificacion'
+                    onChange={onChangeHandler}
+                    value={data.calificacion || ''}
+                    placeholder='4.3'
                     required />
             </div>
             <div className='relative flex justify-between  w-[100%]'>

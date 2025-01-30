@@ -62,7 +62,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       .replace(/^[A-Z]/, (firstChar) => firstChar.toLowerCase());
   };
 
-  function handlerVerification(i, seccion) {    
+  function handlerVerification(i, seccion) {
     if (seccion === "Verificacion") {
       setModal("Registrar Verificacion");
       setItemSelected(i);
@@ -72,7 +72,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       setItemSelected(i);
     }
   }
-  
+
   function handlerAcount(mod, i) {
     setModal(mod);
     setCheckedArr([i]);
@@ -124,9 +124,8 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     const finalLimit = limit || defaultLimit;
     const finalPage = page || defaultPage;
 
-    const dataParams = `${
-      stg || query2 || local.includes("?") ? "&" : "?"
-    }limit=${finalLimit}&page=${finalPage}`;
+    const dataParams = `${stg || query2 || local.includes("?") ? "&" : "?"
+      }limit=${finalLimit}&page=${finalPage}`;
     console.log("dataParamas: ", dataParams);
 
     console.log("local: ", local);
@@ -184,7 +183,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setModal(modal);
     setApplication(i);
   }
-  
+
   function handlerSelectAllCheck(e, i) {
     if (e.target.checked) {
       // Si está marcado, agrega el índice al array
@@ -234,20 +233,18 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                     scope="col"
                     key={index}
                     className={`w-[50px] px-3 py-3 text-gray-950 border border-[#e6e6e6] 
-                      ${
-                        index < 3
-                          ? `sticky z-20 bg-[#e0e0e0] 
+                      ${index < 3
+                        ? `sticky z-20 bg-[#e0e0e0] 
                         ${index == 0 && "left-0"}  
                         ${index == 1 && "left-[37px]"} 
                         ${index == 2 && "left-[125px]"} `
-                          : ""
+                        : ""
                       }
-                      ${
-                        index >= headArray().length - 2
-                          ? `sticky z-20 bg-[#e0e0e0] 
+                      ${index >= headArray().length - 2
+                        ? `sticky z-20 bg-[#e0e0e0] 
                         ${index == headArray().length - 2 && "right-[65px]"} 
                         ${index == headArray().length - 1 && "right-[0px]"} `
-                          : ""
+                        : ""
                       }
                     `}
                   >
@@ -272,30 +269,25 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                         return (
                           <td
                             key={index}
-                            className={`px-3 py-2 text-[12px] border border-[#e6e6e6] text-black ${
-                              index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#ffffff]"
-                            } 
-                                ${
-                                  index < 3
-                                    ? `sticky  bg-[#ffffff]
+                            className={`px-3 py-2 text-[12px] border border-[#e6e6e6] text-black ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#ffffff]"
+                              } 
+                                ${index < 3
+                                ? `sticky  bg-[#ffffff]
                                   ${index == 0 && "left-0"}  
                                   ${index == 1 && "left-[37px]"} 
                                   ${index == 2 && "left-[125px]"} `
-                                    : ""
-                                }
-                                ${
-                                  index >= headArray().length - 2
-                                    ? `sticky  bg-[#ffffff]
-                                  ${
-                                    index == headArray().length - 2 &&
-                                    "right-[65px]"
-                                  } 
-                                  ${
-                                    index == headArray().length - 1 &&
-                                    "right-[0px]"
-                                  } `
-                                    : ""
-                                }
+                                : ""
+                              }
+                                ${index >= headArray().length - 2
+                                ? `sticky  bg-[#ffffff]
+                                  ${index == headArray().length - 2 &&
+                                "right-[65px]"
+                                } 
+                                  ${index == headArray().length - 1 &&
+                                "right-[0px]"
+                                } `
+                                : ""
+                              }
                                 `}
                           >
                             {it === "Seleccionar" && (
@@ -423,8 +415,8 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                             {it.toLowerCase() === "operar" &&
                               seccion.toLowerCase() === "coleccion" &&
                               (item?.toLowerCase().includes("recolección") ||
-                              item?.toLowerCase().includes("casos") ||
-                              item?.toLowerCase().includes("lista")) && (
+                                item?.toLowerCase().includes("casos") ||
+                                item?.toLowerCase().includes("lista")) && (
                                 <div className="flex justify-between space-x-3">
                                   <Link
                                     href={`/Home/Datos?caso=${i._id}&seccion=info&item=Cobranza`}
@@ -451,10 +443,10 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
                             {it.toLowerCase() === "icon" &&
                               item?.toLowerCase().includes("aplicacion") && (
-                                <div className="flex justify-between flex space-x-3">
+                                <div className="flex justify-center min-w-[60px]">
                                   <img
                                     src={i[toCamelCase(it)]}
-                                    className="w-[80px] h-[80px]"
+                                    className="inline-block w-[70px] h-[70px] rounded-md"
                                     alt=""
                                   />
                                 </div>
@@ -462,7 +454,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
                             {item == "Incurrir en una estación de trabajo" &&
                               it.toLowerCase() === "operar" && (
-                                <div className="flex justify-between flex space-x-3">
+                                <div className="flex justify-between  space-x-3">
                                   <UserCircleIcon
                                     className="h-6 w-6 fill-[#ebbb40]"
                                     onClick={() =>
@@ -504,14 +496,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex max-w-[150px] justify-between space-x-3">
                                   <button
-                                    type="button" 
-                                    onClick={() => handlerApplication ("Eliminar aplicacion", i)}
+                                    type="button"
+                                    onClick={() => handlerApplication("Eliminar aplicacion", i)}
                                     class="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                   >
                                     Eliminar
                                   </button>
                                   <button
-                                    onClick={() => handlerApplication ("Actualizar aplicacion", i)}
+                                    onClick={() => handlerApplication("Actualizar aplicacion", i)}
                                     type="button"
                                     class="w-full max-w-[70px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
