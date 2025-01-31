@@ -145,7 +145,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
     const urlServer = stg
       ? server.includes("?")
-        ? `${server.split("?")[0]}${stg}${query2}${dataParams}`
+        ? `${server.split("?")[0]}?${stg}${query2}${dataParams}`
         : `${server}?${stg}${query2}${dataParams}`
       : `${server}${query2}${dataParams}`;
 
