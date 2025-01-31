@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
-import Input from '@/components/Input'
+import InputHeight from '@/components/InputHeight'
 import InputPass from '@/components/InputPass'
 import { useRouter } from 'next/navigation'
 import Button from '@/components/Button'
@@ -85,7 +85,7 @@ export default function Home() {
         <h5 className="text-[20px] text-center text-gray-50" >Login</h5>
         <div >
           <label htmlFor="email" className="block mb-2 text-[14px] text-left font-medium text-gray-50">User</label>
-          <Input type="text" name="user" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    " placeholder="User123" />
+          <InputHeight type="text" name="user" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-[14px] rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5    " placeholder="User123" />
         </div>
         <div>
           <label htmlFor="password" className="block mb-2 text-[14px] text-left  font-medium text-gray-50">Contraseña</label>
