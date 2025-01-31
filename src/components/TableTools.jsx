@@ -99,7 +99,33 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         obtenerHoraEntrada();
     }, [horaEntrada, loader]);
 
+    
     function onChangeHandler(e) {
+        const db = { ...filter, [e.target.name]: e.target.value }
+        setFilter(db)
+        setQuery(objectToQueryString(db))
+    }
+
+    function onChangeHandlerDate(e) {
+        const { name, value } = e.target;
+    
+        setFilter((prevFilter) => {
+            const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
+            
+            let updatedValues;
+            if (prevValue.length >= 2) {
+                updatedValues = [prevValue[0], value];
+            } else {
+                updatedValues = [...prevValue, value];
+            }
+    
+            const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
+            setQuery(objectToQueryString(updatedFilter));
+            return updatedFilter;
+        });
+    }
+
+    function onChangeHandlerDate(e) {
         const { name, value } = e.target;
     
         setFilter((prevFilter) => {
@@ -408,8 +434,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 key={query}
                                 defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
                                 defaultValue2={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[1] : ""}
-                                handlerSelectClick={onChangeHandler}
-                                handlerSelectClick2={onChangeHandler}
+                                handlerSelectClick={onChangeHandlerDate}
+                                handlerSelectClick2={onChangeHandlerDate}
                                 name1="fechaDeReembolso"
                                 name2="fechaDeReembolso"
                                 label="Fecha de Reembolso: "
@@ -444,8 +470,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 key={query}
                                 defaultValue1={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[0] : ""}
                                 defaultValue2={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[1] : ""}
-                                handlerSelectClick={onChangeHandler}
-                                handlerSelectClick2={onChangeHandler}
+                                handlerSelectClick={onChangeHandlerDate}
+                                handlerSelectClick2={onChangeHandlerDate}
                                 name1="fechaDeTramitacionDelCaso"
                                 name2="fechaDeTramitacionDelCaso"
                                 label="Fecha de asignación: "

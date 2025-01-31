@@ -37,6 +37,7 @@ export default function AddAccount() {
         const upadateData = {
             estadoDeCredito: value,
             asesorVerificador: userDB.cuenta,
+            fechaDeTramitacionDelCaso: new Date().toISOString(),
             acotaciones: [
                 ...itemSelected.acotaciones,
                 {
@@ -52,7 +53,6 @@ export default function AddAccount() {
                     operacion: "Registro Estado De Verificación",
                     modificacion: value,
                     fecha: new Date().toISOString(),
-
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,
                     emailAsesor: user.email,

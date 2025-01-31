@@ -25,6 +25,12 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [query, setQuery] = useState('');
     
     function onChangeHandler(e) {
+        const db = { ...filter, [e.target.name]: e.target.value }
+        setFilter(db)
+        setQuery(objectToQueryString(db))
+    }
+
+    function onChangeHandlerDate(e) {
         const { name, value } = e.target;
     
         setFilter((prevFilter) => {
@@ -142,8 +148,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 key={query}
                                 defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
                                 defaultValue2={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[1] : ""}
-                                handlerSelectClick={onChangeHandler}
-                                handlerSelectClick2={onChangeHandler}
+                                handlerSelectClick={onChangeHandlerDate}
+                                handlerSelectClick2={onChangeHandlerDate}
                                 name1="fechaDeReembolso"
                                 name2="fechaDeReembolso"
                                 label="Fecha de Reembolso: "
