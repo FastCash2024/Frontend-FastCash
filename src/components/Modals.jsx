@@ -67,6 +67,7 @@ import FormAddAuditor from '@/components/formModals/FormAddAuditor'
 import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
 import ModalDeleteApplication from '@/components/modals/ModalDeleteApplication'
 import FormAddCobranza from '@/components/formModals/FormAddCobranza'
+import FormEditCyB from '@/components/FormModals/FormEditCyB'
 
 
 
@@ -493,6 +494,7 @@ export default function Home() {
 
 
 
+            {modal === 'Registrar Cobor y Blance' && <FormEditCyB />}
             {modal === 'Añadir aplicacion' && <FormAddApplication />}
             {modal === 'Actualizar aplicacion' && <FormUpdateAplication />}
             {modal === 'Eliminar aplicacion' && <ModalDeleteApplication  />}

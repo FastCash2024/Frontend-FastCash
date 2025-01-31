@@ -60,7 +60,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         };
     
         useEffect(() => {
-          if (item === "Recolección y Validación de Datos") {
+          if (item === "Recolección y Validación de Datos" || item === "Incurrir en una estación de trabajo") {
             void fetchCustomersFlow();
           }
         }, [item])
@@ -179,7 +179,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     return (
         <div className='pt-5'>
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
-            {item === 'Casos de Cobranza' && <ColectionCasesTools/> }
+            {(item === 'Casos de Cobranza' || item === "Cobro y valance") && <ColectionCasesTools/> }
             {item === 'Casos de Cobranza hay q borrar' &&
                 <div>
                     <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">
@@ -353,7 +353,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Producto del proyecto:
                                 </label>
-                                <SelectSimple click={handlerSelectClick} arr={['Opción 1', 'Opción 2', 'Opción 2']} name='Producto del proyecto' defaultValue={filter['Producto del proyecto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple click={handlerSelectClick} arr={filtro_1} name='nombreDelProducto' defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <SearchInput 
                                     label="Número de teléfono:"

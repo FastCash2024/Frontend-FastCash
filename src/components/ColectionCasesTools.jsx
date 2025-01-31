@@ -121,7 +121,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     };
 
     useEffect(() => {
-      if (item === "Casos de Cobranza") {
+      if (item === "Casos de Cobranza" || item === "Cobro y valance") {
         void fetchCustomersFlow();
       }
     }, [item])
@@ -189,7 +189,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                    {item === "Casos de Cobranza" && (
+
+                        <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
@@ -204,8 +206,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         {/* <div className='w-[300px] space-y-2'>
                             <div className='flex justify-between flex space-x-3'>
                             </div>
-                        </div> */}
+                            </div> */}
                     </div>
+                    )}
                 </div>
             </div>
         </div>

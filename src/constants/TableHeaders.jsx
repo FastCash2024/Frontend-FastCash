@@ -48,9 +48,9 @@ export const encabezadoRegistroDeSMS = () => [
 ];
 
 export const encabezadoCobroYValance = () => [
-    "Seleccionar", "Número de préstamo", "ID de sub-factura", "Valor enviado (Liquido)",
-    "Valor prestado (mas interes)", "Cantidad recibida", "Código del producto", "número de tarjeta",
-    "Nombre del banco", "Titular de la tarjeta", "Estado del credito", "operar"
+    "Número de préstamo", "ID de sub-factura", "Valor enviado (Liquido)",
+    "Valor solicitado (mas interes)", /*"Cantidad recibida"*/, "Nombre del producto", "Número de cuenta",
+    "Nombre banco", "Nombre del cliente(Titular de la tarjeta)", "Estado de credito", "operar"
 ];
 export const encabezadoDeAplicaciones = () => ["icon", "Nombre", "Valor prestado (mas interes)", "valor Deposito Liquido", "Interes Total","Interes Diario","Valor Prestamo Menos Interes", "Valor Extencion", "Calificacion", "Categoria", "Operar"
 ];

@@ -72,6 +72,10 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       setItemSelected(i);
     }
   }
+  function handlerCobroBalance(i) {
+    setModal("Registrar Cobor y Blance");
+    setItemSelected(i);
+  }
 
   function handlerAcount(mod, i) {
     setModal(mod);
@@ -434,6 +438,33 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     onClick={() =>
                                       handlerVerification(i, "coleccion")
+                                    }
+                                  >
+                                    Registrar
+                                  </button>
+                                </div>
+                              )}
+                            {/* Operar balance */}
+                            {it.toLowerCase() === "operar" &&
+                              seccion.toLowerCase() === "coleccion" &&
+                              (item?.toLowerCase().includes("cobro y valance")) && (
+                                <div className="flex justify-between space-x-3">
+                                  <Link
+                                    href={`/Home/Datos?caso=${i._id}&seccion=info&item=Cobranza`}
+                                    className=""
+                                  >
+                                    <button
+                                      type="button"
+                                      class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    >
+                                      Visitar
+                                    </button>
+                                  </Link>
+                                  <button
+                                    type="button"
+                                    class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    onClick={() =>
+                                      handlerCobroBalance(i)
                                     }
                                   >
                                     Registrar
