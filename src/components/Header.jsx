@@ -127,7 +127,7 @@ function Home({ children }) {
                                 </button>
 
                                 <div
-                                    className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-300 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                                    className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-300 ${isOpen2 ? 'opacity-100 scale-100' : 'opacity-100 scale-95'
                                         }`}
                                     onMouseEnter={() => !isOpen2 && setIsOpen(true)}
                                     onMouseLeave={() => !isOpen2 && setIsOpen(false)}

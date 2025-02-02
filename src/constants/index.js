@@ -139,7 +139,6 @@ const menuArray = {
         { subtitle: "Asistencia", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Cobro y valance", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Gestion de aplicaciones", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
-
       ],
       length: 'h-[390px]'
     },
@@ -180,7 +179,15 @@ const menuArray = {
       ],
       length: 'h-[0px]'
     },
-
+    {
+      icon: <CircleStackIcon className="h-6 w-6" />,
+      hash: 'comunicacion',
+      title: "Newslater",
+      options: [
+        { subtitle: "Newslater", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
+      ],
+      length: 'h-[420px]'
+    },
   ],
   ['Recursos Humanos']: [
     {

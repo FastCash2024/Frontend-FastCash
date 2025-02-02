@@ -201,6 +201,12 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setApplication(i);
   }
 
+  function handlerEditCuenta(modal, i) {
+    setItemSelected(i);
+    setModal(modal);
+
+  }
+
   function handlerSelectAllCheck(e, i) {
     if (e.target.checked) {
       // Si está marcado, agrega el índice al array
@@ -579,6 +585,19 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button>
                                 </div>
                               )}
+
+                            {(item?.toLowerCase().includes("gestión de cuentas de colección") || item?.toLowerCase().includes("gestión de asesores") || item?.toLowerCase().includes("gestión de administradores") || item?.toLowerCase().includes("gestión de managers") || item?.toLowerCase().includes("gestión de rh"))&&
+                              it.toLowerCase() === "operar" && (
+                                <div className="relative flex max-w-[150px] justify-between space-x-3">
+                                  <button
+                                    onClick={() => handlerEditCuenta('Editar cuenta', i)}
+                                    type="button"
+                                    class="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                                  >
+                                    Editar
+                                  </button>
+                                </div>
+                              )}
                             {it.toLowerCase() !== "operar" &&
                               it !== "Contactos" &&
                               it.toLowerCase() !== "icon" &&
@@ -591,6 +610,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                 })}
             </tbody>
           </table>
+
         </div>
         <div className="mt-2">
           <Paginator

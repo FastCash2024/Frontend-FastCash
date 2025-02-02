@@ -193,7 +193,7 @@ function Home({ children }) {
                                 </button>
 
                                 <div
-                                    className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-300 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                                    className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-300 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-0 z-50'
                                         }`}
                                 >
                                     <div className={`py-1  ${theme === 'light' ? ' bg-white' : 'bg-white'} dark:bg-gray-900`}
@@ -252,7 +252,7 @@ function Home({ children }) {
 
 
                                 <div
-                                    className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300 text-white  ${theme === 'light' ? ' bg-white' : 'bg-white'} dark:bg-gray-900 ${isOpen2 ? 'opacity-100 scale-100 z-30 ' : 'opacity-0 scale-95 -z-10'
+                                    className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300 text-white  ${theme === 'light' ? ' bg-white' : 'bg-white'} dark:bg-gray-900 ${isOpen2 ? 'opacity-100 scale-100 z-30 ' : 'opacity-0 scale-0 -z-10'
                                         }`}
                                 >
                                     <div className="py-1">

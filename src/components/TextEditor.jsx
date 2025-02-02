@@ -83,16 +83,16 @@ export default function TextEditor({ value, setValue, edit }) {
     useEffect(() => {
         setIsLoading(true)
     }, []);
-    return isLoading && <div className='bg-white z-50'>
+    return isLoading && <div className='bg-white text-black z-50'>
    
         {
             edit
                 ?
                 <ReactQuill theme="snow" modules={modules}
                     formats={formats} value={value} onChange={setValue} />
-                :
-                <ReactQuill theme="bubble"
-                    formats={formats} value={value} />
+                :''
+                // <ReactQuill theme="bubble"
+                //     formats={formats} value={value} />
         }
     </div>
 }
