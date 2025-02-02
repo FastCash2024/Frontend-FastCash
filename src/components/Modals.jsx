@@ -68,8 +68,8 @@ import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
 import ModalDeleteApplication from '@/components/modals/ModalDeleteApplication'
 import FormAddCobranza from '@/components/formModals/FormAddCobranza'
 import FormEditCyB from '@/components/formModals/FormEditCyB'
-
-
+import FormAddPago from '@/components/FormModals/FormAddPago'
+import FormAddExtension from '@/components/FormModals/FormAddExtension'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -491,6 +491,8 @@ export default function Home() {
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
 
             {modal === 'Asignar Cuenta Cobrador' && <FormAsignarCuenta  query='Asesor de Cobranza' cuenta={users} />}
+            {modal === 'Registrar Pago' && <FormAddPago />}
+            {modal === 'Extension' && <FormAddExtension />}
 
 
 

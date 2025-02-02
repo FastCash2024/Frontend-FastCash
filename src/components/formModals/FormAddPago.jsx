@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
-import SelectSimple from "@/components/SelectSimple";
+import Input from "@/components/Input";
+import Link from "next/link";
 
 const optionsArray = [
     "Por favor elige",
@@ -15,7 +16,7 @@ const optionsArray = [
     "Pagará pronto",
 ];
 
-export default function FormAddCobranza() {
+export default function FormAddPago() {
     const {
         user,
         userDB,
@@ -23,6 +24,7 @@ export default function FormAddCobranza() {
         setAlerta,
         setModal,
         setLoader,
+        theme
     } = useAppContext();
     const [data, setData] = useState({});
     const [value, setValue] = useState("Por favor elige");
@@ -124,7 +126,7 @@ export default function FormAddCobranza() {
             onClick={() => setModal(false)}
         >
             <div
-                className="relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[300px] p-5 space-y-5 rounded-[5px]"
+                className="relative flex flex-col items-center justify-center bg-gray-100 w-[450px] h-[400px] p-5 space-y-5 rounded-[5px]"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button
@@ -133,40 +135,66 @@ export default function FormAddCobranza() {
                 >
                     X
                 </button>
-                <h4 className="text-gray-950">Registro de cobro</h4>
-                <div className="relative flex justify-between w-[300px] text-gray-950">
-                    <label htmlFor="" className="mr-5 text-[10px]">
-                        Estado de reembolso:{" "}
+                <h4 className="text-gray-950">Pago</h4>
+    
+                {/* Numero de prestamo */}
+                <div className="flex justify-between items-center w-[100%]">
+                    <label
+                        htmlFor="cantidadAsignacionIgualitaria"
+                        className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
+                    >
+                        Numero de prestamo:
                     </label>
-                    <SelectSimple
-                        arr={optionsArray}
-                        name="estadodeReembolso"
-                        click={handlerSelectClick}
-                        defaultValue={value}
+                    <Input
+                        type="number"
+                        name="cantidadAsignacionIgualitaria"
+                        value={itemSelected.numeroDePrestamo}
+                        disabled
                         uuid="123"
-                        label="Filtro 1"
-                        position="absolute left-0 top-[25px]"
-                        bg="white"
                         required
                     />
                 </div>
-                <div className="relative flex justify-between w-[300px] text-gray-950">
-                    <label htmlFor="" className="mr-5 text-[10px]">
-                        Registro por:
+                <div className="flex justify-between items-center w-[100%]">
+                    <label
+                        htmlFor="cantidadAsignacionIgualitaria"
+                        className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
+                    >
+                        Reembolso Completo:
                     </label>
-                    <textarea
-                        name="acotacionCobrador"
-                        className="text-[10px] p-2 w-[200px] focus:outline-none bg-gray-100 border-[1px] border-gray-300 rounded-[5px]" onChange={onChangeHandler}
-                    ></textarea>
+                    <span className="text-[10px] p-3 w-[200px] bg-gray-100 text-gray-950 rounded-[5px]">
+                        {itemSelected?.valorSolicitado || "N/A"}
+                    </span>
                 </div>
-                <button
-                    type="button"
-                    className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
-                    onClick={updateCobro}
-                >
-                    Registrar
-                </button>
+    
+                <div className="flex justify-between items-center w-[100%]">
+                    <label
+                        htmlFor="cantidadAsignacionIgualitaria"
+                        className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
+                    >
+                        Importe Adeudado
+                    </label>
+                    <Input
+                        type="number"
+                        name="cantidadAsignacionIgualitaria"
+                        value={itemSelected?.valorSolicitado }
+                        disabled
+                        uuid="123"
+                        required
+                    />
+                </div>
+    
+                <Link
+                    href={`/Home/Pay?caso=${itemSelected._id}&seccion=coleccion&item=payment`}
+                    >
+                                
+                    <button
+                        type="button"
+                        className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                    >
+                        Aceptar
+                    </button>
+                </Link>
             </div>
         </div>
-    );
-}
+    );    
+}    

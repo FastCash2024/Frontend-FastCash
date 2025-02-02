@@ -51,6 +51,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
+  const [activeMenu, setActiveMenu] = useState(null);
 
   const toCamelCase = (str) => {
     let cleanedStr = str.toLowerCase();
@@ -72,6 +73,13 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       setItemSelected(i);
     }
   }
+
+  const toggleMenu = (id) => {
+    console.log("id: ", id);
+    
+    setActiveMenu(activeMenu === id ? null : id);
+  };
+
   function handlerCobroBalance(i) {
     setModal("Registrar Cobor y Blance");
     setItemSelected(i);
@@ -80,6 +88,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   function handlerAcount(mod, i) {
     setModal(mod);
     setCheckedArr([i]);
+  }
+
+  function handlerItemPE(mod, i) {
+    setModal(mod);
+    setItemSelected(i);
   }
 
   console.log(userDB);
@@ -483,25 +496,49 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 </div>
                               )}
 
-                            {item == "Incurrir en una estación de trabajo" &&
-                              it.toLowerCase() === "operar" && (
-                                <div className="flex justify-between  space-x-3">
-                                  <UserCircleIcon
-                                    className="h-6 w-6 fill-[#ebbb40]"
-                                    onClick={() =>
-                                      handlerAcount("Asignar Asesor", i)
-                                    }
-                                  />
+                            {item == "Incurrir en una estación de trabajo" && it.toLowerCase() === "operar" && (
+                              <div className="flex justify-between space-x-3 relative">
+                                <Link
+                                  href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
+                                >
+                                  <UserCircleIcon className="h-6 w-6 fill-[#ebbb40]" />
+                                </Link>
+                                <ClipboardDocumentCheckIcon
+                                  className="h-6 w-6 fill-[#ebbb40] cursor-pointer"
+                                  onClick={() => handlerAcount("Registrar Cobranza", i)}
+                                />
+                                <ChatBubbleLeftEllipsisIcon
+                                  className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"
+                                  onClick={() => handlerMessage(i)}
+                                />
 
-                                  {/* <DocumentTextIcon className='h-6 w-6 fill-[#5c78d3] cursor-pointer' onClick={() => setModal('Registrar')} /> */}
-                                  <ChatBubbleLeftEllipsisIcon
-                                    className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"
-                                    onClick={() => handlerMessage(i)}
-                                  />
-                                  <CurrencyDollarIcon className="h-6 w-6 fill-[#1ab418] cursor-pointer" />
-                                  {/* <FolderPlusIcon className='h-6 w-6 fill-[#eba140]' /> */}
-                                </div>
-                              )}
+                                  <div className="relative z-10">
+                                    <CurrencyDollarIcon
+                                      className="h-6 w-6 fill-[#1ab418] cursor-pointer"
+                                      onClick={() => toggleMenu(i._id)}
+                                    />
+                                    {activeMenu === i._id && (
+                                      <div
+                                        className="fixed right-0 transform -translate-x-1/2 -translate-y-1/2 
+                                                  min-w-[100px] bg-white border rounded-lg shadow-lg z-[10000] p-2"
+                                      >
+                                        <button
+                                          className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          onClick={() => handlerItemPE("Registrar Pago", i)}
+                                        >
+                                          Hacer Pago
+                                        </button>
+                                        <button
+                                          className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          onClick={() => handlerItemPE("Extension", i)}
+                                        >
+                                          Extensión
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                              </div>
+                            )}
 
                             {item?.toLowerCase().includes("gestión de") &&
                               item?.toLowerCase().includes("personales") &&

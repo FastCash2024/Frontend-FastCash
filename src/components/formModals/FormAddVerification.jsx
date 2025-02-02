@@ -20,10 +20,18 @@ export default function AddAccount() {
     function onChangeHandler(e) {
         setData({ ...data, [e.target.name]: e.target.value })
     }
-    function handlerSelectClick2(name, i, uuid) {
-        i === 'Aprobado' ? setValue('Dispersado') : setValue(i)
 
+    function handlerSelectClick2(name, i, uuid) {
+        setValue(i);
+        setData((prevData) => ({
+            ...prevData,
+            estadoDeCredito: i,
+        }));
     }
+
+    // function handlerSelectClick2(name, i, uuid) {
+    //     setValue(i);
+    // }
 
     async function updateUser() {
         if (!data.acotacionVerificador) {
