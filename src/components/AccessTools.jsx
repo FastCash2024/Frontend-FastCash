@@ -127,7 +127,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Editar cuenta')}>Editar</Button>
+                                <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Editar cuenta')}>Restablecimiento masivo de contraseñas</Button>
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
@@ -135,10 +135,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-            
         </div>
     );
 };

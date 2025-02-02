@@ -197,7 +197,7 @@ export default function AddAccount() {
 
 
 
-
+console.log(item)
 
 
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>
@@ -235,7 +235,7 @@ export default function AddAccount() {
                     Tipo de grupo:
                 </label>
                 <SelectSimple
-                    arr={arrTipoDeGrupo[item]}
+                    arr={arrTipoDeGrupo[item === "Gestión de cuentas de Colección" ? "Gestión de asesores": item ]}
                     name='Tipo de grupo'
                     click={handlerSelectClick2}
                     defaultValue={value2}

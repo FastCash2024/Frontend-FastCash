@@ -370,7 +370,7 @@ export default function AddAccount() {
                     Tipo de grupo:
                 </label>
                 <SelectSimple
-                    arr={arrTipoDeGrupo[item]}
+                    arr={arrTipoDeGrupo[item === "Gestión de cuentas de Colección" ? "Gestión de asesores": item ]}
                     name='Tipo de grupo'
                     click={handlerSelectClick2}
                     defaultValue={value2}
