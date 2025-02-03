@@ -68,8 +68,8 @@ import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
 import ModalDeleteApplication from '@/components/modals/ModalDeleteApplication'
 import FormAddCobranza from '@/components/formModals/FormAddCobranza'
 import FormEditCyB from '@/components/formModals/FormEditCyB'
-import FormAddPago from '@/components/FormModals/FormAddPago'
-import FormAddExtension from '@/components/FormModals/FormAddExtension'
+import FormAddPago from '@/components/formModals/FormAddPago'
+import FormAddExtension from '@/components/formModals/FormAddExtension'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
