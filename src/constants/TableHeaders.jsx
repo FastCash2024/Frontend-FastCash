@@ -64,9 +64,9 @@ export const encabezadoRegistroHistorico = () => [
 ];
 
 export const encabezadoMonitoreoDeTransacciones = () => [
-    "Seleccionar", "ID de pedido", "ID de préstamo", "Cantidad prestada",
-    "Cantidad recibida", "Código del proyecto", "número de tarjeta", "Nombre del banco",
-    "Titular de la tarjeta", "Estado final"
+    "Seleccionar", "Número de préstamo", "ID de sub-factura", "Valor Solicitado (Cantidad prestada)",
+    "Valor Enviado(Cantidad recibida)", "Nombre Del Producto", "Numero De Cuenta (número de tarjeta)", "Nombre Banco (Nombre del banco)",
+    "Nombre Del Cliente(Titular de la tarjeta)", "Estado De Credito (Estado final)"
 ];
 
 export const encabezadoControlDeCumplimiento = () => [

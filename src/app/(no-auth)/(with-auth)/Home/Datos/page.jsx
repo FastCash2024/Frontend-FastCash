@@ -19,6 +19,8 @@ const PaymentInfoCard = () => {
     const caso = searchParams.get('caso')
     const [caseData, setcaseData] = useState(null)
     const [clientData, setClientData] = useState(null)
+    const [phone, setPhone] = useState(null)
+    const [casesData, setCasesData] = useState([])
 
     const paymentInfo = {
         clientId: 'f5d743b5ed45489798e0c445b030d5a4',
@@ -292,6 +294,7 @@ const PaymentInfoCard = () => {
                 : `https://api.fastcash-mx.com/api/verification/${caso}`)
             const res = await response.json();
             setcaseData(res);
+            setPhone(res?.numeroDeTelefonoMovil);
 
             const phone = res?.numeroDeTelefonoMovil?.replaceAll('+', '');
             // console.log('phone', phone)
@@ -300,10 +303,25 @@ const PaymentInfoCard = () => {
                 : `https://api.fastcash-mx.com/api/authApk/usersApkFromWeb?phoneNumber=${phone}`)
             const res2 = await response2.json();
             setClientData(res2);
+            
+            const response3 = await fetch(window?.location?.href.includes('localhost')
+                ? `http://localhost:3000/api/verification/phone?numeroDeTelefonoMovil=${phone}`
+                : `https://api.fastcash-mx.com/api/verification/phone?numeroDeTelefonoMovil=${phone}`)
+            const res3 = await response3.json();
+            setCasesData(res3);
         };
-        fetchData()
+
+        fetchData();
     }, [])
-    console.log("case Data: ", caseData)
+
+    console.log("numero phone: ", phone);
+
+    // useEffect(() => {
+        
+    //     fetchData()
+    // }, [seccion])
+    
+    console.log("cases Data: ", casesData)
     console.log("case cliente: ",clientData)
     return (
         <div className="mx-auto bg-gray-100 ">
@@ -616,17 +634,17 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {loanData.map((item, index) => (
+                            {casesData.map((data, index) => (
                                 <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.orderId}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.loanId}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.borrowedAmount}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.receivedAmount}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.projectCode}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cardNumber}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.bankName}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cardHolder}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.finalStatus}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{data.numeroDePrestamo}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.idDeSubFactura}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.cantidadDispersada}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.cantidadDispersada}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.nombreDelProducto}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.numeroDeCuenta}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.nombreBanco}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.nombreDelCliente}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.estadoDeCredito}</td>
                                 </tr>
                             ))}
                         </tbody>

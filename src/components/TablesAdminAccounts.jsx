@@ -718,8 +718,8 @@ function getDayWeek(baseDate, offset) {
                   headArray={encabezadoMonitoreoDeTransacciones}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/verification"}
-                  server={"https://api.fastcash-mx.com/api/verification"}
+                  local={"http://localhost:3000/api/verification?estadoDeCredito=Pagado,Dispersado"}
+                  server={"https://api.fastcash-mx.com/api/verification?estadoDeCredito=Pagado,Dispersado"}
                 />
               )}
               {item === "Control de Cumplimiento" && (
