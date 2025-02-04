@@ -56,7 +56,7 @@ export default function FormAddCobranza() {
             fechaRegistroComunicacion: new Date().toISOString(),
             estadoDeComunicacion: value,
             acotacionesCobrador: [
-                ...itemSelected.acotaciones,
+                ...itemSelected?.acotaciones,
                 {
                     acotacion: data.acotacionCobrador,
                     cuenta: userDB.cuenta,

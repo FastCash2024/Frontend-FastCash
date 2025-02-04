@@ -89,7 +89,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
   function handlerAcount(mod, i) {
     setModal(mod);
-    setCheckedArr([i]);
+    setItemSelected(i);
   }
 
   function handlerItemPE(mod, i) {
