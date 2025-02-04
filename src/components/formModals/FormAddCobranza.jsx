@@ -52,19 +52,23 @@ export default function FormAddCobranza() {
             setAlerta("Falta estado de verificación!");
             return;
         }
+
+        const nuevasAcotaciones = [...(itemSelected?.acotacionesCobrador || [])];
+        nuevasAcotaciones.push({
+            acotacion: data.acotacionCobrador,
+            cuenta: userDB.cuenta,
+            asesor: user.nombreCompleto,
+            emailAsesor: user.email,
+            fecha: new Date().toISOString(),
+        });
+
+        console.log("nuevas acotaciones: ", nuevasAcotaciones);
+        
+
         const upadateData = {
             fechaRegistroComunicacion: new Date().toISOString(),
             estadoDeComunicacion: value,
-            acotacionesCobrador: [
-                ...itemSelected?.acotaciones,
-                {
-                    acotacion: data.acotacionCobrador,
-                    cuenta: userDB.cuenta,
-                    asesor: user.nombreCompleto,
-                    emailAsesor: user.email,
-                    fecha: new Date().toISOString(),
-                },
-            ],
+            acotacionesCobrador: nuevasAcotaciones,
             trackingDeOperaciones: [
                 ...itemSelected.trackingDeOperaciones,
                 {

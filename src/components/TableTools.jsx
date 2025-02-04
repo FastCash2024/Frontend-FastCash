@@ -873,6 +873,39 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 </div>
             }
 
+            {(item === 'Atención al Cliente') &&
+                <div>
+                    <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">
+                        <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                            <div className='w-[330px] space-y-2'>
+                                <SearchInput
+                                    label="Buscar Por Nombre:"
+                                    name="nombreCompleto"
+                                    value={filter['nombreCompleto'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="Juan Perez"
+                                    required
+                                />
+                            </div>
+                            <div className='w-[300px] space-y-2'>
+
+                                <div className='flex justify-between space-x-3'>
+                                    <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                        <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+                                    </Link>
+                                    <Link href={`?seccion=${seccion}&item=${item}`}>
+                                        <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+
 
 
 
