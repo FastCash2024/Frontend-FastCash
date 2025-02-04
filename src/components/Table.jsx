@@ -540,8 +540,8 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   />
                                   {activeMenu === i._id && (
                                     <div
-                                      className="fixed right-0 transform -translate-x-1/2 -translate-y-1/2 
-                                                  min-w-[100px] bg-white border rounded-lg shadow-lg z-[10000] p-2"
+                                      className="fixed z-50 right-0 transform -translate-x-1/2 -translate-y-1/2 
+                                                  min-w-[100px] bg-white border rounded-lg shadow-lg p-2"
                                     >
                                       <button
                                         className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"

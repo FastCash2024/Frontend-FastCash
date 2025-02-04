@@ -74,6 +74,7 @@ import {
   encabezadoGestionDeAccesos,
 } from "@/constants/TableHeaders.jsx";
 import { Paginator } from "./Paginator";
+import { obtenerSegmento } from "@/utils";
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -321,7 +322,7 @@ export default function Home() {
                       onClick={(e) => handlerSelectCheck(e, i)}
                     />
                   </td>
-                  <td className="px-4 py-2">{i.id}</td>
+                  <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>
                   <td className="px-4 py-2">{i.nombrePersonal}</td>
                   <td className="px-4 py-2">{i.cuenta}</td>
 

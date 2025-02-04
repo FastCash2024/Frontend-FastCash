@@ -25,3 +25,9 @@ export const formatearFecha = (fechaISO, timeZone = "America/Mexico_City") => {
         timeZone
     }).format(fecha);
 };
+
+
+export const obtenerSegmento = (valor) => {
+    const partes = valor.split('-');
+    return partes.length >= 3 ? partes[2] : null;
+};

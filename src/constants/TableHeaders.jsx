@@ -24,7 +24,7 @@ export const encabezadoCasosDeCobranza = () => {
 export const encabezadoIncurrirEnUnaEstaciónDeTrabajo = () => [
     "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
     "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
-    "Cliente nuevo", "Importe adeudado (MXN)", "Importe pagado (MXN)",
+    "Cliente nuevo", "valor solicitado (Importe adeudado MXN)", "Cantidad dispersada (Importe pagado MXN)", "fecha De Dispersion",
     "Registro de notas", "Nombre Del Producto (Código de producto)", "Fecha de reembolso", "Días Vencidos",
     "Fecha de cancelación a cuenta", "Fecha de creación de la tarea",
     "Fecha de tramitación del caso", "Nombre de la empresa", "Apodo de usuario de cobro",

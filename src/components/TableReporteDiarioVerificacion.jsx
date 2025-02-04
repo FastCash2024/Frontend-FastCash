@@ -53,6 +53,7 @@ import {
     encabezadoListaFinal,
     encabezadoGestionDeAccesos,
 } from '@/constants/TableHeaders.jsx'
+import { obtenerSegmento } from '@/utils'
 
 
 
@@ -222,7 +223,7 @@ export default function Home() {
                                 checked={checkedArr.some(value => value._id === i._id)}
                                 onClick={(e) => handlerSelectCheck(e, i)} />
                         </td>
-                        <td className="px-4 py-2">{i.id}</td>
+                        <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>
                         <td className="px-4 py-2">{i.nombrePersonal}</td>
                         <td className="px-4 py-2">{i.cuenta}</td>
 
