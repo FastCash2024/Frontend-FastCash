@@ -75,12 +75,8 @@ export default function AddAccount({ section, query, cuenta }) {
 
 
     function handlerSelectAccount(i) {
-        console.log("cuente i: ", i);
-        
         setSelectAccount(i)
     }
-
-    console.log("cuenta seleccionada: ", selectAccount);
 
     const saveAccount = (e) => {
         e.preventDefault();
@@ -95,7 +91,7 @@ export default function AddAccount({ section, query, cuenta }) {
             body.cuentaCobrador = selectAccount.cuenta;
           }
 
-        console.log("data enviada: ", body)
+        // console.log("data enviada: ", body)
 
         setLoader('Guardando...')
 
@@ -146,11 +142,12 @@ export default function AddAccount({ section, query, cuenta }) {
         }
     };
 
-    console.log(filterArr)
-    console.log(selectAccount)
+    // console.log(filterArr)
+    // console.log(selectAccount)
     useEffect(() => {
         fetchUsers()
     }, [loader])
+
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>
         <div className='relative flex flex-col items-center justify-center bg-gray-200 w-[450px] h-[450px] p-5 px-12 space-y-3 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
             <button

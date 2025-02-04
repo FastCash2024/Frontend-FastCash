@@ -78,6 +78,7 @@ import {
   encabezadoGestionDeAccesos,
   encabezadoGestionDeAccesosPersonales,
   encabezadoDeAplicaciones,
+  encabezadoDeAplicacion,
 } from "@/constants/TableHeaders.jsx";
 import { Paginator } from "./Paginator";
 import TableAtencionAlCliente from "./TableAtencionAlCliente";
@@ -117,6 +118,11 @@ export default function Home() {
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
+  const application = searchParams.get("application");
+
+  console.log("id aplicacion: ", application);
+  console.log("id aplicacion: ", item);
+  
 
   const [trabajo, setTrabajo] = useState([])
   const [filtro_1, setFiltro_1] = useState([]);
@@ -648,6 +654,20 @@ function getDayWeek(baseDate, offset) {
                   }
                   server={
                     "https://api.fastcash-mx.com/api/applications/getApplications"
+                  }
+                />
+              )}
+              {item === "Gestion de aplicacion" && (
+                <Table
+                  access={true}
+                  headArray={encabezadoDeAplicacion}
+                  dataArray={[""]}
+                  dataFilter={(i) => i}
+                  local={
+                    `http://localhost:3000/api/applications/aplicationbyid/${application}`
+                  }
+                  server={
+                    `https://api.fastcash-mx.com/api/applications/aplicationbyid/${application}`
                   }
                 />
               )}

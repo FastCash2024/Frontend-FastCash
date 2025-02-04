@@ -70,6 +70,9 @@ import FormAddCobranza from '@/components/formModals/FormAddCobranza'
 import FormEditCyB from '@/components/formModals/FormEditCyB'
 import FormAddPago from '@/components/formModals/FormAddPago'
 import FormAddExtension from '@/components/formModals/FormAddExtension'
+import FormAddTipoApp from '@/components/formModals/FormAddTipoApp'
+import FormUpdateTipoApp from '@/components/formModals/FormUpdateTipoApp'
+import ModalDeleteTipoApp from '@/components/modals/ModalDeleteTipoApp'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -529,6 +532,11 @@ export default function Home() {
 
             {modal === 'Asistencia' && <FormAttendance />}
             {modal === 'Hora de Entrada' && <FormTimeEntry/>}
+            {/* ---------------------------------'GESTION DE APLICACION' --------------------------------- */}
+
+            {modal === 'Modal Agregar Tipo Aplicaion' && <FormAddTipoApp />}
+            {modal === 'Modal Editar Tipo Aplicaion' && <FormUpdateTipoApp />}
+            {modal === 'Eliminar tipo aplicacion' && <ModalDeleteTipoApp />}
 
         </div>
     )

@@ -6,12 +6,13 @@ import { PhoneIcon, XIcon, DocumentTextIcon, DevicePhoneMobileIcon, StatusOnline
 import { useSearchParams } from 'next/navigation'
 import SelectSimple from '@/components/SelectSimple'
 import { useAppContext } from '@/context/AppContext';
+import { formatearFecha } from '@/utils';
 
 
 const PaymentInfoCard = () => {
 
     const [value, setValue] = useState('Por favor elige')
-    const {setModal, setItemSelected, modal} = useAppContext();
+    const { setModal, setItemSelected, modal } = useAppContext();
     // const [modal, setModal] = useState()
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
@@ -255,7 +256,7 @@ const PaymentInfoCard = () => {
         }
     ];
 
-    function handlerCobranza(i) {    
+    function handlerCobranza(i) {
         setItemSelected(i);
         setModal("Registrar Cobranza");
         console.log("Registrar Cobranza: ", modal);
@@ -264,27 +265,27 @@ const PaymentInfoCard = () => {
     function calcularEdad(fechaNacimiento) {
         // Dividir la fecha en día, mes y año
         const [dia, mes, año] = fechaNacimiento?.split('/').map(Number);
-    
+
         // Crear un objeto de fecha para la fecha de nacimiento
         const fechaNacimientoDate = new Date(año, mes - 1, dia); // Mes empieza en 0 (enero)
-    
+
         // Obtener la fecha actual
         const fechaActual = new Date();
-    
+
         // Calcular la edad
         let edad = fechaActual.getFullYear() - fechaNacimientoDate.getFullYear();
-    
+
         // Ajustar si no ha cumplido años este año
         const mesActual = fechaActual.getMonth();
         const diaActual = fechaActual.getDate();
-    
+
         if (
-            mesActual < fechaNacimientoDate.getMonth() || 
+            mesActual < fechaNacimientoDate.getMonth() ||
             (mesActual === fechaNacimientoDate.getMonth() && diaActual < fechaNacimientoDate.getDate())
         ) {
             edad--;
         }
-    
+
         return edad;
     }
     useEffect(() => {
@@ -303,7 +304,7 @@ const PaymentInfoCard = () => {
                 : `https://api.fastcash-mx.com/api/authApk/usersApkFromWeb?phoneNumber=${phone}`)
             const res2 = await response2.json();
             setClientData(res2);
-            
+
             const response3 = await fetch(window?.location?.href.includes('localhost')
                 ? `http://localhost:3000/api/verification/phone?numeroDeTelefonoMovil=${phone}`
                 : `https://api.fastcash-mx.com/api/verification/phone?numeroDeTelefonoMovil=${phone}`)
@@ -317,12 +318,12 @@ const PaymentInfoCard = () => {
     console.log("numero phone: ", phone);
 
     // useEffect(() => {
-        
+
     //     fetchData()
     // }, [seccion])
-    
+
     console.log("cases Data: ", casesData)
-    console.log("case cliente: ",clientData)
+    console.log("case cliente: ", clientData)
     return (
         <div className="mx-auto bg-gray-100 ">
             {/* {
@@ -371,7 +372,7 @@ const PaymentInfoCard = () => {
                     item === 'Cobranza' &&
                     <li className="mr-1">
                         <button type="button" className="w-full mt-2 text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handlerCobranza(caseData)} >Registro de cobro</button>
-                    </li> 
+                    </li>
                 }
 
             </ul>
@@ -448,7 +449,7 @@ const PaymentInfoCard = () => {
     </div>
 </div>
 </div> */}
-{/* apellidos: "Choque Romero "
+                {/* apellidos: "Choque Romero "
 cantidadPrestamos: "1"
 contactNameAmigo: "Abdom"
 contactNameFamiliar: ".. ¡¡ Maciel. !!!"
@@ -599,22 +600,35 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titular de la tarjeta</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Número de tarjeta</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado de verificación</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de adción</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de adición</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Operar</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {bankData.map((item, index) => (
-                                <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.bankName}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cardHolder}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cardNumber}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.verificationStatus}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.additionDate}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.operation}</td>
+                            {casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari) && (
+                                <tr key={casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari).numeroDeCuenta}>
+                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">
+                                        {casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari).nombreBanco}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                        {casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari).nombreDelCliente}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                        {casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari).numeroDeCuenta}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                        {casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari).estadoDeCredito}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                        {formatearFecha(casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari).fechaDeDispersion)}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">
+                                        {formatearFecha(casesData.find(item => item.numeroDeCuenta === clientData.numeroDeTarjetaBancari).fechaDeDispersion)}
+                                    </td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
+
                     </table>
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Registro de préstamos</h3>
 
@@ -714,21 +728,21 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID de auditoria</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID del revisor</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Apodo del operador</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado en el momento de la asignación</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de la revisión</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Numero de Prestamo</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cuenta de Verificador</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado de Credito</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Dipersion</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {auditData.map((item, index) => (
+                            {casesData.filter(item => item.estadoDeCredito === "Aprobado").map((item, index) => (
                                 <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.auditId}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.reviewerId}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.operatorNickname}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.assignmentStatus}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.reviewDate}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.numeroDePrestamo}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cantidadDispersada}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cuentaVerificador}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.estadoDeCredito}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.fechaDeDispersion}</td>
                                 </tr>
                             ))}
                         </tbody>

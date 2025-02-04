@@ -19,13 +19,15 @@ import {
 import Link from 'next/link';
 import SelectField from './SelectField';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const { user, userDB, setApplicationTipo, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const searchParams = useSearchParams()
-    const [copied, setCopied] = useState(false);
-    const { theme, toggleTheme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
+    const applicationId = searchParams.get('application');
+    const [copied, setCopied] = useState(false);
+    const { theme, toggleTheme } = useTheme();
     const [filter, setFilter] = useState({})
+    const [dataApplication, setDataApplication] = useState(null)
     const [filtro_1, setFiltro_1] = useState([]);
     const [query, setQuery] = useState('')
 
@@ -58,6 +60,40 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             console.error('Error al obtener los clientes:', error);
         }
     };
+
+    const fetchDataApplication = async () => {
+        const local = `http://localhost:3000/api/applications/aplicationbyid/${applicationId}`;
+        const server = `https://api.fastcash-mx.com/api/applications/aplicationbyid/${applicationId}`;
+
+        try {
+            // Seleccionar la URL correcta
+            const url = window?.location?.href?.includes("localhost") ? local : server;
+
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+
+            const result = await response.json();
+            console.log('Data app:', result);
+
+            setDataApplication(result);
+        } catch (error) {
+            console.error('Error al obtener los clientes:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (applicationId !== null || applicationId !== undefined ) {
+            void fetchDataApplication();
+        }
+    }, [applicationId])
 
     useEffect(() => {
         if (item === "Recolección y Validación de Datos" || item === "Incurrir en una estación de trabajo") {
@@ -200,6 +236,11 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
     console.log("datos filtrados: ", filter);
     console.log("query: ", query);
+
+    const handlerApplication = () => {
+        setModal('Modal Agregar Tipo Aplicaion');
+        setApplicationTipo(dataApplication);
+    }
 
 
     return (
@@ -706,6 +747,24 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     </Button>
                 </div>
             </div>}
+            {item === 'Gestion de aplicacion' && <div>
+
+                <div className="flex items-center gap-x-4 mb-6">
+                    <img
+                        src={dataApplication?.icon}
+                        alt="app"
+                        width={80}
+                        height={80}
+                        className="ml-4" // Espacio a la izquierda
+                    />
+                    <p className="text-3xl font-bold text-black">{dataApplication?.nombre}</p>
+                </div>
+                <div className='pt-3 flex space-x-3'>
+                    <Button type="button" theme="Success" click={handlerApplication}>
+                        Añadir Aplicación
+                    </Button>
+                </div>
+            </div>}
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
             {item === 'Recolección y Validación de Datos' && <VerificationTools filtro_1={filtro_1} />}
 
@@ -729,18 +788,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
 
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 {/* {<Button type="button" theme={checkedArr.length === 1 ? 'Danger' : 'Disable'} click={() => checkedArr.length === 1 && setModal('Restablecer Asesor')}>Restablecer usuario</Button>} */}
                                 {<Button type="button" theme={checkedArr.length === 1 ? 'Success' : 'Disable'} click={() => checkedArr.length === 1 && setModal('Asignar Asesor')}>Asignar Asesor</Button>}
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo')}>Restablecimiento Masivo</Button>
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                             </div>
                         </div>
                     </div>
@@ -798,7 +857,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                             <div className='w-[300px] space-y-2'>
 
-                                <div className='flex justify-between flex space-x-3'>
+                                <div className='flex justify-between space-x-3'>
                                     <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                         <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
                                     </Link>

@@ -10,3 +10,18 @@ export const generarContrasena = () => {
     return contrasenaGenerada
 
 };
+
+export const formatearFecha = (fechaISO, timeZone = "America/Mexico_City") => {
+    if (!fechaISO) return "Fecha no disponible"; // Evita errores con valores nulos o vacíos
+
+    const fecha = new Date(fechaISO);
+    
+    if (isNaN(fecha.getTime())) return "Fecha inválida"; // Verifica si la fecha es válida
+
+    return new Intl.DateTimeFormat("es-ES", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone
+    }).format(fecha);
+};

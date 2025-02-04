@@ -55,6 +55,9 @@ export const encabezadoCobroYValance = () => [
 export const encabezadoDeAplicaciones = () => ["icon", "Nombre", "Valor prestado (mas interes)", "valor Deposito Liquido", "Interes Total","Interes Diario","Valor Prestamo Menos Interes", "Valor Extencion", "Calificacion", "Categoria", "Operar"
 ];
 
+export const encabezadoDeAplicacion = () => ["valor Prestado Mas Interes", "Valor Depósito Líquido", "Interés Total", "Interés Diario", "Valor Préstamo Menos Interés", "Valor extencion", "operar"
+];
+
 {/* --------------------------------- AUDITORIA DE CREDITOS --------------------------------- */ }
 
 export const encabezadoRegistroHistorico = () => [

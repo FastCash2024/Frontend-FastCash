@@ -1,19 +1,19 @@
 import React from 'react';
 import FormLayout from '@/components/formModals/FormLayout';
 import { useAppContext } from '@/context/AppContext';
+import { useSearchParams } from 'next/navigation';
 
-export default function ModalDeleteApplication() {
-    const { setAlerta, application, setModal, setLoader } = useAppContext();
-
-    console.log("eliminar aplicacion: ", application);
-    
+export default function ModalDeleteTipoApp() {
+    const { setAlerta, applicationTipo, setModal, setLoader } = useAppContext();
+    const searchParams = useSearchParams()
+    const applicationId = searchParams.get('application');
 
     const handleDelete = async () => {
         setLoader('Eliminando...');
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/applications/delete/${application._id}`
-                : `https://api.fastcash-mx.com/api/applications/delete/${application._id}`, {
+                ? `http://localhost:3000/api/applications/deletetipoaplicacion/${applicationId}/${applicationTipo.tipo}`
+                : `https://api.fastcash-mx.com/api/applications/deletetipoaplicacion/${applicationId}/${applicationTipo.tipo}`, {
                 method: 'DELETE',
             });
 
@@ -24,8 +24,8 @@ export default function ModalDeleteApplication() {
             const result = await response.json();
             setModal('');
             setLoader('');
-            setAlerta('Aplicación eliminada exitosamente!');
-            console.log('Respuesta del servidor:', result);
+            setAlerta('Tipo de Aplicación eliminada exitosamente!');
+            // console.log('Respuesta del servidor:', result);
         } catch (error) {
             console.error('Error al eliminar la aplicación:', error.message);
         }
@@ -38,7 +38,7 @@ export default function ModalDeleteApplication() {
     return (
         <FormLayout>
             <div className="text-center">
-                <p className='text-gray-950'>¿Está seguro de que quiere eliminar la aplicación <strong>{application.nombre}</strong>?</p>
+                <p className='text-gray-950'>¿Está seguro de que quiere eliminar el tipo <strong>{applicationTipo.tipo}</strong> de la aplicación?</p>
                 <div className="flex justify-center mt-4 space-x-3">
                     <button
                         className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center"

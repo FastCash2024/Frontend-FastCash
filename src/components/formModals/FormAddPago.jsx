@@ -28,7 +28,7 @@ export default function FormAddPago() {
 
         const generatedURL = window?.location?.href.includes('localhost')
             ? `http://localhost:3001/pay?caso=${encodedId}&seccion=payment&item=data`
-            : `https://api.fastcash-mx.com/pay?caso=${encodedId}&seccion=payment&item=data`;
+            : `https://collection.fastcash-mx.com/pay?caso=${encodedId}&seccion=payment&item=data`;
 
         navigator.clipboard.writeText(generatedURL)
             .then(() => setAlerta("¡Enlace copiado al portapapeles!"))
@@ -37,6 +37,7 @@ export default function FormAddPago() {
         setModal('')
         setLoader('')
     }
+    
     console.log("itemSelected: ", itemSelected);
 
 
