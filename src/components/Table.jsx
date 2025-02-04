@@ -644,7 +644,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                             {it.toLowerCase() !== "operar" &&
                               it !== "Contactos" &&
                               it.toLowerCase() !== "icon" &&
-                              it.toLowerCase() !== "fecha" &&
+                              !it.toLowerCase().includes("fecha") &&
 
                               i[toCamelCase(it)]}
                           </td>
