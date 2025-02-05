@@ -27,7 +27,7 @@ export default function PayPage() {
                 console.error("Error al desencriptar:", error);
             }
         }
-    }, [item]);
+    }, [searchParams]);
 
     console.log("id caso: ", id);
 
