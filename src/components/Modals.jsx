@@ -73,6 +73,7 @@ import FormAddExtension from '@/components/formModals/FormAddExtension'
 import FormAddTipoApp from '@/components/formModals/FormAddTipoApp'
 import FormUpdateTipoApp from '@/components/formModals/FormUpdateTipoApp'
 import ModalDeleteTipoApp from '@/components/modals/ModalDeleteTipoApp'
+import FormAddMulta from '@/components/formModals/FormAddMulta'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -537,7 +538,10 @@ export default function Home() {
             {modal === 'Modal Agregar Tipo Aplicaion' && <FormAddTipoApp />}
             {modal === 'Modal Editar Tipo Aplicaion' && <FormUpdateTipoApp />}
             {modal === 'Eliminar tipo aplicacion' && <ModalDeleteTipoApp />}
+            
+            {/* ---------------------------------'GESTION DE APLICACION' --------------------------------- */}
 
+            {modal === 'Multar cuenta' && <FormAddMulta />}
         </div>
     )
 }

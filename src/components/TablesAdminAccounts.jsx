@@ -747,9 +747,11 @@ function getDayWeek(baseDate, offset) {
                   access={true}
                   headArray={encabezadoControlDeCumplimiento}
                   dataArray={[""]}
-                  dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/verification"}
-                  server={"https://api.fastcash-mx.com/api/verification"}
+                  dataFilter={(i) => true}
+                  local={
+                    "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor"
+                  }
+                  server={"https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor"}
                 />
               )}
               {item === "Auditoria Periodica" && (

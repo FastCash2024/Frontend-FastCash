@@ -350,7 +350,7 @@ export default function Home() {
                   <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion6pm}</td>
                   <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagosTotal}</td>
 
-                  <td className="px-4 py-2">{details[i.cuenta]?.pagosTotal}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacionTotal}</td>
                 </tr>
               ))}
             </tbody>

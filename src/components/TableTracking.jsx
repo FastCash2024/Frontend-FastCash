@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 
 import Link from 'next/link';
 import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import { formatearFecha } from '@/utils';
 
 const Table = ({
     headArray,
@@ -128,6 +129,9 @@ const Table = ({
     useEffect(() => {
         setCheckedArr([])
     }, [])
+
+    console.log("data: tracking", data);
+
     return (
         <table className="min-w-full shadow">
             <thead className="bg-gray-900 text-[10px] uppercase sticky top-[0px] z-20">
@@ -156,35 +160,36 @@ const Table = ({
 
                     return (
                         <tr key={index} className="text-[12px] border-b">
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className={`px-3 py-2 text-[12px] border-b text-gray-950 ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
                                 {i.numeroDePrestamo}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
                                 <table>
                                     <tbody>
                                         {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
                                             <td>
-                                                {i.asesor}
+                                                {i.cuenta}
                                             </td>
                                         </tr>)}
                                     </tbody>
                                 </table>
                             </td>
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
                                 <table>
                                     <tbody>
-                                        {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
+                                        {i.nombreDelProducto}
+                                        {/* {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
                                             <td>
-                                                {i.asesor}
+                                                {i.cuenta}
                                             </td>
-                                        </tr>)}
+                                        </tr>)} */}
                                     </tbody>
                                 </table>
                             </td>
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
-
+                            <td className={`px-3 py-2 text-gray-950 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                                {i.idDeSubFactura}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
                                 <table>
                                     <tbody>
                                         {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
@@ -195,7 +200,7 @@ const Table = ({
                                     </tbody>
                                 </table>
                             </td>
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
                                 <table>
                                     <tbody>
                                         {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
@@ -206,12 +211,12 @@ const Table = ({
                                     </tbody>
                                 </table>
                             </td>
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
                                 <table>
                                     <tbody>
                                         {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
                                             <td>
-                                                {i.fecha}
+                                                {formatearFecha(i.fecha)}
                                             </td>
                                         </tr>)}
                                     </tbody>

@@ -73,9 +73,12 @@ export const encabezadoMonitoreoDeTransacciones = () => [
 ];
 
 export const encabezadoControlDeCumplimiento = () => [
-    "Seleccionar", "Nombres y apellidos", "Apodo de Usuario Cobrador",
-    "DNI del Cobrador", "Casos Asignados al Cobrador", "Reporte", "Telefono", "Operaciones"
+    "Seleccionar", "Nombre personal", "(Usuario asignado) cuenta", "Tipo de grupo","origen de la cuenta", "situacion laboral", "email personal",  "operar"
 ];
+// [
+//     "Seleccionar", "Nombres y apellidos", "Apodo de Usuario Cobrador",
+//     "DNI del Cobrador", "Casos Asignados al Cobrador", "Reporte", "Telefono", "Operaciones"
+// ];
 
 export const encabezadoAuditoriaPeriodica = () => [
     "Seleccionar", "ID auditor", "Nombre del auditor", "Usuario designado",
