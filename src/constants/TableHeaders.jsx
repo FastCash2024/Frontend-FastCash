@@ -73,10 +73,10 @@ export const encabezadoMonitoreoDeTransacciones = () => [
 ];
 
 export const encabezadoControlDeCumplimiento = () => [
-    "Seleccionar", "Nombre personal", "(Usuario asignado) cuenta", "Tipo de grupo","origen de la cuenta", "situacion laboral", "email personal",  "operar"
+    "Seleccionar", "cuenta personal", "cuenta operativa", "importe multa", "fecha de Operacion","fecha de auditoria",  "operar"
 ];
 // [
-//     "Seleccionar", "Nombres y apellidos", "Apodo de Usuario Cobrador",
+//     "Seleccionar", "cuentaOperativa", "Apodo de Usuario Cobrador",
 //     "DNI del Cobrador", "Casos Asignados al Cobrador", "Reporte", "Telefono", "Operaciones"
 // ];
 

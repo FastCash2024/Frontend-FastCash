@@ -749,9 +749,9 @@ function getDayWeek(baseDate, offset) {
                   dataArray={[""]}
                   dataFilter={(i) => true}
                   local={
-                    "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor"
+                    "http://localhost:3000/api/multas/multas"
                   }
-                  server={"https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor"}
+                  server={"https://api.fastcash-mx.com/api/multas/multas"}
                 />
               )}
               {item === "Auditoria Periodica" && (
