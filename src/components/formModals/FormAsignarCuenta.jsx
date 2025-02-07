@@ -34,7 +34,8 @@ export default function AddAccount({ section, query, cuenta }) {
 
 
 
-
+    console.log("select account: ", selectAccount);
+    
 
     const codificacionDeRoles = {
         'Recursos Humanos': ['Recursos Humanos'],
@@ -89,8 +90,8 @@ export default function AddAccount({ section, query, cuenta }) {
             body.cuentaVerificador = selectAccount.cuenta;
           } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
             body.cuentaCobrador = selectAccount.cuenta;
+            body.fechaDeTramitacionDeCobro = new Date().toISOString();
           }
-
         // console.log("data enviada: ", body)
 
         setLoader('Guardando...')

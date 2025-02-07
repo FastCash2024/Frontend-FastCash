@@ -12,11 +12,11 @@ export const generarContrasena = () => {
 };
 
 export const formatearFecha = (fechaISO, timeZone = "America/Mexico_City") => {
-    if (!fechaISO) return "Fecha no disponible"; // Evita errores con valores nulos o vacíos
+    if (!fechaISO) return "Fecha no disponible"; 
 
     const fecha = new Date(fechaISO);
     
-    if (isNaN(fecha.getTime())) return "Fecha inválida"; // Verifica si la fecha es válida
+    if (isNaN(fecha.getTime())) return "Fecha inválida"; 
 
     return new Intl.DateTimeFormat("es-ES", {
         year: "numeric",
@@ -26,6 +26,14 @@ export const formatearFecha = (fechaISO, timeZone = "America/Mexico_City") => {
     }).format(fecha);
 };
 
+// funcion para obtener la fecha actual y devolver en el formato yyyy-mm-dd
+export function getCurrentDate() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
 export const obtenerSegmento = (valor) => {
     const partes = valor.split('-');

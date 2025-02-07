@@ -33,6 +33,10 @@ export default function AddAccount() {
     //     setValue(i);
     // }
 
+    console.log("user: ", user);
+    console.log("user: ", userDB);
+    
+
     async function updateUser() {
         if (!data.acotacionVerificador) {
             setAlerta('Falta acotación!')
@@ -52,7 +56,7 @@ export default function AddAccount() {
                     acotacion: data.acotacionVerificador,
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,
-                    emailAsesor: user.email,
+                    emailAsesor: userDB.emailPersonal,
                     fecha: new Date().toISOString()
                 }],
             trackingDeOperaciones: [
@@ -63,10 +67,13 @@ export default function AddAccount() {
                     fecha: new Date().toISOString(),
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,
-                    emailAsesor: user.email,
+                    emailAsesor: userDB.emailPersonal,
                 }
             ]
         }
+
+        // console.log("update Data: ", upadateData);
+        
         try {
             setLoader('Guardando...')
             const response = await fetch(window?.location?.href.includes('localhost')

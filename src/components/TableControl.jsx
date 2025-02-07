@@ -2,6 +2,7 @@ import { useAppContext } from '@/context/AppContext';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { Paginator } from './Paginator';
+import { getCurrentDate } from '@/utils';
 
 export default function TableControl() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -14,6 +15,7 @@ export default function TableControl() {
   } = useAppContext();
 
   const [cases, setCases] = useState([]);
+  const [casesCobrador, setCasesCobrador] = useState([]);
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
@@ -23,6 +25,8 @@ export default function TableControl() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const [details, setDetails] = useState([])
+  const date = getCurrentDate();
+
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
       // Si está marcado, agrega el índice al array
@@ -35,32 +39,52 @@ export default function TableControl() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor"
-        : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor"
+        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor&limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor&limit=${limit}&page=${page}`
     );
     const result = await res.json();
     console.log("data users: ", result);
     setData(result);
-  }
-
-  async function handlerFetchVerification(limit, page) {
-    const res = await fetch(
-      window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado&${limit}&${page}`
-        : "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado"
-    );
-    const result = await res.json();
-    // console.log(data)
-    setCases(result.data);
+    // setCases(result.data);
     setCurrentPage(result.currentPage);
     setTotalPages(result.totalPages);
     setTotalDocuments(result.totalDocuments);
   }
-  console.log("DATA2 cases", cases);
+
+  async function handlerFetchVerification(date) {
+    const res = await fetch(
+      window?.location?.href?.includes("localhost")
+        ? `http://localhost:3000/api/verification?estadoDeCredito=Reprobado,Dispersado&fechaDeTramitacionDelCaso=${date}`
+        : "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Reprobado,Dispersado&fechaDeTramitacionDelCaso=${date}"
+    );
+    const result = await res.json();
+    setCases(result.data);
+  }
+
+  // async function handlerFetchVerification(date) {
+  //   const res = await fetch(
+  //     window?.location?.href?.includes("localhost")
+  //       ? `http://localhost:3000/api/verification?estadoDeCredito=Pagado&fechaDeTramitacionDelCaso=${date}`
+  //       : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Reprobado,Dispersado&fechaDeTramitacionDelCaso=${date}`
+  //   );
+  //   const result = await res.json();
+  //   setCases(result.data);
+  // }
+
+  async function handlerFetchVerificationCobrador(date) {
+    const res = await fetch(
+      window?.location?.href?.includes("localhost")
+        ? `http://localhost:3000/api/verification?estadoDeCredito=Pagado&fechaDeTramitacionDeCobro=${date}`
+        : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Pagado&fechaDeTramitacionDeCobro=${date}`
+    );
+    const result = await res.json();
+    setCasesCobrador(result.data);
+  }
 
   useEffect(() => {
-    handlerFetch();
-    handlerFetchVerification(itemsPerPage, currentPage);
+    handlerFetch(itemsPerPage, currentPage);
+    handlerFetchVerification(date);
+    handlerFetchVerificationCobrador(date);
   }, [loader, itemsPerPage, currentPage]);
 
 
@@ -96,16 +120,17 @@ export default function TableControl() {
     setItemSelected(i);
     setModal(modal);
   }
+
   return (
     <>
       <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
         <table className="w-full min-w-[200px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
           <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
             <tr className=" bg-slate-200">
-              <th className="px-3 py-2">{/* <input type="checkbox" /> */}</th>
               <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA(APODO DEL USUARIO)</th>
               <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
-              <th className="px-4 py-2 text-gray-700">TATAL CASOS</th>
+              <th className="px-4 py-2 text-gray-700">TOTAL CASOS VERIFICADOR</th>
+              <th className="px-4 py-2 text-gray-700">TOTAL CASOS COBRADOR</th>
               <th className="px-4 py-2 text-gray-700">OPERACION</th>
             </tr>
           </thead>
@@ -116,20 +141,21 @@ export default function TableControl() {
                 className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
                   }`}
               >
-                <td
-                  className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-                    } ${selectedLeft === 1 ? "sticky left-0 z-10" : ""}`}
-                >
-                  <input
-                    type="checkbox"
-                    onClick={(e) => handlerSelectCheck(e, i)}
-                  />
-                </td>
+
                 <td className="px-4 py-2 bg-[#ffffff]">{i.cuenta}</td>
                 <td className="px-4 py-2 bg-[#ffffff]">{i.emailPersonal}</td>
 
                 <td className="px-4 py-2 bg-[#ffffff]">
-                  {details[i.cuenta]?.pagosTotal}
+                  {
+                    cases?.filter((it) => it.cuentaVerificador === i.cuenta)
+                      .length
+                  }
+                </td>
+                <td className="px-4 py-2 bg-[#ffffff]">
+                  {
+                    casesCobrador?.filter((it) => it.cuentaCobrador === i.cuenta)
+                      .length
+                  }
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
                   <button

@@ -170,8 +170,11 @@ const Table = ({
                             <td className="px-3 py-2 text-gray-950">
                                 {i.numeroDePrestamo}
                             </td>
-                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                            <td className="px-3 py-2 text-gray-950">
                                 {i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.cuenta}
+                            </td>
+                            <td className="px-3 py-2 text-gray-950">
+                            {i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.emailAsesor}
                             </td>
                             <td className="px-3 py-2 text-gray-950">
                                 {i.nombreDelProducto}
@@ -179,13 +182,13 @@ const Table = ({
                             <td className="px-3 py-2 text-gray-950">
                                 {i.idDeSubFactura}
                             </td>
-                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                            <td className="px-3 py-2 text-gray-950">
                                 {i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.operacion}
                             </td>
-                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                            <td className="px-3 py-2 text-gray-950 cursor-pointer">
                                 {i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.modificacion}
                             </td>
-                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                            <td className="px-3 py-2 text-gray-950 cursor-pointer">
                                 {formatearFecha(i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.fecha)}
                             </td>
                             <td className="px-3 py-2 text-[12px]">
@@ -194,18 +197,24 @@ const Table = ({
                                         <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Visitar</button>
                                     </Link>
                                     <span>
-                                        <button type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handlerVerification(i)}>Registrar</button>
+                                        <button type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handlerVerification(i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1])}>Registrar</button>
+                                    </span>
+                                    <span>
+                                        <button type="button" className="w-full text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handleRowClick(index)}>Expandir</button>
                                     </span>
                                 </div>
                             </td>
                         </tr>
-                        {expandedRows[index] && i.trackingDeOperaciones.map((op, idx) => (
+                        {expandedRows[index] && i.trackingDeOperaciones.slice().reverse().map((op, idx) => (
                             <tr key={idx} className="text-[12px] border-b border-t border-solid border-gray-400">
                                 <td className="px-3 py-2 pl-6 text-gray-950">
                                     {i.numeroDePrestamo}
                                 </td>
                                 <td className="px-3 py-2 pl-6 text-gray-950">
                                     {op.cuenta}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {op.emailAsesor}
                                 </td>
                                 <td className="px-3 py-2 pl-6 text-gray-950">
                                     {i.nombreDelProducto}
@@ -222,8 +231,10 @@ const Table = ({
                                 <td className="px-3 py-2 pl-6 text-gray-950">
                                     {formatearFecha(op.fecha)}
                                 </td>
-                                <td className="px-3 py-2 pl-6 text-gray-950">
-                                    {/* Empty cell for alignment */}
+                                <td className="flex justify-center items-center px-3 py-2 pl-6 text-gray-950">
+                                    <span>
+                                        <button type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handlerVerification(op)}>Registrar</button>
+                                    </span>
                                 </td>
                             </tr>
                         ))}

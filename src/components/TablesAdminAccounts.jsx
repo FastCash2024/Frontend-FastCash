@@ -744,7 +744,7 @@ function getDayWeek(baseDate, offset) {
                 />
               )}
               {item === "Control de Cumplimiento" && (
-                <TableControl/>
+                <TableControl />
                 // <Table
                 //   access={true}
                 //   headArray={encabezadoControlDeCumplimiento}

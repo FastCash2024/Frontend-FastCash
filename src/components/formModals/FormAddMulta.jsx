@@ -48,45 +48,26 @@ export default function FormAddMulta() {
         e.preventDefault();
         try {
             setLoader('Guardando...');
-            // {
-            //     "userId": "60d0fe4f5311236168a109ca",
-            //     "importeMulta": 100,
-            //     "cuentaOperativa": "CuentaOperativa123",
-            //     "cuentaPersonal": "CuentaPersonal456",
-            //     "fechadeOperacion": "2025-01-01T00:00:00.000Z",
-            //     "fechaDeAuditoria": "2025-01-02T00:00:00.000Z"
-            //   }
-            const cuentaOperativa = itemSelected.estadoDeCredito === "Aprobado" ? itemSelected.cuentaCobrador : itemSelected.cuentaVerificador;
-            // const trackingItem = itemSelected.trackingDeOperaciones.find(op => op.cuenta === cuentaOperativa);
-            itemSelected.trackingDeOperaciones.forEach(op => {
-                console.log("Evaluando eviar op:", op.cuenta);
-            });
-            console.log("enviar: ", cuentaOperativa);
-            console.log("enviar: ", trackingItem);
-            
-            const userItem = dataUser.data.find(user => user.cuenta === cuentaOperativa);
-            const emailUsuario = userItem.emailPersonal;
-            console.log("enviar: ", emailUsuario);
 
             const multaData = {
                 importeMulta: data.importeMulta,
-                cuentaOperativa: cuentaOperativa,
-                cuentaPersonal: emailUsuario,
-                fechadeOperacion: trackingItem.fecha,
+                cuentaOperativa: itemSelected.cuenta,
+                cuentaPersonal: itemSelected.emailAsesor ?? itemSelected.emailPersonal,
+                fechaDeOperacion: itemSelected.fecha ?? new Date().toISOString(),
                 fechaDeAuditoria: new Date().toISOString(),
                 acotacion: data.acotacion,
             };
             console.log("data a enviar: ", multaData);
 
-            // const response = await fetch(window?.location?.href?.includes('localhost')
-            //     ? `http://localhost:3000/api/multas/multas`
-            //     : `https://api.fastcash-mx.com/api/multas/multas`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify(multaData),
-            // });
+            const response = await fetch(window?.location?.href?.includes('localhost')
+                ? `http://localhost:3000/api/multas/multas`
+                : `https://api.fastcash-mx.com/api/multas/multas`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(multaData),
+            });
 
             if (!response.ok) {
                 setLoader('');

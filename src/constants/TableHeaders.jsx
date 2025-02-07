@@ -61,19 +61,19 @@ export const encabezadoDeAplicacion = () => [" tipo (nivel)", "valor Prestado Ma
 {/* --------------------------------- AUDITORIA DE CREDITOS --------------------------------- */ }
 
 export const encabezadoRegistroHistorico = () => [
-    "Caso (Descripción de la excepción)", "Asesor (Apodo del usuario)", "Cuenta (Código del producto)",
-    "Código de operación", "Operacion (Contenido de la operación)", "Modificacion (Resultados de la operación)",
-    "Fecha (Tiempo de operación)", "operar"
+    "Caso (Descripción de la excepción)", "Asesor (Apodo del usuario)", "Cuenta (Cuenta Personal)",
+    "Código de producto", "Operacion (Contenido de la operación)", "Modificacion (Resultados de la operación)",
+    "Estado", "Fecha (Tiempo de operación)", "operar"
 ];
 
 export const encabezadoMonitoreoDeTransacciones = () => [
-    "Seleccionar", "Número de préstamo", "ID de sub-factura", "Valor Solicitado (Cantidad prestada)",
+    "Número de préstamo", "ID de sub-factura", "Valor Solicitado (Cantidad prestada)",
     "Valor Enviado(Cantidad recibida)", "Nombre Del Producto", "Numero De Cuenta (número de tarjeta)", "Nombre Banco (Nombre del banco)",
     "Nombre Del Cliente(Titular de la tarjeta)", "Estado De Credito (Estado final)"
 ];
 
 export const encabezadoControlDeCumplimiento = () => [
-    "Seleccionar", "cuenta personal", "cuenta operativa", "importe multa", "fecha de Operacion","fecha de auditoria",  "operar"
+    "cuenta personal", "cuenta operativa", "importe multa", "fecha de Operacion","fecha de auditoria",  "operar"
 ];
 // [
 //     "Seleccionar", "cuentaOperativa", "Apodo de Usuario Cobrador",
