@@ -43,7 +43,7 @@ export default function FormAddTipoApp() {
             interesDiario: data.interesDiario,
             valorPrestamoMenosInteres: data.valorPrestamoMenosInteres,
             valorExtencion: data.valorExtencion,
-            tipo: applicationTipo.data.length + 1,
+            tipo: data.tipo,
         };
         
         console.log("data enviada: ", payload);
@@ -158,6 +158,18 @@ export default function FormAddTipoApp() {
                     name="valorExtencion"
                     onChange={onChangeHandler}
                     placeholder="Valor prestado"
+                    required
+                />
+            </div>
+            <div className='flex justify-between w-[100%]'>
+                <label htmlFor="tipo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    Nivel:
+                </label>
+                <Input
+                    type="number"
+                    name="tipo"
+                    onChange={onChangeHandler}
+                    placeholder="1"
                     required
                 />
             </div>

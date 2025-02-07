@@ -153,7 +153,8 @@ export default function AddAccount() {
                     required
                 />
             </div>
-            <div className='flex justify-between w-[100%]'>
+            
+            {/* <div className='flex justify-between w-[100%]'>
                 <label htmlFor="valorPrestado" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                    Valor Prestamo mas interes:
                 </label>
@@ -230,7 +231,7 @@ export default function AddAccount() {
                     placeholder="Valor de deposito liquido" 
                     required
                 />
-            </div>
+            </div> */}
             <div className='flex justify-between  w-[100%]'>
                 <label htmlFor="calificacion" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Calificación:

@@ -21,7 +21,14 @@ const Table = ({
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [data, setData] = useState([])
+    const [expandedRows, setExpandedRows] = useState({});
 
+    const handleRowClick = (index) => {
+        setExpandedRows((prev) => ({
+            ...prev,
+            [index]: !prev[index],
+        }));
+    };
 
     const toCamelCase = (str) => {
         let cleanedStr = str.toLowerCase();
@@ -34,9 +41,10 @@ const Table = ({
     };
 
     function handlerVerification(i) {
-        setModal('Registrar Auditoria Tracking')
+        setModal('Multar cuenta')
         setItemSelected(i)
     }
+
     function handlerAcount(mod, i) {
         setModal(mod)
         setCheckedArr([i])
@@ -156,91 +164,75 @@ const Table = ({
                 </tr>
             </thead>
             <tbody>
-                {data && data?.data?.map((i, index) => {
-
-                    return (
-                        <tr key={index} className="text-[12px] border-b">
-                            <td className={`px-3 py-2 text-[12px] border-b text-gray-950 ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                {data && data?.data?.map((i, index) => (
+                    <>
+                        <tr key={index} className={`text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'}`}>
+                            <td className="px-3 py-2 text-gray-950">
                                 {i.numeroDePrestamo}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
-                                <table>
-                                    <tbody>
-                                        {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
-                                            <td>
-                                                {i.cuenta}
-                                            </td>
-                                        </tr>)}
-                                    </tbody>
-                                </table>
+                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                                {i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.cuenta}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
-                                <table>
-                                    <tbody>
-                                        {i.nombreDelProducto}
-                                        {/* {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
-                                            <td>
-                                                {i.cuenta}
-                                            </td>
-                                        </tr>)} */}
-                                    </tbody>
-                                </table>
+                            <td className="px-3 py-2 text-gray-950">
+                                {i.nombreDelProducto}
                             </td>
-                            <td className={`px-3 py-2 text-gray-950 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className="px-3 py-2 text-gray-950">
                                 {i.idDeSubFactura}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
-                                <table>
-                                    <tbody>
-                                        {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
-                                            <td>
-                                                {i.operacion}
-                                            </td>
-                                        </tr>)}
-                                    </tbody>
-                                </table>
+                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                                {i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.operacion}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
-                                <table>
-                                    <tbody>
-                                        {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
-                                            <td>
-                                                {i.modificacion}
-                                            </td>
-                                        </tr>)}
-                                    </tbody>
-                                </table>
+                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                                {i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.modificacion}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] text-gray-950 border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
-                                <table>
-                                    <tbody>
-                                        {i.trackingDeOperaciones.map((i, index) => <tr key={index}>
-                                            <td>
-                                                {formatearFecha(i.fecha)}
-                                            </td>
-                                        </tr>)}
-                                    </tbody>
-                                </table>
+                            <td className="px-3 py-2 text-gray-950 cursor-pointer" onClick={() => handleRowClick(index)}>
+                                {formatearFecha(i.trackingDeOperaciones[i.trackingDeOperaciones.length - 1]?.fecha)}
                             </td>
-                            <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} `} >
+                            <td className="px-3 py-2 text-[12px]">
                                 <div className='flex justify-around'>
                                     <Link href={`/Home/Datos?caso=${i._id}&seccion=info`} className=''>
-                                        <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Visitar</button>
+                                        <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Visitar</button>
                                     </Link>
                                     <span>
-                                        <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handlerVerification(i)}>Registrar</button>
+                                        <button type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={() => handlerVerification(i)}>Registrar</button>
                                     </span>
                                 </div>
                             </td>
                         </tr>
-                    )
-                })}
-
+                        {expandedRows[index] && i.trackingDeOperaciones.map((op, idx) => (
+                            <tr key={idx} className="text-[12px] border-b border-t border-solid border-gray-400">
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {i.numeroDePrestamo}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {op.cuenta}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {i.nombreDelProducto}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {i.idDeSubFactura}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {op.operacion}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {op.modificacion}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {formatearFecha(op.fecha)}
+                                </td>
+                                <td className="px-3 py-2 pl-6 text-gray-950">
+                                    {/* Empty cell for alignment */}
+                                </td>
+                            </tr>
+                        ))}
+                    </>
+                ))}
             </tbody>
         </table>
     );
-};
-
+}
 export default Table;
 
 

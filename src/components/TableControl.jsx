@@ -1,0 +1,162 @@
+import { useAppContext } from '@/context/AppContext';
+import { useSearchParams } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import { Paginator } from './Paginator';
+
+export default function TableControl() {
+  const [selectedLeft, setSelectedLeft] = useState(-1);
+  const {
+    checkedArr,
+    setCheckedArr,
+    loader,
+    setModal,
+    setItemSelected
+  } = useAppContext();
+
+  const [cases, setCases] = useState([]);
+  const searchParams = useSearchParams();
+  const seccion = searchParams.get("seccion");
+  const item = searchParams.get("item");
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalDocuments, setTotalDocuments] = useState(0);
+  const [details, setDetails] = useState([])
+  function handlerSelectCheck(e, i) {
+    if (e.target.checked) {
+      // Si está marcado, agrega el índice al array
+      setCheckedArr([...checkedArr, i]);
+    } else {
+      // Si no está marcado, quita el índice del array
+      setCheckedArr(checkedArr.filter((item) => item.usuario !== i.usuario));
+    }
+  }
+  async function handlerFetch(limit, page) {
+    const res = await fetch(
+      window?.location?.href?.includes("localhost")
+        ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor"
+        : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor"
+    );
+    const result = await res.json();
+    console.log("data users: ", result);
+    setData(result);
+  }
+
+  async function handlerFetchVerification(limit, page) {
+    const res = await fetch(
+      window?.location?.href?.includes("localhost")
+        ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado&${limit}&${page}`
+        : "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado"
+    );
+    const result = await res.json();
+    // console.log(data)
+    setCases(result.data);
+    setCurrentPage(result.currentPage);
+    setTotalPages(result.totalPages);
+    setTotalDocuments(result.totalDocuments);
+  }
+  console.log("DATA2 cases", cases);
+
+  useEffect(() => {
+    handlerFetch();
+    handlerFetchVerification(itemsPerPage, currentPage);
+  }, [loader, itemsPerPage, currentPage]);
+
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleItemsPerPageChange = (itemsPerPage) => {
+    setItemsPerPage(itemsPerPage);
+    setCurrentPage(1);
+  };
+
+  async function handlerFetchDetails() {
+    const res = await fetch(
+      window?.location?.href?.includes('localhost')
+        ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
+        : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
+    const data = await res.json()
+    console.log("data detalle: ", data)
+    setDetails(data.data)
+  }
+
+  useEffect(() => {
+    handlerFetchDetails();
+    setCheckedArr([]);
+  }, []);
+
+  const handleReload = () => {
+    handlerFetch(itemsPerPage, currentPage);
+  }
+
+  function handlerEditCuenta(modal, i) {
+    setItemSelected(i);
+    setModal(modal);
+  }
+  return (
+    <>
+      <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
+        <table className="w-full min-w-[200px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
+          <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
+            <tr className=" bg-slate-200">
+              <th className="px-3 py-2">{/* <input type="checkbox" /> */}</th>
+              <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA(APODO DEL USUARIO)</th>
+              <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
+              <th className="px-4 py-2 text-gray-700">TATAL CASOS</th>
+              <th className="px-4 py-2 text-gray-700">OPERACION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.data?.map((i, index) => (
+              <tr
+                key={index}
+                className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
+                  }`}
+              >
+                <td
+                  className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
+                    } ${selectedLeft === 1 ? "sticky left-0 z-10" : ""}`}
+                >
+                  <input
+                    type="checkbox"
+                    onClick={(e) => handlerSelectCheck(e, i)}
+                  />
+                </td>
+                <td className="px-4 py-2 bg-[#ffffff]">{i.cuenta}</td>
+                <td className="px-4 py-2 bg-[#ffffff]">{i.emailPersonal}</td>
+
+                <td className="px-4 py-2 bg-[#ffffff]">
+                  {details[i.cuenta]?.pagosTotal}
+                </td>
+                <td className="px-4 py-2 bg-[#ffffff]">
+                  <button
+                    onClick={() => handlerEditCuenta('Multar cuenta', i)}
+                    type="button"
+                    class="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                  >
+                    MULTAR
+                  </button>
+                </td>
+
+
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <Paginator
+          totalItems={totalDocuments}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+          onReload={handleReload}
+        />
+      </div>
+    </>
+  )
+}

@@ -640,7 +640,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button>
                                 </div>
                               )}
-                            {(item === "Control de Cumplimiento" ) &&
+                            {(item === "Auditoria Periodica" ) &&
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex max-w-[150px] justify-between space-x-3">
                                   <button
@@ -648,7 +648,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     type="button"
                                     class="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
-                                    Multar
+                                    Modificar
                                   </button>
                                 </div>
                               )}

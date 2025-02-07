@@ -82,6 +82,7 @@ import {
 } from "@/constants/TableHeaders.jsx";
 import { Paginator } from "./Paginator";
 import TableAtencionAlCliente from "./TableAtencionAlCliente";
+import TableControl from "./TableControl";
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -743,25 +744,26 @@ function getDayWeek(baseDate, offset) {
                 />
               )}
               {item === "Control de Cumplimiento" && (
-                <Table
-                  access={true}
-                  headArray={encabezadoControlDeCumplimiento}
-                  dataArray={[""]}
-                  dataFilter={(i) => true}
-                  local={
-                    "http://localhost:3000/api/multas/multas"
-                  }
-                  server={"https://api.fastcash-mx.com/api/multas/multas"}
-                />
+                <TableControl/>
+                // <Table
+                //   access={true}
+                //   headArray={encabezadoControlDeCumplimiento}
+                //   dataArray={[""]}
+                //   dataFilter={(i) => true}
+                //   local={
+                //     "http://localhost:3000/api/multas/multas"
+                //   }
+                //   server={"https://api.fastcash-mx.com/api/multas/multas"}
+                // />
               )}
               {item === "Auditoria Periodica" && (
                 <Table
                   access={true}
-                  headArray={encabezadoAuditoriaPeriodica}
+                  headArray={encabezadoControlDeCumplimiento}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/verification"}
-                  server={"https://api.fastcash-mx.com/api/verification"}
+                  local={"http://localhost:3000/api/multas/multas"}
+                  server={"https://api.fastcash-mx.com/api/multas/multas"}
                 />
               )}
               {/* --------------------------------- VERIFICACION DE CREDITOS --------------------------------- */}

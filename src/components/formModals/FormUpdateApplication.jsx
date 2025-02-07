@@ -149,7 +149,7 @@ export default function FormUpdateAplication() {
                     required
                 />
             </div>
-            <div className='flex justify-between w-[100%]'>
+            {/* <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Valor Prestamo:
                 </label>
@@ -226,7 +226,7 @@ export default function FormUpdateAplication() {
                     placeholder="Valor de deposito liquido"
                     required
                 />
-            </div>
+            </div> */}
             <div className='flex justify-between  w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Calificación:

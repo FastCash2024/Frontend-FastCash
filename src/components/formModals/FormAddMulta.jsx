@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import Input from "@/components/Input";
@@ -10,48 +10,99 @@ export default function FormAddMulta() {
     const { user, userDB, itemSelected, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, setItemSelected } = useAppContext()
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({})
+    const [dataUser, setDataUser] = useState([]);
+
 
     console.log("item selected: ", itemSelected);
-    
+
     function onChangeHandler(e) {
         setData({ ...data, [e.target.name]: e.target.value })
     }
 
+    async function handlerFetch(limit, page) {
+        const res = await fetch(
+            window?.location?.href?.includes("localhost")
+                ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+                : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+        );
+        const result = await res.json();
+        console.log("data item selected: ", result);
+        setDataUser(result);
+    }
+
+    // async function handlerFetchDetails() {
+    //     const res = await fetch(
+    //         window?.location?.href?.includes('localhost')
+    //             ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
+    //             : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
+    //     const data = await res.json()
+    //     console.log("data detalle: ", data)
+    //     setDetails(data.data)
+    // }
+
+    useEffect(() => {
+        handlerFetch();
+    }, [loader]);
+
     const saveMulta = async (e) => {
         e.preventDefault();
         try {
-            if (!selectedFile) {
-                alert('Por favor selecciona un archivo');
-                return;
-            }
-
-            setLoader('Guardando...')
-            const formData = new FormData();
-            formData.append('file', selectedFile); // Archivo
-            formData.append('nombreCompleto', data.nombreCompleto); // Datos adicionales
-            formData.append('dni', data.dni);
-            formData.append('numeroDeTelefonoMovil', data.numeroDeTelefonoMovil);
-            const id = userDB.id ?? user.id;
-            const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/auth/registerPersonal/${id}`
-                : `https://api.fastcash-mx.com/api/auth/registerPersonal/${id}`, {
-                method: 'PUT',
-                body: formData,
+            setLoader('Guardando...');
+            // {
+            //     "userId": "60d0fe4f5311236168a109ca",
+            //     "importeMulta": 100,
+            //     "cuentaOperativa": "CuentaOperativa123",
+            //     "cuentaPersonal": "CuentaPersonal456",
+            //     "fechadeOperacion": "2025-01-01T00:00:00.000Z",
+            //     "fechaDeAuditoria": "2025-01-02T00:00:00.000Z"
+            //   }
+            const cuentaOperativa = itemSelected.estadoDeCredito === "Aprobado" ? itemSelected.cuentaCobrador : itemSelected.cuentaVerificador;
+            // const trackingItem = itemSelected.trackingDeOperaciones.find(op => op.cuenta === cuentaOperativa);
+            itemSelected.trackingDeOperaciones.forEach(op => {
+                console.log("Evaluando eviar op:", op.cuenta);
             });
+            console.log("enviar: ", cuentaOperativa);
+            console.log("enviar: ", trackingItem);
+            
+            const userItem = dataUser.data.find(user => user.cuenta === cuentaOperativa);
+            const emailUsuario = userItem.emailPersonal;
+            console.log("enviar: ", emailUsuario);
+
+            const multaData = {
+                importeMulta: data.importeMulta,
+                cuentaOperativa: cuentaOperativa,
+                cuentaPersonal: emailUsuario,
+                fechadeOperacion: trackingItem.fecha,
+                fechaDeAuditoria: new Date().toISOString(),
+                acotacion: data.acotacion,
+            };
+            console.log("data a enviar: ", multaData);
+
+            // const response = await fetch(window?.location?.href?.includes('localhost')
+            //     ? `http://localhost:3000/api/multas/multas`
+            //     : `https://api.fastcash-mx.com/api/multas/multas`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify(multaData),
+            // });
+
             if (!response.ok) {
-                setLoader('')
-                setAlerta('Error de datos!')
+                setLoader('');
+                setAlerta('Error de datos!');
                 throw new Error('Registration failed');
             }
+
             const result = await response.json();
             console.log(result);
-            setAlerta('Operación exitosa!')
-            setModal('')
-            setLoader('')
+            setAlerta('Operación exitosa!');
+            setModal('');
+            setLoader('');
             // navigate('/dashboard');
         } catch (error) {
-            setLoader('')
-            setAlerta('Error de datos!')
+            setLoader('');
+            setAlerta('Error de datos!');
         }
     };
 
@@ -70,7 +121,7 @@ export default function FormAddMulta() {
                 >
                     X
                 </button>
-                <h4 className="text-gray-950">Registro de cobro</h4>
+                <h4 className="text-gray-950">Registro de multa</h4>
                 <div className='flex justify-between w-[300px]'>
                     <label htmlFor="importeMulta" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                         Importe multa:

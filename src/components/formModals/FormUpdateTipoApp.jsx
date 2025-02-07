@@ -28,7 +28,7 @@ export default function FormUpdateTipoApp() {
     }, [applicationTipo]);
 
     console.log("data update: ", data)
-   
+
 
     function onChangeHandler(e) {
         const { name, value } = e.target;
@@ -47,7 +47,7 @@ export default function FormUpdateTipoApp() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoader('Guardando...');
-    
+
         const payload = {
             valorDepositoLiquido: data.valorDepositoLiquido,
             valorPrestadoMasInteres: data.valorPrestadoMasInteres,
@@ -57,15 +57,15 @@ export default function FormUpdateTipoApp() {
             valorExtencion: data.valorExtencion,
             tipo: data.tipo
         };
-        
+
         console.log("data enviar: ", payload);
-        
+
 
         try {
             const urlBase = window?.location?.href?.includes('localhost')
                 ? `http://localhost:3000/api/applications/updatetipoaplicacion`
                 : `https://api.fastcash-mx.com/api/applications/updatetipoaplicacion`;
-    
+
             const response = await fetch(`${urlBase}/${applicationId}/${data.tipo}`, {
                 method: 'PUT',
                 headers: {
@@ -73,11 +73,11 @@ export default function FormUpdateTipoApp() {
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Error en la carga: ${response.statusText}`);
             }
-    
+
             const result = await response.json();
             setModal('');
             setLoader('');
@@ -89,12 +89,12 @@ export default function FormUpdateTipoApp() {
             setAlerta('Error en la actualización');
         }
     };
-    
+
 
     return (
         <FormLayout>
             <h4 className='w-full text-center text-gray-950'>Editar Tipo Aplicación</h4>
-            
+
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Valor Prestamo mas interes:
@@ -158,9 +158,9 @@ export default function FormUpdateTipoApp() {
                     value={data.valorPrestamoMenosInteres || ''}
                     placeholder='5000'
                     required />
-               
+
             </div>
-           
+
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Valor Extencion:
@@ -172,6 +172,19 @@ export default function FormUpdateTipoApp() {
                     value={data.valorExtencion || ''}
                     placeholder='5000'
                     required />
+            </div>
+            <div className='flex justify-between w-[100%]'>
+                <label htmlFor="tipo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    Nivel:
+                </label>
+                <Input
+                    type="number"
+                    name="tipo"
+                    onChange={onChangeHandler}
+                    value={data.tipo || ''}
+                    placeholder="1"
+                    required
+                />
             </div>
             <button type="button"
                 className="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"

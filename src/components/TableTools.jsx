@@ -747,9 +747,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     </Button>
                 </div>
             </div>}
-            {item === 'Gestion de aplicacion' && <div>
+            {item === 'Gestion de aplicacion' && <div className='flex flex-row justify-between items-center'>
 
-                <div className="flex items-center gap-x-4 mb-6">
+                <div className="flex items-center gap-x-4 mb-6 w-[40%]">
                     <img
                         src={dataApplication?.icon}
                         alt="app"
@@ -759,12 +759,13 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     />
                     <p className="text-3xl font-bold text-black">{dataApplication?.nombre}</p>
                 </div>
-                <div className='pt-3 flex space-x-3'>
+                <div className='pt-3 flex space-x-3 w-[30%] h-12'>
                     <Button type="button" theme="Success" click={handlerApplication}>
                         Añadir Aplicación
                     </Button>
                 </div>
-            </div>}
+            </div>
+            }
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
             {item === 'Recolección y Validación de Datos' && <VerificationTools filtro_1={filtro_1} />}
 
