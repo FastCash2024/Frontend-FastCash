@@ -54,7 +54,7 @@ export default function Modal() {
 
 
     console.log('data', data)
-    return (<div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
+    return (false && <div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
         {modal === 'Guardando...' && <Loader> {modal} </Loader>}
 
         <div className={`relative bg-white max-w-[1000px] w-full h-full overflow-y-scroll rounded-t-lg shadow-2xl p-5 `}>
