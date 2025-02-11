@@ -20,6 +20,7 @@ export default function Modal() {
 
     const searchParams = useSearchParams()
     const mode = searchParams.get('mode')
+    const seccion = searchParams.get('seccion')
 
 
     function handlerTextEditorOnChange2(content, delta, source, editor) {
@@ -54,7 +55,7 @@ export default function Modal() {
 
 
     console.log('data', data)
-    return (<div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
+    return (seccion ==='comunicacion' && <div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
         {modal === 'Guardando...' && <Loader> {modal} </Loader>}
 
         <div className={`relative bg-white max-w-[1000px] w-full h-full overflow-y-scroll rounded-t-lg shadow-2xl p-5 `}>
@@ -86,7 +87,7 @@ export default function Modal() {
                 <br />
                 {mode === 'editor' ?
                     <div className='flex justify-around'>
-                        <Link href="?mode=viewer" className='w-[250px]'>
+                        <Link href="?seccion=comunicacion&mode=viewer" className='w-[250px]'>
                             <Button theme="Primary">Previsualizar</Button>
                         </Link>
                         <span className='w-[250px]'>
@@ -94,7 +95,7 @@ export default function Modal() {
                         </span>
                     </div>
                     : <div className='flex justify-around'>
-                        <Link href="?mode=editor" className='w-[250px]'>
+                        <Link href="?seccion=comunicacion&mode=editor" className='w-[250px]'>
                             <Button theme="Primary">Editor</Button>
                         </Link>
                         <span className='w-[250px]'>
