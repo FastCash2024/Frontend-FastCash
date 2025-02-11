@@ -22,7 +22,7 @@ export default function FormUpdateTipoApp() {
                 interesTotal: applicationTipo.interesTotal,
                 valorPrestamoMenosInteres: applicationTipo.valorPrestamoMenosInteres,
                 valorExtencion: applicationTipo.valorExtencion,
-                tipo: applicationTipo.tipo,
+                nivelDePrestamo: applicationTipo.nivelDePrestamo,
             });
         }
     }, [applicationTipo]);
@@ -55,7 +55,7 @@ export default function FormUpdateTipoApp() {
             interesTotal: data.interesTotal,
             valorPrestamoMenosInteres: data.valorPrestamoMenosInteres,
             valorExtencion: data.valorExtencion,
-            tipo: data.tipo
+            nuevoNivelDePrestamo: data.nivelDePrestamo
         };
 
         console.log("data enviar: ", payload);
@@ -66,7 +66,7 @@ export default function FormUpdateTipoApp() {
                 ? `http://localhost:3000/api/applications/updatetipoaplicacion`
                 : `https://api.fastcash-mx.com/api/applications/updatetipoaplicacion`;
 
-            const response = await fetch(`${urlBase}/${applicationId}/${data.tipo}`, {
+            const response = await fetch(`${urlBase}/${applicationId}/${applicationTipo.nivelDePrestamo}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -174,14 +174,14 @@ export default function FormUpdateTipoApp() {
                     required />
             </div>
             <div className='flex justify-between w-[100%]'>
-                <label htmlFor="tipo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="nivelDePrestamo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Nivel:
                 </label>
                 <Input
                     type="number"
-                    name="tipo"
+                    name="nivelDePrestamo"
                     onChange={onChangeHandler}
-                    value={data.tipo || ''}
+                    value={data.nivelDePrestamo || ''}
                     placeholder="1"
                     required
                 />

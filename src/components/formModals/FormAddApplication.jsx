@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect} from "react"
+import { useState, useEffect } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
@@ -15,12 +15,12 @@ import Input from '@/components/Input'
 export default function AddAccount() {
     const { setAlerta, setModal, setLoader } = useAppContext()
     const { theme, toggleTheme } = useTheme();
-    const [data, setData] = useState({categoria:'libre'})
+    const [data, setData] = useState({ categoria: 'libre' })
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
 
     // console.log("image selected: ", selectedFile)
-    
+
     console.log("data register: ", data)
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
@@ -37,16 +37,9 @@ export default function AddAccount() {
     };
 
     function onChangeHandler(e) {
-        const {name, value} = e.target;
-        const updatedData = {...data, [name]: value};
+        const { name, value } = e.target;
+        const updatedData = { ...data, [name]: value };
 
-        // if (name === 'interesTotal') {
-        //     const dias = 7;
-        //     const interesTotal = parseFloat(value);
-        //     const interesDiario = (interesTotal / dias).toFixed(2);
-        //     updatedData.interesDiario = interesDiario;
-        // }
-        
         if (name === 'interesTotal') {
             const dias = 7;
             const interesTotal = parseFloat(value);
@@ -55,22 +48,18 @@ export default function AddAccount() {
         }
         setData(updatedData)
     }
-    function handlerSelectClick2(name, i, uuid) {
-        setData({ ...data, [name]: i })
-    }
 
-    
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoader('Guardando...')
-        
+
         console.log("selectedImage handleSubmit: ", selectedFile);
-        
+
         if (!selectedFile) {
             alert('Por favor selecciona un archivo');
             return;
         }
-        
+
         const formData = new FormData();
         formData.append('file', selectedFile); // Archivo
         formData.append('nombre', data.nombre); // Datos adicionales
@@ -78,10 +67,9 @@ export default function AddAccount() {
         formData.append('valorDepositoLiquido', data.valorDepositoLiquido);
         formData.append('interesTotal', data.interesTotal);
         formData.append('interesDiario', data.interesDiario);
-        formData.append('valorPrestamoMenosInteres', data?.valorPrestado*1 - data?.interesTotal*1);
-        formData.append('valorExtencion', data?.valorPrestado*1 - data?.valorDepositoLiquido*1);
+        formData.append('valorPrestamoMenosInteres', data?.valorPrestado * 1 - data?.interesTotal * 1);
+        formData.append('valorExtencion', data?.valorPrestado * 1 - data?.valorDepositoLiquido * 1);
         formData.append('calificacion', data.calificacion);
-        formData.append('categoria', data.categoria);
 
         try {
             // url: https://api.fastcash-mx.com/api/authApk/register
@@ -106,7 +94,7 @@ export default function AddAccount() {
             console.error('Error al subir archivo:', error.message);
         }
     };
- 
+
 
 
     return (
@@ -117,7 +105,7 @@ export default function AddAccount() {
                     htmlFor="image-upload"
                     className="cursor-pointer flex flex-col items-center p-2"
                 >
-           
+
                     {selectedImage ? (
                         <img
                             src={selectedImage}
@@ -143,95 +131,16 @@ export default function AddAccount() {
             </div>
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="nombre" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Nombre: 
+                    Nombre:
                 </label>
                 <Input
                     type="text"
                     name="nombre"
                     onChange={onChangeHandler}
-                    placeholder="Nombre" 
+                    placeholder="Nombre"
                     required
                 />
             </div>
-            
-            {/* <div className='flex justify-between w-[100%]'>
-                <label htmlFor="valorPrestado" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                   Valor Prestamo mas interes:
-                </label>
-                <Input
-                    type="number"
-                    name="valorPrestado"
-                    onChange={onChangeHandler}
-                    placeholder="Valor prestado" 
-                    required
-                />
-            </div>
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Valor depositado liquido:
-                </label>
-                <Input
-                    type="number"
-                    name="valorDepositoLiquido"
-                    onChange={onChangeHandler}
-                    placeholder="Valor de deposito liquido" 
-                    required
-                />
-            </div>
-          
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="interesTotal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Interes Total:
-                </label>
-                <Input
-                    type="text"
-                    name="interesTotal"
-                    onChange={onChangeHandler}
-                    value={data.interesTotal}
-                    placeholder="Interes Total" 
-                    required
-                />
-            </div>
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="interesDiario" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Interes Diario:
-                </label>
-                <input 
-                    name='interesDiario' 
-                    className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`} 
-                    value={data.interesDiario} 
-                    readOnly 
-                    placeholder='Mathew' 
-                    required 
-                />
-            </div>
-            
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Prestamo menos interes:
-                </label>
-                <Input
-                    type="number"
-                    name="prestamoMenosInteres"
-                    value={data?.valorPrestado*1 - data?.interesTotal*1}
-                    onChange={onChangeHandler}
-                    placeholder="Valor de deposito liquido" 
-                    required
-                />
-            </div>
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Extension de pago:
-                </label>
-                <Input
-                    type="number"
-                    name="extencionDePago"
-                    value={data?.valorPrestado*1 - data?.valorDepositoLiquido*1}
-                    onChange={onChangeHandler}
-                    placeholder="Valor de deposito liquido" 
-                    required
-                />
-            </div> */}
             <div className='flex justify-between  w-[100%]'>
                 <label htmlFor="calificacion" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Calificación:
@@ -240,24 +149,9 @@ export default function AddAccount() {
                     type="number"
                     name="calificacion"
                     onChange={onChangeHandler}
-                    placeholder="calificacion" 
+                    placeholder="calificacion"
                     required
                 />
-            </div>
-            <div className='relative flex justify-between  w-[100%]'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Acceso a usuarios:
-                </label>
-                <SelectSimple
-                    arr={['Libre', 'Estandar', 'Premium']}
-                    name='categoria'
-                    click={handlerSelectClick2}
-                    defaultValue={data?.categoria ? data?.categoria : 'Seleccionar'}
-                    uuid='123'
-                    label='Filtro 1'
-                    position='absolute left-0 top-[25px]'
-                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}
-                    required />
             </div>
             <button type="button"
                 class="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"

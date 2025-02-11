@@ -83,10 +83,11 @@ import {
 import { Paginator } from "./Paginator";
 import TableAtencionAlCliente from "./TableAtencionAlCliente";
 import TableControl from "./TableControl";
+import TableCustomerFlow from "./TableCustomerFlow";
+import { getDay } from "@/utils/getDates";
+import TableAttendance from "./TableAttendance";
 
 export default function Home() {
-  const [selectedLeft, setSelectedLeft] = useState(-1);
-  const [selectedRight, setSelectedRight] = useState(-1);
 
   const {
     user,
@@ -120,223 +121,23 @@ export default function Home() {
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
   const application = searchParams.get("application");
+  const [trabajo] = useState([])
 
   console.log("id aplicacion: ", application);
   console.log("id aplicacion: ", item);
+  // console.log("trabajo: ", trabajo);
+  // console.log("item: ", item);
+  // console.log("date: ", baseDate);
+  // console.log("filtro_1: ", filtro_1);
   
 
-  const [trabajo, setTrabajo] = useState([])
-  const [filtro_1, setFiltro_1] = useState([]);
-  const [filtro_2, setFiltro_2] = useState({});
-  const [baseDate, setBaseDate] = useState(getMondayOfCurrentWeek());
-
-  function getMondayOfCurrentWeek() {
-    const today = new Date();
-    const day = today.getDay();
-    const diff = today.getDate() - day + (day === 0 ? -6 : 1); // Ajuste cuando el día es domingo
-    const monday = new Date(today.setDate(diff));
-    return monday.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-}
   
-  function getStartAndEndOfWeek() {
-    const today = new Date();
-    const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes
-    const lastDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 7)); // Domingo
 
-    const startDate = firstDayOfWeek.toISOString().split('T')[0];
-    const endDate = lastDayOfWeek.toISOString().split('T')[0];
 
-    return { startDate, endDate };
-}
+      
 
-function getDayWeek(baseDate, offset) {
-  console.log('baseDate: ', baseDate);
-  console.log('offset: ', offset);
-  
-  const targetDate = new Date(baseDate);
-  console.log('targetDate: ', targetDate.toISOString().split('T')[0]);
-  if (isNaN(targetDate.getTime())) {
-      throw new Error("Invalid baseDate");
-  }
-  targetDate.setDate(targetDate.getDate() + offset);
-  if (isNaN(targetDate.getTime())) {
-      throw new Error("Invalid targetDate");
-  }
-  
-  return { val: targetDate.toISOString().split('T')[0] };
-}
-
-      async function handlerFetch(startDate, endDate) {
-
-        const { startDate: defaultStartDate, endDate: defaultEndDate } = getStartAndEndOfWeek();
-        startDate = startDate || defaultStartDate;
-        endDate = endDate || defaultEndDate;
-        const local = 'http://localhost:3000/api/attendance';
-        const server = 'https://api.fastcash-mx.com/api/attendance';
-      
-          const urlParams = new URLSearchParams(window.location.search);
-          const filterParams = {};
-          urlParams.forEach((value, key) => {
-              if (
-                  key.startsWith("filter[") &&
-                  value !== "Elije por favor" &&
-                  value !== "Todo"
-              ) {
-                  const fieldName = key.slice(7, -1); // Extraer el nombre de la clave dentro de "filter[]"
-                  filterParams[fieldName] = value;
-              }
-          });
-      
-          const stg = Object.keys(filterParams)
-              .filter(
-                  (key) => filterParams[key] !== undefined && filterParams[key] !== null
-              ) // Filtrar valores nulos o indefinidos
-              .map(
-                  (key) =>
-                      `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`
-              ) // Codificar clave=valor
-              .join("&"); // Unir con &
-      
-              console.log('stg: ', stg);
-              
-          const dataParams = [];
-          if (!stg.includes(`startDate=`)) {
-            dataParams.push(`startDate=${startDate}`)
-            setBaseDate(startDate);
-          } else { 
-            const params = new URLSearchParams(stg);
-            const existingStartDate = params.get('startDate');
-            setBaseDate(existingStartDate); 
-          };
-          if (!stg.includes(`endDate=`)) dataParams.push(`endDate=${endDate}`);
-          const dataParamsString = dataParams.join('&');
-          console.log("dataParamsString: ", dataParamsString);
-          
-          const urlLocal = stg
-              ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
-              : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
-          
-          const urlServer = stg
-              ? `${server}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
-              : `${server}${dataParamsString ? `?${dataParamsString}` : ''}`;
-      
-          console.log("url local solicitada: ", urlLocal);
-      
-          const res = await fetch(
-            window?.location?.href?.includes("localhost")
-              ? `${urlLocal}`
-              : `${urlServer}`
-          );
-      
-          const result = await res.json();
-          console.log("resultado: ", result);
-          setTrabajo(result);
-      }
-      
-      console.log("item: ", item);
-      
-      useEffect(() => {
-        if (item == "Asistencia") {
-          handlerFetch();
-        }
-      }, [item, searchParams, loader]);
-
-      console.log("trabajo: ", trabajo);
-      console.log("item: ", item);
-      console.log("date: ", baseDate);
-
-      const fetchCustomersFlow = async () => {
-        const local = 'http://localhost:3000/api/applications/customers';
-        const server = 'https://api.fastcash-mx.com/api/applications/customers';
-        
-        try {
-            // Seleccionar la URL correcta
-            const url = window?.location?.href?.includes("localhost") ? local : server;
     
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-    
-            const result = await response.json();
-            console.log('Clientes:', result);
-            
-            setFiltro_1(result);
-        } catch (error) {
-            console.error('Error al obtener los clientes:', error);
-        }
-    };
 
-    const getDays = (days) => {
-      const dates = [];
-      const today = new Date();
-      days.forEach(dayOffset => {
-          const date = new Date(today);
-          date.setDate(today.getDate() + dayOffset);
-          const year = date.getFullYear();
-          const month = String(date.getMonth() + 1).padStart(2, '0');
-          const day = String(date.getDate()).padStart(2, '0');
-          dates.push(`${year}-${month}-${day}`);
-      });
-      return dates;
-  };
-
-  const fetchCustomers = async (dates) => {
-    const local = `http://localhost:3000/api/verification/customer?fechaDeReembolso=${dates}`;
-    const server = `https://api.fastcash-mx.com/api/verification/customer?fechaDeReembolso=${dates}`;
-
-    try {
-        // Seleccionar la URL correcta
-        const baseUrl = window?.location?.href?.includes("localhost") ? local : server;
-
-        const results = await Promise.all(
-            dates.map(async (date) => {
-                const response = await fetch(`${baseUrl}?fechaDeReembolso=${date}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-
-                const result = await response.json();
-                return { date, data: result };
-            })
-        );
-
-        const combinedResults = results.reduce((acc, { date, data }) => {
-            acc[date] = data;
-            return acc;
-        }, {});
-
-        console.log('Resultados combinados:', combinedResults);
-        setFiltro_2(combinedResults);
-    } catch (error) {
-        console.error('Error al obtener los clientes:', error);
-    }
-};
-
-  useEffect(() => {
-    const days = [0, 1, 2, 3, 4, 5, 6]; // Array de días a partir de la fecha actual
-    const dates = getDays(days);
-    fetchCustomers(dates);
-}, []);
-
-    useEffect(() => {
-      // fetchCustomers(formatDateToISO(getDay(0).val));
-      fetchCustomersFlow();
-    }, []);
-
-    console.log("filtro_1: ", filtro_1);
     
 
   let menu = user?.rol
@@ -365,34 +166,6 @@ function getDayWeek(baseDate, offset) {
     });
   };
 
-  function formatDate(date) {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-
-    return `${day}/${month}/${year}`;
-  }
-  function getDay(dias) {
-    var dt = new Date();
-
-    const diasSemana = [
-      "Domingo",
-      "Lunes",
-      "Martes",
-      "Miércoles",
-      "Jueves",
-      "Viernes",
-      "Sábado",
-    ];
-
-    // // console.log('Fecha Actual: ' + dt);
-    //restando los dias deseados
-    const dat = dt.setDate(dt.getDate() + dias);
-    const index = new Date(dat).getDay();
-    //mostrando el resultado
-    return { val: formatDate(dt), day: diasSemana[index] };
-  }
-
   function formatDateToISO(dateStr) {
     const [day, month, year] = dateStr.split('/');
     return `${year}-${month}-${day}`;
@@ -401,32 +174,12 @@ function getDayWeek(baseDate, offset) {
   console.log(formatDateToISO(getDay(-2).val));
   
 
-  const getBackgroundClass = (estado) => {
-    switch (estado) {
-      case "Operando":
-        return "bg-green-400";
-      case "Atraso-1":
-        return "bg-yellow-400";
-      case "Atraso-2":
-        return "bg-orange-400";
-      case "Falta":
-        return "bg-red-500";
-      case "Libre":
-        return "bg-gray-300";
-      default:
-        return "";
-    }
-  };
+ 
 
   
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
-  // Paginación
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = trabajo.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -438,13 +191,6 @@ function getDayWeek(baseDate, offset) {
   };
 
   const handleReload = () => {};
-
-  const dates = getDays([0, 1, 2, 3, 4, 5]);
-
-  const handleSelecAttendance = (selectModal, userId, date, status) => {
-    setModal(selectModal);
-    setAttendance({userId, date, status});
-  };
 
   return (
     <div className="overflow-x-auto">
@@ -476,173 +222,7 @@ function getDayWeek(baseDate, offset) {
                 />
               )}
               {item === "Flujo de Clientes" && (
-                <>
-                  <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
-                    <table className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400 shadow">
-                      <thead className="text-[10px] text-gray-700 uppercase bg-slate-200  sticky top-[0px] z-20">
-                        <tr className="">
-                          <th
-                            scope="col"
-                            className="w-[50px] px-3 py-1 text-gray-700"
-                          >
-                            Solicitud
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(-6).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(-5).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(-4).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(-3).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(-2).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(-1).val}
-                          </th>
-                        </tr>
-                        <tr className="">
-                          <th
-                            scope="col"
-                            className="w-[50px] px-3 py-1 text-gray-700"
-                          >
-                            Desembolso
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(0).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(1).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(2).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(3).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(4).val}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(5).val}
-                          </th>
-                        </tr>
-                        <tr className="">
-                          <th
-                            scope="col"
-                            className="w-[50px] px-3 py-1 text-gray-700"
-                          >
-                            Dia
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(0).day}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(1).day}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(2).day}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(3).day}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(4).day}
-                          </th>
-                          <th
-                            scope="col"
-                            className=" px-3 py-1 text-gray-700 text-center"
-                          >
-                            {getDay(5).day}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {filtro_1.map(
-                          (item, index) =>
-                            item !== "Todo" && (
-                              <tr
-                                key={index}
-                                className={`text-[12px] border-b bg-slate-50`}
-                              >
-                                <td className="px-3 py-2">{item}</td>
-                                {
-                                  dates.map((date, idx) => (
-                                  <td key={idx} className="px-3 py-2 text-center">
-                                    {filtro_2[date]?.[item]?.totalCobrado}/{filtro_2[date]?.[item]?.total}
-                                  </td>
-                                ))}
-                                {/* <td className="px-3 py-2">{item}</td> */}
-                                {/* <td className="px-3 py-2 text-center">
-                                {filtro_2[item]?.totalCobrado}/{filtro_2[item]?.total}
-                                </td>
-                                <td className="px-3 py-2 text-center">/</td>
-                                <td className="px-3 py-2 text-center">/</td>
-                                <td className="px-3 py-2 text-center">/</td>
-                                <td className="px-3 py-2 text-center">/</td> */}
-                              </tr>
-                            )
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </>
+                <TableCustomerFlow />
               )}
               {item === "Gestion de aplicaciones" && (
                 <Table
@@ -872,151 +452,7 @@ function getDayWeek(baseDate, offset) {
                 user.rol === "Manager de Auditoria" ||
                 user.rol === "Manager de Verificación") &&
                 item === "Asistencia" && (
-                  <table className="w-full min-w-[1000px] bg-white text-[14px] text-left text-gray-500 border-t-4  shadow">
-                    <thead className="text-[10px] text-gray-700 uppercase bg-slate-200 sticky top-[0px] z-20">
-                      <tr>
-                        <th className="px-3 py-2 border-y"></th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400 border-b-0"
-                        ></th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400"
-                        >
-                          LUNES
-                        </th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400"
-                        >
-                          MARTES
-                        </th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400"
-                        >
-                          MIÉRCOLES
-                        </th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400"
-                        >
-                          JUEVES
-                        </th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400"
-                        >
-                          VIERNES
-                        </th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400"
-                        >
-                          SÁBADO
-                        </th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border border-gray-400"
-                        >
-                          DOMINGO
-                        </th>
-                      </tr>
-                      <tr>
-                        <th className="px-3 py-2 border border-gray-400">
-                          <input type="checkbox" />
-                        </th>
-                        <th
-                          colSpan="1"
-                          className="px-4 py-2 text-gray-700 text-center border-b-0 border-t-white"
-                        >
-                          USUARIOS
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDayWeek(baseDate, 0).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDayWeek(baseDate, 1).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDayWeek(baseDate, 2).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDayWeek(baseDate, 3).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDayWeek(baseDate, 4).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDayWeek(baseDate, 5).val}
-                        </th>
-                        <th
-                          scope="col"
-                          className=" px-3 py-1 text-gray-700 text-center border border-gray-400"
-                        >
-                          {getDayWeek(baseDate, 6).val}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentItems.map((cobrador, index) => (
-                        <tr key={index} className="text-[12px]">
-                          <td
-                            className={`px-3 py-2 text-[12px] border-b bg-white ${
-                              selectedLeft === 1 ? "sticky left-0 z-10" : ""
-                            }`}
-                          >
-                            <input type="checkbox" />
-                          </td>
-                          <td className="px-4 py-2 border border-gray-400 bg-white">
-                            {cobrador.usuario}
-                          </td>
-                          {[...Array(7)].map((_, dayIndex) => {
-                            const asistencia = cobrador.asistencias[getDayWeek(baseDate, dayIndex).val];
-                            return (
-                              <td
-                                key={dayIndex}
-                                onClick={() =>
-                                  (asistencia === "Libre" || asistencia === "Falta") &&
-                                  handleSelecAttendance(
-                                    "Asistencia",
-                                    cobrador.id,
-                                    getDayWeek(baseDate, dayIndex).val,
-                                    asistencia
-                                  )
-                                }
-                                className={`px-4 py-2 border border-gray-400 ${(asistencia === "Libre" || asistencia === "Falta") ? 'cursor-pointer': ""} ${getBackgroundClass(
-                                  asistencia
-                                )}`}
-                              >
-                                {asistencia}
-                              </td>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </tbody>
-
-                  </table>
+                  <TableAttendance />
                 )}
             </div>
           )}

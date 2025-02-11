@@ -43,7 +43,7 @@ export default function FormAddTipoApp() {
             interesDiario: data.interesDiario,
             valorPrestamoMenosInteres: data.valorPrestamoMenosInteres,
             valorExtencion: data.valorExtencion,
-            tipo: data.tipo,
+            nivelDePrestamo: data.nivelDePrestamo,
         };
         
         console.log("data enviada: ", payload);
@@ -71,19 +71,19 @@ export default function FormAddTipoApp() {
             setAlerta('Operación exitosa!');
             console.log('Respuesta del servidor:', result);
         } catch (error) {
-            console.error('Error al agregar tipo:', error.message);
+            console.error('Error al agregar nivel:', error.message);
             setLoader('');
-            setAlerta('Error al agregar el tipo');
+            setAlerta('Error al agregar el nivel');
         }
     };
     
 
-    console.log("data add tipo: ", data);
+    console.log("data add nivel: ", data);
     
 
     return (
         <FormLayout>
-            <h4 className='w-full text-center text-gray-950'>Añadir tipo de aplicacion</h4>
+            <h4 className='w-full text-center text-gray-950'>Añadir nivel de aplicacion</h4>
 
             <div className='flex justify-between w-[100%]'>
                 <label htmlFor="valorPrestadoMasInteres" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
@@ -162,12 +162,12 @@ export default function FormAddTipoApp() {
                 />
             </div>
             <div className='flex justify-between w-[100%]'>
-                <label htmlFor="tipo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                <label htmlFor="nivelDePrestamo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Nivel:
                 </label>
                 <Input
                     type="number"
-                    name="tipo"
+                    name="nivelDePrestamo"
                     onChange={onChangeHandler}
                     placeholder="1"
                     required

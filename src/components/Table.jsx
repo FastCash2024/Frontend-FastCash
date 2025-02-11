@@ -582,7 +582,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               )}
                             {item?.toLowerCase().includes("aplicaciones") &&
                               it.toLowerCase() === "operar" && (
-                                <div className="relative flex max-w-[150px] justify-between space-x-3">
+                                <div className="relative flex max-w-[150px] pl-12 justify-between space-x-6">
                                   <button
                                     type="button"
                                     onClick={() => handlerApplication("Eliminar aplicacion", i)}
