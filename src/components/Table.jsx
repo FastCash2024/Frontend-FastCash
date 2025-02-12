@@ -300,7 +300,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                         return (
                           <td
                             key={index}
-                            className={` px-3 py-2 text-[12px] border border-[#e6e6e6] text-black ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#ffffff]"
+                            className={` px-3 py-2 text-[12px] border border-[#e6e6e6] text-black  ${it.toLowerCase().includes("número") ? "text-blue-600 cursor-pointer" : "text-gray-950"}  ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#ffffff]"
                               } 
                                 ${index < 3
                                 ? `sticky  bg-[#ffffff]
@@ -321,6 +321,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               }
                               text-center align-middle                             
                                 `}
+                            
                           >
                             {it === "Seleccionar" && (
                               <input
@@ -419,7 +420,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 formatearFecha(i[toCamelCase(it)])
                               )
                             }
-
+                          
                             {/* Operar Verficador */}
                             {it.toLowerCase() === "operar" &&
                               seccion.toLowerCase() === "verificacion" &&

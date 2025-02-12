@@ -4,7 +4,7 @@ const SearchInput = ({label, name, type, value, onChange, theme, placeholder, re
   return (
     <div className='flex justify-between'>
         <label htmlFor={name} className={`mr-5 text-[10px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark: text-whithe`}>{label}</label>
-        <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px] ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-gray-800 bg-gray-200'} dark:text-white dark:bg-transparent`} 
+        <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px] ${theme === 'light' ? ' text-gray-950 bg-white' : ' text-gray-800 bg-white'} dark:text-white dark:bg-transparent`} 
             name={name}
             onChange={onChange}
             value={value}

@@ -84,12 +84,12 @@ export default function PayPage() {
 
 
     return (
-        <div className="bg-gray-100 min-h-screen w-full flex justify-center items-center p-4">
+        <div className="bg-gray-100 min-h-screen w-full flex justify-center items-center p-4 bg-gradient-to-b from-blue-500 to-white">
             {(seccion?.toLowerCase() === "payment" || seccion?.toLowerCase() === "extension") && item === "data" ? (
-                <div className="w-[24%] mx-auto p-4 m-4 bg-white bg-gradient-to-b   ">
+                <div className="w-[24%] mx-auto p-4 m-4 bg-white shadow-2xl">
                     <main className="flex-grow">
                         {/* Logo */}
-                        <div className="flex justify-center mb-6">
+                        <div className="flex justify-center mb-6 w-full bg-gradient-to-t from-blue-500 to-white">
                             <div className="w-20 h-20 bg-white rounded-lg overflow-hidden">
                                 {itemData?.icon ? (
                                     <img
@@ -101,7 +101,7 @@ export default function PayPage() {
                                     />
                                 ) :
                                     (
-                                        <span className="text-white text-sm">N/A</span>
+                                        <span className="text-black text-sm">N/A</span>
                                     )
                                 }
                             </div>
@@ -109,7 +109,7 @@ export default function PayPage() {
                         <h2 className="text-xl text-center text-white mb-4">{itemData?.nombreDelProducto || "Producto"}</h2>
 
                         {/* Payment Amount Card */}
-                        <div className="bg-blue-500 text-white p-3 mb-3 rounded-lg">
+                        <div className="bg-blue-500 text-white p-3 mb-5 rounded-lg">
                             <div className="flex items-center gap-3">
                                 <div>
                                     <div className="text-sm opacity-90 capitalize">{seccion === 'payment' ? 'Monto de prestamo' : 'Pago para extension'}</div>
@@ -119,29 +119,29 @@ export default function PayPage() {
                         </div>
 
                         {/* Details Card */}
-                        <div className="bg-white p-3 mb-3 rounded-lg">
+                        <div className="bg-slate-100 p-3 mb-3 rounded-lg ">
                             <div className="space-y-3 text-sm ">
                                 <div className="flex justify-between border-b border-spacing-1 pb-2">
-                                    <div className="text-gray-900">Producto</div>
+                                    <div className="text-gray-900 font-bold ">Producto</div>
                                     <div className="text-gray-500">{itemData?.nombreDelProducto}</div>
                                 </div>
                                 <div className="flex justify-between border-b border-spacing-1 pb-2">
-                                    <div className="text-gray-900">{seccion === 'payment' ? 'Importe a Pagar' : 'Pago por Extension'}</div>
+                                    <div className="text-gray-900 font-bold">{seccion === 'payment' ? 'Importe a Pagar' : 'Pago por Extension'}</div>
                                     <div className="text-gray-500">{seccion === 'payment' ? itemData?.cantidadDispersada : itemData?.valorExtencion}</div>
                                 </div>
                                 <div className="flex justify-between border-b border-spacing-1 pb-2">
-                                    <div className="text-gray-900">Dias vencimiento</div>
+                                    <div className="text-gray-900 font-bold">Dias vencimiento</div>
                                     <div className={`text-gray-500 ${vencimiento?.color}`}>{vencimiento?.texto}</div>
                                 </div>
                                 <div className="flex justify-between border-b border-spacing-1 pb-2">
-                                    <div className="text-gray-900">Fecha de Vencimiento</div>
+                                    <div className="text-gray-900 font-bold">Fecha de Vencimiento</div>
                                     <div className="text-gray-500">{itemData?.fechaDeDispersion}</div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Payment Method Card */}
-                        <div className="bg-white p-3 mb-4 rounded-lg">
+                        <div className="bg-slate-100 p-3 mb-4 rounded-lg">
                             <h3 className="text-sm font-semibold mb-3 text-gray-950">Elige el metodo de pago</h3>
                             <div className="flex justify-between items-center text-sm">
                                 <div className="font-medium text-gray-950">SPEI</div>
