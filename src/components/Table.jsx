@@ -300,7 +300,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                         return (
                           <td
                             key={index}
-                            className={`px-3 py-2 text-[12px] border border-[#e6e6e6] text-black ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#ffffff]"
+                            className={` px-3 py-2 text-[12px] border border-[#e6e6e6] text-black ${index % 2 === 0 ? "bg-[#ffffff]" : "bg-[#ffffff]"
                               } 
                                 ${index < 3
                                 ? `sticky  bg-[#ffffff]
@@ -319,6 +319,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 } `
                                 : ""
                               }
+                              text-center align-middle                             
                                 `}
                           >
                             {it === "Seleccionar" && (
@@ -424,7 +425,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               seccion.toLowerCase() === "verificacion" &&
                               (item?.toLowerCase().includes("recolección") ||
                                 item?.toLowerCase().includes("lista")) && (
-                                <div className="flex justify-between space-x-3">
+                                <div className="flex justify-between space-x-3 ">
                                   <Link
                                     href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
                                     className=""
@@ -630,7 +631,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
                             {(item?.toLowerCase().includes("gestión de cuentas de colección") || item?.toLowerCase().includes("gestión de asesores") || item?.toLowerCase().includes("gestión de administradores") || item?.toLowerCase().includes("gestión de managers") || item?.toLowerCase().includes("gestión de rh")) &&
                               it.toLowerCase() === "operar" && (
-                                <div className="relative flex max-w-[150px] justify-between space-x-3">
+                                <div className="flex justify-center">
                                   <button
                                     onClick={() => handlerEditCuenta('Editar cuenta', i)}
                                     type="button"

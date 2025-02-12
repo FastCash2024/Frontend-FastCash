@@ -10,7 +10,7 @@ import { useAppContext } from '@/context/AppContext'
 import { menuArray } from '@/constants'
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-
+import Alert from '@/components/Alert';
 import Link from 'next/link';
 
 import ReCAPTCHA from "react-google-recaptcha";
@@ -23,7 +23,7 @@ export default function Home() {
   const [isDisable, setIsDisable] = useState(false)
   const [captcha, setCaptcha] = useState('')
   const router = useRouter()
-
+  const [errorMessage, setErrorMessage] = useState(null);
   const recaptchaRef = React.useRef();
 
   const onSubmitWithReCAPTCHA = async (e) => {
@@ -52,7 +52,7 @@ export default function Home() {
         router.push('/Home')
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      setErrorMessage(error.response?.data?.message || 'Error al iniciar sesión');
     }
 
     // captcha.length > 10 && router.push('/Home?seccion=coleccion&item=Casos%20de%20Cobranza')
@@ -73,7 +73,7 @@ export default function Home() {
 
   return (
     <div className='relative w-screen h-screen flex flex-col justify-center items-center p-5  bg-gradient-to-t md:bg-gradient-to-tl from-gray-900 from-50% to-gray-200 to-50%'>
-
+      {errorMessage && <Alert type="error" onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>}
       <img src="bg2.jpg" className='fixed top-0 left-0 h-screen w-screen object-cover' alt="" />
       <div className='fixed top-0 left-0 h-screen w-screen bg-[#131920da] z-20'></div>
       <span className='absolute top-[20px] left-[30px] z-30 text-[60px] bg-gradient-to-r from-blue-400 from-50%  to-orange-400 to-50% bg-clip-text text-transparent'  > Fast Cash</span>
