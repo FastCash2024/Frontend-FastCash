@@ -420,10 +420,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                     </div>
 
-                    <div className='flex space-x-12 w-[1150px]   mb-0'>
-                        <div className='w-[300px] space-y-2'>
+                    <div className='flex space-x-12 w-full mb-0 p-5 bg-slate-100 shadow-xl'>
+                        <div className='w-[350px] space-y-3'>
                             <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Producto del proyecto:
                                 </label>
                                 <SelectSimple click={handlerSelectClick} arr={filtro_1} name='nombreDelProducto' defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
@@ -438,27 +438,27 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 required
                             />
                             <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de reembolso:
                                 </label>
                                 <SelectSimple arr={[...estadoRembolso, 'Reembolso Parcial']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Angsuran:
                                 </label>
                                 <SelectSimple arr={['Por favor elige', 'Si', 'No']} name='Clientes nuevos y antiguos' click={handlerSelectClick} defaultValue={filter['Clientes nuevos y antiguos']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-                            <div className='flex justify-between space-x-3'>
+                            <div className='flex space-x-3 p-4'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
-                                    <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+                                    <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Consultar</button>
                                 </Link>
                                 <Link href={`?seccion=${seccion}&item=${item}`}>
                                     <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
                                 </Link>
                             </div>
                         </div>
-                        <div className='w-[320px] space-y-2'>
+                        <div className='w-[350px] space-y-3'>
                             <SearchInput
                                 label="Número de prestamo:"
                                 name="numeroDePrestamo"
@@ -509,8 +509,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Dias vencidos:
                                 </label>
                                 <div className='grid grid-cols-2 gap-2'>
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Minimo dias vencido' onChange={onChangeHandler} placeholder='Minimo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Maximo dias vencido' onChange={onChangeHandler} placeholder='Maximo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-white' : ' text-black bg-white'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Minimo dias vencido' onChange={onChangeHandler} placeholder='Minimo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                    <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-white' : ' text-black bg-white'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Maximo dias vencido' onChange={onChangeHandler} placeholder='Maximo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                                 </div>
                             </div>
                             <MultipleInput
@@ -622,7 +622,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de ' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
 
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between flex space-x-2'>
                                 <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
                                 <button type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
                             </div>

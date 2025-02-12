@@ -38,7 +38,7 @@ export default function Modal() {
             body: JSON.stringify({ content: textEditor2 }),
         });
         const data = await response.json();
-        console.log(data);
+        console.log(data);  
         setLoader('')
     };
 
@@ -51,8 +51,7 @@ export default function Modal() {
 
     useEffect(() => {
         getData()
-    }, [loader])
-
+    }, [])
 
     console.log('data', data)
     return (seccion ==='comunicacion' && <div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
@@ -66,7 +65,7 @@ export default function Modal() {
             }
             <div className='text-black'>
 
-                {data?.reverse().map((item, index) => {
+                {data?.slice(0).reverse().map((item, index) => {
                     return (
                         <p key={index} className='ql-editor' dangerouslySetInnerHTML={{ __html: item.content }} />
                     );
