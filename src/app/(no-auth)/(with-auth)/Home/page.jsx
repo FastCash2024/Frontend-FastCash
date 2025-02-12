@@ -9,6 +9,7 @@ import Modals from '@/components/Modals'
 import { useRouter } from 'next/navigation';
 import Alerts from '@/components/Alerts'
 import TablesAdminAccounts from '@/components/TablesAdminAccounts'
+import TablesPersonalAccounts from '@/components/TablesPersonalAccounts'
 import Newslater from '@/components/Newslater'
 
 export default function Home() {

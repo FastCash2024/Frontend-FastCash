@@ -18,6 +18,7 @@ import {
 } from '@/constants/index'
 import Link from 'next/link';
 import SelectField from './SelectField';
+import { getBackgroundClass } from '@/utils/colors';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setApplicationTipo, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const searchParams = useSearchParams()
@@ -90,7 +91,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     };
 
     useEffect(() => {
-        if (applicationId !== null || applicationId !== undefined ) {
+        if (applicationId !== null || applicationId !== undefined) {
             void fetchDataApplication();
         }
     }, [applicationId])
@@ -119,7 +120,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             console.log("Respuesta API:", responseData);
 
             if (responseData?.data?.horaEntrada) {
-                setHoraEntrada(responseData.data.horaEntrada);
+                console.log("hora: ", responseData.data);
+
+                setHoraEntrada(responseData.data);
             } else {
                 const horaActual = new Date().toISOString().split("T")[1].slice(0, 5);
                 setHoraEntrada(horaActual);
@@ -133,7 +136,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     useEffect(() => {
         obtenerHoraEntrada();
-    }, [horaEntrada, loader]);
+    }, [loader]);
 
 
     function onChangeHandler(e) {
@@ -141,6 +144,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setFilter(db)
         setQuery(objectToQueryString(db))
     }
+
+    console.log("query: ", query);
+
 
     function onChangeHandlerDate(e) {
         const { name, value } = e.target;
@@ -235,7 +241,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         console.log(`Fecha seleccionada (${name}):`, formattedDate);
     }
     console.log("datos filtrados: ", filter);
-    console.log("query: ", query);
+    console.log("datos query: ", query);
 
     const handlerApplication = () => {
         setModal('Modal Agregar Tipo Aplicaion');
@@ -579,7 +585,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                     </div>
                 </div> */}
-               
+
 
 
 
@@ -776,13 +782,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     {/*-------- FILTERS */}
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
-
+                            <div className='flex justify-between'>
+                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                    Fecha de tramitacion de cobro:
+                                </label>
+                                <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='fechaDeTramitacionDeCobro' onChange={onChangeHandler} defaultValue={filter['fechaDeTramitacionDeCobro']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                            </div>
                         </div>
-                        <div className='w-[300px] space-y-2'>
 
-                        </div>
                         <div className='w-[300px] space-y-2'>
-
+                            <div className='flex justify-center space-x-3'>
+                                <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                    <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+                                </Link>
+                                <Link href={`?seccion=${seccion}&item=${item}`}>
+                                    <button onClick={resetFilter} type="button" class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                </Link>
+                            </div>
                         </div>
                     </div>
                     {/*-------- BUTTONS */}
@@ -1028,7 +1044,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     </Link>
                                 </div>
                             </div>
-                            <div className='flex flex-row w-[500px] space-y-2'>
+                            <div className='flex flex-row w-[1000px] space-y-2'>
                                 <div className='flex justify-center space-x-3'>
                                     <button
                                         type="button"
@@ -1041,9 +1057,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                                 {/* Mostrar la hora de entrada con la fecha */}
                                 {horaEntrada && (
-                                    <div className="text-gray-950 dark:text-white mt-2">
-                                        <p className="text-[12px]">Hora de entrada: {horaEntrada}</p>
-                                    </div>
+                                    <>
+                                        <div className="text-gray-950 dark:text-white mt-2">
+                                            <p className="text-[12px]">Hora de entrada: {horaEntrada.horaEntrada}</p>
+                                        </div>
+                                        <div className="flex flex-row justify-center text-xs text-gray-950 dark:text-white mt-2">
+                                            {horaEntrada.estadosDeAsistencia.map((estado, index) => (
+                                            <p key={index} className={`px-4 pt-0 ${getBackgroundClass(estado.estado)}`}>
+                                                {estado.rango}: {estado.estado}
+                                            </p>
+                                        ))}
+                                        </div>
+                                    </>
                                 )}
                             </div>
                         </div>

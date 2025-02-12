@@ -2,15 +2,48 @@
 
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
+import { getBackgroundClass } from "@/utils/colors";
 
-export default function FormTymeEntry() {
+export default function FormTimeEntry() {
     const { setAlerta, setLoader, setModal } = useAppContext();
     const [data, setData] = useState({
         horaEntrada: "",
+        estadosDeAsistencia: [
+            { rango: "No definido", estado: "Operando" },
+            { rango: "No definido", estado: "Atraso-1" },
+            { rango: "No definido", estado: "Atraso-2" },
+            { rango: "No definido", estado: "Falta" }
+        ]
     });
 
     function onChangeHandler(e) {
-        setData({ ...data, [e.target.name]: e.target.value });
+        const horaEntrada = e.target.value;
+        setData({ ...data, horaEntrada });
+        calcularEstadosDeAsistencia(horaEntrada);
+    }
+
+    function calcularEstadosDeAsistencia(horaEntrada) {
+        const [hora, minuto] = horaEntrada.split(":").map(Number);
+        const entrada = hora * 60 + minuto;
+        const salida = entrada + 8 * 60; // 8 horas después de la entrada
+
+        const estados = [
+            { rango: `${formatTime(entrada)}-${formatTime(entrada + 14)}`, estado: "Operando" },
+            { rango: `${formatTime(entrada + 15)}-${formatTime(entrada + 20)}`, estado: "Atraso-1" },
+            { rango: `${formatTime(entrada + 21)}-${formatTime(entrada + 25)}`, estado: "Atraso-2" },
+            { rango: `${formatTime(entrada + 26)}-${formatTime(salida)}`, estado: "Falta" }
+        ];
+
+        setData(prevData => ({
+            ...prevData,
+            estadosDeAsistencia: estados
+        }));
+    }
+
+    function formatTime(minutes) {
+        const h = Math.floor(minutes / 60) % 24; // Ajustar para que no exceda 24 horas
+        const m = minutes % 60;
+        return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
     }
 
     // Función para registrar la hora de entrada
@@ -22,10 +55,10 @@ export default function FormTymeEntry() {
 
         const requestData = {
             horaEntrada: data.horaEntrada,
+            estadosDeAsistencia: data.estadosDeAsistencia
         };
 
         console.log("requestData: ", requestData);
-        
 
         try {
             setLoader("Guardando...");
@@ -40,14 +73,13 @@ export default function FormTymeEntry() {
                     body: JSON.stringify(requestData)
                 });
 
-          
             console.log("response: ", response);
-            
+
             if (!response.ok) {
                 setLoader("");
                 setAlerta("Error al registrar la hora de entrada");
             }
-            
+
             setAlerta("Hora de entrada registrada correctamente!");
             setModal("");
             setLoader("");
@@ -64,7 +96,7 @@ export default function FormTymeEntry() {
             onClick={() => setModal(false)}
         >
             <div
-                className="relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[200px] p-5 space-y-5 rounded-[5px]"
+                className="relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[400px] p-5 space-y-5 rounded-[5px]"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button
@@ -87,6 +119,13 @@ export default function FormTymeEntry() {
                         className="text-[10px] p-2 w-[200px] focus:outline-none bg-gray-100 border-[1px] border-gray-300 rounded-[5px]"
                         required
                     />
+                </div>
+                <div className="relative flex flex-col w-[300px] text-gray-950">
+                    {data.estadosDeAsistencia.map((estado, index) => (
+                        <p key={index} className={`p-2 ${getBackgroundClass(estado.estado)}`}>
+                            {estado.rango}: {estado.estado}
+                        </p>
+                    ))}
                 </div>
 
                 <button
