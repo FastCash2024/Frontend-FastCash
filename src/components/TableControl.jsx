@@ -11,7 +11,7 @@ export default function TableControl() {
     setCheckedArr,
     loader,
     setModal,
-    setItemSelected
+    setMulta
   } = useAppContext();
 
   const [cases, setCases] = useState([]);
@@ -39,8 +39,8 @@ export default function TableControl() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor&limit=${limit}&page=${page}`
-        : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor&limit=${limit}&page=${page}`
+        ? `http://localhost:3000/api/multas/multas?limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/multas/multas?limit=${limit}&page=${page}`
     );
     const result = await res.json();
     console.log("data users: ", result);
@@ -60,16 +60,6 @@ export default function TableControl() {
     const result = await res.json();
     setCases(result.data);
   }
-
-  // async function handlerFetchVerification(date) {
-  //   const res = await fetch(
-  //     window?.location?.href?.includes("localhost")
-  //       ? `http://localhost:3000/api/verification?estadoDeCredito=Pagado&fechaDeTramitacionDelCaso=${date}`
-  //       : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Reprobado,Dispersado&fechaDeTramitacionDelCaso=${date}`
-  //   );
-  //   const result = await res.json();
-  //   setCases(result.data);
-  // }
 
   async function handlerFetchVerificationCobrador(date) {
     const res = await fetch(
@@ -96,38 +86,39 @@ export default function TableControl() {
     setItemsPerPage(itemsPerPage);
     setCurrentPage(1);
   };
-
-  async function handlerFetchDetails() {
-    const res = await fetch(
-      window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
-        : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
-    const data = await res.json()
-    console.log("data detalle: ", data)
-    setDetails(data.data)
-  }
-
-  useEffect(() => {
-    handlerFetchDetails();
-    setCheckedArr([]);
-  }, []);
-
+  
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
   }
+  
+  // async function handlerFetchDetails() {
+  //   const res = await fetch(
+  //     window?.location?.href?.includes('localhost')
+  //       ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
+  //       : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
+  //   const data = await res.json()
+  //   console.log("data detalle: ", data)
+  //   setDetails(data.data)
+  // }
+
+  useEffect(() => {
+    // handlerFetchDetails();
+    setCheckedArr([]);
+  }, []);
+
 
   function handlerEditCuenta(modal, i) {
-    setItemSelected(i);
+    setMulta(i);
     setModal(modal);
   }
-
+  
   return (
     <>
       <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
         <table className="w-full min-w-[200px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
           <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
             <tr className=" bg-slate-200">
-              <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA(APODO DEL USUARIO)</th>
+              <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA</th>
               <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
               <th className="px-4 py-2 text-gray-700">APROBADOS/REPROBADOS</th>
               <th className="px-4 py-2 text-gray-700">PAGADOS/PTP</th>
@@ -143,28 +134,29 @@ export default function TableControl() {
                   }`}
               >
 
-                <td className="px-4 py-2 bg-[#ffffff]">{i.cuenta}</td>
-                <td className="px-4 py-2 bg-[#ffffff]">{i.emailPersonal}</td>
+                <td className="px-4 py-2 bg-[#ffffff]">{i.cuentaOperativa}</td>
+                <td className="px-4 py-2 bg-[#ffffff]">{i.cuentaPersonal}</td>
 
                 <td className="px-4 py-2 bg-[#ffffff]">
                   {
-                    cases?.filter((it) => it.cuentaVerificador === i.cuenta)
+                    cases?.filter((it) => it.cuentaVerificador === i.cuentaOperativa)
                       .length
                   }
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
                   {
-                    casesCobrador?.filter((it) => it.cuentaCobrador === i.cuenta)
-                      .length
+                    casesCobrador?.filter((it) => it.cuentaCobrador === i.cuentaOperativa)
+                    .length
                   }
                 </td>
+                <td className="px-4 py-2 bg-[#ffffff]">{i.acotacion}</td>
                 <td className="px-4 py-2 bg-[#ffffff]">
                   <button
-                    onClick={() => handlerEditCuenta('Multar cuenta', i)}
+                    onClick={() => handlerEditCuenta('Editar Multar cuenta', i)}
                     type="button"
                     class="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                   >
-                    MULTAR
+                    EDITAR
                   </button>
                 </td>
 

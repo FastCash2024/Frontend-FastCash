@@ -82,6 +82,9 @@ export default function TableAtencionAlCliente() {
     handlerFetch(itemsPerPage, currentPage);
   };
 
+  console.log("data Client: ", data);
+  
+
   return (
     <>
       <div className="pb-2 overflow-visible relative scroll-smooth">

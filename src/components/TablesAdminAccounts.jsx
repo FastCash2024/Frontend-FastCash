@@ -456,7 +456,7 @@ export default function Home() {
                 )}
             </div>
           )}
-          {trabajo.length > 0 && item === "Asistencia" && user.rol !== "Cuenta Personal" && (
+          {/* {trabajo.length > 0 && item === "Asistencia" && user.rol !== "Cuenta Personal" && (
             <Paginator
               totalItems={trabajo.length}
               itemsPerPage={itemsPerPage}
@@ -465,7 +465,7 @@ export default function Home() {
               onItemsPerPageChange={handleItemsPerPageChange}
               onReload={handleReload}
             />
-          )}
+          )} */}
         </div>
       </main>
     </div>

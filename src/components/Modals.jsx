@@ -74,6 +74,7 @@ import FormAddTipoApp from '@/components/formModals/FormAddTipoApp'
 import FormUpdateTipoApp from '@/components/formModals/FormUpdateTipoApp'
 import ModalDeleteTipoApp from '@/components/modals/ModalDeleteTipoApp'
 import FormAddMulta from '@/components/formModals/FormAddMulta'
+import FormUpdateMulta from './formModals/FormUpdateMulta'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -207,12 +208,6 @@ export default function Home() {
         "Promete a pagar",
         "Pagará pronto"
     ];
-
-
-
-
-
-
 
 
     function handlerDistribution() {
@@ -539,9 +534,10 @@ export default function Home() {
             {modal === 'Modal Editar Tipo Aplicaion' && <FormUpdateTipoApp />}
             {modal === 'Eliminar tipo aplicacion' && <ModalDeleteTipoApp />}
             
-            {/* ---------------------------------'GESTION DE APLICACION' --------------------------------- */}
+            {/* ---------------------------------'GESTION DE MULTAS' --------------------------------- */}
 
             {modal === 'Multar cuenta' && <FormAddMulta />}
+            {modal === 'Editar Multar cuenta' && <FormUpdateMulta />}
         </div>
     )
 }

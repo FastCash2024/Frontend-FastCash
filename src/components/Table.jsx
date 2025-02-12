@@ -15,6 +15,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { Paginator } from "./Paginator";
 import { formatearFecha } from "@/utils";
+import { reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
 
 const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   const {
@@ -40,6 +41,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     exchange,
     setExchange,
     destinatario,
+    setMulta,
     setDestinatario,
     setApplication,
     setApplicationTipo,
@@ -211,7 +213,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   }
 
   function handlerEditCuenta(modal, i) {
-    setItemSelected(i);
+    setMulta(i);
     setModal(modal);
   }
 
@@ -252,6 +254,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   console.log("data desde table: ", data);
   // console.log("data filter: ", data);
 
+  const header = reestructurarArray(headArray);  
+  const headerBody = reestructurarArrayForBody(headArray);
+  console.log("header: ", header);
+  console.log("header body: ", headerBody);
+
   return (
     access && (
       <>
@@ -259,7 +266,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
           <table className="min-w-full shadow border-collapse drop-shadow-2xl ">
             <thead className="bg-[#e0e0e0] text-[10px] uppercase sticky top-[0px] z-10">
               <tr className="text-gray-700 min-w-[2500px]">
-                {headArray().map((i, index) => (
+                {header.map((i, index) => (
                   <th
                     scope="col"
                     key={index}
@@ -296,7 +303,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                 data.map((i, index) => {
                   return (
                     <tr key={index} className="text-[12px] border-b ">
-                      {headArray().map((it, index) => {
+                      {headerBody.map((it, index) => {
                         return (
                           <td
                             key={index}
@@ -644,11 +651,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex max-w-[150px] justify-between space-x-3">
                                   <button
-                                    onClick={() => handlerEditCuenta('Multar cuenta', i)}
+                                    onClick={() => handlerEditCuenta('Editar Multar cuenta', i)}
                                     type="button"
                                     class="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
-                                    Modificar
+                                    Editar
                                   </button>
                                 </div>
                               )}

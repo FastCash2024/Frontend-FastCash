@@ -4,29 +4,33 @@ import { useEffect, useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import Input from "@/components/Input";
-import SelectSimple from "@/components/SelectSimple";
 import { useSearchParams } from "next/navigation";
+import SelectSimple from "@/components/SelectSimple";
 
 const optionsArray = [
     "Sin Observaciones",
     "Con Observaciones",
 ];
 
-export default function FormAddMulta() {
-    const { user, userDB, itemSelected, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, setItemSelected } = useAppContext()
+export default function FormUpdateMulta() {
+    const { multa, userDB, itemSelected, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, setItemSelected } = useAppContext()
     const { theme, toggleTheme } = useTheme();
-    const [data, setData] = useState({})
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
-    const [dataUser, setDataUser] = useState([]);
+    const [data, setData] = useState({})
     const [value, setValue] = useState("Por favor elige");
 
-    console.log("item selected: ", userDB);
-
-    function onChangeHandler(e) {
-        setData({ ...data, [e.target.name]: e.target.value })
-    }
+    useEffect(() => {
+        if (multa) {
+            setData({
+                importeMulta: multa.importeMulta,
+                acotacion: multa.acotacion,
+                observaciones: multa.observaciones ?? "Por favor elige"
+            });
+        }
+    }, [multa]);
+    console.log("multa selected: ", multa);
 
     function handlerSelectClick(name, i, uuid) {
         setValue(i);
@@ -36,45 +40,23 @@ export default function FormAddMulta() {
         }));
     }
 
-    async function handlerFetch(limit, page) {
-        const res = await fetch(
-            window?.location?.href?.includes("localhost")
-                ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
-                : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
-        );
-        const result = await res.json();
-        console.log("data item selected: ", result);
-        setDataUser(result);
+
+    function onChangeHandler(e) {
+        setData({ ...data, [e.target.name]: e.target.value })
     }
-
-    // async function handlerFetchDetails() {
-    //     const res = await fetch(
-    //         window?.location?.href?.includes('localhost')
-    //             ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
-    //             : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
-    //     const data = await res.json()
-    //     console.log("data detalle: ", data)
-    //     setDetails(data.data)
-    // }
-
-    useEffect(() => {
-        handlerFetch();
-    }, [loader]);
 
     const saveMulta = async (e) => {
         e.preventDefault();
         try {
-            setLoader('Guardando...');
-            if (data.observaciones === "Por favor elige") {
+
+            if (value === "Por favor elige" || data.observaciones === "Por favor elige") {
                 setAlerta("Falta Observaciones!");
                 return;
             }
+            setLoader('Guardando...');
 
             const multaData = {
                 importeMulta: data.importeMulta,
-                cuentaOperativa: itemSelected.cuenta,
-                cuentaPersonal: itemSelected.emailAsesor ?? itemSelected.emailPersonal,
-                fechaDeOperacion: itemSelected.fecha ?? new Date().toISOString(),
                 fechaDeAuditoria: new Date().toISOString(),
                 acotacion: data.acotacion,
                 cuentaPersonalAuditor: userDB.emailPersonal,
@@ -84,10 +66,14 @@ export default function FormAddMulta() {
             };
             console.log("data a enviar: ", multaData);
 
-            const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/multas/multas`
-                : `https://api.fastcash-mx.com/api/multas/multas`, {
-                method: 'POST',
+            const finalURL = window?.location?.href?.includes('localhost')
+                ? `http://localhost:3000/api/multas/multas/${multa._id}`
+                : `https://api.fastcash-mx.com/api/multas/multas/${multa._id}`;
+
+            console.log("final url: ", finalURL);
+
+            const response = await fetch(finalURL, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -127,7 +113,7 @@ export default function FormAddMulta() {
                 >
                     X
                 </button>
-                <h4 className="text-gray-950">Multa</h4>
+                <h4 className="text-gray-950">Actualizar Multa</h4>
                 <div className='flex justify-between w-[300px]'>
                     <label htmlFor="importeMulta" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                         Importe multa:
@@ -136,6 +122,7 @@ export default function FormAddMulta() {
                         type="number"
                         name="importeMulta"
                         onChange={onChangeHandler}
+                        value={data.importeMulta || ''}
                         placeholder="132123"
                         required
                     />
@@ -148,7 +135,7 @@ export default function FormAddMulta() {
                         arr={optionsArray}
                         name="observaciones"
                         click={handlerSelectClick}
-                        defaultValue={value}
+                        defaultValue={data.observaciones}
                         uuid="123"
                         label="Filtro 1"
                         position="absolute left-0 top-[25px]"
@@ -162,7 +149,9 @@ export default function FormAddMulta() {
                     </label>
                     <textarea
                         name="acotacion"
-                        className="text-[10px] p-2 w-[200px] focus:outline-none bg-gray-100 border-[1px] border-gray-300 rounded-[5px]" onChange={onChangeHandler}
+                        className="text-[10px] p-2 w-[200px] focus:outline-none bg-gray-100 border-[1px] border-gray-300 rounded-[5px]"
+                        onChange={onChangeHandler}
+                        value={data.acotacion || ''}
                     ></textarea>
                 </div>
                 <button

@@ -16,19 +16,22 @@ export default function Page() {
   const [totalDocuments, setTotalDocuments] = useState(0);
   const searchParams = useSearchParams();
   const caso = searchParams.get("caso");
-
+  
+  
+  
   const fetchData = async (limit, page, id) => {
     try {
-      const res = await fetch(
-        window?.location?.href?.includes("localhost")
-          ? `http://localhost:3000/api/chat/${id}?limit=${limit}&page=${page}`
-          : `https://api.fastcash-mx.com/api/chat/${id}?limit=${limit}&page=${page}`
-      );
+      
+      const finalURL = window?.location?.href?.includes("localhost")
+      ? `http://localhost:3000/api/chat/${id}?limit=${limit}&page=${page}`
+      : `https://api.fastcash-mx.com/api/chat/${id}?limit=${limit}&page=${page}`;
+      
+      const res = await fetch(finalURL);
       const response = await res.json();
       setMessages(response.mensajes);
       setTotalDocuments(response.totalDocuments);
-      setTotalPages(response.totalPages);
-      setCurrentPage(response.currentPage);
+      setTotalPages(response.totalPages ?? 0);
+      setCurrentPage(response.currentPage ?? 1);
     } catch (error) {
       console.error("Error al cargar los mensajes:", error);
     }
@@ -36,7 +39,13 @@ export default function Page() {
 
   useEffect(() => {
     fetchData(itemsPerPage, currentPage, caso);
-  }, [loader, itemsPerPage, currentPage]);
+  }, [loader, itemsPerPage, currentPage, searchParams]);
+
+  // useEffect(() => {
+  //         handlerFetch(itemsPerPage, currentPage)
+  //     }, [loader, searchParams, itemsPerPage, currentPage])
+  
+  console.log("total docs: ", totalDocuments);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
