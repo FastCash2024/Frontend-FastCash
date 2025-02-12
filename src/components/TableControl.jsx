@@ -129,8 +129,9 @@ export default function TableControl() {
             <tr className=" bg-slate-200">
               <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA(APODO DEL USUARIO)</th>
               <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
-              <th className="px-4 py-2 text-gray-700">TOTAL CASOS VERIFICADOR</th>
-              <th className="px-4 py-2 text-gray-700">TOTAL CASOS COBRADOR</th>
+              <th className="px-4 py-2 text-gray-700">APROBADOS/REPROBADOS</th>
+              <th className="px-4 py-2 text-gray-700">PAGADOS/PTP</th>
+              <th className="px-4 py-2 text-gray-700">ACOTACION</th>
               <th className="px-4 py-2 text-gray-700">OPERACION</th>
             </tr>
           </thead>

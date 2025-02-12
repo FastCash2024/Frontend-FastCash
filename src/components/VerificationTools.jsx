@@ -154,7 +154,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 name2="fechaDeReembolso"
                                 label="Fecha de Reembolso: "
                             />
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <Button type="button" theme={'Success'} >Consultar</Button>
                                 </Link>

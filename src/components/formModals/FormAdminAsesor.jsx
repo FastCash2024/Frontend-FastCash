@@ -195,7 +195,7 @@ export default function AddAccount() {
                     type='text'
                     className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
                     name='numeroDeTelefonoMovil'
-                    defaultValue={checkedArr[0].numeroDeTelefonoMovil}
+                    defaultValue={checkedArr[0]?.numeroDeTelefonoMovil}
                     placeholder=''
                     uuid='123'
                     label='Filtro 1'

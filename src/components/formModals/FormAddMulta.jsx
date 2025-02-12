@@ -13,7 +13,7 @@ export default function FormAddMulta() {
     const [dataUser, setDataUser] = useState([]);
 
 
-    console.log("item selected: ", itemSelected);
+    console.log("item selected: ", userDB);
 
     function onChangeHandler(e) {
         setData({ ...data, [e.target.name]: e.target.value })
@@ -56,6 +56,8 @@ export default function FormAddMulta() {
                 fechaDeOperacion: itemSelected.fecha ?? new Date().toISOString(),
                 fechaDeAuditoria: new Date().toISOString(),
                 acotacion: data.acotacion,
+                cuentaPersonalAuditor: userDB.emailPersonal,
+                cuentaAuditor: userDB.cuenta,
             };
             console.log("data a enviar: ", multaData);
 
@@ -102,7 +104,7 @@ export default function FormAddMulta() {
                 >
                     X
                 </button>
-                <h4 className="text-gray-950">Registro de multa</h4>
+                <h4 className="text-gray-950">Multa</h4>
                 <div className='flex justify-between w-[300px]'>
                     <label htmlFor="importeMulta" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                         Importe multa:
