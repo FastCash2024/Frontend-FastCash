@@ -87,17 +87,24 @@ export default function AddAccount() {
                 'codificacionDeRoles': 'Cuenta Personal',
                 ...data,
             };
-            // console.log(db);
+            console.log("imprimir: ", checkedArr);
 
-            const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/auth/registerPersonal/${checkedArr[0]._id}`
-                : `https://api.fastcash-mx.com/api/auth/registerPersonal/${checkedArr[0]._id}`, {
+            const finalURL = window?.location?.href?.includes('localhost')
+                ? `http://localhost:3000/api/auth/registerPersonal/${checkedArr._id}`
+                : `https://api.fastcash-mx.com/api/auth/registerPersonal/${checkedArr._id}`;
+
+            console.log("imprimir url: ", finalURL);
+
+            const response = await fetch(finalURL, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(db),
             });
+
+            console.log("imprimir response: ", response.ok);
+
 
             if (!response.ok) {
                 setLoader('')
@@ -106,9 +113,9 @@ export default function AddAccount() {
             }
 
             const result = await response.json();
-            console.log(result);
+            console.log("imprimir result: ", result);
 
-            const res = await fetch(window?.location?.href?.includes('localhost')
+            await fetch(window?.location?.href?.includes('localhost')
                 ? 'http://localhost:3000/api/email/send'
                 : `https://api.fastcash-mx.com/api/email/send`, {
                 method: 'POST',
@@ -116,7 +123,7 @@ export default function AddAccount() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    email: checkedArr[0].email,
+                    email: checkedArr.email,
                     subject: 'Credenciales FastCash',
                     html: `<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
@@ -127,10 +134,10 @@ export default function AddAccount() {
         </tr>
         <tr>
             <td style="padding: 20px; color: #333333;">
-                <p>Hola ${checkedArr[0].email},</p>
+                <p>Hola ${checkedArr.email},</p>
                 <p>Nos complace darte la bienvenida a FastCash-MX. A continuación, encontrarás tus credenciales de acceso a tu cuenta personal:</p>
                 <p style="font-size: 16px;">
-                    <strong>Email:</strong> <span style="color: #4CAF50;">${checkedArr[0].email}</span><br>
+                    <strong>Email:</strong> <span style="color: #4CAF50;">${checkedArr.email}</span><br>
                     <strong>Contraseña:</strong> <span style="color: #4CAF50;">${db.password}</span>
                 </p>
                 <p>Para iniciar sesión, haz clic en el siguiente enlace:</p>
@@ -152,6 +159,8 @@ export default function AddAccount() {
                 }),
             });
 
+            // console.log("imprimir email: ", responseEmail);
+            
             setAlerta('Operación exitosa!')
             setModal('')
             setLoader('')
@@ -189,13 +198,13 @@ export default function AddAccount() {
             </div>
             <div className='flex justify-between'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                Numero De Telefono Movil:
+                    Numero De Telefono Movil:
                 </label>
                 <input
                     type='text'
                     className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'}  dark:bg-transparent`}
                     name='numeroDeTelefonoMovil'
-                    defaultValue={checkedArr[0]?.numeroDeTelefonoMovil}
+                    defaultValue={checkedArr?.numeroDeTelefonoMovil}
                     placeholder=''
                     uuid='123'
                     label='Filtro 1'

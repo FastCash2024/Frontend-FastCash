@@ -11,10 +11,12 @@ export default function Home() {
             {alerta === 'Operación exitosa!' && <Alert
                 type={'success'}
                 duration={5000}
+                textColor={"text-gray-white"}
                 onClose={() => setAlerta('')}
             >{alerta}</Alert>}
             {alerta === 'Error de datos!' && <Alert
                 type={'error'}
+                textColor={"text-gray-950"}
                 duration={5000}
                 onClose={() => setAlerta('')}
             >{alerta}</Alert>}

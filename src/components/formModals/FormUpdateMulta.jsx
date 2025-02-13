@@ -26,8 +26,11 @@ export default function FormUpdateMulta() {
             setData({
                 importeMulta: multa.importeMulta,
                 acotacion: multa.acotacion,
-                observaciones: multa.observaciones ?? "Por favor elige"
+                cuentaOperativa: multa.cuentaOperativa,
+                cuentaPersonal: multa.cuentaPersonal,
+                observaciones: multa.observaciones
             });
+            setValue(multa.observaciones)
         }
     }, [multa]);
     console.log("multa selected: ", multa);
@@ -48,10 +51,11 @@ export default function FormUpdateMulta() {
     const saveMulta = async (e) => {
         e.preventDefault();
         try {
+            console.log("data a enviar: ", value);
+            console.log("data a enviar: ", data.observaciones);
 
             if (value === "Por favor elige" || data.observaciones === "Por favor elige") {
                 setAlerta("Falta Observaciones!");
-                return;
             }
             setLoader('Guardando...');
 
@@ -104,7 +108,7 @@ export default function FormUpdateMulta() {
             onClick={() => setModal(false)}
         >
             <div
-                className="relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[300px] p-5 space-y-5 rounded-[5px]"
+                className="relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[400px] p-5 space-y-5 rounded-[5px]"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button
@@ -113,7 +117,33 @@ export default function FormUpdateMulta() {
                 >
                     X
                 </button>
-                <h4 className="text-gray-950">Actualizar Multa</h4>
+                <p className="text-gray-950">Actualizar Multa</p>
+                <div className='flex justify-between w-[300px]'>
+                    <label htmlFor="cuentaPersonal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                        Cuenta Personal:
+                    </label>
+                    <Input
+                        type="text"
+                        name="cuentaPersonal"
+                        value={multa.cuentaOperativa || ""}
+                        placeholder="132123"
+                        disabled
+                        required
+                    />
+                </div>
+                <div className='flex justify-between w-[300px]'>
+                    <label htmlFor="cuentaPersonal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                        Cuenta Operativa:
+                    </label>
+                    <Input
+                        type="text"
+                        name="cuentaPersonal"
+                        value={multa.cuentaPersonal || ""}
+                        disabled
+                        placeholder=""
+                        required
+                    />
+                </div>
                 <div className='flex justify-between w-[300px]'>
                     <label htmlFor="importeMulta" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                         Importe multa:

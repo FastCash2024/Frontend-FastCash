@@ -93,6 +93,10 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setModal(mod);
     setItemSelected(i);
   }
+  function handlerAcountUser(mod, i) {
+    setModal(mod);
+    setCheckedArr(i);
+  }
 
   function handlerItemPE(mod, i) {
     setModal(mod);
@@ -440,14 +444,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   >
                                     <button
                                       type="button"
-                                      class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                      className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     >
                                       Visitar
                                     </button>
                                   </Link>
                                   <button
                                     type="button"
-                                    class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     onClick={() =>
                                       handlerVerification(i, "Verificacion")
                                     }
@@ -470,14 +474,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   >
                                     <button
                                       type="button"
-                                      class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                      className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     >
                                       Visitar
                                     </button>
                                   </Link>
                                   <button
                                     type="button"
-                                    class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     onClick={() =>
                                       handlerVerification(i, "coleccion")
                                     }
@@ -497,14 +501,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   >
                                     <button
                                       type="button"
-                                      class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                      className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     >
                                       Visitar
                                     </button>
                                   </Link>
                                   <button
                                     type="button"
-                                    class="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     onClick={() =>
                                       handlerCobroBalance(i)
                                     }
@@ -577,7 +581,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   <UserCircleIcon
                                     className="h-6 w-6 fill-[#ebbb40]"
                                     onClick={() =>
-                                      handlerAcount("Administrar Asesor", i)
+                                      handlerAcountUser("Administrar Asesor", i)
                                     }
                                   />
                                   {/* <DocumentTextIcon className='h-6 w-6 fill-[#5c78d3] cursor-pointer' onClick={() => setModal('Registrar')} /> */}
@@ -595,7 +599,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   <button
                                     type="button"
                                     onClick={() => handlerApplication("Eliminar aplicacion", i)}
-                                    class="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                   >
                                     Eliminar
                                   </button>
@@ -610,7 +614,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     <button
                                       // onClick={setApplication(i)}
                                       type="button"
-                                      class="w-full max-w-[70px] text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                                      className="w-full max-w-[70px] text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                     >
                                       Ver
                                     </button>
@@ -623,14 +627,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   <button
                                     type="button"
                                     onClick={() => handlerApplicationTipo("Eliminar tipo aplicacion", i)}
-                                    class="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                   >
                                     Eliminar
                                   </button>
                                   <button
                                     onClick={() => handlerApplicationTipo("Modal Editar Tipo Aplicaion", i)}
                                     type="button"
-                                    class="w-full max-w-[70px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                                    className="w-full max-w-[70px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
                                     Editar
                                   </button>
@@ -643,7 +647,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   <button
                                     onClick={() => handlerEditCuenta('Editar cuenta', i)}
                                     type="button"
-                                    class="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                                    className="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
                                     Editar
                                   </button>
@@ -655,7 +659,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   <button
                                     onClick={() => handlerEditCuenta('Editar Multar cuenta', i)}
                                     type="button"
-                                    class="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                                    className="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
                                     Editar
                                   </button>

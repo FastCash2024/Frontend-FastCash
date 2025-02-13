@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
-const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
+const Alert = ({ children, textColor,type = 'success', duration = 5000, onClose }) => {
   const { theme } = useTheme()
   const [show, setShow] = useState(true);
 
@@ -58,7 +58,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             />
           )}
         </svg>
-        <p className="text-sm ">{children}</p>
+        <p className={`text-sm ${textColor}`}>{children}</p>
       </div>
     )
   );

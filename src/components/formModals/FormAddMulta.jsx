@@ -118,7 +118,7 @@ export default function FormAddMulta() {
             onClick={() => setModal(false)}
         >
             <div
-                className="relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[300px] p-5 space-y-5 rounded-[5px]"
+                className="relative flex flex-col items-center justify-center bg-gray-100 w-[400px] h-[400px] p-5 space-y-5 rounded-[5px]"
                 onClick={(e) => e.stopPropagation()}
             >
                 <button
@@ -128,6 +128,32 @@ export default function FormAddMulta() {
                     X
                 </button>
                 <h4 className="text-gray-950">Multa</h4>
+                <div className='flex justify-between w-[300px]'>
+                    <label htmlFor="cuentaPersonal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                        Cuenta Personal:
+                    </label>
+                    <Input
+                        type="text"
+                        name="cuentaPersonal"
+                        value={itemSelected.cuenta || ""}
+                        placeholder="132123"
+                        disabled
+                        required
+                    />
+                </div>
+                <div className='flex justify-between w-[300px]'>
+                    <label htmlFor="cuentaPersonal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                        Cuenta Operativa:
+                    </label>
+                    <Input
+                        type="text"
+                        name="cuentaPersonal"
+                        value={(itemSelected.emailAsesor ?? itemSelected.emailPersonal) || ""}
+                        disabled
+                        placeholder=""
+                        required
+                    />
+                </div>
                 <div className='flex justify-between w-[300px]'>
                     <label htmlFor="importeMulta" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                         Importe multa:

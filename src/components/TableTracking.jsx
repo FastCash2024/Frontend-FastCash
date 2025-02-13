@@ -165,8 +165,8 @@ const Table = ({
                     <tr className="text-white min-w-[2500px]">
                         {headArray().map((i, index) => (
                             <th
-                                scope="col"
                                 key={index}
+                                scope="col"
                                 className={`w-[50px] px-3 py-3 text-white `}
                             // className={`w-[50px] px-3 py-3 text-white 
                             //     ${index < 10
@@ -184,8 +184,8 @@ const Table = ({
                 </thead>
                 <tbody>
                     {data && data?.data?.map((i, index) => (
-                        <>
-                            <tr key={index} className={`text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'}`}>
+                        <React.Fragment key={index}>
+                            <tr className={`text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'}`}>
                                 <td className="px-3 py-2 text-gray-950">
                                     {i.numeroDePrestamo}
                                 </td>
@@ -257,7 +257,7 @@ const Table = ({
                                     </td>
                                 </tr>
                             ))}
-                        </>
+                        </React.Fragment>
                     ))}
                 </tbody>
             </table>

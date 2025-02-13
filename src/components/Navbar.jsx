@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useAppContext } from '@/context/AppContext'
 import Link from 'next/link'
 import Modal from '@/components/Modal'
@@ -30,7 +30,7 @@ import { menuArray } from '@/constants'
 import { useSearchParams } from 'next/navigation'
 import { useTheme } from '@/context/ThemeContext';
 import Button from '@/components/Button';
-export default function BottomNavigation({ rol }) {
+export default function Navbar({ rol }) {
     const { user, userDB, modal, setModal, subItemNav, setSubItemNav, setUserProfile, businessData, setUserData, setUserProduct, setRecetaDB, setUserCart, setUserDistributorPDB, filter, setFilter, nav, setNav } = useAppContext()
     const { theme, toggleTheme } = useTheme();
 
@@ -44,8 +44,8 @@ export default function BottomNavigation({ rol }) {
     }
 
     console.log("user navbar: ", user);
-    
-    
+
+
     const handlerAsistencia = async () => {
         try {
             const userId = userDB?.id || user?.id;
@@ -55,9 +55,9 @@ export default function BottomNavigation({ rol }) {
             const urlServer = "https://api.fastcash-mx.com";
 
             const url = window?.location?.href?.includes("localhost")
-            ? `${urlLocal}/api/attendance/registerAttendance`
-            : `${urlServer}/api/attendance/registerAttendance`;
-            
+                ? `${urlLocal}/api/attendance/registerAttendance`
+                : `${urlServer}/api/attendance/registerAttendance`;
+
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -65,14 +65,14 @@ export default function BottomNavigation({ rol }) {
                 },
                 body: JSON.stringify({ userId }),
             });
-    
+
             if (!response.status === 200) {
                 alert('Error en la solicitud');
             }
-    
+
             const result = await response.json();
             console.log('result:', result.message);
-            
+
             alert(result.message);
         } catch (error) {
             alert('Error al enviar la asistencia:', error);
@@ -99,53 +99,50 @@ export default function BottomNavigation({ rol }) {
     return <ul className=" text-[16px] flex flex-col items-center bg-gray-800 font-medium ">
         <Header />
         {
-            menuArray?.[rol]?.map((element, index) => {
-                const Icon = element.icon
-                return <>
-                    {Object.values(menuArray[rol]).length !== 1 && <button
-                        type="button"
-                        className={`relative inline-flex justify-between w-[90%] rounded-md  shadow-sm px-2 py-2 text-[12px]  font-medium text-gray-700 hover:bg-gray-800 focus:outline-none ${focus == element.title  ? 'bg-gray-800' : 'bg-gray-800'}`}
-                        onClick={() => focus === element.title ? setFocus('') : setFocus(element.title)}
-                    >
-                        <span className='flex items-center w-full space-x-1.5 text-gray-100'>
-                            {element.icon}
-                            <span className=''>
-                                {element.title}
+            menuArray?.[rol]?.map((element, index) => (
+                <React.Fragment key={index}>
+                    {Object.values(menuArray[rol]).length !== 1 && (
+                        <button
+                            type="button"
+                            className={`relative inline-flex justify-between w-[90%] rounded-md  shadow-sm px-2 py-2 text-[12px]  font-medium text-gray-700 hover:bg-gray-800 focus:outline-none ${focus == element.title ? 'bg-gray-800' : 'bg-gray-800'}`}
+                            onClick={() => focus === element.title ? setFocus('') : setFocus(element.title)}
+                        >
+                            <span className='flex items-center w-full space-x-1.5 text-gray-100'>
+                                {element.icon}
+                                <span className=''>
+                                    {element.title}
+                                </span>
                             </span>
-                        </span>
-                        <Arrow_Select />
-                    </button>}
+                            <Arrow_Select />
+                        </button>
+                    )}
 
                     <div
                         className={`relative block w-[100%] right-0 mt-2 rounded-md transition-all shadow-lg ${Object.values(menuArray[rol]).length === 1 ? '' : 'bg-gray-950'} ring-1 ring-black ring-opacity-5 focus:outline-none  overflow-hidden ${Object.values(menuArray[rol]).length === 1 ? 'h-auto' : focus === element.title ? element.length : 'h-0 overflow-hidden'}`}>
                         <div
                             className={`py-1 ${Object.values(menuArray[rol]).length === 1 && ' rounded-md'} text-gray-100`}>
-                            {element.options.map((i, index) => {
-                                return <span
+                            {element.options.map((i, subIndex) => (
+                                <span
+                                    key={subIndex}
                                     onClick={() => router.replace(`/Home?seccion=${element.hash}&item=${i.subtitle}`)}
                                     className={`block px-4 py-2 cursor-pointer text-[12px]  text-gray-50 space-y-5 rounded-md ${item === i.subtitle ? ' bg-blue-500' : 'bg-gray-950'} `}
                                 >
                                     <span className={`flex items-center w-full space-x-1.5 text-gray-100 ${item === i.subtitle && ' [&>*:nth-child(n)]:stroke-white  '}`}>
                                         {i.icon}
-                                        <span className={`hover:text-white ${item === i.subtitle ?' text-white' : 'text-gray-300'}`}>
+                                        <span className={`hover:text-white ${item === i.subtitle ? ' text-white' : 'text-gray-300'}`}>
                                             {i.subtitle}
                                         </span>
                                     </span>
                                 </span>
-                            })}
+                            ))}
                         </div>
                     </div>
-                </>
-            })
+                </React.Fragment>
+            ))
         }
 
 
     </ul>
-
-
-
-
-
 
 }
 

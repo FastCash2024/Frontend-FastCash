@@ -221,7 +221,7 @@ export default function Home() {
                         <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-white' : 'bg-white'} ${selectedLeft === 1 ? 'sticky left-0 z-10' : ''}`} >
                             <input type="checkbox"
                                 checked={checkedArr.some(value => value._id === i._id)}
-                                onClick={(e) => handlerSelectCheck(e, i)} />
+                                onChange={(e) => handlerSelectCheck(e, i)} />
                         </td>
                         <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>
                         <td className="px-4 py-2">{i.nombrePersonal}</td>
@@ -246,11 +246,3 @@ export default function Home() {
         </table>
     )
 }
-
-
-
-
-
-
-
-

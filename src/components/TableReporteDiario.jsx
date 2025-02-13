@@ -344,7 +344,7 @@ export default function Home() {
                   >
                     <input
                       type="checkbox"
-                      onClick={(e) => handlerSelectCheck(e, i)}
+                      onChange={(e) => handlerSelectCheck(e, i)}
                     />
                   </td>
                   <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>

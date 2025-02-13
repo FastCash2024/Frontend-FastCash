@@ -86,6 +86,7 @@ import TableControl from "./TableControl";
 import TableCustomerFlow from "./TableCustomerFlow";
 import { getDay } from "@/utils/getDates";
 import TableAttendance from "./TableAttendance";
+import TableReporteDiarioAuditoria from "./TableReporteDiarioAuditoria";
 
 export default function Home() {
 
@@ -371,6 +372,17 @@ export default function Home() {
                 user.rol === "Asesor de Verificación") &&
                 (seccion === "Verificacion" || seccion === "verificacion") &&
                 item === "Reporte diario" && <TableReporteDiarioVerificacion />}
+
+              {(user?.rol === "Admin" ||
+                user.rol === "Super Admin" ||
+                user?.rol === "Recursos Humanos" ||
+                user.rol === "Manager de Cobranza" ||
+                user.rol === "Manager de Cobranza" ||
+                user.rol === "Manager de Auditoria" ||
+                user.rol === "Manager de Verificación" ||
+                user.rol === "Asesor de Verificación") &&
+                (seccion === "auditoria" || seccion === "verificacion") &&
+                item === "Reporte diario" && <TableReporteDiarioAuditoria />}
 
               {item === "Lista final" && (
                 <Table
