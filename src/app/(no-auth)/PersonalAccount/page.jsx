@@ -10,23 +10,16 @@ import { useAppContext } from '@/context/AppContext'
 import { menuArray } from '@/constants'
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
-
 import Link from 'next/link';
-
 import ReCAPTCHA from "react-google-recaptcha";
-
-
+import Alert from '@/components/Alert'; // Importar el componente Alert
 
 export default function Home() {
-  // const { user, userDB, setUserProfile, setUserSuccess, success, setUser, postsIMG, setUserPostsIMG, sound1, sound2, setSound1, setSound2, } = useAppContext()
   const { user, setUser, userDB, setUserDB, theme, setTheme } = useAppContext()
-
   const [isDisable, setIsDisable] = useState(false)
   const [captcha, setCaptcha] = useState('')
+  const [errorMessage, setErrorMessage] = useState(null); // Estado para el mensaje de error
   const router = useRouter()
-
-
-
   const recaptchaRef = React.useRef();
 
   const onSubmitWithReCAPTCHA = async (e) => {
@@ -49,6 +42,7 @@ export default function Home() {
         router.push('/Account')
       }
     } catch (error) {
+      setErrorMessage(error.response?.data?.message || 'Login failed'); // Establecer el mensaje de error
       toast.error(error.response?.data?.message || 'Login failed');
     }
 
@@ -70,6 +64,12 @@ export default function Home() {
 
   return (
     <div className='relative w-screen h-screen flex flex-col justify-center items-center p-5  bg-gradient-to-t md:bg-gradient-to-tl from-gray-900 from-50% to-gray-200 to-50%'>
+
+      {errorMessage && (
+        <Alert type="error" onClose={() => setErrorMessage(null)}>
+          <span className="text-black">{errorMessage}</span>
+        </Alert>
+      )}
 
       <img src="bg2.jpg" className='fixed top-0 left-0 h-screen w-screen object-cover' alt="" />
       <div className='fixed top-0 left-0 h-screen w-screen bg-[#131920da] z-20'></div>

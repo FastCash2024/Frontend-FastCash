@@ -421,9 +421,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     </div>
 
                     <div className='flex space-x-12 w-full mb-0 p-5 bg-slate-100 shadow-xl'>
-                        <div className='w-[350px] space-y-3'>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+
+                        <div className='w-[350px] space-y-2'>
+                            <div className='flex items-center '>
+                                <label htmlFor="" className={`ql-align-right mr-1 text-[10px] text-right ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Producto del proyecto:
                                 </label>
                                 <SelectSimple click={handlerSelectClick} arr={filtro_1} name='nombreDelProducto' defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
@@ -437,14 +438,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 placeholder="Buscar por numero de teléfono"
                                 required
                             />
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                            <div className='flex items-center'>
+                                <label htmlFor="" className={`ql-align-right mr-1 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de reembolso:
                                 </label>
                                 <SelectSimple arr={[...estadoRembolso, 'Reembolso Parcial']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                            <div className='flex items-center'>
+                                <label htmlFor="" className={`ql-align-right mr-1 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Angsuran:
                                 </label>
                                 <SelectSimple arr={['Por favor elige', 'Si', 'No']} name='Clientes nuevos y antiguos' click={handlerSelectClick} defaultValue={filter['Clientes nuevos y antiguos']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />

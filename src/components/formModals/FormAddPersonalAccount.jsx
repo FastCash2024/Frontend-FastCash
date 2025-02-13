@@ -76,13 +76,12 @@ export default function AddAccount() {
     const saveAccount = async (e) => {
         e.preventDefault();
         try {
-            setLoader('Guardando...')
+            setLoader('Guardando...');
             const db = {
                 'codificacionDeRoles': 'Cuenta Personal',
                 ...data,
             };
-            // console.log(db);
-
+    
             const response = await fetch(window?.location?.href?.includes('localhost')
                 ? 'http://localhost:3000/api/auth/registerPersonal'
                 : 'https://api.fastcash-mx.com/api/auth/registerPersonal', {
@@ -92,18 +91,15 @@ export default function AddAccount() {
                 },
                 body: JSON.stringify(db),
             });
-
+    
             if (!response.ok) {
-                setLoader('')
-                setAlerta('Error de datos!')
+                setLoader('');
+                setAlerta('Error de datos!');
                 throw new Error('Registration failed');
             }
-
+    
             const result = await response.json();
-            // console.log(result);
-
-
-
+    
             const res = await fetch(window?.location?.href?.includes('localhost')
                 ? 'http://localhost:3000/api/email/send'
                 : `https://api.fastcash-mx.com/api/email/send`, {
@@ -143,19 +139,16 @@ export default function AddAccount() {
             </td>
         </tr>
     </table>
-</body>
-`
+    </body>`
                 }),
             });
-
-            setAlerta('Operación exitosa!')
-            setModal('')
-            setLoader('')
-            // navigate('/dashboard');
+    
+            setAlerta('Operación exitosa!');
+            setModal('');
+            setLoader('');
         } catch (error) {
-            setLoader('')
-            setAlerta('Error de datos!')
-
+            setLoader('');
+            setAlerta('Error de datos!');
         }
     };
 
