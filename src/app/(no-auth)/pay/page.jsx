@@ -84,7 +84,7 @@ export default function PayPage() {
 
 
     return (
-        <div className="bg-gray-100 min-h-screen w-full flex justify-center items-center p-4 bg-gradient-to-b from-blue-500 to-white">
+        <div className="bg-gradient-to-b from-blue-500 to-white min-h-screen w-full flex justify-center items-center">
             {(seccion?.toLowerCase() === "payment" || seccion?.toLowerCase() === "extension") && item === "data" ? (
                 <div className="w-[24%] mx-auto p-4 m-4 bg-white shadow-2xl">
                     <main className="flex-grow">
