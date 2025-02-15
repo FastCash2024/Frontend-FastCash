@@ -75,6 +75,7 @@ import FormUpdateTipoApp from '@/components/formModals/FormUpdateTipoApp'
 import ModalDeleteTipoApp from '@/components/modals/ModalDeleteTipoApp'
 import FormAddMulta from '@/components/formModals/FormAddMulta'
 import FormUpdateMulta from './formModals/FormUpdateMulta'
+import ModalDeleteNewslater from './modals/ModalDeleteNewslater'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -538,6 +539,9 @@ export default function Home() {
 
             {modal === 'Multar cuenta' && <FormAddMulta />}
             {modal === 'Editar Multar cuenta' && <FormUpdateMulta />}
+            {/* ---------------------------------'GESTION DE NEWSLATER' --------------------------------- */}
+
+            {modal === 'Eliminar newslater' && <ModalDeleteNewslater />}
         </div>
     )
 }

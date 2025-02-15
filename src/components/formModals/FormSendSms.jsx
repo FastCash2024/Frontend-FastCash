@@ -28,45 +28,48 @@ export default function FormSendSms() {
     const [selectedTemplate, setSelectedTemplate] = useState('');
 
     // console.log("user data: ", userDB);
-    // console.log("destinatario data: ", destinatario);
-    
+    // console.log("data sms: ", destinatario);
+
+    // {
+    //   "telefono": "75789134",
+    //   "message": "Juan Pardo, este es un mensaje de prueba.",
+    //   "codigoDeProducto": "12345",
+    //   "remitenteDeSms": "Sistema",
+    //   "producto": "Crédito Personal"
+    // }
+
     async function sendSmsHandler() {
-        const templateId = templateIds[selectedTemplate]
         const smsData = {
-            to: destinatario.numeroDeTelefonoMovil,
-            templateId: templateId,
-            contenido: smsText,
-            codigoDeProducto: destinatario.nombreDeLaEmpresa,
+            telefono: destinatario.numeroDeTelefonoMovil,
+            message: smsText,
+            codigoDeProducto: destinatario.nombreDelProducto,
             remitenteDeSms: userDB.cuenta,
-            name: destinatario.nombreDelCliente,
-            producto: destinatario.nombreDelProducto,
-            fecha: destinatario.fechaDeReembolso,
-            valor_de_pago: destinatario.valorEnviado
+            producto: destinatario.nombreDelProducto
         };
-        // console.log("data sms: ", smsData);
-        
+        console.log("data sms: ", smsData);
+
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
                 ? 'http://localhost:3000/api/sms/smsSend'
-                : 'https://api.fastcash-mx.com/api/sms/smsSend',  {
+                : 'https://api.fastcash-mx.com/api/sms/smsSend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(smsData)
             });
-    
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-    
+
             await response.json();
             setAlerta('Operación exitosa!')
             setModal('')
             setLoader('')
         } catch (error) {
             setLoader('')
-            setAlerta('Error de datos!') 
+            setAlerta('Error de datos!')
             console.error('Error:', error);
         }
     }
@@ -81,13 +84,13 @@ export default function FormSendSms() {
         const templateIndex = e.target.value;
         setSelectedTemplate(templateIndex);
         const template = templates[templateIndex];
-    
+
         const templateLines = template.split('\n');
-        templateLines.shift(); 
+        templateLines.shift();
         const templateWithoutTitle = templateLines.join('\n');
         console.log("template: ", templateWithoutTitle);
-        
-    
+
+
         const filledTemplate = templateWithoutTitle
             .replace('[name]', destinatario.nombreDelCliente)
             .replace('[producto]', destinatario.nombreDelProducto)
@@ -97,7 +100,7 @@ export default function FormSendSms() {
     }
 
     console.log("destinatario: ", destinatario);
-    
+
 
     return (
         <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50' onClick={() => setModal('')}>

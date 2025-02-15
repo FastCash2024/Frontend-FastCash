@@ -47,6 +47,7 @@ export function AppProvider({ children }) {
 	const [destinatarios, setDestinatarios] = useState(undefined)
 	const [destinatario, setDestinatario] = useState(undefined)
 	const [attendance, setAttendance] = useState(undefined)
+	const [newslater, setNewslater,] = useState(undefined)
 
 	const [enviosDB, setEnviosDB] = useState(undefined)
 	const [cambiosDB, setCambiosDB] = useState(undefined)
@@ -171,6 +172,7 @@ export function AppProvider({ children }) {
 			setQRurl,
 			local, setSever,
 			checkedArr, setCheckedArr,
+			newslater, setNewslater,
 			setDestinatario,
 			setUsers,
 			setSelect,
@@ -198,6 +200,7 @@ export function AppProvider({ children }) {
 		webScann,
 		filter,
 		checkedArr,
+		newslater,
 		local,
 		filterQR, exchange, countries, isOpen, isOpen2, destinatarios, transactionDB, navItem, comision,
 		enviosDB,

@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.bubble.css';
 import 'react-quill/dist/quill.core.css';
 
 export default function Modal() {
-    const {user, modal, setUserSuccess, setModal,loader, setLoader,setAlerta } = useAppContext()
+    const {user, modal, setUserSuccess, setModal,loader, setLoader,setAlerta, setNewslater } = useAppContext()
 
     const [data, setData] = useState([])
     const [textEditor2, setTextEditor2] = useState("Redactar...")
@@ -64,7 +64,7 @@ export default function Modal() {
             setAlerta('no elementos para modificar')
         }
         const response = await fetch(window?.location?.href?.includes("localhost")
-            ? `http://localhost:3000/api/newsletter/update/${item}`: 'https://api.fastcash-mx.com/api/newsletter', {
+            ? `http://localhost:3000/api/newsletter/update/${item}`: `https://api.fastcash-mx.com/api/newsletter/update/${item}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: textEditor2 }),
@@ -74,19 +74,10 @@ export default function Modal() {
         setLoader('')
     };
 
-    const deleteItem = async (id) => {
-        setLoader('Eliminando...');
-        const response = await fetch(window?.location?.href?.includes("localhost")
-          ? `http://localhost:3000/api/newsletter/delete/${id}`
-          : `https://api.fastcash-mx.com/api/newsletter/delete/${id}`, {
-          method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await response.json();
-        console.log(data);
-        setLoader('');
-        getData(); // Actualizar la lista después de eliminar
-      };
+    const handleDelete = (i) => {
+        setModal("Eliminar newslater");
+        setNewslater(i)
+    }
 
     console.log('data', data)
     return (seccion ==='comunicacion' && <div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
@@ -108,7 +99,7 @@ export default function Modal() {
                         {user.rol === "Super Admin" && (
                             <Link href={`?seccion=comunicacion&mode=editor&item=${item._id}`} className='w-[250px] space-x-2'>
                                 <button onClick={()=>handleselect (item.content)} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded'>editar</button>
-                                <button onClick={() => deleteItem(item._id)} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded'>Eliminar</button>
+                                <button onClick={() => handleDelete(item)} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded'>Eliminar</button>
                             </Link>
                         )}
                         </div>
@@ -130,7 +121,7 @@ export default function Modal() {
                             <Button theme="Primary" click={()=>setTextEditor2("Redactar...")}>Previsualizar</Button>
                         </Link>
                         <span className='w-[250px]'>
-                            <Button theme="Primary" click={(item !== null || item !== undefined ? saveedit : save)}>Guardar</Button>
+                            <Button theme="Primary" click={(item === null || item === undefined ? save : saveedit)}>Guardar</Button>
                         </span>
                     </div>
                 ) : (
@@ -139,7 +130,7 @@ export default function Modal() {
                             <Button theme="Primary">Editor</Button>
                         </Link>
                         <span className='w-[250px]'>
-                            <Button theme="Primary" click={(item !== null || item !== undefined ? saveedit : save)} >Guardar</Button>
+                            <Button theme="Primary" click={(item === null || item === undefined ? save : saveedit)} >Guardar</Button>
                         </span>
                     </div>
                 )}
