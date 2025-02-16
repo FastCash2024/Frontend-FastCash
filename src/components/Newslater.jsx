@@ -11,6 +11,9 @@ import { useSearchParams } from 'next/navigation'
 import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import 'react-quill/dist/quill.core.css';
+import { EditIcon, DeleteIcon } from '@/icons_SVG/index.js'; 
+import ModalEditNewslater from '@/components/modals/ModalEditNewslater'; // Importa el modal de edición
+
 
 export default function Modal() {
     const {user, modal, setUserSuccess, setModal,loader, setLoader,setAlerta, setNewslater } = useAppContext()
@@ -78,9 +81,13 @@ export default function Modal() {
         setModal("Eliminar newslater");
         setNewslater(i)
     }
+    const handleEdit = (i) => {
+        setNewslater(i); // Establece el boletín informativo a editar en el contexto
+        setModal("Editar newslater"); // Abre el modal de edición
+    }
 
     console.log('data', data)
-    return (seccion ==='comunicacion' && <div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
+    return (seccion === 'comunicacion' && <div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
         {modal === 'Guardando...' && <Loader> {modal} </Loader>}
         {modal === 'Eliminando...' && <Loader> {modal} </Loader>}
         <div className={`relative bg-white max-w-[1000px] w-full h-full overflow-y-scroll rounded-t-lg shadow-2xl p-5 `}>
@@ -93,15 +100,24 @@ export default function Modal() {
 
                 {data?.slice(0).reverse().map((item, index) => {
                     return (
-                        <div className='flex flex-row w-full justify-between'>   
-                        <p key={index} className='ql-editor' dangerouslySetInnerHTML={{ __html: item.content }} />
-                        
-                        {user.rol === "Super Admin" && (
-                            <Link href={`?seccion=comunicacion&mode=editor&item=${item._id}`} className='w-[250px] space-x-2'>
-                                <button onClick={()=>handleselect (item.content)} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-3 rounded'>editar</button>
-                                <button onClick={() => handleDelete(item)} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-3 rounded'>Eliminar</button>
-                            </Link>
-                        )}
+                        <div key={index} className='flex flex-col w-full justify-between'>
+                            
+                            <div className="ql-editor">
+                            <p dangerouslySetInnerHTML={{ __html: item.content }} />
+                            {user.rol === "Super Admin" && (
+                                <div className='flex justify-start space-x-2 mt-2'>
+                                    <Link href={`?seccion=comunicacion&mode=editor&item=${item._id}`}>
+                                        <button onClick={() => handleEdit(item)} className='text-blue-500 hover:text-blue-700' title="Editar">
+                                            <EditIcon />
+                                        </button>
+                                    </Link>
+                                    <button onClick={() => handleDelete(item)} className='text-red-500 hover:text-red-700' title="Eliminar">
+                                        <DeleteIcon />
+                                    </button>
+                                </div>
+                            )}
+                            </div>   
+                            
                         </div>
                     );
                 })}
@@ -136,6 +152,9 @@ export default function Modal() {
                 )}
             </div>
         </div>
+        {modal === 'Editar newslater' && (
+            <ModalEditNewslater /> // Renderiza el modal de edición cuando el estado modal es 'Editar newslater'
+        )}
     </div>
     )
 }

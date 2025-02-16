@@ -41,13 +41,13 @@ export default function ModalDeleteNewslater() {
                 <p className='text-gray-950'>¿Está seguro de que quiere eliminar esta de <strong>información</strong>?</p>
                 <div className="flex justify-center mt-4 space-x-3">
                     <button
-                        className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center"
+                        className="w-full max-w-[100px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl focus:outline-none focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                         onClick={handleDelete}
                     >
                         Sí
                     </button>
                     <button
-                        className="w-full max-w-[70px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center"
+                        className="w-full max-w-[100px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                         onClick={handleCancel}
                     >
                         Cancelar

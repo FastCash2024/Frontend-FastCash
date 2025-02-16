@@ -718,42 +718,42 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             </div>}
             {item === 'Gestion de aplicaciones' && <div>
 
-                <div className='grid grid-cols-3 gap-x-[50px] gap-y-4 w-[950px]'>
-                    <div className='w-[300px] space-y-2'>
-                        <SearchInput
-                            label="Aplicación:"
-                            name="nombre"
-                            value={filter['nombre'] || ''}
-                            onChange={onChangeHandler}
-                            theme={theme}
-                            placeholder="Buscar por nombre"
-                            required
-                        />
-                        <div className='flex justify-between'>
-                            <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                Categoria:
-                            </label>
-                            <SelectSimple arr={['Libre', 'Estandar', 'Premium']} name='ID de sub-factura' click={handlerSelectClick} defaultValue={filter['ID de sub-factura']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                        </div>
-                    </div>
-                    <div className='w-[300px] space-y-2'>
-                        <div className='flex justify-center space-x-3'>
-                            <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
-                                <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
-                            </Link>
-                            <Link href={`?seccion=${seccion}&item=${item}`}>
-                                <button onClick={resetFilter} type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
-                            </Link>
-                        </div>
-                    </div>
+<div className='grid grid-cols-3 gap-x-[50px] gap-y-4 w-[950px]'>
+    <div className='w-[300px] space-y-2'>
+        <SearchInput
+            label="Aplicación:"
+            name="nombre"
+            value={filter['nombre'] || ''}
+            onChange={onChangeHandler}
+            theme={theme}
+            placeholder="Buscar por nombre"
+            required
+        />
+        <div className='flex items-center'>
+            <label htmlFor="" className={`mr-3 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                Categoria:
+            </label>
+            <SelectSimple arr={['Libre', 'Estandar', 'Premium']} name='ID de sub-factura' click={handlerSelectClick} defaultValue={filter['ID de sub-factura']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+        </div>
+    </div>
+    <div className='w-[300px] space-y-2'>
+        <div className='flex justify-center space-x-3'>
+            <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
+            </Link>
+            <Link href={`?seccion=${seccion}&item=${item}`}>
+                <button onClick={resetFilter} type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+            </Link>
+        </div>
+    </div>
 
-                </div>
-                <div className='pt-3 flex space-x-3'>
-                    <Button type="button" theme="Success" click={() => setModal('Añadir aplicacion')}>
-                        Añadir Aplicación
-                    </Button>
-                </div>
-            </div>}
+</div>
+<div className='pt-3 flex space-x-3'>
+    <Button type="button" theme="Success" click={() => setModal('Añadir aplicacion')}>
+        Añadir Aplicación
+    </Button>
+</div>
+</div>}
             {item === 'Gestion de aplicacion' && <div className='flex flex-row justify-between items-center'>
 
                 <div className="flex items-center gap-x-4 mb-6 w-[40%]">

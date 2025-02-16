@@ -95,7 +95,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             />
                             <div className='flex justify-between'>
                                 <label htmlFor="situacionLaboral" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Estado de Usuario:
+                                    Estado de Cuenta:
                                 </label>
                                 <SelectSimple arr={['En el trabajo', 'Dimitir', 'Reposo']} name='situacionLaboral' click={handlerSelectClick} defaultValue={filter['situacionLaboral']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
