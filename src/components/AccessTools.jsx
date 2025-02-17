@@ -60,7 +60,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
            
-                <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">
+                <div className="w-full   relative  scroll-smooth mb-2">
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
 
@@ -93,21 +93,21 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 placeholder="5"
                                 required
                             />
-                            <div className='flex justify-between'>
-                                <label htmlFor="situacionLaboral" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Estado de Cuenta:
+                            <div className='flex justify-end items-center'>
+                                <label htmlFor="situacionLaboral" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                    Estado de Usuario:
                                 </label>
                                 <SelectSimple arr={['En el trabajo', 'Dimitir', 'Reposo']} name='situacionLaboral' click={handlerSelectClick} defaultValue={filter['situacionLaboral']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between'>
-                                <label htmlFor="tipoDeGrupo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                            <div className='flex justify-end items-center'>
+                                <label htmlFor="tipoDeGrupo" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Tipo de Usuario:
                                 </label>
                                 <SelectSimple arr={['Asesor de Verificación', 'Asesor de Cobranza']} name='tipoDeGrupo' click={handlerSelectClick} defaultValue={filter['tipoDeGrupo']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-                            <div className='flex justify-between space-x-3'>
+                            <div className='flex justify-end space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <button type="button" class="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
                                 </Link>

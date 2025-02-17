@@ -160,7 +160,7 @@ const Table = ({
 
     return (
         <>
-            <table className="min-w-full shadow">
+            <table className="min-w-full shadow mt-2">
                 <thead className="bg-gray-900 text-[10px] uppercase sticky top-[0px] z-20">
                     <tr className="text-white min-w-[2500px]">
                         {headArray().map((i, index) => (

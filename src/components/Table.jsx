@@ -263,6 +263,35 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   console.log("header: ", header);
   console.log("header body: ", headerBody);
 
+const [showTooltip, setShowTooltip] = useState(false);
+const [tooltipOpacity, setTooltipOpacity] = useState(0);
+const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+
+const copyToClipboard = (text, event) => {
+  navigator.clipboard.writeText(text).then(
+    () => {
+      const rect = event.target.getBoundingClientRect();
+      setTooltipPosition({
+        x: rect.x + rect.width / 2,
+        y: rect.y - 25
+      });
+      
+      setShowTooltip(true);
+      setTooltipOpacity(1);
+      
+      setTimeout(() => {
+        setTooltipOpacity(0); 
+        setTimeout(() => {
+          setShowTooltip(false); 
+        }, 500);
+      },500);
+    },
+    (err) => {
+      console.error('Error al copiar: ', err);
+    }
+  );
+};
+
   return (
     access && (
       <>
@@ -595,11 +624,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               )}
                             {item?.toLowerCase().includes("aplicaciones") &&
                               it.toLowerCase() === "operar" && (
-                                <div className="relative flex max-w-[150px] pl-12 justify-between space-x-6">
+                                <div className="relative flex pl-12 justify-center space-x-6">
                                   <button
                                     type="button"
                                     onClick={() => handlerApplication("Eliminar aplicacion", i)}
-                                    className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center inline-flex justify-center items-center me-2 mb-2"
                                   >
                                     Eliminar
                                   </button>
@@ -623,11 +652,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               )}
                             {item === 'Gestion de aplicacion' &&
                               it.toLowerCase() === "operar" && (
-                                <div className="flex max-w-[150px] justify-center space-x-3">
+                                <div className="flex justify-center space-x-3">
                                   <button
                                     type="button"
                                     onClick={() => handlerApplicationTipo("Eliminar tipo aplicacion", i)}
-                                    className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                    className="w-full max-w-[70px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center inline-flex justify-center items-center me-2 mb-2"
                                   >
                                     Eliminar
                                   </button>
@@ -668,9 +697,18 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                             {it.toLowerCase() !== "operar" &&
                               it !== "Contactos" &&
                               it.toLowerCase() !== "icon" &&
-                              !it.toLowerCase().includes("fecha") &&
-
-                              i[toCamelCase(it)]}
+                              !it.toLowerCase().includes("fecha") && (
+                              <span
+                                className={it.toLowerCase().includes("número") ? "cursor-pointer hover:opacity-70 relative" : ""}
+                                onClick={(event) => {
+                                  if (it.toLowerCase().includes("número")) {
+                                    copyToClipboard(i[toCamelCase(it)], event);
+                                  }
+                                }}
+                              >
+                                {i[toCamelCase(it)]}
+                              </span>
+                            )}
                           </td>
                         );
                       })}
@@ -691,8 +729,23 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
             onReload={handleReload}
           />
         </div>
+        
+        {showTooltip && (
+          <div
+          className="fixed bg-black/75 text-white px-2 py-1 rounded text-sm transform -translate-x-1/2"
+          style={{
+            left: `${tooltipPosition.x}px`,
+            top: `${tooltipPosition.y}px`,
+            transition: 'opacity 1s ease',
+            opacity: tooltipOpacity
+          }}
+        >
+          Copiado
+        </div>
+        )}
       </>
     )
+    
   );
 };
 

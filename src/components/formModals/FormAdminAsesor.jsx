@@ -161,13 +161,13 @@ export default function AddAccount() {
 
             // console.log("imprimir email: ", responseEmail);
             
-            setAlerta('Operación exitosa!')
+            setAlerta('Cambios realizados correctamente!')
             setModal('')
             setLoader('')
             // navigate('/dashboard');
         } catch (error) {
             setLoader('')
-            setAlerta('Error de datos!')
+            setAlerta('Usuario existente!')
 
         }
     };

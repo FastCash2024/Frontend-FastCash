@@ -41,6 +41,7 @@ export default function Home() {
         sessionStorage.setItem('token', response.data.token);
         router.push('/Account')
       }
+      
     } catch (error) {
       setErrorMessage(error.response?.data?.message || 'Login failed'); // Establecer el mensaje de error
       toast.error(error.response?.data?.message || 'Login failed');

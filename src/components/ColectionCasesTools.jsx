@@ -138,26 +138,26 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
-           <div>
-                <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">
+            <div>
+                <div className="w-full   relative  scroll-smooth mb-2 ">
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                            <div className='flex justify-end items-center'>
+                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Codigo del producto:
                                 </label>
                                 <SelectSimple arr={filtro_1} name='nombreDelProducto' click={handlerSelectClick} defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                            <div className='flex justify-end items-center'>
+                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Clientes nuevos y antiguos:
                                 </label>
                                 <SelectSimple arr={['Elije por favor', 'Si', 'No']} name='clienteNuevo' click={handlerSelectClick} defaultValue={filter['Cliente nuevo']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between'>
-                                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                            <div className='flex justify-end items-center'>
+                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de reembolso:
                                 </label>
                                 <SelectSimple arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
@@ -184,7 +184,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 name2="fechaDeReembolso"
                                 label="Fecha de Reembolso: "
                             />
-                            <div className='flex justify-between space-x-3'>
+                            <div className='flex gap-2 space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <Button type="button" theme={'Success'} >Consultar</Button>
                                 </Link>
@@ -196,7 +196,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     </div>
                     {item === "Casos de Cobranza" && (
 
-                        <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                        <div className='grid grid-cols-3 gap-x-0 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
@@ -204,7 +204,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between space-x-3'>
+                            <div className='flex justify-between space-x-3 w-[155px]'>
                                 <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
                             </div>
                         </div>

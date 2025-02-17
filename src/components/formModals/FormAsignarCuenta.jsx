@@ -112,13 +112,13 @@ export default function AddAccount({ section, query, cuenta }) {
                     console.log(response)
 
                     if (response.ok) {
-                        checkedArr.length && setAlerta('Operación exitosa!')
+                        checkedArr.length && setAlerta('Asignado correctamente!')
                         checkedArr.length && setModal('')
                         checkedArr.length && setLoader('')
                         // navigate('/dashboard');
                     } else {
                         setLoader('')
-                        setAlerta('Error de datos!')
+                        setAlerta('Error al asignar!')
 
                         throw new Error(`Error: ${response.status} - ${response.statusText}`);
                     }

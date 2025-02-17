@@ -115,10 +115,18 @@ const menuArray = {
         { subtitle: "Asistencia", icon: <OutlineUsersIcon className="h-5 w-5" /> },
         { subtitle: "Comision", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
         { subtitle: "Informacion personal", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
-
       ],
       length: 'h-[0px]'
-    }
+    },
+    {
+      icon: <CircleStackIcon className="h-6 w-6" />,
+      hash: 'comunicacion',
+      title: "Newslater",
+      options: [
+        { subtitle: "Newslater", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
+      ],
+      length: 'h-[420px]'
+    },
   ],
 
 

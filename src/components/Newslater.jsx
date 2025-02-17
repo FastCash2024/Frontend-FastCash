@@ -1,5 +1,4 @@
 'use client'
-// import style from '../styles/Loader.module.css' 
 import { useAppContext } from '@/context/AppContext.js'
 import Button from '@/components/Button'
 import TextEditor from '@/components/TextEditor'
@@ -14,9 +13,8 @@ import 'react-quill/dist/quill.core.css';
 import { EditIcon, DeleteIcon } from '@/icons_SVG/index.js'; 
 import ModalEditNewslater from '@/components/modals/ModalEditNewslater'; // Importa el modal de edición
 
-
-export default function Modal() {
-    const {user, modal, setUserSuccess, setModal,loader, setLoader,setAlerta, setNewslater } = useAppContext()
+export default function Newslater() {
+    const { user, modal, setUserSuccess, setModal, loader, setLoader, setAlerta, setNewslater } = useAppContext()
 
     const [data, setData] = useState([])
     const [textEditor2, setTextEditor2] = useState("Redactar...")
@@ -27,10 +25,7 @@ export default function Modal() {
     const item = searchParams.get('item')
 
     function handlerTextEditorOnChange2(content, delta, source, editor) {
-        // console.log(editor.getHTML())
-        // setTextEditor(editor.getHTML())
         setTextEditor2(editor.getHTML())
-
     }
 
     const save = async () => {
@@ -57,17 +52,17 @@ export default function Modal() {
         getData()
     }, [loader])
 
-    const handleselect = (i)=>{
+    const handleselect = (i) => {
         setTextEditor2(i)
     }
 
     const saveedit = async () => {
         setLoader('Guardando...')
-        if(item===null||item===undefined){
+        if (item === null || item === undefined) {
             setAlerta('no elementos para modificar')
         }
         const response = await fetch(window?.location?.href?.includes("localhost")
-            ? `http://localhost:3000/api/newsletter/update/${item}`: `https://api.fastcash-mx.com/api/newsletter/update/${item}`, {
+            ? `http://localhost:3000/api/newsletter/update/${item}` : `https://api.fastcash-mx.com/api/newsletter/update/${item}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: textEditor2 }),
@@ -123,34 +118,35 @@ export default function Modal() {
                 })}
             </div>
 
-
-            <div className="text-center text-black">
-                {mode === 'editor' && user.rol === "Super Admin" && (
-                    <div className={style.editor}>
-                        <TextEditor setValue={handlerTextEditorOnChange2} value={textEditor2 ? textEditor2 : 'nada'} edit={true} />
-                    </div>
-                )}
-                <br />
-                {mode === 'editor' && user.rol === "Super Admin" ? (
-                    <div className='flex justify-around'>
-                        <Link href="?seccion=comunicacion&mode=viewer" className='w-[250px]'>
-                            <Button theme="Primary" click={()=>setTextEditor2("Redactar...")}>Previsualizar</Button>
-                        </Link>
-                        <span className='w-[250px]'>
-                            <Button theme="Primary" click={(item === null || item === undefined ? save : saveedit)}>Guardar</Button>
-                        </span>
-                    </div>
-                ) : (
-                    <div className='flex justify-around'>
-                        <Link href="?seccion=comunicacion&mode=editor" className='w-[250px]'>
-                            <Button theme="Primary">Editor</Button>
-                        </Link>
-                        <span className='w-[250px]'>
-                            <Button theme="Primary" click={(item === null || item === undefined ? save : saveedit)} >Guardar</Button>
-                        </span>
-                    </div>
-                )}
-            </div>
+            {user.rol === "Super Admin" && (
+                <div className="text-center text-black">
+                    {mode === 'editor' && (
+                        <div className={style.editor}>
+                            <TextEditor setValue={handlerTextEditorOnChange2} value={textEditor2 ? textEditor2 : 'nada'} edit={true} />
+                        </div>
+                    )}
+                    <br />
+                    {mode === 'editor' ? (
+                        <div className='flex justify-around'>
+                            <Link href="?seccion=comunicacion&mode=viewer" className='w-[250px]'>
+                                <Button theme="Primary" click={() => setTextEditor2("Redactar...")}>Previsualizar</Button>
+                            </Link>
+                            <span className='w-[250px]'>
+                                <Button theme="Primary" click={(item === null || item === undefined ? save : saveedit)}>Guardar</Button>
+                            </span>
+                        </div>
+                    ) : (
+                        <div className='flex justify-around'>
+                            <Link href="?seccion=comunicacion&mode=editor" className='w-[250px]'>
+                                <Button theme="Primary">Editor</Button>
+                            </Link>
+                            <span className='w-[250px]'>
+                                <Button theme="Primary" click={(item === null || item === undefined ? save : saveedit)} >Guardar</Button>
+                            </span>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
         {modal === 'Editar newslater' && (
             <ModalEditNewslater /> // Renderiza el modal de edición cuando el estado modal es 'Editar newslater'
@@ -158,5 +154,3 @@ export default function Modal() {
     </div>
     )
 }
-
-

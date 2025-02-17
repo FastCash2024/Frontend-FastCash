@@ -2,8 +2,8 @@ import React from 'react';
 
 const MultipleInput = ({ theme, handlerSelectClick, handlerSelectClick2, label, name1, name2, defaultValue1, defaultValue2, required1 = false, required2 = false }) => {
     return (
-        <div className='flex justify-between'>
-            <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+        <div className='flex justify-end items-center'>
+            <label htmlFor="" className={`mr-2 w-14 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                 {label}
             </label>
             <div className='grid grid-cols-2 gap-2'>

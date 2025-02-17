@@ -57,7 +57,8 @@ import {
     encabezadoGestionDeAccesos,
     encabezadoDeAplicaciones
 } from '@/constants/TableHeaders.jsx'
-import Newslater from '@/components/Newslater'
+
+import Newslater from '@/components/Newslater';
 
 
 export default function Home() {
@@ -97,7 +98,6 @@ export default function Home() {
     const item = searchParams.get('item')
     const [trabajo, setTrabajo] = useState([])
     const [attendance, setAttendace] = useState({})
-
 
     async function handlerFetch(startDate = '', endDate = '') {
         const local = 'http://localhost:3000/api/attendance';
@@ -642,12 +642,7 @@ export default function Home() {
 
 
     console.log(user)
-    const getData = async () => {
-        const response = await fetch(window?.location?.href?.includes("localhost")
-            ? "http://localhost:3000/api/newsletter" : 'https://api.fastcash-mx.com/api/newsletter')
-        const db = await response.json()
-        setData(db)
-    }
+
     // console.log(modal)
     useEffect(() => {
         setIsMounted(true);
@@ -660,20 +655,7 @@ export default function Home() {
     return (
         user?.rol && <main className={` h-full pt-[20px] `}>
 
-{user?.rol === 'Cuenta Personal' && item === 'Newslater' && (
-                <div className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400 shadow">
-                    <div className="text-center text-black">
-                        <h3 className='text-center py-10 text-black text-[35px] font-bold'>Newslater FASTCASH</h3>
-                        <div className='text-black'>
-                            {data?.slice(0).reverse().map((item, index) => (
-                                <div key={index} className='flex flex-row w-full justify-between'>
-                                    <p className='ql-editor' dangerouslySetInnerHTML={{ __html: item.content }} />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            )}
+
 
 
 
@@ -955,8 +937,6 @@ export default function Home() {
 
                 </tbody>
             </table>}
-            <br/>
-            
 
 
 
@@ -1113,17 +1093,11 @@ export default function Home() {
                         </tbody>
                     </table>}
                     {user?.rol === 'Cuenta Personal' && item === 'Informacion personal' && <ViewPersonalInfo></ViewPersonalInfo>}
-
+                    {user?.rol === 'Cuenta Personal' && item === 'Newslater' && (
+                <Newslater />
+            )}
                 </div>}
             </div>
-
         </main>
     )
 }
-
-
-
-
-
-
-

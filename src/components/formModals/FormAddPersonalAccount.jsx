@@ -143,12 +143,12 @@ export default function AddAccount() {
                 }),
             });
     
-            setAlerta('Operación exitosa!');
+            setAlerta('Cuenta creada!');
             setModal('');
             setLoader('');
         } catch (error) {
             setLoader('');
-            setAlerta('Error de datos!');
+            setAlerta('Usuario existente!');
         }
     };
 
