@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { useSearchParams } from "next/navigation";
 
+import { CheckCircleIcon } from '@/icons_SVG';
+
 import Link from "next/link";
 import {
   ChatIcon,
@@ -267,6 +269,10 @@ const [showTooltip, setShowTooltip] = useState(false);
 const [tooltipOpacity, setTooltipOpacity] = useState(0);
 const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
+// Añade este estado
+const [copiedText, setCopiedText] = useState('');
+
+// Modifica la función copyToClipboard
 const copyToClipboard = (text, event) => {
   navigator.clipboard.writeText(text).then(
     () => {
@@ -276,6 +282,7 @@ const copyToClipboard = (text, event) => {
         y: rect.y - 25
       });
       
+      setCopiedText(text); // Guarda el texto copiado
       setShowTooltip(true);
       setTooltipOpacity(1);
       
@@ -283,8 +290,9 @@ const copyToClipboard = (text, event) => {
         setTooltipOpacity(0); 
         setTimeout(() => {
           setShowTooltip(false); 
-        }, 500);
-      },500);
+          setCopiedText(''); // Limpia el texto copiado
+        }, 1000);
+      }, 2000);
     },
     (err) => {
       console.error('Error al copiar: ', err);
@@ -732,15 +740,17 @@ const copyToClipboard = (text, event) => {
         
         {showTooltip && (
           <div
-          className="fixed bg-black/75 text-white px-2 py-1 rounded text-sm transform -translate-x-1/2"
+          className="fixed border border-gray-100 bg-white px-3 py-2 rounded text-sm transform -translate-x-1/2 flex items-center gap-2"
           style={{
             left: `${tooltipPosition.x}px`,
             top: `${tooltipPosition.y}px`,
             transition: 'opacity 1s ease',
-            opacity: tooltipOpacity
+            opacity: tooltipOpacity,
           }}
         >
-          Copiado
+          <CheckCircleIcon className="w-4 h-4 text-green-500" />
+          <span className="font-medium text-black">{copiedText}</span>
+          <span className="text-red-600">: Copiado correctamente</span>
         </div>
         )}
       </>
