@@ -1092,10 +1092,7 @@ export default function Home() {
                             ))}
                         </tbody>
                     </table>}
-                    {user?.rol === 'Cuenta Personal' && item === 'Informacion personal' && <ViewPersonalInfo></ViewPersonalInfo>}
-                    {user?.rol === 'Cuenta Personal' && item === 'Newslater' && (
-                <Newslater />
-            )}
+                    {user?.rol === 'Cuenta Personal' && item === 'Informacion personal' && <ViewPersonalInfo></ViewPersonalInfo>}                   
                 </div>}
             </div>
         </main>

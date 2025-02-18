@@ -12,9 +12,20 @@ export default function AddAccount() {
     const [base64, setBase64] = useState("");
     const [selectedFile, setSelectedFile] = useState(null);
 
+// Verifica si el usuario ya tiene datos completos
+const isUserDataComplete = userDB?.nombreCompleto && userDB?.dni && userDB?.numeroDeTelefonoMovil;
+
+
     function onChangeHandler(e) {
         setData({ ...data, [e.target.name]: e.target.value });
     }
+    useEffect(() => {
+        if (isUserDataComplete) {
+            setModal(''); // Cierra el modal si los datos ya están completos
+        }
+    }, [isUserDataComplete]);
+
+    if (isUserDataComplete) return null; // No muestra el formulario si los datos ya están
 
     const saveAccount = async (e) => {
         e.preventDefault();
@@ -72,8 +83,8 @@ export default function AddAccount() {
     };
 
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>
-        <div className='relative flex flex-col items-start justify-center bg-gray-200 w-[450px] h-[450px] p-5 px-12 space-y-3 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
-            <h4 className='w-full text-center text-gray-950'>Completa tus datos personales</h4>
+    <div className='relative flex flex-col items-start justify-center bg-gray-200 w-[450px] h-[450px] p-5 px-12 space-y-3 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
+        <h4 className='w-full text-center text-gray-950'>Completa tus datos personales</h4>
             <div className="w-full flex justify-center">
                 <label htmlFor="file" className="flex justify-center items-center w-[120px] min-h-[120px] rounded-full bg-gray-200 border border-gray-400  text-center text-gray-900 text-[14px] focus:ring-blue-500 focus:border-blue-500 " >
                     {base64 !== "" ? <img className="flex justify-center items-center w-[120px] min-h-[120px] object-cover bg-gray-200 border border-gray-400 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 rounded-full" style={{ objectPosition: 'center' }} src={base64} alt="" />
