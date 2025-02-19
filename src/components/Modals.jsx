@@ -76,6 +76,7 @@ import ModalDeleteTipoApp from '@/components/modals/ModalDeleteTipoApp'
 import FormAddMulta from '@/components/formModals/FormAddMulta'
 import FormUpdateMulta from './formModals/FormUpdateMulta'
 import ModalDeleteNewslater from './modals/ModalDeleteNewslater'
+import FormAddComision from './formModals/FormAddComision'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -542,6 +543,9 @@ export default function Home() {
             {/* ---------------------------------'GESTION DE NEWSLATER' --------------------------------- */}
 
             {modal === 'Eliminar newslater' && <ModalDeleteNewslater />}
+            {/* ---------------------------------'GESTION DE COMISIONES' --------------------------------- */}
+
+            {modal === 'Agregar comision' && <FormAddComision />}
         </div>
     )
 }

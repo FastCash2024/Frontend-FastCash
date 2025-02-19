@@ -197,6 +197,15 @@ const menuArray = {
       ],
       length: 'h-[420px]'
     },
+    {
+      icon: <CircleStackIcon className="h-6 w-6" />,
+      hash: 'comision',
+      title: "Comisión",
+      options: [
+        { subtitle: "Comisión", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
+      ],
+      length: 'h-[420px]'
+    },
   ],
   ['Recursos Humanos']: [
     {

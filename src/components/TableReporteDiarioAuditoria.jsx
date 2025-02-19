@@ -20,11 +20,13 @@ export default function TableReporteDiarioAuditoria() {
 
     async function handlerFetch(limit, page) {
 
-        const local = "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
-        const server = "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
-        // Obtener los parámetros de la URL
+        // const local = "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
+        // const server = "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
+        const local = "http://localhost:3000/api/auth/users";
+        const server = "https://api.fastcash-mx.com/api/auth/users";
+       
         const urlParams = new URLSearchParams(window.location.search);
-        // Filtrar solo las queries que comiencen con "filter["
+        
         const filterParams = {};
         urlParams.forEach((value, key) => {
             if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
@@ -193,19 +195,19 @@ export default function TableReporteDiarioAuditoria() {
                                 {/* <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length > 0 ? cases?.filter(it => it.cuentaVerificador === i.cuenta).length : 0}</td> */}
 
                                 <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.multados10am}</td>
-                                <td className="px-4 py-2"></td>
+                                <td className="px-4 py-2">{details[i.cuenta]?.multados10am}</td>
 
                                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.multados12am}</td>
-                                <td className="px-4 py-2"></td>
+                                <td className="px-4 py-2">{details[i.cuenta]?.sinMulta12am}</td>
 
                                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.multados14pm}</td>
-                                <td className="px-4 py-2"></td>
+                                <td className="px-4 py-2">{details[i.cuenta]?.sinMulta14am}</td>
 
                                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.multados16pm}</td>
-                                <td className="px-4 py-2"></td>
+                                <td className="px-4 py-2">{details[i.cuenta]?.sinMulta16pm}</td>
 
                                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.multadosTotal}</td>
-                                <td className="px-4 py-2"></td>
+                                <td className="px-4 py-2">{details[i.cuenta]?.sinMultaTotal}</td>
 
 
                             </tr>

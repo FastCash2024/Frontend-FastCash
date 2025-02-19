@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 
 
-export default function Input({click, value, type, defaultVlue, name, onChange,reference, placeholder, required}) {
+export default function Input({click, step, value, type, defaultVlue, name, onChange,reference, placeholder, required}) {
     const { theme, toggleTheme } = useTheme();
 
     const router = useRouter()
@@ -26,6 +26,7 @@ export default function Input({click, value, type, defaultVlue, name, onChange,r
             onChange={onChange}
             value={value}
             defaultValue={defaultVlue}
+            step={step}
             // style={{...styled}}
             required={required}
             ref={reference}

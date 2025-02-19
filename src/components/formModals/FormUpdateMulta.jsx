@@ -56,6 +56,7 @@ export default function FormUpdateMulta() {
 
             if (value === "Por favor elige" || data.observaciones === "Por favor elige") {
                 setAlerta("Falta Observaciones!");
+                return;
             }
             setLoader('Guardando...');
 

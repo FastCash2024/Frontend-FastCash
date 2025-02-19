@@ -3,10 +3,6 @@
 import { useState, useEffect } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
-import { useSearchParams } from 'next/navigation'
-import { toast } from 'react-hot-toast';
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from '@/components/Input'
 
@@ -99,7 +95,7 @@ export default function AddAccount() {
 
     return (
         <FormLayout>
-            <h4 className='w-full text-center text-gray-950'>Añadir aplicacion</h4>
+            <p className='w-full text-center text-gray-950'>Añadir aplicacion</p>
             <div className="relative left-0 right-0 mx-auto w-[100px] h-[100px] flex flex-col items-center justify-center border border-dotted border-gray-700 rounded-lg bg-gray-100 hover:bg-gray-200">
                 <label
                     htmlFor="image-upload"
@@ -155,7 +151,7 @@ export default function AddAccount() {
             </div>
             <button type="button"
                 class="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"
-                onClick={handleSubmit}>Registrar Aplicacion
+                onClick={handleSubmit}>Registrar Aplicación
             </button>
         </FormLayout>
     )

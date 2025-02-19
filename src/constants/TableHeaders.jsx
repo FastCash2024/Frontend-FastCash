@@ -122,6 +122,10 @@ export const encabezadoGestionDeAccesosPersonales = () => [
     "Operar"
 ];
 
+export const encabezadoComision = () => [
+    "Seleccionar", "aplicacion", "segmento", "desde", "hasta", "comision por cobro",
+    "Operar"
+]
 
 
 

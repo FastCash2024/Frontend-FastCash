@@ -79,6 +79,7 @@ import {
   encabezadoGestionDeAccesosPersonales,
   encabezadoDeAplicaciones,
   encabezadoDeAplicacion,
+  encabezadoComision,
 } from "@/constants/TableHeaders.jsx";
 import { Paginator } from "./Paginator";
 import TableAtencionAlCliente from "./TableAtencionAlCliente";
@@ -439,6 +440,18 @@ export default function Home() {
                     "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor"
                   }
                   server={"https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor"}
+                />
+              )}
+              {item === "Comisión" && (
+                <Table
+                  access={true}
+                  headArray={encabezadoComision}
+                  dataFilter={(i) => true}
+                  // local={'http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor'}
+                  local={
+                    "http://localhost:3000/api/comision"
+                  }
+                  server={"https://api.fastcash-mx.com/api/comision"}
                 />
               )}
               {item === "Gestión de cuentas personales" && (

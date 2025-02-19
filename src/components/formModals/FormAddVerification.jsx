@@ -47,38 +47,43 @@ export default function AddAccount() {
             return
         }
         const upadateData = {
+            _id: itemSelected._id,
+            numeroDeCuenta: itemSelected.numeroDeCuenta,
+            nombreBanco: itemSelected.nombreBanco,
+            nombreDelCliente: itemSelected.nombreDelCliente,
+            valorEnviado: itemSelected.valorEnviado,
             estadoDeCredito: value,
-            asesorVerificador: userDB.cuenta,
-            fechaDeTramitacionDelCaso: new Date().toISOString(),
-            acotaciones: [
-                ...itemSelected.acotaciones,
-                {
-                    acotacion: data.acotacionVerificador,
-                    cuenta: userDB.cuenta,
-                    asesor: user.nombreCompleto,
-                    emailAsesor: userDB.emailPersonal,
-                    fecha: new Date().toISOString()
-                }],
-            trackingDeOperaciones: [
-                ...itemSelected.trackingDeOperaciones,
-                {
-                    operacion: "Registro Estado De Verificación",
-                    modificacion: value,
-                    fecha: new Date().toISOString(),
-                    cuenta: userDB.cuenta,
-                    asesor: user.nombreCompleto,
-                    emailAsesor: userDB.emailPersonal,
-                }
-            ]
+            // asesorVerificador: userDB.cuenta,
+            // fechaDeTramitacionDelCaso: new Date().toISOString(),
+            // acotaciones: [
+            //     ...itemSelected.acotaciones,
+            //     {
+            //         acotacion: data.acotacionVerificador,
+            //         cuenta: userDB.cuenta,
+            //         asesor: user.nombreCompleto,
+            //         emailAsesor: userDB.emailPersonal,
+            //         fecha: new Date().toISOString()
+            //     }],
+            // trackingDeOperaciones: [
+            //     ...itemSelected.trackingDeOperaciones,
+            //     {
+            //         operacion: "Registro Estado De Verificación",
+            //         modificacion: value,
+            //         fecha: new Date().toISOString(),
+            //         cuenta: userDB.cuenta,
+            //         asesor: user.nombreCompleto,
+            //         emailAsesor: userDB.emailPersonal,
+            //     }
+            // ]
         }
 
-        // console.log("update Data: ", upadateData);
+        console.log("update Data: ", upadateData);
         
         try {
             setLoader('Guardando...')
             const response = await fetch(window?.location?.href.includes('localhost')
-                ? `http://localhost:3000/api/verification/${itemSelected._id}`
-                : `https://api.fastcash-mx.com/api/verification/${itemSelected._id}`, {
+                ? `http://localhost:3000/api/verification/creditoaprobado/${itemSelected._id}`
+                : `https://api.fastcash-mx.com/api/verification/creditoaprobado/${itemSelected._id}`, {
                 method: 'PUT', // El método es PUT para actualizar
                 headers: {
                     'Content-Type': 'application/json',
@@ -86,6 +91,9 @@ export default function AddAccount() {
                 },
                 body: JSON.stringify(upadateData), // Los datos que queremos actualizar
             });
+
+            console.log("respuesta: ", response);
+            
             if (!response.ok) {
                 setLoader('')
                 setAlerta('Error de datos!')
