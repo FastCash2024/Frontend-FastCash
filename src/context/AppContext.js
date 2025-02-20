@@ -48,6 +48,8 @@ export function AppProvider({ children }) {
 	const [destinatario, setDestinatario] = useState(undefined)
 	const [attendance, setAttendance] = useState(undefined)
 	const [newslater, setNewslater,] = useState(undefined)
+	const [account, setAccount] = useState(undefined)
+	const [appComision, setAppComision] = useState(undefined)
 
 	const [enviosDB, setEnviosDB] = useState(undefined)
 	const [cambiosDB, setCambiosDB] = useState(undefined)
@@ -163,6 +165,8 @@ export function AppProvider({ children }) {
 			countries, setCountries,
 			application, setApplication,
 			applicationTipo, setApplicationTipo,
+			account, setAccount,
+			appComision, setAppComision,
 			multa, setMulta,
 			filtro_1, setFiltro_1,
 			destinatarios, setDestinatarios,
@@ -193,6 +197,8 @@ export function AppProvider({ children }) {
 		fondoPrimario,
 		fondoSecundario,
 		fondoTerciario, subItemNav, success, state, nav, userNav, modal, transferencia, currency, select, select2, select3, isSelect, isSelect2, isSelect3, isSelect4, isSelect5, users, destinatario, attendance, applicationTipo, application, multa, filtro_1, image1, image2, image3, item, webcamRef1,
+		account,
+		appComision,
 		webcamRef2,
 		idioma,
 		webcamRef3,

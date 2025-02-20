@@ -92,7 +92,7 @@ export default function AddAccount() {
                 body: JSON.stringify(upadateData), // Los datos que queremos actualizar
             });
 
-            console.log("respuesta: ", response);
+            console.log("respuesta dispersion: ", response);
             
             if (!response.ok) {
                 setLoader('')

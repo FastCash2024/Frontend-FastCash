@@ -47,7 +47,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setDestinatario,
     setApplication,
     setApplicationTipo,
-    theme,
+    theme, setAccount, setAppComision
   } = useAppContext();
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
@@ -208,7 +208,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
   function handlerApplication(modal, i) {
     console.log("applicacion: ", i);
-    
+
     setModal(modal);
     setApplication(i);
   }
@@ -219,8 +219,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   }
 
   function handlerEditCuenta(modal, i) {
-    setMulta(i);
-    setModal(modal);
+    if (modal === "Editar cuenta" || modal === "Editar Multar cuenta") {
+      setModal(modal);
+      setMulta(i);
+    }
+    if(modal === "Editar comision"){
+      setAppComision(i);
+      setModal(modal);
+    }
   }
 
   function handlerSelectAllCheck(e, i) {
@@ -260,45 +266,45 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   console.log("data desde table: ", data);
   // console.log("data filter: ", data);
 
-  const header = reestructurarArray(headArray);  
+  const header = reestructurarArray(headArray);
   const headerBody = reestructurarArrayForBody(headArray);
   console.log("header: ", header);
   console.log("header body: ", headerBody);
 
-const [showTooltip, setShowTooltip] = useState(false);
-const [tooltipOpacity, setTooltipOpacity] = useState(0);
-const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipOpacity, setTooltipOpacity] = useState(0);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-// Añade este estado
-const [copiedText, setCopiedText] = useState('');
+  // Añade este estado
+  const [copiedText, setCopiedText] = useState('');
 
-// Modifica la función copyToClipboard
-const copyToClipboard = (text, event) => {
-  navigator.clipboard.writeText(text).then(
-    () => {
-      const rect = event.target.getBoundingClientRect();
-      setTooltipPosition({
-        x: rect.x + rect.width / 2,
-        y: rect.y - 25
-      });
-      
-      setCopiedText(text); // Guarda el texto copiado
-      setShowTooltip(true);
-      setTooltipOpacity(1);
-      
-      setTimeout(() => {
-        setTooltipOpacity(0); 
+  // Modifica la función copyToClipboard
+  const copyToClipboard = (text, event) => {
+    navigator.clipboard.writeText(text).then(
+      () => {
+        const rect = event.target.getBoundingClientRect();
+        setTooltipPosition({
+          x: rect.x + rect.width / 2,
+          y: rect.y - 25
+        });
+
+        setCopiedText(text); // Guarda el texto copiado
+        setShowTooltip(true);
+        setTooltipOpacity(1);
+
         setTimeout(() => {
-          setShowTooltip(false); 
-          setCopiedText(''); // Limpia el texto copiado
-        }, 1000);
-      }, 2000);
-    },
-    (err) => {
-      console.error('Error al copiar: ', err);
-    }
-  );
-};
+          setTooltipOpacity(0);
+          setTimeout(() => {
+            setShowTooltip(false);
+            setCopiedText(''); // Limpia el texto copiado
+          }, 1000);
+        }, 2000);
+      },
+      (err) => {
+        console.error('Error al copiar: ', err);
+      }
+    );
+  };
 
   return (
     access && (
@@ -369,7 +375,7 @@ const copyToClipboard = (text, event) => {
                               }
                               text-center align-middle                             
                                 `}
-                            
+
                           >
                             {it === "Seleccionar" && (
                               <input
@@ -468,7 +474,7 @@ const copyToClipboard = (text, event) => {
                                 formatearFecha(i[toCamelCase(it)])
                               )
                             }
-                          
+
                             {/* Operar Verficador */}
                             {it.toLowerCase() === "operar" &&
                               seccion.toLowerCase() === "verificacion" &&
@@ -690,7 +696,7 @@ const copyToClipboard = (text, event) => {
                                   </button>
                                 </div>
                               )}
-                            {(item === "Auditoria Periodica" ) &&
+                            {(item === "Auditoria Periodica") &&
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex max-w-[150px] justify-between space-x-3">
                                   <button
@@ -702,21 +708,33 @@ const copyToClipboard = (text, event) => {
                                   </button>
                                 </div>
                               )}
+                            {(item === "Comisión") &&
+                              it.toLowerCase() === "operar" && (
+                                <div className="relative flex max-w-[150px] justify-between space-x-3">
+                                  <button
+                                    onClick={() => handlerEditCuenta('Editar comision', i)}
+                                    type="button"
+                                    className="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                                  >
+                                    Editar
+                                  </button>
+                                </div>
+                              )}
                             {it.toLowerCase() !== "operar" &&
                               it !== "Contactos" &&
                               it.toLowerCase() !== "icon" &&
                               !it.toLowerCase().includes("fecha") && (
-                              <span
-                                className={it.toLowerCase().includes("número") ? "cursor-pointer hover:opacity-70 relative" : ""}
-                                onClick={(event) => {
-                                  if (it.toLowerCase().includes("número")) {
-                                    copyToClipboard(i[toCamelCase(it)], event);
-                                  }
-                                }}
-                              >
-                                {i[toCamelCase(it)]}
-                              </span>
-                            )}
+                                <span
+                                  className={it.toLowerCase().includes("número") ? "cursor-pointer hover:opacity-70 relative" : ""}
+                                  onClick={(event) => {
+                                    if (it.toLowerCase().includes("número")) {
+                                      copyToClipboard(i[toCamelCase(it)], event);
+                                    }
+                                  }}
+                                >
+                                  {i[toCamelCase(it)]}
+                                </span>
+                              )}
                           </td>
                         );
                       })}
@@ -737,25 +755,25 @@ const copyToClipboard = (text, event) => {
             onReload={handleReload}
           />
         </div>
-        
+
         {showTooltip && (
           <div
-          className="fixed border border-gray-100 bg-white px-3 py-2 rounded text-sm transform -translate-x-1/2 flex items-center gap-2"
-          style={{
-            left: `${tooltipPosition.x}px`,
-            top: `${tooltipPosition.y}px`,
-            transition: 'opacity 1s ease',
-            opacity: tooltipOpacity,
-          }}
-        >
-          <CheckCircleIcon className="w-4 h-4 text-green-500" />
-          <span className="font-medium text-black">{copiedText}</span>
-          <span className="text-red-600">: Copiado correctamente</span>
-        </div>
+            className="fixed border border-gray-100 bg-white px-3 py-2 rounded text-sm transform -translate-x-1/2 flex items-center gap-2"
+            style={{
+              left: `${tooltipPosition.x}px`,
+              top: `${tooltipPosition.y}px`,
+              transition: 'opacity 1s ease',
+              opacity: tooltipOpacity,
+            }}
+          >
+            <CheckCircleIcon className="w-4 h-4 text-green-500" />
+            <span className="font-medium text-black">{copiedText}</span>
+            <span className="text-red-600">: Copiado correctamente</span>
+          </div>
         )}
       </>
     )
-    
+
   );
 };
 

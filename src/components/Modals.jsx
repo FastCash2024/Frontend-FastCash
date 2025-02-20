@@ -77,6 +77,7 @@ import FormAddMulta from '@/components/formModals/FormAddMulta'
 import FormUpdateMulta from './formModals/FormUpdateMulta'
 import ModalDeleteNewslater from './modals/ModalDeleteNewslater'
 import FormAddComision from './formModals/FormAddComision'
+import FormUpdateComision from './formModals/FormUpdateComision'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -546,6 +547,7 @@ export default function Home() {
             {/* ---------------------------------'GESTION DE COMISIONES' --------------------------------- */}
 
             {modal === 'Agregar comision' && <FormAddComision />}
+            {modal === 'Editar comision' && <FormUpdateComision />}
         </div>
     )
 }
