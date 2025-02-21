@@ -105,7 +105,6 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setItemSelected(i);
   }
 
-  console.log(userDB);
 
   async function handlerFetch(limit, page) {
     // Obtener los parámetros de la URL
@@ -181,7 +180,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     );
 
     const result = await res.json();
-    console.log("resultado: ", result);
+    console.log("resultadoo: ", result);
 
     setData(result.data);
     setCurrentPage(result.currentPage);
@@ -222,6 +221,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     if (modal === "Editar cuenta" || modal === "Editar Multar cuenta") {
       setModal(modal);
       setMulta(i);
+      
     }
     if(modal === "Editar comision"){
       setAppComision(i);

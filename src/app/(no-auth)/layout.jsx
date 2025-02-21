@@ -35,14 +35,13 @@ function Home({ children }) {
             });
             if (response.ok) {
                 const data = await response.json();
- 
                 if (data.user.codificacionDeRoles === 'Cuenta Personal') {
                     console.log('user',data.user)
                     setUser({ ...data.user, rol: data.user.codificacionDeRoles })
                         (pathname === '/PersonalAccount' || pathname === '/') && router.replace('/Account')
                 } else {
                     setUserDB(data.user)
-                    console.log('userDB',data.user)
+                    console.log('userDBa',data.user)
                     if (data.user?.emailPersonal) {
                         const res = await fetch(window?.location?.href.includes('localhost')
                             ? `http://localhost:3000/api/auth/personalAccounts?email=${data.user?.emailPersonal}`

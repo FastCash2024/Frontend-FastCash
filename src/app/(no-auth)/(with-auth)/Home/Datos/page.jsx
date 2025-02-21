@@ -7,6 +7,7 @@ import { useSearchParams } from 'next/navigation'
 import SelectSimple from '@/components/SelectSimple'
 import { useAppContext } from '@/context/AppContext';
 import { formatearFecha } from '@/utils';
+import { fetchAuditById } from '@/lib';
 
 
 const PaymentInfoCard = () => {
@@ -22,7 +23,12 @@ const PaymentInfoCard = () => {
     const [clientData, setClientData] = useState(null)
     const [phone, setPhone] = useState(null)
     const [casesData, setCasesData] = useState([])
+    const [audit, setAudit] = useState({});
 
+    useEffect(() => {
+        fetchAuditById(caso)
+        .then(setAudit)
+    }, []);
     const paymentInfo = {
         clientId: 'f5d743b5ed45489798e0c445b030d5a4',
         orderId: '15160932',
@@ -91,36 +97,7 @@ const PaymentInfoCard = () => {
         ocrComparison: "Igual"
     };
 
-    const recordData = [
-        {
-            name: 'M2-RK-S2-D1',
-            orderId: '15160932',
-            record: '10:57',
-            assignmentDate: '2023-12-26 03:55',
-            notes: 'NO CONTESTA LAS LLAMADAS SE PROCEDIO A CONTACTAR A LAS REFERENCIAS.'
-        },
-        {
-            name: 'M2-RK-S1-A1',
-            orderId: '15160932',
-            record: '19/12/2023 09:21',
-            assignmentDate: '2023-12-19 03:53',
-            notes: 'CONTESTA LA LLAMADA Y DICE QUE HARÁ EL PAGO A LAS 11 AM HORA ECUADOR NO TIENE WHATSAPP,19/12/2023 5620126796 LLAMADA NO ENLAZADA- 9231205846 NÚMERO NO DISPONIBLE,20/12/2023 17:24 LLAMADA TRANSFERIDA AL BUZON DE VOZ,21/12/2023 SE DESCONECTA LA LLAMADA REALIZADA 10:16,22/12/2023 NO RESPONDE LA LLAMADA REALIZADA 10:25,23/12/2023 SE VA DIRECTO A BUZON DE VOZ 16:59,522201279963 8:54 24 12 2023 NO CONTESTA Y DEJA QUE TIMBRE VARIAS VECES HASTA QUE SE VA A BUZON,522201279963 10:07 25 12 2023 NO CONTESTA LA LALMADA QUE SE LE REALIZA DE MOMENTO Y SE VA A BUZON DE VOZ DE LA MISMA'
-        },
-        {
-            name: 'M2-RK-S0-A1',
-            orderId: '15160932',
-            record: '18-12-2023 10:42',
-            assignmentDate: '2023-12-18 03:52',
-            notes: 'LLAMADA AL CLIENTE TIMBRA VARIAS VECES Y ENVIA AL BUZON DE VOZ 10:42, LLAMADA AL REFERIDO TIMBRA VARIAS VECES Y ENVIA AL BUZON DE VOZ'
-        },
-        {
-            name: 'M2-RK-S-1-D1',
-            orderId: '15160932',
-            record: '14:38 PM',
-            assignmentDate: '2023-12-17 03:49',
-            notes: 'TIMBRA DOS VECES Y VA AL BUZON DE VOZ, NO CONTESTA, 16:42PM TIMBRA DOS VECES Y VA AL BUZON DE VOZ, NO TIENE RCS'
-        }
-    ];
+    
 
     const loanData2 = [
         {
@@ -259,7 +236,6 @@ const PaymentInfoCard = () => {
     function handlerCobranza(i) {
         setItemSelected(i);
         setModal("Registrar Cobranza");
-        console.log("Registrar Cobranza: ", modal);
     }
 
     function calcularEdad(fechaNacimiento) {
@@ -298,7 +274,6 @@ const PaymentInfoCard = () => {
             setPhone(res?.numeroDeTelefonoMovil);
 
             const phone = res?.numeroDeTelefonoMovil?.replaceAll('+', '');
-            // console.log('phone', phone)
             const response2 = await fetch(window?.location?.href.includes('localhost')
                 ? `http://localhost:3000/api/authApk/usersApkFromWeb?phoneNumber=${phone}`
                 : `https://api.fastcash-mx.com/api/authApk/usersApkFromWeb?phoneNumber=${phone}`)
@@ -315,15 +290,13 @@ const PaymentInfoCard = () => {
         fetchData();
     }, [])
 
-    console.log("numero phone: ", phone);
 
     // useEffect(() => {
 
     //     fetchData()
     // }, [seccion])
 
-    console.log("cases Data: ", casesData)
-    console.log("case cliente: ", clientData)
+    
     return (
         <div className="mx-auto bg-gray-100 ">
             {/* {
@@ -573,19 +546,19 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                     <table className="w-full  overflow-x-auto divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID de pedido</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registro</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de asignación</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CUENTA OPERATIVA</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NUMERO DE PRESTÁMO</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">REGISTRO</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">FECHA</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {recordData.map((item, index) => (
+                            {audit.acotacionesCobrador.map((item, index) => (
                                 <tr key={index} className='w-full '>
-                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.name}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.orderId}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.notes}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.assignmentDate}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{audit.cuentaCobrador}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{audit.numeroDePrestamo}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.acotacion}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.fecha}</td>
                                 </tr>
                             ))}
                         </tbody>
