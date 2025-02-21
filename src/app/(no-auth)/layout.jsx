@@ -33,6 +33,7 @@ function Home({ children }) {
                     'Authorization': token,  // Enviar el JWT en el encabezado de autorización
                 },
             });
+            console.log("response",response);
             if (response.ok) {
                 const data = await response.json();
                 if (data.user.codificacionDeRoles === 'Cuenta Personal') {
@@ -41,7 +42,7 @@ function Home({ children }) {
                         (pathname === '/PersonalAccount' || pathname === '/') && router.replace('/Account')
                 } else {
                     setUserDB(data.user)
-                    console.log('userDBa',data.user)
+                    console.log('userDB',data.user)
                     if (data.user?.emailPersonal) {
                         const res = await fetch(window?.location?.href.includes('localhost')
                             ? `http://localhost:3000/api/auth/personalAccounts?email=${data.user?.emailPersonal}`
