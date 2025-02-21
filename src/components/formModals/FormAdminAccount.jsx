@@ -141,7 +141,7 @@ export default function AddAccount() {
                 </p>
                 <p>Para iniciar sesión, haz clic en el siguiente enlace:</p>
                 <p style="text-align: center;">
-                    <a href="https://fastcash-mx.com/" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Iniciar sesión</a>
+                    <a href="https://collection.fastcash-mx.com/" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Iniciar sesión</a>
                 </p>
                 <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
                 <p>Saludos,<br> de parte de Fast Cash LLC</p>
