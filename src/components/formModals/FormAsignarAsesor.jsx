@@ -81,7 +81,7 @@ export default function AddAccount() {
             setLoader('Guardando...')
             //GENERACION DE NUEVA CONTRASEÑA
             let password = generarContrasena()
-
+            console.log("selectAccount",selectAccount)
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
                     ? `http://localhost:3000/api/auth/register/${checkedArr[0]._id}`
@@ -91,7 +91,7 @@ export default function AddAccount() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando JWT
                 },
-                body: JSON.stringify({ nombrePersonal: selectAccount.nombreCompleto, emailPersonal: selectAccount.email, password }), // Los datos que queremos actualizar
+                body: JSON.stringify({ nombrePersonal: selectAccount.nombreCompleto, emailPersonal: selectAccount.email, password,fotoURL:selectAccount.fotoURL, numeroDeTelefonoMovil:selectAccount.numeroDeTelefonoMovil }), // Los datos que queremos actualizar
             });
             if (!response.ok) {
                 setLoader('')
@@ -129,7 +129,7 @@ export default function AddAccount() {
                         </p>
                         <p>Para iniciar sesión, haz clic en el siguiente enlace:</p>
                         <p style="text-align: center;">
-                            <a href="https://fastcash-mx.com/" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Iniciar sesión</a>
+                            <a href="https://collection.fastcash-mx.com/" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Iniciar sesión</a>
                         </p>
                         <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
                         <p>Saludos,<br> de parte de Fast Cash LLC</p>

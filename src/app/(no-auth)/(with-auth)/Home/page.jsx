@@ -14,14 +14,16 @@ import Newslater from '@/components/Newslater'
 
 export default function Home() {
     const router = useRouter()
-    const { user } = useAppContext()
+    const { user,userDB } = useAppContext()
 
 
     // useEffect(() => {
     //     user === undefined && router.push('/')
     // }, [])
 
-    console.log(user)
+    console.log("user",user)
+    console.log("UserDB",userDB)
+
     return (
         user?.rol &&
         <>

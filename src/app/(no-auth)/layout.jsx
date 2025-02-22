@@ -33,9 +33,9 @@ function Home({ children }) {
                     'Authorization': token,  // Enviar el JWT en el encabezado de autorización
                 },
             });
+            console.log("response",response);
             if (response.ok) {
                 const data = await response.json();
- 
                 if (data.user.codificacionDeRoles === 'Cuenta Personal') {
                     console.log('user',data.user)
                     setUser({ ...data.user, rol: data.user.codificacionDeRoles })

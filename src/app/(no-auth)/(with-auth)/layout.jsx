@@ -146,6 +146,7 @@ function Home({ children }) {
             : user?.rol !== undefined && pathname !== '/' && router.replace('/')
     }, [user])
 
+
     return (
 
         <div>

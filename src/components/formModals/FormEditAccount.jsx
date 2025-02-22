@@ -12,7 +12,7 @@ import FormLayout from '@/components/formModals/FormLayout'
 
 
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, checkedArr, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const { user, userDB, setUserProfile, setAlerta, checkedArr, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected,multa } = useAppContext()
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({})
     const [value1, setValue1] = useState('Por favor elige')
@@ -21,8 +21,7 @@ export default function AddAccount() {
     const [showPassword, setShowPassword] = useState(false)
     const [password, setPassword] = useState('');
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-
-
+  
     const searchParams = useSearchParams()
 
 
@@ -84,15 +83,22 @@ export default function AddAccount() {
 
     const saveAccount = async (e) => {
         e.preventDefault();
-        setLoader('Guardando...')
-        checkedArr.map((db, index) => {
-            saveAllAccounts(db)
-        })
-        console.log(checkedArr)
+        setLoader('Guardando...') 
+        if(checkedArr.length === 0 && multa){
+            saveAllAccounts(multa)
+        } else {
+            checkedArr.map((db, index) => {
+                saveAllAccounts(db)
+            })
+        }
+        
+
+        
     };
 
     const saveAllAccounts = async (db) => {
         try {
+            console.log('saveAllAccountss')
             //GENERACION DE NUEVA CONTRASEÑA
             let password = generarContrasena('return')
             console.log(password)
@@ -123,10 +129,6 @@ export default function AddAccount() {
                 setAlerta('Error de datos!')
                 throw new Error('Registration failed');
             }
-
-
-
-
             // Verificar si la respuesta es exitosa
             if (response.ok) {
 
@@ -157,7 +159,7 @@ export default function AddAccount() {
                         </p>
                         <p>Para iniciar sesión, haz clic en el siguiente enlace:</p>
                         <p style="text-align: center;">
-                            <a href="https://fastcash-mx.com/" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Iniciar sesión</a>
+                            <a href="https://collection.fastcash-mx.com/" style="display: inline-block; background-color: #4CAF50; color: #ffffff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Iniciar sesión</a>
                         </p>
                         <p>Si tienes alguna pregunta, no dudes en contactarnos.</p>
                         <p>Saludos,<br> de parte de Fast Cash LLC</p>
