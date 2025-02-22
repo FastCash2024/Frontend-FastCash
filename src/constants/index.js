@@ -199,8 +199,8 @@ const menuArray = {
     },
     {
       icon: <CircleStackIcon className="h-6 w-6" />,
-      hash: 'comision',
-      title: "Comisión",
+      hash: 'Contabilidad',
+      title: "Contabilidad",
       options: [
         { subtitle: "Comisión", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
       ],

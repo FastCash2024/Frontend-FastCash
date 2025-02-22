@@ -154,8 +154,8 @@ export default function Home() {
     async function handlerFetchDetails() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/verification/reporte?estadoDeCredito=Aprobado,Reprobado'
-                : 'https://api.fastcash-mx.com/api/verification/reporte?estadoDeCredito=Aprobado,Reprobado')
+                ? 'http://localhost:3000/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
+                : 'https://api.fastcash-mx.com/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado')
         const data = await res.json()
         console.log(data)
         setDetails(data.data)

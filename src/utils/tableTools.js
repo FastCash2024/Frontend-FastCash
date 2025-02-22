@@ -17,3 +17,7 @@ export function reestructurarArrayForBody(arr) {
         }
     });
 }
+
+export const extraerCodigo = (cadena) => {
+    return cadena.split(" = ")[0];
+};

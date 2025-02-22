@@ -4,6 +4,7 @@ import FormLayout from '@/components/formModals/FormLayout'
 import Input from '@/components/Input'
 import { useAppContext } from '@/context/AppContext'
 import { useSearchParams } from 'next/navigation'
+import { extraerCodigo } from '@/utils/tableTools'
 
 
 export default function FormAddComision() {
@@ -12,57 +13,31 @@ export default function FormAddComision() {
   const seccion = searchParams.get('seccion')
   const item = searchParams.get('item')
   const [data, setData] = useState({})
-  const [value, setValue] = useState('Por favor elige')
+  // const [value, setValue] = useState('Por favor elige')
   const [value2, setValue2] = useState('Por favor elige')
-  const [filtro_1, setFiltro_1] = useState([])
   const [filtro_2, setFiltro_2] = useState([])
+  const [totalPages, setTotalPages] = useState(100)
 
-  const fetchCustomersFlow = async () => {
-    const local = 'http://localhost:3000/api/applications/customers';
-    const server = 'https://api.fastcash-mx.com/api/applications/customers';
-
-    try {
-      // Seleccionar la URL correcta
-      const url = window?.location?.href?.includes("localhost") ? local : server;
-
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Error en la solicitud');
-      }
-
-      const result = await response.json();
-      console.log('Clientes:', result);
-
-      setFiltro_1(result);
-    } catch (error) {
-      console.error('Error al obtener los clientes:', error);
-    }
-  };
+  
 
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor&limit=${limit}`
         : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
     );
     const result = await res.json();
-    const data = result.data.map(item => item.codificacionDeRoles);
+    const data = result.data.map(item => extraerCodigo(item.codificacionDeRoles));
     console.log("data comision: ", data);
+    setTotalPages(result.totalDocuments)
     setFiltro_2(data);
   }
 
   useEffect(() => {
     if (item === "Comisión") {
-      void fetchCustomersFlow();
-      void handlerFetch();
+      void handlerFetch(totalPages);
     }
-  }, [item])
+  }, [item, totalPages])
 
 
   function onChangeHandler(e) {
@@ -72,23 +47,23 @@ export default function FormAddComision() {
   }
 
   function handlerSelectClick2(name, i, uuid) {
-    if (name === "aplicacion") {
-      setValue(i)
-    } else {
-      setValue2(i)
-    }
+    // if (name === "aplicacion") {
+    //   setValue(i)
+    // } else {
+    // }
+    setValue2(i)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (value === "Por favor elige" || value2 === "Por favor elige") {
+      if (value2 === "Por favor elige") {
         setAlerta("Falta Observaciones!");
         return;
       }
       setLoader("Guardando...");
       const dataComision = {
-        aplicacion: value,
+        // aplicacion: value,
         segmento: value2,
         ...data
       }
@@ -123,13 +98,11 @@ export default function FormAddComision() {
       setAlerta('Error al registra comision');
     }
   }
-
-  console.log("Clientes: ", filtro_1);
   
   return (
     <FormLayout>
       <p className='w-full text-center text-gray-950'>Añadir comisión</p>
-      <div className='flex flex-row justify-between w-full'>
+      {/* <div className='flex flex-row justify-between w-full'>
         <label htmlFor="aplicacion" className={`mr-5 text-[10px] text-gray-950`}>
           Aplicación:
         </label>
@@ -143,7 +116,7 @@ export default function FormAddComision() {
           position='absolute left-0 top-[25px]'
           bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}
           required />
-      </div>
+      </div> */}
       <div className='flex flex-row justify-between w-full'>
         <label htmlFor="segmento" className={`mr-5 text-[10px] text-gray-950`}>
           Segmento de Cobranza:

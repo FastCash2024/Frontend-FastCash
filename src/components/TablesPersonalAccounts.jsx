@@ -59,6 +59,8 @@ import {
 } from '@/constants/TableHeaders.jsx'
 
 import Newslater from '@/components/Newslater';
+import TableComision from './TableComision'
+import TableGestionDeAuditoria from './TableGestionDeAuditoria'
 
 
 export default function Home() {
@@ -101,7 +103,7 @@ export default function Home() {
 
     async function handlerFetch(startDate = '', endDate = '') {
         const local = 'http://localhost:3000/api/attendance';
-    
+
         const urlParams = new URLSearchParams(window.location.search);
         const filterParams = {};
         urlParams.forEach((value, key) => {
@@ -114,7 +116,7 @@ export default function Home() {
                 filterParams[fieldName] = value;
             }
         });
-    
+
         const stg = Object.keys(filterParams)
             .filter(
                 (key) => filterParams[key] !== undefined && filterParams[key] !== null
@@ -124,37 +126,37 @@ export default function Home() {
                     `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`
             ) // Codificar clave=valor
             .join("&"); // Unir con &
-    
+
         console.log(stg ? "existen" : "no existen");
-    
+
         const dataParams = [];
         if (startDate) dataParams.push(`startDate=${startDate}`);
         if (endDate) dataParams.push(`endDate=${endDate}`);
         const dataParamsString = dataParams.join('&');
-    
+
         const urlLocal = stg
             ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
             : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
-    
+
         console.log("url local solicitada: ", urlLocal);
-    
+
         const res = await fetch(urlLocal);
-    
+
         const result = await res.json();
         console.log("resultado: ", result);
-    
-        if(item === "Asistencia"){
+
+        if (item === "Asistencia") {
             setTrabajo(result);
         }
     }
 
     console.log("user desde tables: ", user);
-    
+
 
     async function handlerFetchPersonalAttendance(personId, limit = 52, page = 1) {
         const local = `http://localhost:3000/api/attendance/${personId}`;
         const server = `https://api.fastcash-mx.com/api/attendance/${personId}`;
-    
+
         const urlParams = new URLSearchParams(window.location.search);
         const filterParams = {};
         urlParams.forEach((value, key) => {
@@ -167,7 +169,7 @@ export default function Home() {
                 filterParams[fieldName] = value;
             }
         });
-    
+
         const stg = Object.keys(filterParams)
             .filter(
                 (key) => filterParams[key] !== undefined && filterParams[key] !== null
@@ -177,37 +179,37 @@ export default function Home() {
                     `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`
             ) // Codificar clave=valor
             .join("&"); // Unir con &
-    
+
         console.log(stg ? "existen" : "no existen");
-    
+
         const dataParams = [];
         if (limit) dataParams.push(`limit=${limit}`);
         if (page) dataParams.push(`page=${page}`);
         const dataParamsString = dataParams.join('&');
-    
+
         const urlLocal = stg
             ? `${local}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
             : `${local}${dataParamsString ? `?${dataParamsString}` : ''}`;
-        
+
         const urlServer = stg
             ? `${server}?${stg}${dataParamsString ? `&${dataParamsString}` : ''}`
             : `${server}${dataParamsString ? `?${dataParamsString}` : ''}`;
-    
+
         console.log("url local solicitada: ", urlLocal);
-    
+
         const res = await fetch(
             window?.location?.href?.includes("localhost")
-              ? `${urlLocal}`
-              : `${urlServer}`
-          );
-    
+                ? `${urlLocal}`
+                : `${urlServer}`
+        );
+
         const result = await res.json();
         console.log("attendaceResult: ", result);
-    
+
         setAttendace(result);
     }
-    
-    
+
+
     useEffect(() => {
         if (item === "Asistencia") {
             handlerFetchPersonalAttendance(user.id);
@@ -217,7 +219,7 @@ export default function Home() {
     useEffect(() => {
         handlerFetch();
     }, []);
-    
+
     console.log("trabajo: ", trabajo);
 
     let menu = user?.rol ? menuArray[user.rol].filter(i => i.hash === seccion) : ''
@@ -360,18 +362,18 @@ export default function Home() {
 
     const getBackgroundClass = (estado) => {
         switch (estado) {
-          case "Operando":
-            return "bg-green-400";
-          case "Atraso-1":
-            return "bg-yellow-400";
-          case "Atraso-2":
-            return "bg-orange-400";
-          case "Falta":
-            return "bg-red-500";
-          case "Libre":
-            return "bg-gray-300";
-          default:
-            return "";
+            case "Operando":
+                return "bg-green-400";
+            case "Atraso-1":
+                return "bg-yellow-400";
+            case "Atraso-2":
+                return "bg-orange-400";
+            case "Falta":
+                return "bg-red-500";
+            case "Libre":
+                return "bg-gray-300";
+            default:
+                return "";
         }
     };
 
@@ -410,7 +412,7 @@ export default function Home() {
 
 
 
-    const cobradores = [
+ const cobradores = [
         {
             id: "S0",
             nombre: "Alvarez Puente Gabriela Geomar",
@@ -686,261 +688,7 @@ export default function Home() {
 
 
 
-            {user?.rol === 'Cuenta Personal' && item === 'Comision' && <table className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400 shadow">
-                <thead className="text-[10px] text-white uppercase bg-gray-900 z-20">
-                    <tr>
-
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">01/12 - 07/12</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">LUNES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">MARTES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">MIÉRCOLES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">JUEVES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">VIERNES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">SÁBADO</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">DOMINGO</th>
-
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">DETALLE</th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                            {getDay((-2)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((11)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                            {getDay((0)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((1)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((2)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((3)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((4)).val}
-                        </th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">Porcentaje <br /> semanal alcanzado</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">VALOR SEMANAL  <br />  ENTREGADO</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Recoleccion final</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                    </tr>
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Porcentaje alcanzado</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                    </tr>
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Valor entregado</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                    </tr>
-
-                </tbody>
-            </table>}
-            <br />
-            {user?.rol === 'Cuenta Personal' && item === 'Comision' && <table className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400 shadow">
-                <thead className="text-[10px] text-white uppercase bg-gray-900 z-20">
-                    <tr>
-
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">01/12 - 07/12</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">LUNES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">MARTES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">MIÉRCOLES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">JUEVES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">VIERNES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">SÁBADO</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">DOMINGO</th>
-
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">DETALLE</th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                            {getDay((-2)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((11)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                            {getDay((0)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((1)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((2)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((3)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((4)).val}
-                        </th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">Porcentaje <br /> semanal alcanzado</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">VALOR SEMANAL  <br />  ENTREGADO</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Recoleccion final</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                    </tr>
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Porcentaje alcanzado</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                    </tr>
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Valor entregado</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                    </tr>
-
-                </tbody>
-            </table>}
-            <br />
-            {user?.rol === 'Cuenta Personal' && item === 'Comision' && <table className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400 shadow">
-                <thead className="text-[10px] text-white uppercase bg-gray-900  z-20">
-                    <tr>
-
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">01/12 - 07/12</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">LUNES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">MARTES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">MIÉRCOLES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">JUEVES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">VIERNES</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">SÁBADO</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">DOMINGO</th>
-
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">DETALLE</th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                            {getDay((-2)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((11)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                            {getDay((0)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((1)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((2)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((3)).val}
-                        </th>
-                        <th scope="col" className=" px-3 py-1 text-white text-center">
-                            {getDay((4)).val}
-                        </th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">Porcentaje <br /> semanal alcanzado</th>
-                        <th colSpan="1" className="px-4 py-2 text-white text-center">VALOR SEMANAL  <br />  ENTREGADO</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Recoleccion final</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                    </tr>
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Porcentaje alcanzado</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>25/50</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>25/50</td>
-                    </tr>
-                    <tr className='text-[12px]'>
-
-                        <td className="px-4 py-2 border border-gray-200 bg-gray-300">Valor entregado</td>
-                        <td className={`px-4 py-2 border border-gray-20`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200`}>5.00 $</td>
-                        <td className={`px-4 py-2 border border-gray-200 `}>5.00 $</td>
-                    </tr>
-
-                </tbody>
-            </table>}
-
-
-
-
+            {user?.rol === 'Cuenta Personal' && item === 'Comision' && <TableComision /> }
 
             {/* ---------------------------------TABLAS--------------------------------- */}
 
@@ -1040,7 +788,7 @@ export default function Home() {
                             {attendance.data?.map((item, index) => (
                                 <tr key={index} className='text-[12px]'>
                                     <td className="px-4 py-2 border border-gray-200 bg-gray-300">{item.semana} {item.startWeek} - {item.endWeek}</td>
-                                    { Object.keys(item.asistencias).map((date, idx) => (
+                                    {Object.keys(item.asistencias).map((date, idx) => (
                                         <td key={idx} className={`px-4 py-2 border border-gray-200 bg-gray-300 ${getBackgroundClass(item.asistencias[date])}`}>{item.asistencias[date]}</td>
                                     ))
                                     }
@@ -1048,51 +796,8 @@ export default function Home() {
                             ))}
                         </tbody>
                     </table>}
-                    {user?.rol === 'Cuenta Personal' && item === 'Gestion de auditoria' && <table className="w-full min-w-[1500px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
-                        <thead className="text-[10px] text-white uppercase bg-gray-900 sticky top-[0px] z-20">
-
-
-                            <tr className=' bg-gray-800'>
-                                <th className='px-3 py-2'> <input type="checkbox" /></th>
-                                <th className="px-4 py-2 text-white">Id Auditor</th>
-                                <th className="px-4 py-2 text-white">Nombre del auditor</th>
-
-                                <th className="px-4 py-2 text-white">Usuario asignado</th>
-
-
-                                <th className="px-4 py-2 text-white">Nombre del operador</th>
-                                <th className="px-4 py-2 text-yellow-400">Observacion</th>
-                                <th className="px-4 py-2  text-white ">Amonestacion</th>
-                                <th className="px-4 py-2 text-yellow-400">Valor de multa</th>
-                                <th className="px-4 py-2  text-white">Estado de multa</th>
-                                <th className="px-4 py-2 text-white">Fecha de creacion</th>
-
-
-                            </tr>
-
-                        </thead>
-                        <tbody>
-                            {cobradores.map((cobrador, index) => (
-                                <tr key={index} className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'}`}>
-                                    <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-gray-300' : 'bg-gray-200'} ${selectedLeft === 1 ? 'sticky left-0 z-10' : ''}`} >
-                                        <input type="checkbox" />
-                                    </td>
-                                    <td className="px-4 py-2">{cobrador.id}</td>
-                                    <td className="px-4 py-2">{cobrador.nombre}</td>
-                                    <td className="px-4 py-2">{cobrador.usuario}</td>
-                                    <td className="px-4 py-2">{cobrador.nombre}</td>
-
-                                    <td className="px-4 py-2 bg-yellow-400">Con observacion</td>
-                                    <td className="px-4 py-2">Operativa</td>
-                                    <td className="px-4 py-2 bg-yellow-400"> $ 10</td>
-                                    <td className="px-4 py-2">Aprobada</td>
-                                    <td className="px-4 py-2">01/12/2024 10:00 am</td>
-
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>}
-                    {user?.rol === 'Cuenta Personal' && item === 'Informacion personal' && <ViewPersonalInfo></ViewPersonalInfo>}                   
+                    {user?.rol === 'Cuenta Personal' && item === 'Gestion de auditoria' && <TableGestionDeAuditoria /> }
+                    {user?.rol === 'Cuenta Personal' && item === 'Informacion personal' && <ViewPersonalInfo></ViewPersonalInfo>}
                 </div>}
             </div>
         </main>

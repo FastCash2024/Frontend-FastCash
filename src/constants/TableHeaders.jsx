@@ -123,7 +123,7 @@ export const encabezadoGestionDeAccesosPersonales = () => [
 ];
 
 export const encabezadoComision = () => [
-    "Seleccionar", "aplicacion", "segmento", "desde", "hasta", "comision por cobro",
+    "Seleccionar", "segmento", "desde", "hasta", "comision por cobro",
     "Operar"
 ]
 

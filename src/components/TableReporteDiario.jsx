@@ -134,18 +134,18 @@ export default function Home() {
   const refFirst = useRef(null);
   const [cases, setCases] = useState([]);
   const searchParams = useSearchParams();
+  const item = searchParams.get("item");
+  const seccion = searchParams.get("seccion");
   const [copied, setCopied] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const seccion = searchParams.get("seccion");
-  const item = searchParams.get("item");
   let menu = user?.rol
     ? menuArray[user.rol].filter((i) => i.hash === seccion)
     : "";
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(5);
-    const [totalPages, setTotalPages] = useState(1);
-    const [totalDocuments, setTotalDocuments] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalDocuments, setTotalDocuments] = useState(0);
   const [details, setDetails] = useState([])
 
   function sortArray(x, y) {
@@ -204,18 +204,18 @@ export default function Home() {
     urlParams.forEach((value, key) => {
       if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
         const fieldName = key.slice(7, -1);
-        filterParams[fieldName] = value;        
+        filterParams[fieldName] = value;
       }
     });
 
     const queryString = Object.keys(filterParams)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
-    .join("&");
-    
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Pagado`
-        : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Pagado`;
+      ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Pagado`
+      : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Pagado`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
@@ -241,7 +241,7 @@ export default function Home() {
     handlerFetchVerification(itemsPerPage, currentPage);
   }, [loader, itemsPerPage, currentPage, searchParams]);
 
-  
+
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -253,14 +253,14 @@ export default function Home() {
 
   async function handlerFetchDetails() {
     const res = await fetch(
-        window?.location?.href?.includes('localhost')
+      window?.location?.href?.includes('localhost')
         ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
-            : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
+        : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
     const data = await res.json()
     console.log("data detalle: ", data)
     setDetails(data.data)
   }
-  
+
   useEffect(() => {
     handlerFetchDetails();
     setCheckedArr([]);
@@ -333,14 +333,12 @@ export default function Home() {
               {data?.data?.map((i, index) => (
                 <tr
                   key={index}
-                  className={`bg-gray-200 border-b text-[12px] ${
-                    index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-                  }`}
+                  className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
+                    }`}
                 >
                   <td
-                    className={`px-3 py-2 text-[12px] border-b ${
-                      index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-                    } ${selectedLeft === 1 ? "sticky left-0 z-10" : ""}`}
+                    className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
+                      } ${selectedLeft === 1 ? "sticky left-0 z-10" : ""}`}
                   >
                     <input
                       type="checkbox"

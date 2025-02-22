@@ -36,6 +36,6 @@ export function getCurrentDate() {
 }
 
 export const obtenerSegmento = (valor) => {
-    const partes = valor.split('-');
-    return partes.length >= 3 ? partes[2] : null;
+    const partes = valor?.split('-');
+    return partes?.length >= 3 ? partes[2] : null;
 };

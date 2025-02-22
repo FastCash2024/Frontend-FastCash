@@ -2411,7 +2411,8 @@ export default function Home() {
                             ))}
                         </tbody>
                     </table>}
-                    {user?.rol === 'Cuenta Personal' && item === 'Gestion de auditoria' && <table className="w-full min-w-[1500px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
+                    {user?.rol === 'Cuenta Personal' && item === 'Gestion de auditoria' && 
+                    <table className="w-full min-w-[1500px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
                         <thead className="text-[10px] text-white uppercase bg-gray-900 sticky top-[0px] z-20">
 
 

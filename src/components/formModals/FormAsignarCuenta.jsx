@@ -35,6 +35,7 @@ export default function AddAccount({ section, query, cuenta }) {
 
 
     console.log("select account: ", selectAccount);
+    console.log("select case: ", checkedArr);
     
 
     const codificacionDeRoles = {
@@ -91,8 +92,18 @@ export default function AddAccount({ section, query, cuenta }) {
           } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
             body.cuentaCobrador = selectAccount.cuenta;
             body.fechaDeTramitacionDeCobro = new Date().toISOString();
+
           }
-        // console.log("data enviada: ", body)
+          body.historialDeAsesores = [
+            ...(checkedArr.historialDeAsesores || []), // Mantener los anteriores si existen
+            {
+              nombreAsesor: selectAccount.nombrePersonal,
+              cuentaOperativa: selectAccount.cuenta,
+              cuentaPersonal: selectAccount.emailPersonal,
+              fecha: new Date().toISOString(),
+            }
+          ];
+        console.log("data enviada: ", body)
 
         setLoader('Guardando...')
 

@@ -17,7 +17,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { Paginator } from "./Paginator";
 import { formatearFecha } from "@/utils";
-import { reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
+import { extraerCodigo, reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
 
 const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   const {
@@ -223,7 +223,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       setModal(modal);
       setMulta(i);
     }
-    if(modal === "Editar comision"){
+    if(modal === "Editar comision" || modal === "Eliminar comision"){
       setAppComision(i);
       setModal(modal);
     }
@@ -474,6 +474,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 formatearFecha(i[toCamelCase(it)])
                               )
                             }
+                            {/* {
+                              it.toLowerCase().includes("segmento") && (
+                                extraerCodigo(i[toCamelCase(it)])
+                              )
+                            } */}
 
                             {/* Operar Verficador */}
                             {it.toLowerCase() === "operar" &&
@@ -710,13 +715,20 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               )}
                             {(item === "Comisión") &&
                               it.toLowerCase() === "operar" && (
-                                <div className="relative flex max-w-[150px] justify-between space-x-3">
+                                <div className="relative flex flex-row max-w-[100%] items-center justify-center space-x-3">
                                   <button
                                     onClick={() => handlerEditCuenta('Editar comision', i)}
                                     type="button"
                                     className="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
                                     Editar
+                                  </button>
+                                  <button
+                                    onClick={() => handlerEditCuenta('Eliminar comision', i)}
+                                    type="button"
+                                    className="w-full max-w-[120px] text-white bg-gradient-to-br from-red-600 to-red-400 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
+                                  >
+                                    Eliminar
                                   </button>
                                 </div>
                               )}

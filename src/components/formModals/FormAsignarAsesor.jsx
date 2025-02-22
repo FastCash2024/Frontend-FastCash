@@ -179,6 +179,10 @@ export default function AddAccount() {
         }
     };
 
+    console.log("filtraciones: ", filterArr);
+    console.log("filtraciones: ", checkedArr);
+    
+
     useEffect(() => {
         if (data?.email?.length > 0 || data?.nombreCompleto?.length > 0) { fetchUsers() };
     }, [data]);
