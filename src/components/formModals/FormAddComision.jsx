@@ -6,39 +6,22 @@ import { useAppContext } from '@/context/AppContext'
 import { useSearchParams } from 'next/navigation'
 import { extraerCodigo } from '@/utils/tableTools'
 
+const dataRoles = [
+  'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
+  'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
+  'D0 = DIA DE LA FECHA DE COBRO',
+  'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
+  'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
+]
 
 export default function FormAddComision() {
   const { theme, setLoader, setAlerta, setModal } = useAppContext();
   const searchParams = useSearchParams()
   const seccion = searchParams.get('seccion')
   const item = searchParams.get('item')
+  // const [filtro_2, setFiltro_2] = useState([])
   const [data, setData] = useState({})
-  // const [value, setValue] = useState('Por favor elige')
   const [value2, setValue2] = useState('Por favor elige')
-  const [filtro_2, setFiltro_2] = useState([])
-  const [totalPages, setTotalPages] = useState(100)
-
-  
-
-  async function handlerFetch(limit, page) {
-    const res = await fetch(
-      window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor&limit=${limit}`
-        : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
-    );
-    const result = await res.json();
-    const data = result.data.map(item => extraerCodigo(item.codificacionDeRoles));
-    console.log("data comision: ", data);
-    setTotalPages(result.totalDocuments)
-    setFiltro_2(data);
-  }
-
-  useEffect(() => {
-    if (item === "Comisión") {
-      void handlerFetch(totalPages);
-    }
-  }, [item, totalPages])
-
 
   function onChangeHandler(e) {
     const { name, value } = e.target;
@@ -98,31 +81,16 @@ export default function FormAddComision() {
       setAlerta('Error al registra comision');
     }
   }
-  
+
   return (
     <FormLayout>
       <p className='w-full text-center text-gray-950'>Añadir comisión</p>
-      {/* <div className='flex flex-row justify-between w-full'>
-        <label htmlFor="aplicacion" className={`mr-5 text-[10px] text-gray-950`}>
-          Aplicación:
-        </label>
-        <SelectSimple
-          arr={filtro_1}
-          name='aplicacion'
-          click={handlerSelectClick2}
-          defaultValue={value}
-          uuid='123'
-          label='Filtro 1'
-          position='absolute left-0 top-[25px]'
-          bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}
-          required />
-      </div> */}
       <div className='flex flex-row justify-between w-full'>
         <label htmlFor="segmento" className={`mr-5 text-[10px] text-gray-950`}>
           Segmento de Cobranza:
         </label>
         <SelectSimple
-          arr={filtro_2}
+          arr={dataRoles.map(item => extraerCodigo(item))}
           name='segmento'
           click={handlerSelectClick2}
           defaultValue={value2}
@@ -135,7 +103,7 @@ export default function FormAddComision() {
       <div className='flex flex-row justify-between w-full gap-4'>
         <div className='flex flex-row justify-center items-center'>
           <label htmlFor="desde" className={`mr-1 text-[10px] text-gray-950`}>
-            Nombre:
+            Desde:
           </label>
           <Input
             type="text"
@@ -147,7 +115,7 @@ export default function FormAddComision() {
         </div>
         <div className='flex flex-row justify-center items-center'>
           <label htmlFor="hasta" className={`mr-1 text-[10px] text-gray-950`}>
-            Nombre:
+            Hasta:
           </label>
           <Input
             type="text"
