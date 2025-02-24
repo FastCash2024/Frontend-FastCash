@@ -42,7 +42,6 @@ function Home({ children }) {
                         (pathname === '/PersonalAccount' || pathname === '/') && router.replace('/Account')
                 } else {
                     setUserDB(data.user)
-                    console.log('userDB',data.user)
                     if (data.user?.emailPersonal) {
                         const res = await fetch(window?.location?.href.includes('localhost')
                             ? `http://localhost:3000/api/auth/personalAccounts?email=${data.user?.emailPersonal}`

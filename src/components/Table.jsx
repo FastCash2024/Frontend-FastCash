@@ -268,8 +268,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
   const header = reestructurarArray(headArray);
   const headerBody = reestructurarArrayForBody(headArray);
-  console.log("header: ", header);
-  console.log("header body: ", headerBody);
+
 
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipOpacity, setTooltipOpacity] = useState(0);

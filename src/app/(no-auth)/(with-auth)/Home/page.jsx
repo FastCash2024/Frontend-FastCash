@@ -21,9 +21,7 @@ export default function Home() {
     //     user === undefined && router.push('/')
     // }, [])
 
-    console.log("user",user)
-    console.log("UserDB",userDB)
-
+    
     return (
         user?.rol &&
         <>
