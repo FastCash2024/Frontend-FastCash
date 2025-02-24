@@ -756,7 +756,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             </div>}
             {item === 'Comisión' && <div>
 
-                <div className='grid grid-cols-3 gap-x-[50px] gap-y-4 w-[950px]'>
+                {/* <div className='grid grid-cols-3 gap-x-[50px] gap-y-4 w-[950px]'>
                     <div className='w-[300px] space-y-2'>
                         <SearchInput
                             label="Aplicación:"
@@ -785,7 +785,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                     </div>
 
-                </div>
+                </div> */}
                 <div className='pt-3 flex space-x-3 w-[20%]'>
                 <Button type="button" theme="MiniPrimary" click={() => setModal('Agregar comision')} >Generar Comisión</Button>
                 </div>
