@@ -66,7 +66,9 @@ export default function AddAccount() {
         formData.append('valorPrestamoMenosInteres', data?.valorPrestado * 1 - data?.interesTotal * 1);
         formData.append('valorExtencion', data?.valorPrestado * 1 - data?.valorDepositoLiquido * 1);
         formData.append('calificacion', data.calificacion);
-
+        formData.append('prestamoMaximo', data.prestamoMaximo);
+        formData.append('interesDiarioMaximo', data.interesDiarioMaximo);
+        
         try {
             // url: https://api.fastcash-mx.com/api/authApk/register
             const response = await fetch(window?.location?.href?.includes('localhost')
@@ -146,6 +148,30 @@ export default function AddAccount() {
                     name="calificacion"
                     onChange={onChangeHandler}
                     placeholder="calificacion"
+                    required
+                />
+            </div>
+            <div className='flex justify-between  w-[100%]'>
+                <label htmlFor="calificacion" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    Prestamo Máximo:
+                </label>
+                <Input
+                    type="number"
+                    name="prestamoMaximo"
+                    onChange={onChangeHandler}
+                    placeholder="Prestamo máximo"
+                    required
+                />
+            </div>
+            <div className='flex justify-between  w-[100%]'>
+                <label htmlFor="calificacion" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
+                    InteresDiarioMaximo:
+                </label>
+                <Input
+                    type="number"
+                    name="interesDiarioMaximo"
+                    onChange={onChangeHandler}
+                    placeholder="Interes diario máximo" 
                     required
                 />
             </div>
