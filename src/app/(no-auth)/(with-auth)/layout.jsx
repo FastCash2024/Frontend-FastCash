@@ -147,7 +147,6 @@ function Home({ children }) {
             : user?.rol !== undefined && pathname !== '/' && router.replace('/')
     }, [user])
 
-    console.log({userDB})
     return (
 
         <div>
@@ -166,7 +165,7 @@ function Home({ children }) {
                 </div>
                 )}
                 
-                {(userDB.tipoDeGrupo && userDB?.tipoDeGrupo.includes('Asesor')  ) 
+                {(userDB?.tipoDeGrupo && !!userDB?.tipoDeGrupo.includes('Asesor')  ) 
                 ? (!userDB.emailPersonal || !userDB.fotoURL || !userDB.numeroDeTelefonoMovil) 
                     ? ( 
                         <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm pointer-events-auto z-50">
