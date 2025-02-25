@@ -305,7 +305,7 @@ export default function Home() {
                 />
               )}
               {/* --------------------------------- AUDITORIA Y CONTROL DE CALIDAD --------------------------------- */}
-              {item === "Registro Histórico" && (
+              {/* {item === "Registro Histórico" && (
                 <TableTracking
                   access={true}
                   headArray={encabezadoRegistroHistorico}
@@ -313,6 +313,16 @@ export default function Home() {
                   dataFilter={(i) => true}
                   local={"http://localhost:3000/api/verification"}
                   server={"https://api.fastcash-mx.com/api/verification"}
+                />
+              )} */}
+              {item === "Registro Histórico" && (
+                <Table
+                  access={true}
+                  headArray={encabezadoRegistroHistorico}
+                  dataArray={[""]}
+                  dataFilter={(i) => true}
+                  local={"http://localhost:3000/api/trakingoperaciones"}
+                  server={"https://api.fastcash-mx.com/api/trakingoperaciones"}
                 />
               )}
               {item === "Monitoreo de Transacciones" && (
@@ -356,10 +366,10 @@ export default function Home() {
                   dataArray={[""]}
                   dataFilter={(i) => true}
                   local={
-                    "http://localhost:3000/api/verification?estadoDeCredito=Aprobado,Pendiente"
+                    "http://localhost:3000/api/verification?estadoDeCredito=Pendiente"
                   }
                   server={
-                    "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Aprobado,Pendiente"
+                    "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Pendiente"
                   }
                 />
               )}

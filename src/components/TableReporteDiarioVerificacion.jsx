@@ -143,8 +143,8 @@ export default function Home() {
     async function handlerFetchVerification() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/verification?estadoDeCredito=Pendiente'
-                : 'https://api.fastcash-mx.com/api/verification?estadoDeCredito=Pendiente')
+                ? 'http://localhost:3000/api/verification?estadoDeCredito=Pendiente,Reprobado'
+                : 'https://api.fastcash-mx.com/api/verification?estadoDeCredito=Pendiente,Reprobado')
         const data = await res.json()
         console.log("cases: ", data)
         setCases(data.data)

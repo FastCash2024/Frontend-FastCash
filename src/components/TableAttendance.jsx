@@ -22,7 +22,7 @@ const getBackgroundClass = (estado) => {
 };
 
 export default function TableAttendance() {
-    const { loader } = useAppContext();
+    const { loader, setModal, setAttendance } = useAppContext();
     const searchParams = useSearchParams();
     const seccion = searchParams.get("seccion");
     const item = searchParams.get("item");

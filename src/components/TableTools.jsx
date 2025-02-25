@@ -616,16 +616,25 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-end items-center'>
-                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Nombre del cliente:
-                                </label>
-                                <input className={`h-[25px] max-w-[173px] w-full px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Número de ' onChange={onChangeHandler} defaultValue={filter['Número de teléfono']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+                            <SearchInput
+                                label="Número de caso:"
+                                name="caso"
+                                value={filter['caso'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="Buscar por numero de caso"
+                                required
+                            />
 
-                            <div className='flex justify-between flex space-x-2 ml-6'>
-                                <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
-                                <button type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                            <div className='flex justify-between space-x-2 ml-6'>
+                                <div className='flex justify-center space-x-3'>
+                                    <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                        <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Consultar</button>
+                                    </Link>
+                                    <Link href={`?seccion=${seccion}&item=${item}`}>
+                                        <button onClick={resetFilter} type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                    </Link>
+                                </div>
                             </div>
 
                         </div>
@@ -787,7 +796,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                 </div> */}
                 <div className='pt-3 flex space-x-3 w-[20%]'>
-                <Button type="button" theme="MiniPrimary" click={() => setModal('Agregar comision')} >Generar Comisión</Button>
+                    <Button type="button" theme="MiniPrimary" click={() => setModal('Agregar comision')} >Generar Comisión</Button>
                 </div>
             </div>}
             {item === 'Gestion de aplicacion' && <div className='flex flex-row justify-between items-center'>
@@ -1100,10 +1109,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                         </div>
                                         <div className="flex flex-row justify-center text-xs text-gray-950 dark:text-white mt-2">
                                             {horaEntrada.estadosDeAsistencia.map((estado, index) => (
-                                            <p key={index} className={`px-4 pt-0 ${getBackgroundClass(estado.estado)}`}>
-                                                {estado.rango}: {estado.estado}
-                                            </p>
-                                        ))}
+                                                <p key={index} className={`px-4 pt-0 ${getBackgroundClass(estado.estado)}`}>
+                                                    {estado.rango}: {estado.estado}
+                                                </p>
+                                            ))}
                                         </div>
                                     </>
                                 )}

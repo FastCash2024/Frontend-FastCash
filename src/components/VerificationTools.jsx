@@ -166,18 +166,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                     </div>
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
                                 <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta')}>Asignar cuenta</Button>
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
+                            <div className='flex justify-between space-x-3'>
                             </div>
                         </div>
                     </div>
