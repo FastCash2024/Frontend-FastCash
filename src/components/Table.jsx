@@ -221,9 +221,9 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     if (modal === "Editar cuenta" || modal === "Editar Multar cuenta") {
       setModal(modal);
       setMulta(i);
-      
+
     }
-    if(modal === "Editar comision" || modal === "Eliminar comision"){
+    if (modal === "Editar comision" || modal === "Eliminar comision") {
       setAppComision(i);
       setModal(modal);
     }
@@ -702,13 +702,16 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               )}
                             {(item?.toLowerCase().includes("registro histórico")) &&
                               it.toLowerCase() === "operar" && (
-                                <div className="flex justify-center">
+                                <div className="flex justify-center gap-6">
+                                  <Link href={`/Home/Datos?caso=${i._id}&seccion=info`} className=''>
+                                    <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Visitar</button>
+                                  </Link>
                                   <button
                                     onClick={() => handlerItemPE('Multar cuenta', i)}
                                     type="button"
                                     className="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                   >
-                                    Editar
+                                    Multar
                                   </button>
                                 </div>
                               )}

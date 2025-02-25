@@ -147,6 +147,7 @@ export default function Home() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const [details, setDetails] = useState([])
+  const [totales, setTotales] = useState({})
 
   function sortArray(x, y) {
     if (
@@ -188,15 +189,18 @@ export default function Home() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
-        : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
     );
     const result = await res.json();
     console.log("data: ", result);
     setData(result);
+    setCurrentPage(result.currentPage);
+    setTotalPages(result.totalPages);
+    setTotalDocuments(result.totalDocuments);
   }
 
-  async function handlerFetchVerification(limit, page) {
+  async function handlerFetchVerification() {
     const urlParams = new URLSearchParams(window.location.search);
 
     const filterParams = {};
@@ -224,9 +228,6 @@ export default function Home() {
       const result = await res.json();
 
       setCases(result.data);
-      setCurrentPage(result.currentPage);
-      setTotalPages(result.totalPages);
-      setTotalDocuments(result.totalDocuments);
     } catch (error) {
       console.error("Error al obtener datos: ", error)
       setLoader(false);
@@ -236,9 +237,19 @@ export default function Home() {
   }
   console.log("DATA2 cases", cases);
 
+  async function handlerFetchTotales() {
+    const res = await fetch(
+      window?.location?.href?.includes('localhost')
+        ? 'http://localhost:3000/api/verification/totalreportecobro'
+        : 'https://api.fastcash-mx.com/api/verification/totalreportecobro')
+    const data = await res.json()
+    setTotales(data.data)
+  }
+
   useEffect(() => {
-    handlerFetch();
-    handlerFetchVerification(itemsPerPage, currentPage);
+    handlerFetchTotales()
+    handlerFetch(itemsPerPage, currentPage);
+    handlerFetchVerification();
   }, [loader, itemsPerPage, currentPage, searchParams]);
 
 
@@ -376,6 +387,32 @@ export default function Home() {
                   <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacionTotal}</td>
                 </tr>
               ))}
+              <tr className="bg-gray-200 font-bold">
+                <td className='px-4 py-2'>Totales</td>
+                <td className='px-4 py-2'></td>
+                <td className='px-4 py-2'></td>
+                <td className='px-4 py-2'></td>
+                <td className='px-4 py-2'>{totalDocuments}</td>
+                <td className='px-4 py-2'></td>
+                <td className="px-4 py-2  bg-yellow-400">{totales?.pagos10am}</td>
+                <td className="px-4 py-2">{totales?.ptp10am}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion10am}</td>
+                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos12am}</td>
+                <td className="px-4 py-2">{totales?.ptp12am}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion12am}</td>
+                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos2pm}</td>
+                <td className="px-4 py-2">{totales?.ptp2pm}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion2pm}</td>
+                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos4pm}</td>
+                <td className="px-4 py-2">{totales?.ptp4pm}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion4pm}</td>
+                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos6pm}</td>
+                <td className="px-4 py-2">{totales?.ptp6pm}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion6pm}</td>
+                <td className="px-4 py-2 bg-yellow-400">{totales?.pagosTotal}</td>
+
+                <td className="px-4 py-2">{totales?.tasaRecuperacionTotal}</td>
+              </tr>
             </tbody>
           </table>
         </div>
