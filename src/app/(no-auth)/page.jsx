@@ -39,11 +39,8 @@ export default function Home() {
         cuenta,
         password,
       });
-
-
-      console.log(response)
-      // console.log(response)
       if (response.status === 200) {
+        console.log('response.data.user',response.data.user)
         setUser({ rol: response.data.user.tipoDeGrupo })
         setUserDB(response.data.user)
         // Guardar el JWT en sessionStorage

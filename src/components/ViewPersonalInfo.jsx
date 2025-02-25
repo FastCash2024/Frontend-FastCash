@@ -27,7 +27,7 @@ export default function Home() {
 
     const router = useRouter()
     const [texto, setTexto] = useState('');
-    const { user, userDB, } = useAppContext()
+    const { user, userDB } = useAppContext()
 
     const searchParams = useSearchParams()
     const [copied, setCopied] = useState(false);
@@ -51,43 +51,44 @@ export default function Home() {
 
     async function handlerFetch() {
         const res = await fetch(window?.location?.href.includes('localhost')
-            ? `http://localhost:3000/api/auth/users?emailPersonal=${user?.email}`
-            : `https://api.fastcash-mx.com/api/auth/users?emailPersonal=${user?.email}`)
+            ? `http://localhost:3000/api/auth/users?emailPersonal=${userDB?.email || user?.email}`
+            : `https://api.fastcash-mx.com/api/auth/users?emailPersonal=${userDB?.email || user?.email}`)
         const resData = await res.json()
-        console.log("resData: ", resData);
-        
         setData(resData)
     }
 
     useEffect(() => {
+        
         if (item === "Informacion personal") {
-            user === undefined && router.push('/')
-            user && user?.email && handlerFetch()
+            (userDB && user) === undefined && router.push('/')
+            if(userDB?.email || user?.email) {
+                handlerFetch()
+            } 
+                
         }
-    }, [user])
-
+    }, [userDB,user])
     return (
         user?.rol === 'Cuenta Personal' && item === 'Informacion personal' && <div className='relative w-full h-full items-center flex flex-col justify-center'>
             
             <div className={`relative w-[450px] h-auto rounded-[20px] items-center flex flex-col justify-center space-y-3 ${theme === 'light' ? 'relative bg-white shadow-2xl shadow-gray-500' : 'relative bg-white shadow-2xl shadow-gray-500'} p-5 py-10 dark:shadow-none dark:bg-gray-900`}>
     <div className='relative w-[150px] h-[150px] bottom-4'>
-        <img src={user.fotoURL} className='w-full h-full object-cover rounded-full' />
+        <img src={userDB?.fotoURL || user.fotoURL} className='w-full h-full object-cover rounded-full' />
     </div>
     <div className='relative w-[350px] items-between flex justify-between '>
         <span className={`${theme === 'light' ? 'text-green-500' : 'text-green-500'} dark:text-green-500`}> Nombre:</span>
-        <span className={`${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-white`}> {user?.nombreCompleto}</span>
+        <span className={`${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-white`}> {userDB?.nombreCompleto || user.nombreCompleto }</span>
     </div>
     <div className='relative w-[350px] items-between flex justify-between'>
         <span className={`${theme === 'light' ? 'text-green-500' : 'text-green-500'} dark:text-green-500`}> DNI:</span>
-        <span className={`${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-white`}> {user?.dni}</span>
+        <span className={`${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-white`}> {userDB?.dni || user.dni}</span>
     </div>
     <div className='relative w-[350px] items-between flex justify-between'>
         <span className={`${theme === 'light' ? 'text-green-500' : 'text-green-500'} dark:text-green-500`}> Correo:</span>
-        <span className={`${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-white`}> {user?.email}</span>
+        <span className={`${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-white`}> {userDB?.email || user.email}</span>
     </div>
     {
-        data?.data?.map(item => {
-            return <div className='relative w-[350px] items-between flex justify-between'>
+        data?.data?.map((item, index) => {
+            return <div key={index} className='relative w-[350px] items-between flex justify-between'>
                 <span className={`${theme === 'light' ? 'text-green-500' : 'text-green-500'} dark:text-green-500`}> Rol asignado hoy:</span>
                 <span className={`${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-white`}> {item.cuenta}</span>
             </div>

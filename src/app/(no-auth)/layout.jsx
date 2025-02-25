@@ -23,6 +23,7 @@ function Home({ children }) {
     const { theme, toggleTheme } = useTheme();
     const pathname = usePathname()
     const fetchProfile = async () => {
+        console.log('fetchProfile')
         const token = sessionStorage.getItem('token'); // Obtener el JWT desde sessionStorage
         try {
             const response = await fetch(window?.location?.href.includes('localhost')
@@ -42,13 +43,12 @@ function Home({ children }) {
                         (pathname === '/PersonalAccount' || pathname === '/') && router.replace('/Account')
                 } else {
                     setUserDB(data.user)
-                    console.log('userDB',data.user)
                     if (data.user?.emailPersonal) {
                         const res = await fetch(window?.location?.href.includes('localhost')
                             ? `http://localhost:3000/api/auth/personalAccounts?email=${data.user?.emailPersonal}`
                             : `https://api.fastcash-mx.com/api/auth/personalAccounts?email=${data.user?.emailPersonal}`)
                         const resData = await res.json()
-                        console.log('user',resData)
+                        console.log('restData layour noAuth',resData)
                         setUser({ ...resData[0], rol: data.user.tipoDeGrupo })
                             (pathname === '/PersonalAccount' || pathname === '/') && router.replace('/Home')
                     } else {
