@@ -20,10 +20,10 @@ export default function TableReporteDiarioAuditoria() {
 
     async function handlerFetch(limit, page) {
 
-        // const local = "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
-        // const server = "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
-        const local = "http://localhost:3000/api/auth/users";
-        const server = "https://api.fastcash-mx.com/api/auth/users";
+        const local = "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
+        const server = "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
+        // const local = "http://localhost:3000/api/auth/users";
+        // const server = "https://api.fastcash-mx.com/api/auth/users";
        
         const urlParams = new URLSearchParams(window.location.search);
         
