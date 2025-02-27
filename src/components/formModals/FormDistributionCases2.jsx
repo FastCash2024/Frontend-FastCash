@@ -55,7 +55,7 @@ export default function AddAccount({query, estadoDeCredito,}) {
         const resCases = await fetch('https://api.fastcash-mx.com/api/verification/')
         const dataVerification = await resCases.json()
         const casesVerification = dataVerification.filter(i => i.estadoDeCredito === 'Pendiente')
-        const resultado = dividir(casesVerification.length * 1, verificadores.length * 1);
+        const resultado = dividir(casesVerification.length * 1, verificadores.data.length * 1);
         setMaximoAsignacion(resultado)
     }
     //Asignacion igualitaria
@@ -166,7 +166,7 @@ export default function AddAccount({query, estadoDeCredito,}) {
     }
     return (
         <FormLayout>
-            <h4 className="text-gray-950">Distribuir Casos Masivos</h4>
+            <h4 className="text-gray-950">Distribuir Casos Masivossssssssssss</h4>
             {!calculate &&
                 <div className='flex justify-between items-center w-[100%] '>
                     <label htmlFor="cantidadAsignacionIgualitaria" className={`mr-5 text-[11px]  ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
