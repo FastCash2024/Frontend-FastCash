@@ -410,7 +410,6 @@ export default function Home() {
                 <td className="px-4 py-2">{totales?.ptp6pm}</td>
                 <td className="px-4 py-2">{totales?.tasaRecuperacion6pm}</td>
                 <td className="px-4 py-2 bg-yellow-400">{totales?.pagosTotal}</td>
-
                 <td className="px-4 py-2">{totales?.tasaRecuperacionTotal}</td>
               </tr>
             </tbody>

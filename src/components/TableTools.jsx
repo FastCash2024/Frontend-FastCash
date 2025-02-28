@@ -33,6 +33,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [query, setQuery] = useState('')
 
     const [horaEntrada, setHoraEntrada] = useState(null);
+    const [totalesVerification, setTotalesVerification] = useState({})
+    const [totalesCobro, setTotalesCobro] = useState({})
+    
 
     const fetchCustomersFlow = async () => {
         const local = 'http://localhost:3000/api/applications/customers';
@@ -248,6 +251,29 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setApplicationTipo(dataApplication);
     }
 
+    // Fetch totales
+    async function handlerFetchCTotales() {
+        const res = await fetch(
+            window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3000/api/verification/totalreportecobro'
+                : 'https://api.fastcash-mx.com/api/verification/totalreportecobro')
+        const data = await res.json()
+        setTotalesCobro(data.data)
+    }
+
+    async function handlerFetchVTotales() {
+        const res = await fetch(
+            window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3000/api/verification/totalreporteverificacion'
+                : 'https://api.fastcash-mx.com/api/verification/totalreporteverificacion')
+        const data = await res.json()
+        setTotalesVerification(data.totalesGenerales)
+    }
+    useEffect(() => {
+        handlerFetchCTotales();
+        handlerFetchVTotales();
+    }, [loader]);
+
 
     return (
         <div className='pt-5'>
@@ -375,16 +401,16 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             <Velocimetro></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de finalizacion hoy</h4>
                             <div className='grid grid-cols-3 w-[300px]'>
-                                <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>0 <br />El número de recordatorios en el dia que se asigna en el día.</p>
-                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>0 <br />Añadir el número hoy.</p>
+                                <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.tasaRecuperacionTotal ?? 0} <br />El número de recordatorios en el dia que se asigna en el día.</p>
+                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.pagosTotal ?? 0} <br />Añadir el número hoy.</p>
                             </div>
                         </div>
                         <div className=' px-2'>
                             <Velocimetro></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de caso</h4>
                             <div className='grid grid-cols-3 w-[300px]'>
-                                <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>0 <br />Cobro de hoy.</p>
-                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>0 <br /> Número total de casos.</p>
+                                <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.tasaRecuperacionTotal ?? 0} <br />Cobro de hoy.</p>
+                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.pagosTotal ?? 0} <br /> Número total de casos.</p>
                             </div>
                         </div>
                         <div className=' px-2'>

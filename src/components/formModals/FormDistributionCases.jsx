@@ -42,17 +42,17 @@ export default function AddAccount() {
             ? 'Asesor de Cobranza'
             : 'Asesor de Auditoria'
 
-            const estadoDeCredito = seccion === 'Verificacion'
-            ? 'Pendiente'
-            : seccion === 'coleccion'
-                ? 'Dispersado'
-                : 'Pendiente'
+    const estadoDeCredito = seccion === 'Verificacion'
+        ? 'Pendiente'
+        : seccion === 'coleccion'
+            ? 'Dispersado'
+            : 'Pendiente'
 
     const query = seccion === 'Verificacion'
-    ? 'Asesor de Verificación'
-    : seccion === 'coleccion'
-        ? 'Asesor de Cobranza'
-        : 'Asesor de Auditoria'
+        ? 'Asesor de Verificación'
+        : seccion === 'coleccion'
+            ? 'Asesor de Cobranza'
+            : 'Asesor de Auditoria'
 
     console.log(user)
     const countByItemsLength = (data) => {
@@ -89,7 +89,7 @@ export default function AddAccount() {
         const casesVerification = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
         console.log("cantidad de casos: ", casesVerification);
         console.log("cantidad de verificadores: ", verificadores);
-        
+
         const resultado = dividir(casesVerification.length * 1, verificadores.data.length * 1);
         setMaximoAsignacion(resultado)
     }
@@ -99,7 +99,7 @@ export default function AddAccount() {
         setType('Equaly')
         const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}&limit=1000`)
         const data = await res.json()
-        
+
         const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
         const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
         const resCases = await fetch('https://api.fastcash-mx.com/api/verification?&limit=1000')
@@ -116,9 +116,15 @@ export default function AddAccount() {
                 unassignedCases = unassignedCases.slice(maximoAsignacion);
             }
         });
+
+        const fechaActual = new Date().toISOString();
+
         const updatedCases = casesVerification.map(caso => {
             const assignedUser = updatedUsers.find(user => user.idCasosAsignados.includes(caso.numeroDePrestamo));
-            return assignedUser ? { ...caso, cuenta: assignedUser.cuenta, nombreDeLaEmpresa: assignedUser.origenDeLaCuenta } : caso;
+            let fechaDeTramitacionDelCaso = asignacion.estadoDeCredito === "Pendiente" ? fechaActual : asignacion.fechaDeTramitacionDelCaso;
+            let fechaDeTramitacionDeCobro = asignacion.estadoDeCredito === "Dispersado" ? fechaActual : asignacion.fechaDeTramitacionDeCobro;
+            
+            return assignedUser ? { ...caso, cuenta: assignedUser.cuenta, nombreDeLaEmpresa: assignedUser.origenDeLaCuenta, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro  } : caso;
         });
         setusuariosConAsignacion(updatedUsers)
         setCasosNoAsignados(unassignedCases)
@@ -138,6 +144,9 @@ export default function AddAccount() {
         let usuarioIndex = 0; // Índice del usuario al que se asignará la siguiente tarea
         // Crear un mapa para rastrear las asignaciones por usuario
         const administracion = usuarios.map(usuario => ({ ...usuario, idCasosAsignados: [] }));
+
+        const fechaActual = new Date().toISOString();
+
         // Actualizar las asignaciones con idUsuario y registrar en el mapa
         const asignacionesConUsuarios = asignaciones.map(asignacion => {
             const cuenta = usuarios[usuarioIndex].cuenta;
@@ -147,61 +156,81 @@ export default function AddAccount() {
             usuario.idCasosAsignados.push(asignacion.numeroDePrestamo);
             // Avanzar al siguiente usuario (circular)
             usuarioIndex = (usuarioIndex + 1) % usuarios.length;
+
+            let fechaDeTramitacionDelCaso = asignacion.estadoDeCredito === "Pendiente" ? fechaActual : asignacion.fechaDeTramitacionDelCaso;
+            let fechaDeTramitacionDeCobro = asignacion.estadoDeCredito === "Dispersado" ? fechaActual : asignacion.fechaDeTramitacionDeCobro;
             // Retornar la asignación actualizada
-            return { ...asignacion, cuenta, nombreDeLaEmpresa };
+            return { ...asignacion, cuenta, nombreDeLaEmpresa, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro };
         });
         setusuariosConAsignacion(administracion)
         setCasosAsignados(asignacionesConUsuarios)
         // setCasosNoAsignados(unassignedCases)
         // console.log({ asignacionesConUsuarios, administracion })
     }
+
     const abortAssignment = () => {
         setMaximoAsignacion(2);
         setusuariosConAsignacion([]);
         setCasosNoAsignados([]);
         setCalculate(false);
     };
+
     function onChangeHandler(e) {
         setMaximoAsignacion(e.target.value)
     }
     //Gardar asignaciones
-    function saveAsignation() {
-        console.log(usuariosConAsignacion)
-        setLoader('Guardando...')
-        casosAsignados.map(async (i) => {
-            if (i?.cuenta !== undefined, i?.nombreDeLaEmpresa !== undefined)
-                try {
+    async function saveAsignation() {
+        console.log("Cantidad de usuarios asignados: ", casosAsignados);
+        setLoader('Guardando...');
 
-                    const response = await fetch(window?.location?.href?.includes('localhost')
+        try {
+            const requests = casosAsignados.map(async (i) => {
+                if (i?.cuenta !== undefined && i?.nombreDeLaEmpresa !== undefined) {
+                    let bodyData = {
+                        [cuentaUpdate]: i.cuenta,
+                        nombreDeLaEmpresa: i.nombreDeLaEmpresa
+                    };
+
+                    // Agregar la fecha según el estado del caso
+                    if (i.estadoDeCredito === "Pendiente") {
+                        bodyData.fechaDeTramitacionDelCaso = i.fechaDeTramitacionDelCaso;
+                    } else if (i.estadoDeCredito === "Dispersado") {
+                        bodyData.fechaDeTramitacionDeCobro = i.fechaDeTramitacionDeCobro;
+                    }
+
+                    const url = window?.location?.href?.includes('localhost')
                         ? `http://localhost:3000/api/verification/${i._id}`
-                        : `https://api.fastcash-mx.com/api/verification/${i._id}`, {
+                        : `https://api.fastcash-mx.com/api/verification/${i._id}`;
+
+                    const response = await fetch(url, {
                         method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            [cuentaUpdate]: i.cuenta,
-                            nombreDeLaEmpresa: i.nombreDeLaEmpresa
-                        }), // Datos a enviar en el cuerpo de la petición
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(bodyData)
                     });
-                    if (response.ok) {
-                        setAlerta('Operación exitosa!')
-                        setModal('')
-                        setLoader('')
-                    } else {
-                        setLoader('')
-                        setAlerta('Error de datos!')
+
+                    if (!response.ok) {
                         throw new Error(`Error: ${response.status} - ${response.statusText}`);
                     }
+
                     const result = await response.json();
                     console.log("Actualización exitosa:", result);
                     return result;
-                } catch (error) {
-                    console.error("Error al realizar la solicitud:", error);
                 }
-            console.log({ cuenta: i.cuenta, nombreDeLaEmpresa: i.nombreDeLaEmpresa })
-        })
+            });
+
+            // Esperar que todas las peticiones finalicen
+            await Promise.all(requests);
+
+            // Actualizar estado después de completar todas las solicitudes
+            setAlerta('Operación exitosa!');
+            setModal('');
+            setLoader('');
+        } catch (error) {
+            setLoader('');
+            setAlerta('Error de datos!');
+        }
     }
+
     return (
         <FormLayout>
             <h4 className="text-gray-950">Distribuir Casos Masivos</h4>

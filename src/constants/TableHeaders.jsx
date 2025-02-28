@@ -7,7 +7,7 @@ export const encabezadoCasosDeCobranza = () => {
             "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
             "Cliente nuevo", "Valor Enviado" /*, Importe reembolsable (Rp)*/, "Importe pagado (Rp)",
             "Registro de notas", "Nombre del producto", "Fecha de reembolso",
-            "Días Vencidos", "Fecha de cancelación a cuenta", "Fecha de creación de la tarea",
+            "Días Vencidos", "Fecha de cancelación a cuenta [fecha de tramitacion de cobro]", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Cuenta Cobrador (Asesor)",
             "Operar"
         ]
@@ -16,7 +16,7 @@ export const encabezadoCasosDeCobranza = () => {
             "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
             "Cliente nuevo", "Valor Enviado"/*"Importe reembolsable (Rp)"*/, "Importe pagado (Rp)",
             "Registro de notas", "nombreDelProducto", "Fecha de reembolso",
-            "Días Vencidos", "Fecha de cancelación a cuenta", "Fecha de creación de la tarea",
+            "Días Vencidos", "Fecha de cancelación a cuenta [fecha de tramitacion de cobro]", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Operar"
         ];
 };
@@ -26,7 +26,7 @@ export const encabezadoIncurrirEnUnaEstaciónDeTrabajo = () => [
     "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
     "Cliente nuevo", "valor solicitado (Importe adeudado MXN)", "Cantidad dispersada (Importe pagado MXN)", "fecha De Dispersion",
     "Registro de notas", "Nombre Del Producto (Código de producto)", "Fecha de reembolso", "Días Vencidos",
-    "Fecha de cancelación a cuenta", "Fecha de creación de la tarea",
+    "Fecha de cancelación a cuenta [fecha de tramitacion de cobro]", "Fecha de creación de la tarea",
     "Fecha de tramitación del caso", "Nombre de la empresa", "Apodo de usuario de cobro",
     "Operar"
 ];
@@ -61,9 +61,9 @@ export const encabezadoDeAplicacion = () => ["nivel de prestamo", "valor Prestad
 {/* --------------------------------- AUDITORIA DE CREDITOS --------------------------------- */ }
 
 export const encabezadoRegistroHistorico = () => [
-    "Seleccionar", "Caso (Descripción de la excepción) [Número de préstamo]", "Asesor (Apodo del usuario) [email asesor]", "Cuenta (Cuenta Personal)",
-    "Código de producto", "Operacion (Contenido de la operación) [acotacion]", /*"Modificacion (Resultados de la operación)",*/
-    "Estado [modificacion]", "Fecha (Tiempo de operación)", "operar"
+    /*"Seleccionar",*/ /*"Caso (Descripción de la excepción) [Número de préstamo]",*/ "Cuenta Operativa [cuenta]", "Cuenta personal [email asesor]",
+    "Código de sistema [Código de producto]", "Código de operacion [acotacion]", /*"Modificacion (Resultados de la operación)",*/
+    "Contenido de la operacion [modificacion]", "Fecha de operacion [fecha]", "operar"
 ];
 
 export const encabezadoMonitoreoDeTransacciones = () => [

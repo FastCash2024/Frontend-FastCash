@@ -195,6 +195,8 @@ export default function Home() {
     // console.log(data)
   }
 
+  console.log("total cases: ", cases);
+  
 
   async function handlerFetchDetails() {
     const res = await fetch(
@@ -298,7 +300,7 @@ export default function Home() {
                 <td className="px-4 py-2">{i.nombrePersonal}</td>
                 <td className="px-4 py-2">{i.cuenta}</td>
 
-                <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length > 0 ? cases?.filter(it => it.cuentaVerificador === i.cuenta).length : 0}</td>
+                <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length }</td>
 
                 <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.aprobados10am}</td>
                 <td className="px-4 py-2">{details[i.cuenta]?.reprobados10am}</td>
