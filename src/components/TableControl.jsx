@@ -15,7 +15,6 @@ export default function TableControl() {
   } = useAppContext();
 
   const [cases, setCases] = useState([]);
-  const [casesCobrador, setCasesCobrador] = useState([]);
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
@@ -24,7 +23,6 @@ export default function TableControl() {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
-  const [details, setDetails] = useState([])
   const date = getCurrentDate();
 
   function handlerSelectCheck(e, i) {
@@ -39,13 +37,12 @@ export default function TableControl() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/multas/multas?limit=${limit}&page=${page}`
-        : `https://api.fastcash-mx.com/api/multas/multas?limit=${limit}&page=${page}`
+        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=${limit}&page=${page}`
     );
     const result = await res.json();
-    console.log("data users: ", result);
+    console.log("data: ", result);
     setData(result);
-    // setCases(result.data);
     setCurrentPage(result.currentPage);
     setTotalPages(result.totalPages);
     setTotalDocuments(result.totalDocuments);
@@ -54,27 +51,17 @@ export default function TableControl() {
   async function handlerFetchVerification(date) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/verification?estadoDeCredito=Reprobado,Dispersado&fechaDeTramitacionDelCaso=${date}`
-        : "https://api.fastcash-mx.com/api/verification?estadoDeCredito=Reprobado,Dispersado&fechaDeTramitacionDelCaso=${date}"
+        ? `http://localhost:3000/api/verification?limit=1000`
+        : `https://api.fastcash-mx.com/api/verification?limit=1000`
     );
     const result = await res.json();
     setCases(result.data);
   }
 
-  async function handlerFetchVerificationCobrador(date) {
-    const res = await fetch(
-      window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/verification?estadoDeCredito=Pagado&fechaDeTramitacionDeCobro=${date}`
-        : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Pagado&fechaDeTramitacionDeCobro=${date}`
-    );
-    const result = await res.json();
-    setCasesCobrador(result.data);
-  }
 
   useEffect(() => {
     handlerFetch(itemsPerPage, currentPage);
     handlerFetchVerification(date);
-    handlerFetchVerificationCobrador(date);
   }, [loader, itemsPerPage, currentPage]);
 
 
@@ -86,23 +73,13 @@ export default function TableControl() {
     setItemsPerPage(itemsPerPage);
     setCurrentPage(1);
   };
-  
+
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
   }
-  
-  // async function handlerFetchDetails() {
-  //   const res = await fetch(
-  //     window?.location?.href?.includes('localhost')
-  //       ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
-  //       : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
-  //   const data = await res.json()
-  //   console.log("data detalle: ", data)
-  //   setDetails(data.data)
-  // }
+
 
   useEffect(() => {
-    // handlerFetchDetails();
     setCheckedArr([]);
   }, []);
 
@@ -111,18 +88,19 @@ export default function TableControl() {
     setMulta(i);
     setModal(modal);
   }
-  
+
   return (
     <>
       <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
         <table className="w-full min-w-[200px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
           <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
             <tr className=" bg-slate-200">
-              <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA</th>
+              <th className="px-3 py-2">{/* <input type="checkbox" /> */}</th>
               <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
-              <th className="px-4 py-2 text-gray-700">APROBADOS/REPROBADOS</th>
-              <th className="px-4 py-2 text-gray-700">PAGADOS/PTP</th>
-              <th className="px-4 py-2 text-gray-700">ACOTACION</th>
+              <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA</th>
+              {/* <th className="px-4 py-2 text-gray-700">APROBADOS/REPROBADOS</th> */}
+              <th className="px-4 py-2 text-gray-700">CASOS</th>
+              {/* <th className="px-4 py-2 text-gray-700">ACOTACION</th> */}
               <th className="px-4 py-2 text-gray-700">OPERACION</th>
             </tr>
           </thead>
@@ -130,27 +108,34 @@ export default function TableControl() {
             {data?.data?.map((i, index) => (
               <tr
                 key={index}
-                className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-                  }`}
+                className={`bg-gray-200 border-b text-[12px]}`}
               >
+                <td
+                  className={`px-3 py-2 text-[12px] border-b bg-[#ffffff]`}
+                >
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handlerSelectCheck(e, i)}
+                  />
+                </td>
 
-                <td className="px-4 py-2 bg-[#ffffff]">{i.cuentaOperativa}</td>
-                <td className="px-4 py-2 bg-[#ffffff]">{i.cuentaPersonal}</td>
+                <td className="px-4 py-2 bg-[#ffffff]">{i.nombrePersonal}</td>
+                <td className="px-4 py-2 bg-[#ffffff]">{i.cuenta}</td>
 
                 <td className="px-4 py-2 bg-[#ffffff]">
                   {
-                    cases?.filter((it) => it.cuentaVerificador === i.cuentaOperativa)
+                    cases?.filter((it) => it.cuentaAuditor === i.cuenta)
                       .length
                   }
                 </td>
-                <td className="px-4 py-2 bg-[#ffffff]">
+                {/* <td className="px-4 py-2 bg-[#ffffff]">
                   {
                     casesCobrador?.filter((it) => it.cuentaCobrador === i.cuentaOperativa)
-                    .length
+                      .length
                   }
-                </td>
-                <td className="px-4 py-2 bg-[#ffffff]">{i.acotacion}</td>
-                <td className="px-4 py-2 bg-[#ffffff]">
+                </td> */}
+                {/* <td className="px-4 py-2 bg-[#ffffff]">{i.acotacion}</td> */}
+                {/* <td className="px-4 py-2 bg-[#ffffff]">
                   <button
                     onClick={() => handlerEditCuenta('Editar Multar cuenta', i)}
                     type="button"
@@ -158,7 +143,7 @@ export default function TableControl() {
                   >
                     EDITAR
                   </button>
-                </td>
+                </td> */}
 
 
               </tr>
