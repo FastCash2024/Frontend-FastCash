@@ -2,7 +2,7 @@ import { useAppContext } from '@/context/AppContext';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { Paginator } from './Paginator';
-import { getCurrentDate } from '@/utils';
+import { getCurrentDate, obtenerSegmento } from '@/utils';
 
 export default function TableControl() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -11,7 +11,7 @@ export default function TableControl() {
     setCheckedArr,
     loader,
     setModal,
-    setMulta
+    setItemSelected
   } = useAppContext();
 
   const [cases, setCases] = useState([]);
@@ -37,8 +37,8 @@ export default function TableControl() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=${limit}&page=${page}`
-        : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=${limit}&page=${page}`
+        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
     );
     const result = await res.json();
     console.log("data: ", result);
@@ -85,9 +85,13 @@ export default function TableControl() {
 
 
   function handlerEditCuenta(modal, i) {
-    setMulta(i);
+    setItemSelected(i);
     setModal(modal);
   }
+
+  console.log("tabla data: ", data);
+  console.log("tabla cases: ", cases);
+
 
   return (
     <>
@@ -96,11 +100,12 @@ export default function TableControl() {
           <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
             <tr className=" bg-slate-200">
               <th className="px-3 py-2">{/* <input type="checkbox" /> */}</th>
-              <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
+              <th className="px-4 py-2 text-gray-700">SEGMENTO</th>
               <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA</th>
-              {/* <th className="px-4 py-2 text-gray-700">APROBADOS/REPROBADOS</th> */}
-              <th className="px-4 py-2 text-gray-700">CASOS</th>
-              {/* <th className="px-4 py-2 text-gray-700">ACOTACION</th> */}
+              <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
+              <th className="px-4 py-2 text-gray-700">NUMERO DE CASO</th>
+              <th className="px-4 py-2 text-gray-700">NOMBRE DE LA EMPRESA</th>
+              <th className="px-4 py-2 text-gray-700">CUENTA AUDITORA</th>
               <th className="px-4 py-2 text-gray-700">OPERACION</th>
             </tr>
           </thead>
@@ -119,31 +124,35 @@ export default function TableControl() {
                   />
                 </td>
 
+                <td className="px-4 py-2 bg-[#ffffff]">{obtenerSegmento(i.cuenta)}</td>
                 <td className="px-4 py-2 bg-[#ffffff]">{i.nombrePersonal}</td>
                 <td className="px-4 py-2 bg-[#ffffff]">{i.cuenta}</td>
 
                 <td className="px-4 py-2 bg-[#ffffff]">
                   {
-                    cases?.filter((it) => it.cuentaAuditor === i.cuenta)
-                      .length
+                    cases?.find((it) => it.cuentaVerificador === i.cuenta || it.cuentaCobrador === i.cuenta)?.numeroDePrestamo || 'Sin numero de prestamo'
                   }
                 </td>
-                {/* <td className="px-4 py-2 bg-[#ffffff]">
+                <td className="px-4 py-2 bg-[#ffffff]">
                   {
-                    casesCobrador?.filter((it) => it.cuentaCobrador === i.cuentaOperativa)
-                      .length
+                    cases?.find((it) => it.cuentaVerificador === i.cuenta || it.cuentaCobrador === i.cuenta)?.nombreDelProducto || 'Sin nombre de producto'
                   }
-                </td> */}
-                {/* <td className="px-4 py-2 bg-[#ffffff]">{i.acotacion}</td> */}
-                {/* <td className="px-4 py-2 bg-[#ffffff]">
+
+                </td>
+                <td className="px-4 py-2 bg-[#ffffff]">
+                  {
+                    cases?.find((it) => it.cuentaVerificador === i.cuenta || it.cuentaCobrador === i.cuenta)?.apodoDeUsuarioDeAuditoria || 'Sin auditor'
+                  }
+                </td>
+                <td className="px-4 py-2 bg-[#ffffff]">
                   <button
-                    onClick={() => handlerEditCuenta('Editar Multar cuenta', i)}
+                    onClick={() => handlerEditCuenta('Multar cuenta', i)}
                     type="button"
                     className="w-full max-w-[120px] text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                   >
-                    EDITAR
+                    MULTAR
                   </button>
-                </td> */}
+                </td>
 
 
               </tr>

@@ -17,11 +17,12 @@ export default function TableReporteDiarioAuditoria() {
     const item = searchParams.get('item')
     const [selectedLeft, setSelectedLeft] = useState(-1);
     const [selectedRight, setSelectedRight] = useState(-1);
+    const [cases, setCases] = useState([]);
 
     async function handlerFetch(limit, page) {
 
-        const local = "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
-        const server = "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20auditoria";
+        const local = "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria";
+        const server = "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria";
         // const local = "http://localhost:3000/api/auth/users";
         // const server = "https://api.fastcash-mx.com/api/auth/users";
        
@@ -86,6 +87,55 @@ export default function TableReporteDiarioAuditoria() {
         setLoader(false)
     }
 
+    async function handlerFetch(limit, page) {
+        const res = await fetch(
+          window?.location?.href?.includes("localhost")
+            ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+            : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        );
+        const result = await res.json();
+        console.log("data: ", result);
+        setData(result);
+        setCurrentPage(result.currentPage);
+        setTotalPages(result.totalPages);
+        setTotalDocuments(result.totalDocuments);
+      }
+    
+      async function handlerFetchVerification() {
+        const urlParams = new URLSearchParams(window.location.search);
+    
+        const filterParams = {};
+    
+        urlParams.forEach((value, key) => {
+          if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+            const fieldName = key.slice(7, -1);
+            filterParams[fieldName] = value;
+          }
+        });
+    
+        const queryString = Object.keys(filterParams)
+          .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+          .join("&");
+    
+        // console.log("querys: ", urlParams);
+        const baseUrl = window?.location?.href?.includes("localhost")
+          ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Pagado`
+          : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Pagado`;
+    
+        const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
+        console.log("url local solicitada: ", finalURL);
+        try {
+          const res = await fetch(finalURL);
+          const result = await res.json();
+    
+          setCases(result.data);
+        } catch (error) {
+          console.error("Error al obtener datos: ", error)
+          setLoader(false);
+        }
+        // const result = await res.json();
+        // console.log(data)
+      }
 
     async function handlerFetchDetails() {
         const res = await fetch(
@@ -99,7 +149,8 @@ export default function TableReporteDiarioAuditoria() {
 
     }
     useEffect(() => {
-        handlerFetch(itemsPerPage, currentPage)
+        handlerFetch(itemsPerPage, currentPage);
+        handlerFetchVerification();
     }, [loader, searchParams, itemsPerPage, currentPage])
 
     useEffect(() => {
@@ -158,6 +209,7 @@ export default function TableReporteDiarioAuditoria() {
                             <th className="px-4 py-2 text-white">Nombres</th>
 
                             <th className="px-4 py-2 text-white">Cuenta</th>
+                            <th className="px-4 py-2 text-white">Cuentas</th>
 
                             <th className="px-4 py-2 text-green-400 ">MULTADOS 10:00 am</th>
                             <th className="px-4 py-2 text-gray-100">SIN MULTA 10:00 pm</th>
@@ -192,7 +244,7 @@ export default function TableReporteDiarioAuditoria() {
                                 <td className="px-4 py-2">{i.nombrePersonal}</td>
                                 <td className="px-4 py-2">{i.cuenta}</td>
 
-                                {/* <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length > 0 ? cases?.filter(it => it.cuentaVerificador === i.cuenta).length : 0}</td> */}
+                                <td className="px-4 py-2">{cases?.filter(it => it.  cuentaAuditor === i.cuenta).length }</td>
 
                                 <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.multados10am}</td>
                                 <td className="px-4 py-2">{details[i.cuenta]?.multados10am}</td>

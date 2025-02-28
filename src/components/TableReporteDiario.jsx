@@ -235,7 +235,6 @@ export default function Home() {
     // const result = await res.json();
     // console.log(data)
   }
-  console.log("DATA2 cases", cases);
 
   async function handlerFetchTotales() {
     const res = await fetch(

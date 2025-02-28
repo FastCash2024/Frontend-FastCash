@@ -562,6 +562,31 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   >
                                     Registrar
                                   </button>
+                                  <div className="relative">
+                                    <CurrencyDollarIcon
+                                      className="h-6 w-6 fill-[#1ab418] cursor-pointer"
+                                      onClick={() => toggleMenu(i._id)}
+                                    />
+                                    {activeMenu === i._id && (
+                                      <div
+                                        className="fixed z-50 right-0 transform -translate-x-1/2 -translate-y-1/2 
+                                                  min-w-[100px] bg-white border rounded-lg shadow-lg p-2"
+                                      >
+                                        <button
+                                          className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          onClick={() => handlerItemPE("Registrar Pago", i)}
+                                        >
+                                          Hacer Pago
+                                        </button>
+                                        <button
+                                          className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          onClick={() => handlerItemPE("Extension", i)}
+                                        >
+                                          Extensión
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
                               )}
 

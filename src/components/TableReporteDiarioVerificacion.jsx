@@ -54,9 +54,7 @@ import {
   encabezadoGestionDeAccesos,
 } from '@/constants/TableHeaders.jsx'
 import { obtenerSegmento } from '@/utils'
-import { Paginator } from './Paginator'
-
-
+import { Paginator } from './Paginator';
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -172,20 +170,20 @@ export default function Home() {
     });
 
     const queryString = Object.keys(filterParams)
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
-      .join("&");
-
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+    .join("&");
+    
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Reprobado`
-      : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Reprobado`;
+    ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`
+    : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
     try {
       const res = await fetch(finalURL);
       const result = await res.json();
-
+      
       setCases(result.data);
     } catch (error) {
       console.error("Error al obtener datos: ", error)
@@ -194,27 +192,24 @@ export default function Home() {
     // const result = await res.json();
     // console.log(data)
   }
-
-  console.log("total cases: ", cases);
   
-
   async function handlerFetchDetails() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
-        : 'https://api.fastcash-mx.com/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado')
-    const data = await res.json()
+      ? 'http://localhost:3000/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
+      : 'https://api.fastcash-mx.com/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado')
+      const data = await res.json()
     console.log(data)
     setDetails(data.data)
   }
-
+  
   async function handlerFetchTotales() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/verification/totalreporteverificacion'
-        : 'https://api.fastcash-mx.com/api/verification/totalreporteverificacion')
-    const data = await res.json()
-    setTotales(data.totalesGenerales)
+      ? 'http://localhost:3000/api/verification/totalreporteverificacion'
+      : 'https://api.fastcash-mx.com/api/verification/totalreporteverificacion')
+      const data = await res.json()
+      setTotales(data.totalesGenerales)
   }
 
   function handlerSelectAllCheck(e, i) {
@@ -237,11 +232,11 @@ export default function Home() {
   useEffect(() => {
     setCheckedArr([])
   }, [])
-
+  
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
+  
   const handleItemsPerPageChange = (itemsPerPage) => {
     setItemsPerPage(itemsPerPage);
     setCurrentPage(1);
@@ -250,7 +245,8 @@ export default function Home() {
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
   }
-  console.log("reporte", data)
+  console.log("tabla reporte", data.data)
+  console.log("tabla cases", cases)
   return (
     <>
       <div className='max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth'>

@@ -121,8 +121,8 @@ export default function AddAccount() {
 
         const updatedCases = casesVerification.map(caso => {
             const assignedUser = updatedUsers.find(user => user.idCasosAsignados.includes(caso.numeroDePrestamo));
-            let fechaDeTramitacionDelCaso = asignacion.estadoDeCredito === "Pendiente" ? fechaActual : asignacion.fechaDeTramitacionDelCaso;
-            let fechaDeTramitacionDeCobro = asignacion.estadoDeCredito === "Dispersado" ? fechaActual : asignacion.fechaDeTramitacionDeCobro;
+            let fechaDeTramitacionDelCaso = caso.estadoDeCredito === "Pendiente" ? fechaActual : caso.fechaDeTramitacionDelCaso;
+            let fechaDeTramitacionDeCobro = caso.estadoDeCredito === "Dispersado" ? fechaActual : caso.fechaDeTramitacionDeCobro;
             
             return assignedUser ? { ...caso, cuenta: assignedUser.cuenta, nombreDeLaEmpresa: assignedUser.origenDeLaCuenta, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro  } : caso;
         });
