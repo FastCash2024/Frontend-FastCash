@@ -19,6 +19,7 @@ import {
 import Link from 'next/link';
 import SelectField from './SelectField';
 import { getBackgroundClass } from '@/utils/colors';
+import ControlCasesTools from './ControlCasesTools';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setApplicationTipo, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const searchParams = useSearchParams()
@@ -279,6 +280,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         <div className='pt-5'>
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
             {(item === 'Casos de Cobranza' || item === "Cobro y valance") && <ColectionCasesTools />}
+            {(item === 'Control de Cumplimiento') && <ControlCasesTools />}
             {item === 'Casos de Cobranza hay q borrar' &&
                 <div>
                     <div className="w-full   relative  overflow-auto  scroll-smooth mb-2 lg:overflow-hidden">

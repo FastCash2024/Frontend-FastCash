@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import CryptoJS from "crypto-js";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { formatDate } from "@/utils/getDates";
 
 const SECRET_KEY = "mi-clave-segura";
 
@@ -80,14 +81,14 @@ export default function PayPage() {
         }
     };
 
-    const vencimiento = getVencimientoStatus(itemData?.fechaDeDispersion);
+    const vencimiento = getVencimientoStatus(itemData?.fechaDeReembolso);
 
 
     return (
         <div className="bg-gradient-to-b from-blue-500 to-white min-h-screen w-full flex justify-center items-center">
             {(seccion?.toLowerCase() === "payment" ||
                 seccion?.toLowerCase() === "extension") &&
-            item === "data" ? (
+                item === "data" ? (
                 <div className="w-[24%] mx-auto m-4 bg-white shadow-2xl">
                     <main className="flex-grow">
                         <div className="bg-[radial-gradient(circle_at_center,#cde9fe_0%,#3b82f6_100%)] px-2 pb-4">
@@ -128,7 +129,7 @@ export default function PayPage() {
                                             <div className="text-lg font-semibold">
                                                 ${" "}
                                                 {seccion === "payment"
-                                                    ? itemData?.cantidadDispersada
+                                                    ? itemData?.valorEnviado
                                                     : itemData?.valorExtencion}
                                             </div>
                                         </div>
@@ -154,7 +155,7 @@ export default function PayPage() {
                                             </div>
                                             <div className="text-gray-500">
                                                 {seccion === "payment"
-                                                    ? itemData?.cantidadDispersada
+                                                    ? itemData?.valorEnviado
                                                     : itemData?.valorExtencion}
                                             </div>
                                         </div>
@@ -173,7 +174,7 @@ export default function PayPage() {
                                                 Fecha de Vencimiento
                                             </div>
                                             <div className="text-gray-500">
-                                                {itemData?.fechaDeDispersion}
+                                                {itemData?.fechaDeReembolso}
                                             </div>
                                         </div>
                                     </div>
@@ -194,9 +195,8 @@ export default function PayPage() {
                                     </div>
                                 </div>
                                 {/* Confirm Button */}
-                                <Link
-                                    href={`/pay?caso=${caso}&seccion=${seccion}&item=info`}
-                                >
+                                <Link href={`/pay?caso=${encodeURIComponent(caso)}&seccion=${seccion}&item=info`}>
+
                                     <button className="w-full bg-orange-400 hover:bg-orange-500 text-white py-4 text-base rounded-full ">
                                         Confirmar
                                     </button>
@@ -228,7 +228,7 @@ export default function PayPage() {
                             <span className="text-3xl font-bold text-gray-950">
                                 ${" "}
                                 {seccion === "payment"
-                                    ? itemData?.cantidadDispersada
+                                    ? itemData?.valorEnviado
                                     : itemData?.valorExtencion}
                             </span>
                         </div>
@@ -267,8 +267,8 @@ export default function PayPage() {
                                         {index === 0
                                             ? "Abre tu banca móvil y entra en la página de transferencias"
                                             : index === 1
-                                            ? "Pegar el código de pago y se te asociarán automáticamente los datos bancarios"
-                                            : "Ingresar el monto a pagar y completar la transferencia"}
+                                                ? "Pegar el código de pago y se te asociarán automáticamente los datos bancarios"
+                                                : "Ingresar el monto a pagar y completar la transferencia"}
                                     </p>
                                     <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-900 text-center">
                                         {index === 1 ? "CLABE" : "Importe"}
@@ -280,7 +280,7 @@ export default function PayPage() {
 
                     {/* Back Button */}
                     <Link
-                        href={`/pay?caso=${caso}&seccion=${seccion}&item=data`}
+                        href={`/pay?caso=${encodeURIComponent(caso)}&seccion=${seccion}&item=data`}
                     >
                         <button className="w-full bg-orange-400 hover:bg-orange-500 text-white py-4 text-base rounded-full mt-8">
                             Volver

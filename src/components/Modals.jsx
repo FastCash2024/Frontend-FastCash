@@ -79,6 +79,9 @@ import ModalDeleteNewslater from './modals/ModalDeleteNewslater'
 import FormAddComision from './formModals/FormAddComision'
 import FormUpdateComision from './formModals/FormUpdateComision'
 import ModalDeleteComision from './modals/ModalDeleteComision'
+import FormDistributtonCasesSegment from './formModals/FormDistributtonCasesSegment'
+import FormRestablecimientoAuditors from './formModals/FormRestablecimientoAuditors'
+import FormDistributionAuditors from './formModals/FormDistributionMasiveAuditors'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -517,6 +520,9 @@ export default function Home() {
             {modal === 'Asignar Cuenta' && <FormAsignarCuenta query="Asesor de Verificación" cuenta="cuentaVerificador"/>}
 
             {  modal === 'Distribuir Casos' && <FormDistributionCases query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
+            {  modal === 'Distribuir Casos Segmento' && <FormDistributtonCasesSegment query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
+            {  modal === 'Restablecimiento Masivo Auditoria' && <FormRestablecimientoAuditors seccion="auditoria" />}
+            {  modal === 'Distribuir Casos Auditoria' && <FormDistributionAuditors query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
             {modal === 'Registrar Verificacion' && <FormAddVerification />}
             {modal === 'Registrar Cobranza' && <FormAddCobranza />}
             {modal === 'Añadir cuenta masivas' && <FormAddMasiveAccounts />}

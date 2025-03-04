@@ -123,6 +123,11 @@ export default function Home() {
     });
   };
 
+  useEffect(() => {
+    setCheckedArr([])
+  }, [])
+  
+
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
       // Si está marcado, agrega el índice al array
@@ -133,7 +138,7 @@ export default function Home() {
     }
   }
 
-  console.log(checkedArr)
+  console.log("arr: ", checkedArr)
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
@@ -146,7 +151,7 @@ export default function Home() {
     setTotalPages(result.totalPages);
     setTotalDocuments(result.totalDocuments);
   }
-
+  
   // async function handlerFetchVerification() {
   //   const res = await fetch(
   //     window?.location?.href?.includes('localhost')
@@ -215,7 +220,7 @@ export default function Home() {
   function handlerSelectAllCheck(e, i) {
     if (e.target.checked) {
       // Si está marcado, agrega el índice al array
-      setCheckedArr(data);
+      setCheckedArr(data.data);
     } else {
       // Si no está marcado, quita el índice del array
       setCheckedArr([]);
@@ -229,10 +234,6 @@ export default function Home() {
     handlerFetchVerification();
   }, [loader, itemsPerPage, currentPage, searchParams]);
 
-  useEffect(() => {
-    setCheckedArr([])
-  }, [])
-  
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -289,7 +290,7 @@ export default function Home() {
 
                 <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-white' : 'bg-white'} ${selectedLeft === 1 ? 'sticky left-0 z-10' : ''}`} >
                   <input type="checkbox"
-                    checked={checkedArr.some(value => value._id === i._id)}
+                    checked={checkedArr.data?.some(value => value._id === i._id)}
                     onChange={(e) => handlerSelectCheck(e, i)} />
                 </td>
                 <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>

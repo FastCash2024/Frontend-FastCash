@@ -1,53 +1,52 @@
-'use client'
-// import style from '../styles/Loader.module.css' 
+import React from 'react'
 import { useAppContext } from '@/context/AppContext.js'
 import { generarContrasena } from '@/utils'
 
 import FormLayout from '@/components/formModals/FormLayout'
 
 import Button from '@/components/Button'
-export default function Modal({ children, funcion, alert, cancelText, successText, seccion }) {
 
-    const { setAlerta, checkedArr, setModal, loader, setLoader } = useAppContext()
-
+export default function FormRestablecimientoAuditors ({ successText, seccion }) {
+    const { setAlerta, checkedArr, setModal, loader, setLoader} = useAppContext()
+    
     const restabecimientoTotal = () => {
 
         checkedArr.map(async (i) => {
-          
-                try {
-                    const response = await fetch(window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3000/api/verification/${i._id}`
-                        : `https://api.fastcash-mx.com/api/verification/${i._id}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            cuentaVerificador: "no asignado",
-                            nombreDeLaEmpresa:  "no asignado"
-                        }), // Datos a enviar en el cuerpo de la petición
-                    });
+
+            try {
+                const response = await fetch(window?.location?.href?.includes('localhost')
+                    ? `http://localhost:3000/api/verification/${i._id}`
+                    : `https://api.fastcash-mx.com/api/verification/${i._id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        cuentaVerificador: "no asignado",
+                        nombreDeLaEmpresa: "no asignado"
+                    }), // Datos a enviar en el cuerpo de la petición
+                });
 
 
 
 
-                    if (response.ok) {
-                        checkedArr.length && setAlerta('Operación exitosa!')
-                        checkedArr.length && setModal('')
-                        checkedArr.length && setLoader('')
-                        // navigate('/dashboard');
-                    } else {
-                        setLoader('')
-                        setAlerta('Error de datos!')
+                if (response.ok) {
+                    checkedArr.length && setAlerta('Operación exitosa!')
+                    checkedArr.length && setModal('')
+                    checkedArr.length && setLoader('')
+                    // navigate('/dashboard');
+                } else {
+                    setLoader('')
+                    setAlerta('Error de datos!')
 
-                        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-                    }
-                    const result = await response.json(); // Si el servidor devuelve JSON
-                    console.log("Actualización exitosa:", result);
-                    return result;
-                } catch (error) {
-                    console.error("Error al realizar la solicitud:", error);
+                    throw new Error(`Error: ${response.status} - ${response.statusText}`);
                 }
+                const result = await response.json(); // Si el servidor devuelve JSON
+                console.log("Actualización exitosa:", result);
+                return result;
+            } catch (error) {
+                console.error("Error al realizar la solicitud:", error);
+            }
         })
 
 
@@ -96,7 +95,7 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
         setLoader('Guardando...')
 
         seccion === "verificacion individual" && restablecimientoIndividual()
-        seccion === "verificacion total" && restabecimientoTotal()
+        seccion === "auditoria" && restabecimientoTotal()
     }
     return (
         <FormLayout>
@@ -109,7 +108,7 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                         seccion === "verificacion individual" && `Esta por restablecer la asignacion de cuenta personal a la cuenta operativa: ${checkedArr[0].cuenta}`
                     }
                     {
-                        seccion === "verificacion total" && 'Esta por restablecer todas las asignaciones de cuentas operativas a casos de verificacion'
+                        seccion === "auditoria" && 'Esta por restablecer todas las asignaciones de cuentas de auditores a casos de verificacion'
                     }
                 </div>
                 <br />

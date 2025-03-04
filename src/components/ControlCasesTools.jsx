@@ -10,14 +10,9 @@ import Link from 'next/link';
 import SearchInput from "@/components/SearchInput";
 import MultipleInput from '@/components/MultipleInput';
 
-import {
-    refunds, historial,
-    menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
-} from '@/constants/index'
-const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+const ControlCasesTools = () => {
+    const { checkedArr, setModal, loader, setLoader } = useAppContext()
     const searchParams = useSearchParams()
-    const [copied, setCopied] = useState(false);
     const { theme, toggleTheme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
@@ -74,62 +69,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setFilter({});
         setQuery('');
     }
-
-    // function objectToQueryString(obj) {
-    //     if (!obj || typeof obj !== "object") {
-    //         throw new Error("La entrada debe ser un objeto.");
-    //     }
-    //     return Object.keys(obj)
-    //         .filter(key => obj[key] !== undefined && obj[key] !== null) // Filtrar valores nulos o indefinidos
-    //         .map(key => {
-    //             const createQueryString = useCallback(
-    //                 (name, value) => {
-    //                     const params = new URLSearchParams(searchParams.toString())
-    //                     params.set(name, value)
-
-    //                     return params.toString()
-    //                 },
-    //                 [searchParams]
-    //             )
-    //         }) // Codificar clave=valor
-    // }
-
-    // Get a new searchParams string by merging the current
-    // searchParams with a provided key/value pair
-
-    const fetchCustomersFlow = async () => {
-        const local = 'http://localhost:3000/api/applications/customers';
-        const server = 'https://api.fastcash-mx.com/api/applications/customers';
-        
-        try {
-            // Seleccionar la URL correcta
-            const url = window?.location?.href?.includes("localhost") ? local : server;
-    
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-    
-            if (!response.ok) {
-                throw new Error('Error en la solicitud');
-            }
-    
-            const result = await response.json();
-            console.log('Clientes:', result);
-            
-            setFiltro_1(result);
-        } catch (error) {
-            console.error('Error al obtener los clientes:', error);
-        }
-    };
-
-    useEffect(() => {
-      if (item === "Casos de Cobranza" || item === "Cobro y valance") {
-        void fetchCustomersFlow();
-      }
-    }, [item])
 
 
     function handlerFetch() {
@@ -194,25 +133,20 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    {item === "Casos de Cobranza" && (
+                    {item === "Control de Cumplimiento" && (
 
                         <div className='grid grid-cols-3 gap-x-0 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
-                                <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta Cobrador')}>Asignar cuenta</Button>
+                                <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos Auditoria')}>Distribuir</Button>
+                                {/* <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta Auditor')}>Asignar cuenta</Button> */}
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos Segmento')}>Distribucion por segmento</Button>
-                                <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
+                                <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Auditoria')}>Restablecimiento Masivo</Button>
                             </div>
                         </div>
-                        {/* <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
-                            </div>
-                            </div> */}
                     </div>
                     )}
                 </div>
@@ -221,4 +155,4 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     );
 };
 
-export default Alert;
+export default ControlCasesTools;

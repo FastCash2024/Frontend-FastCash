@@ -5,15 +5,10 @@ import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
 import Input from '@/components/Input'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 
-import { toast } from 'react-hot-toast';
-
-
-
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const {  setAlerta, setModal,setLoader } = useAppContext()
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({})
     const [value1, setValue1] = useState('Por favor elige')
@@ -21,13 +16,9 @@ export default function AddAccount() {
     const [value3, setValue3] = useState('Por favor elige')
     const [newAccounts, setNewAccounts] = useState([])
 
-    const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('');
     const [selectedCheckbox, setSelectedCheckbox] = useState('En el trabajo');
 
-
     const searchParams = useSearchParams()
-
 
     const seccion = searchParams.get('seccion')
 
@@ -65,8 +56,7 @@ export default function AddAccount() {
         'Asesor de Verificación': 'TDC-VFN-',
         'Cuenta personal': 'TDC-PER-',
     }
-
-
+    
     const nameDocument = {
         'Recursos Humanos': 'recursosHumanos',
         'Admin': 'admin',
@@ -208,8 +198,6 @@ export default function AddAccount() {
         })
     }
 
-
-
     const arrTipoDeGrupo = {
 
         ['Gestión de administradores']: [
@@ -234,9 +222,6 @@ export default function AddAccount() {
             'Cuenta personal'
         ],
     }
-
-
-
 
 
     function* infiniteSequence(start = 0) {
@@ -370,7 +355,7 @@ export default function AddAccount() {
                     Tipo de grupo:
                 </label>
                 <SelectSimple
-                    arr={arrTipoDeGrupo[item === "Gestión de cuentas de Colección" ? "Gestión de asesores": item ]}
+                    arr={arrTipoDeGrupo[item === "Gestión de cuentas de Colección" ? "Gestión de asesores" : item]}
                     name='Tipo de grupo'
                     click={handlerSelectClick2}
                     defaultValue={value2}
@@ -427,9 +412,6 @@ export default function AddAccount() {
                     Añadir cuentas
                 </button>
             </div>}
-
-
-
         </div>
 
     </div>
