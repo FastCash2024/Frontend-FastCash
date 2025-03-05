@@ -35,7 +35,21 @@ export default function AddAccount() {
 
     console.log("user: ", user);
     console.log("user: ", userDB);
-    
+
+    const getDescripcionDeExcepcion = (cc) => {
+        switch (cc) {
+            case 'Casos de Cobranza':
+                return 'CC01';
+            case 'Incurrir en una estación de trabajo':
+                return 'CC02';
+            case 'Cobro y valance':
+                return 'CC08';
+            case 'Recolección y Validación de Datos':
+                return 'VC01';
+            default:
+                return 'DSC00';
+        }
+    };
 
     async function updateUser() {
         if (!data.acotacionVerificador) {
@@ -51,22 +65,31 @@ export default function AddAccount() {
             estadoDeCredito: value,
 
             //datos para actualizar el tracking de operaciones
-            numeroDePrestamo: itemSelected.numeroDePrestamo,
-            seccion: seccion, 
+            descripcionDeExcepcion: getDescripcionDeExcepcion(item),
             subID: itemSelected._id,
-            codigoDeOperacion: itemSelected.idDeSubFactura,
-            codigoDeProducto: itemSelected.nombreDelProducto,
-            operacion: "Registro de estado de verificacion",
-            modificacion: value,
-            fecha: new Date().toISOString(),
-            cuenta: userDB.cuenta,
-            asesor: user.nombreCompleto,
-            emailAsesor: userDB.emailPersonal,
-            acotacion: data.acotacionVerificador,
+            cuentaOperadora: userDB.cuenta,
+            cuentaPersonal: userDB.emailPersonal,
+            codigoDeSistema: itemSelected.nombreDelProducto,
+            codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
+            contenidoDeOperacion: `Credito ${value} con exito.`,
+            fechaDeOperacion: new Date().toISOString(),
+            caso: itemSelected.numeroDePrestamo,
+            // caso: itemSelected.numeroDePrestamo,
+            // seccion: seccion, 
+            // subID: itemSelected._id,
+            // codigoDeOperacion: itemSelected.idDeSubFactura,
+            // codigoDeProducto: itemSelected.nombreDelProducto,
+            // operacion: "Registro de estado de verificacion",
+            // modificacion: value,
+            // fecha: new Date().toISOString(),
+            // cuenta: userDB.cuenta,
+            // asesor: user.nombreCompleto,
+            // emailAsesor: userDB.emailPersonal,
+            // acotacion: data.acotacionVerificador,
         }
 
         console.log("update Data: ", upadateData);
-        
+
         try {
             setLoader('Guardando...')
             const response = await fetch(window?.location?.href.includes('localhost')
@@ -81,7 +104,7 @@ export default function AddAccount() {
             });
 
             console.log("respuesta dispersion: ", response);
-            
+
             if (!response.ok) {
                 setLoader('')
                 setAlerta('Error de datos!')
@@ -126,7 +149,7 @@ export default function AddAccount() {
                     <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-black`}>
                         Acotación:
                     </label>
-                    <textarea name="acotacionVerificador" className='text-[10px] p-2 w-[200px] focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px]' id="" onChange={onChangeHandler}></textarea>                        
+                    <textarea name="acotacionVerificador" className='text-[10px] p-2 w-[200px] focus:outline-none bg-gray-200 border-[1px] border-gray-300 rounded-[5px]' id="" onChange={onChangeHandler}></textarea>
                 </div>
                 <button type="button" class="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2" onClick={updateUser}>Registrar</button>
             </div>

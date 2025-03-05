@@ -61,9 +61,11 @@ export const encabezadoDeAplicacion = () => ["nivel de prestamo", "valor Prestad
 {/* --------------------------------- AUDITORIA DE CREDITOS --------------------------------- */ }
 
 export const encabezadoRegistroHistorico = () => [
-    /*"Seleccionar",*/ /*"Caso (Descripción de la excepción) [Número de préstamo]",*/ "Cuenta Operativa [cuenta]", "Cuenta personal [email asesor]",
-    "Código de sistema [Código de producto]", "Código de operacion [acotacion]", /*"Modificacion (Resultados de la operación)",*/
-    "Contenido de la operacion [modificacion]", "Fecha de operacion [fecha]", "operar"
+    /*"Seleccionar",*/ /*"Caso (Descripción de la excepción) [Número de préstamo]", "Cuenta Operativa [cuenta]", "Cuenta personal [email asesor]",*/
+  "descripcion de excepcion", "cuenta operadora", "cuenta personal", "codigo de sistema",
+  "codigo de operacion", "contenido de operacion", "fecha de operacion", "caso", "operar"
+    // "Código de sistema [Código de producto]", "Código de operacion [acotacion]", /*"Modificacion (Resultados de la operación)",*/
+    // "Contenido de la operacion [modificacion]", "Fecha de operacion [fecha]", "operar"
 ];
 
 export const encabezadoMonitoreoDeTransacciones = () => [
