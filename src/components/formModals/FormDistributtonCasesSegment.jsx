@@ -84,6 +84,19 @@ export default function FormDistributtonCasesSegment() {
     return cociente;
   }
 
+  const assignMaximEqualy = async () => {
+    const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}&limit=1000`)
+    const verificadores = await res.json()
+    const updatedUsers = verificadores.data.map(user => ({ ...user, idCasosAsignados: [] }));
+    const resCases = await fetch(`https://api.fastcash-mx.com/api/verification?limit=1000`)
+    const dataVerification = await resCases.json()
+    const casesVerification = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
+    console.log("cantidad de casos: ", casesVerification);
+    console.log("cantidad de verificadores: ", verificadores);
+
+    const resultado = dividir(casesVerification.length * 1, verificadores.data.length * 1);
+    setMaximoAsignacion(resultado)
+  }
 
   const abortAssignment = () => {
     setMaximoAsignacion(2);
@@ -175,7 +188,7 @@ export default function FormDistributtonCasesSegment() {
 
     dataVerification.data.forEach(caso => {
       console.log("fecha de reembolso: ", caso.fechaDeReembolso);
-      
+
       const fechaReembolso = new Date(caso.fechaDeReembolso);
       const diferenciaDias = Math.floor((fechaReembolso - fechaActual) / (1000 * 60 * 60 * 24));
       console.log("fecha de reembolso dias: ", diferenciaDias);
@@ -223,15 +236,98 @@ export default function FormDistributtonCasesSegment() {
     });
 
     console.log("fecha de reembolso dias: ", asignacionesFinales);
-    
+
     setusuariosConAsignacion(usuarios);
     setCasosAsignados(asignacionesFinales);
     setCasosPorSegmento(casosPorSegmento);
   };
 
+  const assignCasesEquallyBySegment = async () => {
+    setCalculate(true);
+    setType('EquallyBySegment');
+
+    // Obtener usuarios
+    const resUsers = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}&limit=1000`);
+    const dataUsers = await resUsers.json();
+    const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
+
+    // Crear usuarios con un campo idCasosAsignados vacío
+    const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
+
+    // Obtener casos
+    const resCases = await fetch("https://api.fastcash-mx.com/api/verification?&limit=1000");
+    const dataVerification = await resCases.json();
+    const casos = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito);
+
+    // Crear objetos de casos por segmentos (D0, D1, D2, S1, S2)
+    const casosPorSegmento = {
+      D0: [], D1: [], D2: [], S1: [], S2: []
+    };
+
+    const fechaActual = new Date();
+
+    // Clasificar los casos por segmento según la diferencia de días
+    casos.forEach(caso => {
+      const fechaReembolso = new Date(caso.fechaDeReembolso);
+      const diferenciaDias = Math.floor((fechaReembolso - fechaActual) / (1000 * 60 * 60 * 24));
+
+      if (diferenciaDias === 0) {
+        casosPorSegmento.D0.push(caso);
+      } else if (diferenciaDias === 1) {
+        casosPorSegmento.D1.push(caso);
+      } else if (diferenciaDias === 2) {
+        casosPorSegmento.D2.push(caso);
+      } else if (diferenciaDias > 2 && diferenciaDias <= 7) {
+        casosPorSegmento.S1.push(caso);
+      } else if (diferenciaDias > 7) {
+        casosPorSegmento.S2.push(caso);
+      }
+    });
+
+    // Límite de asignaciones por usuario
+    // const maximoAsignacion = 5; // Puedes ajustar este valor según lo necesites
+
+    // Asignar casos de manera equitativa dentro de cada segmento
+    const asignacionesFinales = [];
+
+    Object.keys(casosPorSegmento).forEach(segmento => {
+      const casosSegmento = casosPorSegmento[segmento];
+      const usuariosSegmento = usuarios.filter(user => obtenerSegmento(user.cuenta) === segmento);
+
+      let usuarioIndex = 0;
+
+      casosSegmento.forEach(caso => {
+        if (usuariosSegmento.length > 0) {
+          // Limitar la cantidad de asignaciones por usuario
+          const usuario = usuariosSegmento[usuarioIndex];
+          if (usuario.idCasosAsignados.length < maximoAsignacion) {
+            usuario.idCasosAsignados.push(caso.numeroDePrestamo);
+
+            asignacionesFinales.push({
+              ...caso,
+              cuenta: usuario.cuenta,
+              nombreDeLaEmpresa: usuario.origenDeLaCuenta,
+              segmentoAsignado: segmento,
+              fechaDeTramitacionDelCaso: caso.estadoDeCredito === "Pendiente" ? fechaActual.toISOString() : caso.fechaDeTramitacionDelCaso,
+              fechaDeTramitacionDeCobro: caso.estadoDeCredito === "Dispersado" ? fechaActual.toISOString() : caso.fechaDeTramitacionDeCobro
+            });
+
+            // Avanzar al siguiente usuario de manera circular
+            usuarioIndex = (usuarioIndex + 1) % usuariosSegmento.length;
+          }
+        }
+      });
+    });
+
+    // Actualizar el estado con las asignaciones finales
+    setusuariosConAsignacion(usuarios);
+    setCasosAsignados(asignacionesFinales);
+  };
+
+
   return (
     <FormLayout>
-      <h4 className="text-gray-950">Distribuir Casos Masivos</h4>
+      <h4 className="text-gray-950">Distribuir Casos Masivos Cobranza</h4>
       {!calculate && (
         <div className="flex justify-between items-center w-full">
           <label htmlFor="cantidadAsignacionIgualitaria" className="mr-5 text-sm text-gray-950">
@@ -245,13 +341,13 @@ export default function FormDistributtonCasesSegment() {
             value={maximoAsignacion}
             required
           />
-          <Button theme="MiniPrimary" click={assignCasesBySegment}>Get</Button>
+          <Button theme="MiniPrimary" click={assignMaximEqualy}>Get</Button>
         </div>
       )}
-      <div className="flex space-x-2 mt-4">
-        {/* {!calculate && <Button theme="MiniPrimary" click={assignCasesEqually}>Asignación Igualitaria</Button>} */}
-        {/* {!calculate && <Button theme="Success" click={assignCasesTotally}>Asignación Total</Button>} */}
-        {!calculate && <Button theme="Info" click={assignCasesBySegment}>Asignación por Segmento</Button>}
+      <div className="flex w-full mt-4">
+        {!calculate && <Button theme="MiniPrimary" click={assignCasesEquallyBySegment}>Asignación Igualitaria</Button>}
+        {!calculate && <Button theme="Success" click={assignCasesBySegment}>Asignación Total</Button>}
+        {/* {!calculate && <Button theme="Info" click={assignCasesBySegment}>Asignación Igualitaria</Button>} */}
       </div>
       <div className="mt-4">
         {Object.keys(casosPorSegmento).map(segmento => (
@@ -260,17 +356,43 @@ export default function FormDistributtonCasesSegment() {
           </p>
         ))}
       </div>
-      <div className="mt-4">
-        {calculate && (
-          <>
-            <button className="bg-green-500 text-white px-2 py-1 text-sm rounded hover:bg-green-600" onClick={saveAsignation}>
-              Confirmar guardar
-            </button>
-            <button className="bg-red-500 text-white px-2 py-1 text-sm rounded hover:bg-red-600 ml-2" onClick={abortAssignment}>
-              Abortar
-            </button>
-          </>
-        )}
+      <div className="mt-4 space-x-2">
+        {type !== 'Totaly'
+          ? <div className=" rounded-[10px] my-5">
+            {usuariosConAsignacion?.filter(i => i?.idCasosAsignados.length * 1 === maximoAsignacion * 1).length !== 0 && <p className="text-[10px] text-green-900 bg-green-200 p-3 mb-3 border-[1px] border-green-900 font-medium rounded-md">
+              {(usuariosConAsignacion?.filter(i => i?.idCasosAsignados.length * 1 === maximoAsignacion * 1)).length} ASESORES SE ASIGNARAN CON {maximoAsignacion} CASOS
+            </p>}
+            {(usuariosConAsignacion?.filter(i => i?.idCasosAsignados.length * 1 !== maximoAsignacion * 1)).length !== 0 && <p className="text-[10px] text-red-900 bg-red-200 p-3 mb-3 border-[1px] border-red-900 font-medium rounded-md">
+              {(usuariosConAsignacion?.filter(i => i?.idCasosAsignados.length * 1 !== maximoAsignacion * 1)).length} ASESORES NO SE ASIGNARAN CON {maximoAsignacion} CASOS
+            </p>}
+            {casosNoAsignados.length !== 0 && <p className="text-[10px] text-red-900 bg-red-200 p-3 mb-3 border-[1px] border-red-900 font-medium rounded-md">
+              {casosNoAsignados.length} CASOS NO ASIGNADOS
+            </p>}
+          </div>
+          : <div className=" rounded-[10px] my-5 ">
+            {countByItemsLength(usuariosConAsignacion).map((row, index) => (
+              row.itemsCount === 0
+                ? <p className="text-[10px] text-red-900 bg-red-200 p-3 mb-3 border-[1px] border-red-900 font-medium rounded-md">
+                  {row.objectsCount} usuarios tienen {row.itemsCount} casos asignados
+                </p>
+                : <p className="text-[10px] text-green-900 bg-green-200 p-3 mb-3 border-[1px] border-green-900 font-medium rounded-md">
+                  {row.objectsCount} usuarios tienen {row.itemsCount} casos asignados
+                </p>
+            ))}
+          </div>
+        }
+        {calculate && <button
+          className="bg-green-500 text-white px-2 py-1 text-[10px] rounded hover:bg-green-600"
+          onClick={saveAsignation}
+        >
+          Confirmar guardar
+        </button>}
+        {calculate && <button
+          className="bg-red-500 text-white px-2 py-1 text-[10px] rounded hover:bg-red-600"
+          onClick={abortAssignment}
+        >
+          Abortar
+        </button>}
       </div>
     </FormLayout>
   );

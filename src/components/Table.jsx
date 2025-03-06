@@ -728,9 +728,9 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                             {(item?.toLowerCase().includes("registro histórico")) &&
                               it.toLowerCase() === "operar" && (
                                 <div className="flex justify-center gap-6">
-                                  <Link href={`/Home/Datos?caso=${i._id}&seccion=info`} className=''>
+                                  {/* <Link href={`/Home/Datos?caso=${i._id}&seccion=info`} className=''>
                                     <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Visitar</button>
-                                  </Link>
+                                  </Link> */}
                                   {/* <button
                                     onClick={() => handlerItemPE('Multar cuenta', i)}
                                     type="button"

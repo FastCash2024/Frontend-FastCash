@@ -178,6 +178,7 @@ export default function AddAccount() {
     function onChangeHandler(e) {
         setMaximoAsignacion(e.target.value)
     }
+    
     //Gardar asignaciones
     async function saveAsignation() {
         console.log("Cantidad de usuarios asignados: ", casosAsignados);
@@ -233,7 +234,7 @@ export default function AddAccount() {
 
     return (
         <FormLayout>
-            <h4 className="text-gray-950">Distribuir Casos Masivos</h4>
+            <h4 className="text-gray-950">Distribuir Casos Masivoooos</h4>
             {!calculate &&
                 <div className='flex justify-between items-center w-[100%] '>
                     <label htmlFor="cantidadAsignacionIgualitaria" className={`mr-5 text-[11px]  ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
@@ -305,4 +306,3 @@ export default function AddAccount() {
             </div>
         </FormLayout>)
 }
-

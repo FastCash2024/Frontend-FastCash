@@ -116,7 +116,7 @@ export default function TableControl() {
                   {cases?.find((it) => it.cuentaVerificador === item.cuenta || it.cuentaCobrador === item.cuenta)?.nombreDelProducto || 'Sin nombre de producto'}
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
-                  {cases?.find((it) => it.cuentaVerificador === item.cuenta || it.cuentaCobrador === item.cuenta)?.apodoDeUsuarioDeAuditoria || 'Sin auditor'}
+                  {cases?.find((it) => it.cuentaVerificador === item.cuenta || it.cuentaCobrador === item.cuenta)?.cuentaAuditor || 'Sin auditor'}
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
                   <button

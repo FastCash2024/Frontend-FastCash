@@ -87,19 +87,19 @@ export default function TableReporteDiarioAuditoria() {
         setLoader(false)
     }
 
-    async function handlerFetch(limit, page) {
-        const res = await fetch(
-          window?.location?.href?.includes("localhost")
-            ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-            : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-        );
-        const result = await res.json();
-        console.log("data: ", result);
-        setData(result);
-        setCurrentPage(result.currentPage);
-        setTotalPages(result.totalPages);
-        setTotalDocuments(result.totalDocuments);
-      }
+    // async function handlerFetch(limit, page) {
+    //     const res = await fetch(
+    //       window?.location?.href?.includes("localhost")
+    //         ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+    //         : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+    //     );
+    //     const result = await res.json();
+    //     console.log("data: ", result);
+    //     setData(result);
+    //     setCurrentPage(result.currentPage);
+    //     setTotalPages(result.totalPages);
+    //     setTotalDocuments(result.totalDocuments);
+    //   }
     
       async function handlerFetchVerification() {
         const urlParams = new URLSearchParams(window.location.search);
