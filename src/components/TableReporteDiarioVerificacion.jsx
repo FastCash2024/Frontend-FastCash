@@ -126,7 +126,7 @@ export default function Home() {
   useEffect(() => {
     setCheckedArr([])
   }, [])
-  
+
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
@@ -151,7 +151,7 @@ export default function Home() {
     setTotalPages(result.totalPages);
     setTotalDocuments(result.totalDocuments);
   }
-  
+
   // async function handlerFetchVerification() {
   //   const res = await fetch(
   //     window?.location?.href?.includes('localhost')
@@ -175,20 +175,20 @@ export default function Home() {
     });
 
     const queryString = Object.keys(filterParams)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
-    .join("&");
-    
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-    ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`
-    : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`;
+      ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`
+      : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
     try {
       const res = await fetch(finalURL);
       const result = await res.json();
-      
+
       setCases(result.data);
     } catch (error) {
       console.error("Error al obtener datos: ", error)
@@ -197,24 +197,24 @@ export default function Home() {
     // const result = await res.json();
     // console.log(data)
   }
-  
+
   async function handlerFetchDetails() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-      ? 'http://localhost:3000/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
-      : 'https://api.fastcash-mx.com/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado')
-      const data = await res.json()
+        ? 'http://localhost:3000/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
+        : 'https://api.fastcash-mx.com/api/verification/reporte?estadoDeCredito=Pendiente,Reprobado')
+    const data = await res.json()
     console.log(data)
     setDetails(data.data)
   }
-  
+
   async function handlerFetchTotales() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-      ? 'http://localhost:3000/api/verification/totalreporteverificacion'
-      : 'https://api.fastcash-mx.com/api/verification/totalreporteverificacion')
-      const data = await res.json()
-      setTotales(data.totalesGenerales)
+        ? 'http://localhost:3000/api/verification/totalreporteverificacion'
+        : 'https://api.fastcash-mx.com/api/verification/totalreporteverificacion')
+    const data = await res.json()
+    setTotales(data.totalesGenerales)
   }
 
   function handlerSelectAllCheck(e, i) {
@@ -237,7 +237,7 @@ export default function Home() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-  
+
   const handleItemsPerPageChange = (itemsPerPage) => {
     setItemsPerPage(itemsPerPage);
     setCurrentPage(1);
@@ -297,7 +297,7 @@ export default function Home() {
                 <td className="px-4 py-2">{i.nombrePersonal}</td>
                 <td className="px-4 py-2">{i.cuenta}</td>
 
-                <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length }</td>
+                <td className="px-4 py-2">{cases?.filter(it => it.cuentaVerificador === i.cuenta).length}</td>
 
                 <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.aprobados10am}</td>
                 <td className="px-4 py-2">{details[i.cuenta]?.reprobados10am}</td>
@@ -317,7 +317,9 @@ export default function Home() {
               <td className='px-4 py-2'></td>
               <td className='px-4 py-2'></td>
               <td className='px-4 py-2'></td>
-              <td className='px-4 py-2'>{totalDocuments}</td>
+              <td className='px-4 py-2'>
+                {data?.data?.reduce((acc, i) => acc + cases?.filter(it => it.cuentaCobrador === i.cuenta).length, 0)}
+              </td>
               <td className="px-4 py-2 bg-yellow-400">{totales?.aprobados10am}</td>
               <td className="px-4 py-2">{totales?.reprobados10am}</td>
               <td className="px-4 py-2 bg-yellow-400">{totales?.aprobados12am}</td>

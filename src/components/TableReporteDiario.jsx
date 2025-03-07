@@ -84,31 +84,10 @@ export default function Home() {
   const [texto, setTexto] = useState("");
   const {
     user,
-    userDB,
-    setUserProfile,
-    users,
-    alerta,
-    setAlerta,
-    modal,
     checkedArr,
     setCheckedArr,
-    setModal,
     loader,
     setLoader,
-    setUsers,
-    setUserSuccess,
-    success,
-    setUserData,
-    postsIMG,
-    setUserPostsIMG,
-    divisas,
-    setDivisas,
-    exchange,
-    setExchange,
-    destinatario,
-    setDestinatario,
-    itemSelected,
-    setItemSelected,
   } = useAppContext();
   const [filter, setFilter] = useState({
     nombreProducto: "Todo",
@@ -391,7 +370,9 @@ export default function Home() {
                 <td className='px-4 py-2'></td>
                 <td className='px-4 py-2'></td>
                 <td className='px-4 py-2'></td>
-                <td className='px-4 py-2'>{totalDocuments}</td>
+                <td className='px-4 py-2'>
+                  {data?.data?.reduce((acc, i) => acc + cases?.filter(it => it.cuentaCobrador === i.cuenta).length, 0)}
+                </td>
                 <td className='px-4 py-2'></td>
                 <td className="px-4 py-2  bg-yellow-400">{totales?.pagos10am}</td>
                 <td className="px-4 py-2">{totales?.ptp10am}</td>

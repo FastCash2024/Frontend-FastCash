@@ -20,6 +20,7 @@ import Link from 'next/link';
 import SelectField from './SelectField';
 import { getBackgroundClass } from '@/utils/colors';
 import ControlCasesTools from './ControlCasesTools';
+import { obtenerSegmento } from '@/utils';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setApplicationTipo, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const searchParams = useSearchParams()
@@ -36,7 +37,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [horaEntrada, setHoraEntrada] = useState(null);
     const [totalesVerification, setTotalesVerification] = useState({})
     const [totalesCobro, setTotalesCobro] = useState({})
-    
+    const [details, setDetails] = useState([])
+    const [totales, setTotales] = useState({});
+
 
     const fetchCustomersFlow = async () => {
         const local = 'http://localhost:3000/api/applications/customers';
@@ -270,9 +273,45 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         const data = await res.json()
         setTotalesVerification(data.totalesGenerales)
     }
+
+    async function handlerFetchDetails() {
+        const res = await fetch(
+            window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
+                : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
+        const data = await res.json()
+        console.log("data detalle: ", data)
+        setDetails(data.data)
+    }
+
+
+
+    const calcularTotalesPorSegmento = () => {
+        const totalesPorSegmento = {};
+
+        Object.keys(details).forEach((cuenta) => {
+            const segmento = obtenerSegmento(cuenta);
+            console.log(`Cuenta: ${cuenta}, Segmento: ${segmento}`); // <-- Verifica qué segmentos se generan
+
+            if (!segmento) {
+                console.log(`Segmento no encontrado para cuenta: ${cuenta}`);
+            }
+
+            if (!totalesPorSegmento[segmento]) {
+                totalesPorSegmento[segmento] = 0;
+            }
+            totalesPorSegmento[segmento] += 1;
+        });
+
+        console.log("Totales por segmento:", totalesPorSegmento); // <-- Muestra el resultado final
+        setTotales(totalesPorSegmento);
+    };
+
     useEffect(() => {
         handlerFetchCTotales();
         handlerFetchVTotales();
+        handlerFetchDetails();
+        calcularTotalesPorSegmento();
     }, [loader]);
 
 
@@ -418,7 +457,26 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         <div className=' px-2'>
                             <Velocimetro></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de grupo</h4>
-                            <h4 className='text-center text-[14px] text-green-600  m-0 p-0 pb-2'> <span className='bg-green-600 mr-2 w-[10px] h-[10px] inline-block'></span>Tasa de recuperación de grupos</h4>
+                            <div>
+                                {Object.keys(totales).map((segmento) => (
+                                    <div key={segmento} className="grid grid-cols-3 w-[300px]">
+                                        <p
+                                            className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
+                                                } dark:text-white`}
+                                        >
+                                            {segmento} <br /> Segmento.
+                                        </p>
+                                        <p
+                                            className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
+                                                } dark:text-white`}
+                                        >
+                                            {totales[segmento] ?? 0} <br /> Número total de casos cobrados.
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* <h4 className='text-center text-[14px] text-green-600  m-0 p-0 pb-2'> <span className='bg-green-600 mr-2 w-[10px] h-[10px] inline-block'></span>Tasa de recuperación de grupos</h4> */}
 
                         </div>
                         <div className=' p-2 border my-5 flex flex-col justify-between'>
