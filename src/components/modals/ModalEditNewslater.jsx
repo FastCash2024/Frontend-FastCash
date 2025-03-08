@@ -16,8 +16,8 @@ export default function ModalEditNewslater() {
         setLoader('Guardando...');
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/newsletter/update/${newslater._id}`
-                : `https://api.fastcash-mx.com/api/newsletter/update/${newslater._id}`, {
+                ? `http://localhost:3000/api/notifications/newsletter/update/${newslater._id}`
+                : `https://api.fastcash-mx.com/api/notifications/newsletter/update/${newslater._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ content: textEditorContent }),

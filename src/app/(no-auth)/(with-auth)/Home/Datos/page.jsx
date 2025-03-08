@@ -267,8 +267,8 @@ const PaymentInfoCard = () => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(window?.location?.href.includes('localhost')
-                ? `http://localhost:3000/api/verification/${caso}`
-                : `https://api.fastcash-mx.com/api/verification/${caso}`)
+                ? `http://localhost:3000/api/loans/verification/${caso}`
+                : `https://api.fastcash-mx.com/api/loans/verification/${caso}`)
             const res = await response.json();
             setcaseData(res);
             setPhone(res?.numeroDeTelefonoMovil);
@@ -281,8 +281,8 @@ const PaymentInfoCard = () => {
             setClientData(res2);
 
             const response3 = await fetch(window?.location?.href.includes('localhost')
-                ? `http://localhost:3000/api/verification/phone?numeroDeTelefonoMovil=${phone}`
-                : `https://api.fastcash-mx.com/api/verification/phone?numeroDeTelefonoMovil=${phone}`)
+                ? `http://localhost:3000/api/loans/verification/phone?numeroDeTelefonoMovil=${phone}`
+                : `https://api.fastcash-mx.com/api/loans/verification/phone?numeroDeTelefonoMovil=${phone}`)
             const res3 = await response3.json();
             setCasesData(res3);
         };

@@ -20,8 +20,8 @@ export default function TableControlDeCasos() {
 
         // console.log("querys: ", urlParams);
         const baseUrl = window?.location?.href?.includes("localhost")
-            ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Pagado`
-            : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Pagado`;
+            ? `http://localhost:3000/api/loans/verification?estadoDeCredito=Dispersado,Pagado`
+            : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado`;
 
         const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
         console.log("url local solicitada: ", finalURL);

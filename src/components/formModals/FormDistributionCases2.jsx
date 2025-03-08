@@ -49,10 +49,10 @@ export default function AddAccount({query, estadoDeCredito,}) {
         return cociente;
     }
     const assignMaximEqualy = async () => {
-        const res = await fetch('https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
+        const res = await fetch('https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
         const verificadores = await res.json()
         const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-        const resCases = await fetch('https://api.fastcash-mx.com/api/verification/')
+        const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification/')
         const dataVerification = await resCases.json()
         const casesVerification = dataVerification.filter(i => i.estadoDeCredito === 'Pendiente')
         const resultado = dividir(casesVerification.length * 1, verificadores.data.length * 1);
@@ -62,11 +62,11 @@ export default function AddAccount({query, estadoDeCredito,}) {
     const assignCasesEqually = async () => {
         setCalculate(true)
         setType('Equaly')
-        const res = await fetch('https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
+        const res = await fetch('https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
         const data = await res.json()
         const verificadores = data.filter(i => i.tipoDeGrupo === 'Asesor de Verificación')
         const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-        const resCases = await fetch('https://api.fastcash-mx.com/api/verification/')
+        const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification/')
         const dataVerification = await resCases.json()
         const casesVerification = dataVerification.filter(i => i.estadoDeCredito === 'Pendiente')
         let unassignedCases = [...casesVerification];
@@ -91,11 +91,11 @@ export default function AddAccount({query, estadoDeCredito,}) {
     async function assignCasesTotally() {
         setCalculate(true)
         setType('Totaly')
-        const res = await fetch('https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
+        const res = await fetch('https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
         const data = await res.json()
         const verificadores = data.filter(i => i.tipoDeGrupo === 'Asesor de Verificación')
         const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-        const resCases = await fetch('https://api.fastcash-mx.com/api/verification/')
+        const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification/')
         const dataVerification = await resCases.json()
         const asignaciones = dataVerification.filter(i => i.estadoDeCredito === 'Pendiente')
         let usuarioIndex = 0; // Índice del usuario al que se asignará la siguiente tarea
@@ -135,8 +135,8 @@ export default function AddAccount({query, estadoDeCredito,}) {
             if (i?.cuenta !== undefined, i?.nombreDeLaEmpresa !== undefined)
                 try {
                     const response = await fetch(window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3000/api/verification/${i._id}`
-                        : `https://api.fastcash-mx.com/api/verification/${i._id}`, {
+                        ? `http://localhost:3000/api/loans/verification/${i._id}`
+                        : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",

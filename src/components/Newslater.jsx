@@ -31,7 +31,7 @@ export default function Newslater() {
     const save = async () => {
         setLoader('Guardando...')
         const response = await fetch(window?.location?.href?.includes("localhost")
-            ? "http://localhost:3000/api/newsletter" : 'https://api.fastcash-mx.com/api/newsletter', {
+            ? "http://localhost:3000/api/notifications/newsletter" : 'https://api.fastcash-mx.com/api/notifications/newsletter', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: textEditor2 }),
@@ -43,7 +43,7 @@ export default function Newslater() {
 
     const getData = async () => {
         const response = await fetch(window?.location?.href?.includes("localhost")
-            ? "http://localhost:3000/api/newsletter" : 'https://api.fastcash-mx.com/api/newsletter')
+            ? "http://localhost:3000/api/notifications/newsletter" : 'https://api.fastcash-mx.com/api/notifications/newsletter')
         const db = await response.json()
         setData(db)
     }
@@ -62,7 +62,7 @@ export default function Newslater() {
             setAlerta('no elementos para modificar')
         }
         const response = await fetch(window?.location?.href?.includes("localhost")
-            ? `http://localhost:3000/api/newsletter/update/${item}` : `https://api.fastcash-mx.com/api/newsletter/update/${item}`, {
+            ? `http://localhost:3000/api/notifications/newsletter/update/${item}` : `https://api.fastcash-mx.com/api/notifications/newsletter/update/${item}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ content: textEditor2 }),

@@ -39,8 +39,8 @@ export default function FormAddMulta() {
     async function handlerFetch(limit, page) {
         const res = await fetch(
             window?.location?.href?.includes("localhost")
-                ? "http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
-                : "https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+                ? "http://localhost:3000/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+                : "https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Cobranza"
         );
         const result = await res.json();
         console.log("data item selected: ", result);
@@ -50,8 +50,8 @@ export default function FormAddMulta() {
     // async function handlerFetchDetails() {
     //     const res = await fetch(
     //         window?.location?.href?.includes('localhost')
-    //             ? 'http://localhost:3000/api/verification/reportecobrados?estadoDeCredito=Pagado'
-    //             : 'https://api.fastcash-mx.com/api/verification/reportecobrados?estadoDeCredito=Pagado')
+    //             ? 'http://localhost:3000/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
+    //             : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados?estadoDeCredito=Pagado')
     //     const data = await res.json()
     //     console.log("data detalle: ", data)
     //     setDetails(data.data)

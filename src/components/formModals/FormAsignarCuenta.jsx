@@ -111,8 +111,8 @@ export default function AddAccount({ section, query, cuenta }) {
             if (selectAccount?.cuenta !== undefined && selectAccount?.origenDeLaCuenta !== undefined)
                 try {
                     const response = await fetch(window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3000/api/verification/${i._id}`
-                        : `https://api.fastcash-mx.com/api/verification/${i._id}`, {
+                        ? `http://localhost:3000/api/loans/verification/${i._id}`
+                        : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
@@ -145,8 +145,8 @@ export default function AddAccount({ section, query, cuenta }) {
     const fetchUsers = async () => {
         try {
             const response = await axios.get(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/auth/users?tipoDeGrupo=${query}`
-                : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}`,
+                ? `http://localhost:3000/api/authSystem/auth/users?tipoDeGrupo=${query}`
+                : `https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=${query}`,
             );
             setFilterArr(response.data); // Actualiza la lista de usuarios
         } catch (error) {

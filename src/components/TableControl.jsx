@@ -33,8 +33,8 @@ export default function TableControl() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-        : `https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        ? `http://localhost:3000/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
     );
     const result = await res.json();
     setData(result.data); // Solo almacena el array de datos
@@ -46,8 +46,8 @@ export default function TableControl() {
   async function handlerFetchVerification(date) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/verification?limit=1000`
-        : `https://api.fastcash-mx.com/api/verification?limit=1000`
+        ? `http://localhost:3000/api/loans/verification?limit=1000`
+        : `https://api.fastcash-mx.com/api/loans/verification?limit=1000`
     );
     const result = await res.json();
     setCases(result.data);

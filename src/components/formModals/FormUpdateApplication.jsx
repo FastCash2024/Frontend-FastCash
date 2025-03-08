@@ -86,8 +86,8 @@ export default function FormUpdateAplication() {
         try {
             // url: https://api.fastcash-mx.com/api/authApk/register
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/applications/update/${application._id}`
-                : `https://api.fastcash-mx.com/api/applications/update/${application._id}`, {
+                ? `http://localhost:3000/api/users/applications/update/${application._id}`
+                : `https://api.fastcash-mx.com/api/users/applications/update/${application._id}`, {
                 method: 'PUT',
                 body: formData,
             });
