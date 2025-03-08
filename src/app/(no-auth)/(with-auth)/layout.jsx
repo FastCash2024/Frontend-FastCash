@@ -115,8 +115,8 @@ function Home({ children }) {
 
     //         try {
     //             const response = await fetch(window?.location?.href.includes('localhost')
-    //                 ? 'http://localhost:3000/api/authSystemvalidate'
-    //                 : 'https://api.fastcash-mx.com/api/authSystemvalidate', {
+    //                 ? 'http://localhost:3000/api/authSystem/validate'
+    //                 : 'https://api.fastcash-mx.com/api/authSystem/validate', {
     //                 method: 'GET',
     //                 headers: {
     //                     'Authorization': token,  // Enviar el JWT en el encabezado de autorización

@@ -145,8 +145,8 @@ export default function AddAccount({ section, query, cuenta }) {
     const fetchUsers = async () => {
         try {
             const response = await axios.get(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/authSystemusers?tipoDeGrupo=${query}`
-                : `https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=${query}`,
+                ? `http://localhost:3000/api/authSystem/users?tipoDeGrupo=${query}`
+                : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}`,
             );
             setFilterArr(response.data); // Actualiza la lista de usuarios
         } catch (error) {

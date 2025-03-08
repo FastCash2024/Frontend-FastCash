@@ -24,8 +24,8 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                 let password = generarContrasena()
                 const response = await fetch(
                     window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3000/api/authSystemregister/${i._id}`
-                        : `https://api.fastcash-mx.com/api/authSystemregister/${i._id}`, {
+                        ? `http://localhost:3000/api/authSystem/register/${i._id}`
+                        : `https://api.fastcash-mx.com/api/authSystem/register/${i._id}`, {
                     method: 'PUT', // El método es PUT para actualizar
                     headers: {
                         'Content-Type': 'application/json',
@@ -67,8 +67,8 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
             let password = generarContrasena()
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3000/api/authSystemregister/${checkedArr[0]._id}`
-                    : `https://api.fastcash-mx.com/api/authSystemregister/${checkedArr[0]._id}`, {
+                    ? `http://localhost:3000/api/authSystem/register/${checkedArr[0]._id}`
+                    : `https://api.fastcash-mx.com/api/authSystem/register/${checkedArr[0]._id}`, {
                 method: 'PUT', // El método es PUT para actualizar
                 headers: {
                     'Content-Type': 'application/json',

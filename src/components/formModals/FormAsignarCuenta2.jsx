@@ -128,8 +128,8 @@ export default function AddAccount() {
     const fetchUsers = async () => {
         try {
             const response = await axios.get(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/authSystemusers'
-                : 'https://api.fastcash-mx.com/api/authSystemusers', {
+                ? 'http://localhost:3000/api/authSystem/users'
+                : 'https://api.fastcash-mx.com/api/authSystem/users', {
                 params: {
                     tipoDeGrupo: 'Asesor de Verificación'
                 },

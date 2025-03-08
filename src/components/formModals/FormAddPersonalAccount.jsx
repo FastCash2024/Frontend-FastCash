@@ -83,8 +83,8 @@ export default function AddAccount() {
             };
     
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/authSystemregisterPersonal'
-                : 'https://api.fastcash-mx.com/api/authSystemregisterPersonal', {
+                ? 'http://localhost:3000/api/authSystem/registerPersonal'
+                : 'https://api.fastcash-mx.com/api/authSystem/registerPersonal', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

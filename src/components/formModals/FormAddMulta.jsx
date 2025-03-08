@@ -39,8 +39,8 @@ export default function FormAddMulta() {
     async function handlerFetch(limit, page) {
         const res = await fetch(
             window?.location?.href?.includes("localhost")
-                ? "http://localhost:3000/api/authSystemusers?tipoDeGrupo=Asesor%20de%20Cobranza"
-                : "https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=Asesor%20de%20Cobranza"
+                ? "http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+                : "https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza"
         );
         const result = await res.json();
         console.log("data item selected: ", result);

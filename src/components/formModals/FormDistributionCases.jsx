@@ -81,7 +81,7 @@ export default function AddAccount() {
         return cociente;
     }
     const assignMaximEqualy = async () => {
-        const res = await fetch(`https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=${query}&limit=1000`)
+        const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`)
         const verificadores = await res.json()
         const updatedUsers = verificadores.data.map(user => ({ ...user, idCasosAsignados: [] }));
         const resCases = await fetch(`https://api.fastcash-mx.com/api/loans/verification?limit=1000`)
@@ -97,7 +97,7 @@ export default function AddAccount() {
     const assignCasesEqually = async () => {
         setCalculate(true)
         setType('Equaly')
-        const res = await fetch(`https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=${query}&limit=1000`)
+        const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`)
         const data = await res.json()
 
         const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
@@ -134,7 +134,7 @@ export default function AddAccount() {
     async function assignCasesTotally() {
         setCalculate(true)
         setType('Totaly')
-        const res = await fetch(`https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=${query}&limit=1000`)
+        const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`)
         const data = await res.json()
         const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
         const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
