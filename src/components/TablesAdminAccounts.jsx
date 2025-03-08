@@ -270,8 +270,8 @@ export default function Home() {
                   headArray={encabezadoGestionDeCuentasDeColección}
                   // dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/authSystem/auth/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/auth/users"}
+                  local={"http://localhost:3000/api/authSystemusers"}
+                  server={"https://api.fastcash-mx.com/api/authSystemusers"}
                 />
               )}
               {/* numero de prestamo, apodo de usuario, codigo de producto = arl fac, codico de operacion, contenido (descripcion), resultado de la operacion (true , false reporte actual), fecha */}
@@ -414,8 +414,8 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoGestionDeAccesos}
                   dataFilter={(i) => i.tipoDeGrupo === "Admin"}
-                  local={"http://localhost:3000/api/authSystem/auth/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/auth/users"}
+                  local={"http://localhost:3000/api/authSystemusers"}
+                  server={"https://api.fastcash-mx.com/api/authSystemusers"}
                 />
               )}
               {item === "Gestión de RH" && (
@@ -425,8 +425,8 @@ export default function Home() {
                   dataFilter={(i) =>
                     i?.tipoDeGrupo?.toLowerCase().includes("recursos humanos")
                   }
-                  local={"http://localhost:3000/api/authSystem/auth/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/auth/users"}
+                  local={"http://localhost:3000/api/authSystemusers"}
+                  server={"https://api.fastcash-mx.com/api/authSystemusers"}
                 />
               )}
               {item === "Gestión de managers" && (
@@ -436,8 +436,8 @@ export default function Home() {
                   dataFilter={(i) =>
                     i?.tipoDeGrupo?.toLowerCase().includes("manager")
                   }
-                  local={"http://localhost:3000/api/authSystem/auth/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/auth/users"}
+                  local={"http://localhost:3000/api/authSystemusers"}
+                  server={"https://api.fastcash-mx.com/api/authSystemusers"}
                 />
               )}
               {item === "Gestión de asesores" && (
@@ -445,11 +445,11 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoGestionDeAccesos}
                   dataFilter={(i) => true}
-                  // local={'http://localhost:3000/api/authSystem/auth/users?tipoDeGrupo=Asesor'}
+                  // local={'http://localhost:3000/api/authSystemusers?tipoDeGrupo=Asesor'}
                   local={
-                    "http://localhost:3000/api/authSystem/auth/users?tipoDeGrupo=Asesor"
+                    "http://localhost:3000/api/authSystemusers?tipoDeGrupo=Asesor"
                   }
-                  server={"https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor"}
+                  server={"https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=Asesor"}
                 />
               )}
               {item === "Comisión" && (
@@ -457,7 +457,7 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoComision}
                   dataFilter={(i) => true}
-                  // local={'http://localhost:3000/api/authSystem/auth/users?tipoDeGrupo=Asesor'}
+                  // local={'http://localhost:3000/api/authSystemusers?tipoDeGrupo=Asesor'}
                   local={
                     "http://localhost:3000/api/comision"
                   }
@@ -469,9 +469,9 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoGestionDeAccesosPersonales}
                   dataFilter={(i) => true}
-                  local={"http://localhost:3000/api/authSystem/auth/personalAccounts"}
+                  local={"http://localhost:3000/api/authSystempersonalAccounts"}
                   server={
-                    "https://api.fastcash-mx.com/api/authSystem/auth/personalAccounts"
+                    "https://api.fastcash-mx.com/api/authSystempersonalAccounts"
                   }
                 />
               )}

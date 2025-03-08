@@ -85,7 +85,7 @@ export default function FormDistributtonCasesSegment() {
   }
 
   const assignMaximEqualy = async () => {
-    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=${query}&limit=1000`)
+    const res = await fetch(`https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=${query}&limit=1000`)
     const verificadores = await res.json()
     const updatedUsers = verificadores.data.map(user => ({ ...user, idCasosAsignados: [] }));
     const resCases = await fetch(`https://api.fastcash-mx.com/api/loans/verification?limit=1000`)
@@ -168,7 +168,7 @@ export default function FormDistributtonCasesSegment() {
     setCalculate(true);
     setType("BySegment");
 
-    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=${query}&limit=1000`);
+    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=${query}&limit=1000`);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
 
@@ -247,7 +247,7 @@ export default function FormDistributtonCasesSegment() {
     setType('EquallyBySegment');
 
     // Obtener usuarios
-    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=${query}&limit=1000`);
+    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=${query}&limit=1000`);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
 

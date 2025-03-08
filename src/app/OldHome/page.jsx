@@ -2193,8 +2193,8 @@ export default function Home() {
                             access={true}
                             headArray={encabezadoGestionDeAccesos}
                             dataFilter={(i) => i.tipoDeGrupo === 'Admin'}
-                            local={'http://localhost:3000/api/authSystem/auth/users'}
-                            server={'https://api.fastcash-mx.com/api/authSystem/auth/users'}
+                            local={'http://localhost:3000/api/authSystemusers'}
+                            server={'https://api.fastcash-mx.com/api/authSystemusers'}
                         />
                     }
                     {
@@ -2202,8 +2202,8 @@ export default function Home() {
                             access={true}
                             headArray={encabezadoGestionDeAccesos}
                             dataFilter={(i) => i?.tipoDeGrupo?.toLowerCase().includes('recursos humanos')}
-                            local={'http://localhost:3000/api/authSystem/auth/users'}
-                            server={'https://api.fastcash-mx.com/api/authSystem/auth/users'}
+                            local={'http://localhost:3000/api/authSystemusers'}
+                            server={'https://api.fastcash-mx.com/api/authSystemusers'}
                         />
                     }
                     {
@@ -2211,8 +2211,8 @@ export default function Home() {
                             access={true}
                             headArray={encabezadoGestionDeAccesos}
                             dataFilter={(i) => i?.tipoDeGrupo?.toLowerCase().includes('manager')}
-                            local={'http://localhost:3000/api/authSystem/auth/users'}
-                            server={'https://api.fastcash-mx.com/api/authSystem/auth/users'}
+                            local={'http://localhost:3000/api/authSystemusers'}
+                            server={'https://api.fastcash-mx.com/api/authSystemusers'}
                         />
                     }
                     {
@@ -2220,8 +2220,8 @@ export default function Home() {
                             access={true}
                             headArray={encabezadoGestionDeAccesos}
                             dataFilter={(i) => i?.tipoDeGrupo?.toLowerCase().includes('asesor')}
-                            local={'http://localhost:3000/api/authSystem/auth/users'}
-                            server={'https://api.fastcash-mx.com/api/authSystem/auth/users'}
+                            local={'http://localhost:3000/api/authSystemusers'}
+                            server={'https://api.fastcash-mx.com/api/authSystemusers'}
                         />
                     }
                     {
@@ -2229,8 +2229,8 @@ export default function Home() {
                             access={true}
                             headArray={encabezadoGestionDeAccesos}
                             dataFilter={(i) => true}
-                            local={'http://localhost:3000/api/authSystem/auth/personalAccounts'}
-                            server={'https://api.fastcash-mx.com/api/authSystem/auth/personalAccounts'}
+                            local={'http://localhost:3000/api/authSystempersonalAccounts'}
+                            server={'https://api.fastcash-mx.com/api/authSystempersonalAccounts'}
                         />
                     }
 

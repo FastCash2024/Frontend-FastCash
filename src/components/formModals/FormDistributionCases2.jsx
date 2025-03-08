@@ -49,7 +49,7 @@ export default function AddAccount({query, estadoDeCredito,}) {
         return cociente;
     }
     const assignMaximEqualy = async () => {
-        const res = await fetch('https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
+        const res = await fetch('https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=Asesor%20de%20Verificación')
         const verificadores = await res.json()
         const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
         const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification/')
@@ -62,7 +62,7 @@ export default function AddAccount({query, estadoDeCredito,}) {
     const assignCasesEqually = async () => {
         setCalculate(true)
         setType('Equaly')
-        const res = await fetch('https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
+        const res = await fetch('https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=Asesor%20de%20Verificación')
         const data = await res.json()
         const verificadores = data.filter(i => i.tipoDeGrupo === 'Asesor de Verificación')
         const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
@@ -91,7 +91,7 @@ export default function AddAccount({query, estadoDeCredito,}) {
     async function assignCasesTotally() {
         setCalculate(true)
         setType('Totaly')
-        const res = await fetch('https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación')
+        const res = await fetch('https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=Asesor%20de%20Verificación')
         const data = await res.json()
         const verificadores = data.filter(i => i.tipoDeGrupo === 'Asesor de Verificación')
         const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));

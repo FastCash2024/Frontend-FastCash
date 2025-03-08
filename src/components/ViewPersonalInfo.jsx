@@ -51,8 +51,8 @@ export default function Home() {
 
     async function handlerFetch() {
         const res = await fetch(window?.location?.href.includes('localhost')
-            ? `http://localhost:3000/api/authSystem/auth/users?emailPersonal=${userDB?.email || user?.email}`
-            : `https://api.fastcash-mx.com/api/authSystem/auth/users?emailPersonal=${userDB?.email || user?.email}`)
+            ? `http://localhost:3000/api/authSystemusers?emailPersonal=${userDB?.email || user?.email}`
+            : `https://api.fastcash-mx.com/api/authSystemusers?emailPersonal=${userDB?.email || user?.email}`)
         const resData = await res.json()
         setData(resData)
     }

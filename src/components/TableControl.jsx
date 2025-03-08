@@ -33,8 +33,8 @@ export default function TableControl() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-        : `https://api.fastcash-mx.com/api/authSystem/auth/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        ? `http://localhost:3000/api/authSystemusers?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/authSystemusers?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
     );
     const result = await res.json();
     setData(result.data); // Solo almacena el array de datos
