@@ -74,10 +74,10 @@ export default function FormDistributionAuditors() {
     return cociente;
   }
   const assignMaximEqualy = async () => {
-    const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
+    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
     const verificadores = await res.json()
     const updatedUsers = verificadores.data.map(user => ({ ...user, idCasosAsignados: [] }));
-    const resCases = await fetch(`https://api.fastcash-mx.com/api/verification?limit=1000`)
+    const resCases = await fetch(`https://api.fastcash-mx.com/api/loans/verification?limit=1000`)
     const dataVerification = await resCases.json()
     // const casesVerification = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
     console.log("cantidad de casos: ", casesVerification);
@@ -90,13 +90,13 @@ export default function FormDistributionAuditors() {
   const assignCasesEqually = async () => {
     setCalculate(true)
     setType('Equaly')
-    const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
+    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
     const data = await res.json()
 
     const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
     const updatedUsers = verificadores.filter(user => user.emailPersonal).map(user => ({ ...user, idCasosAsignados: [] }));
     // const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-    const resCases = await fetch('https://api.fastcash-mx.com/api/verification?&limit=1000')
+    const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification?&limit=1000')
     const dataVerification = await resCases.json()
     // const casesVerification = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
     let unassignedCases = [...dataVerification.data];
@@ -131,11 +131,11 @@ export default function FormDistributionAuditors() {
   async function assignCasesTotally() {
     setCalculate(true)
     setType('Totaly')
-    const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
+    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
     const data = await res.json()
     const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
     const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-    const resCases = await fetch('https://api.fastcash-mx.com/api/verification?&limit=1000')
+    const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification?&limit=1000')
     const dataVerification = await resCases.json()
     console.log("data verification: ", dataVerification);
 
@@ -201,8 +201,8 @@ export default function FormDistributionAuditors() {
 
 
         const url = window?.location?.href?.includes('localhost')
-          ? `http://localhost:3000/api/verification/${i._id}`
-          : `https://api.fastcash-mx.com/api/verification/${i._id}`;
+          ? `http://localhost:3000/api/loans/verification/${i._id}`
+          : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`;
 
         const response = await fetch(url, {
           method: "PUT",

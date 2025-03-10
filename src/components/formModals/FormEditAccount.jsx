@@ -109,8 +109,8 @@ export default function AddAccount() {
             })
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3000/api/auth/register/${db._id}`
-                    : `https://api.fastcash-mx.com/api/auth/register/${db._id}`, {
+                    ? `http://localhost:3000/api/authSystem/register/${db._id}`
+                    : `https://api.fastcash-mx.com/api/authSystem/register/${db._id}`, {
                 method: 'PUT', // El método es PUT para actualizar
                 headers: {
                     'Content-Type': 'application/json',

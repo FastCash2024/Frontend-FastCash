@@ -63,8 +63,8 @@ export default function FormUpdateTipoApp() {
 
         try {
             const urlBase = window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/applications/updatetipoaplicacion`
-                : `https://api.fastcash-mx.com/api/applications/updatetipoaplicacion`;
+                ? `http://localhost:3000/api/users/applications/updatetipoaplicacion`
+                : `https://api.fastcash-mx.com/api/users/applications/updatetipoaplicacion`;
 
             const response = await fetch(`${urlBase}/${applicationId}/${applicationTipo.nivelDePrestamo}`, {
                 method: 'PUT',

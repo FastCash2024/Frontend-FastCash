@@ -85,10 +85,10 @@ export default function FormDistributtonCasesSegment() {
   }
 
   const assignMaximEqualy = async () => {
-    const res = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}&limit=1000`)
+    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`)
     const verificadores = await res.json()
     const updatedUsers = verificadores.data.map(user => ({ ...user, idCasosAsignados: [] }));
-    const resCases = await fetch(`https://api.fastcash-mx.com/api/verification?limit=1000`)
+    const resCases = await fetch(`https://api.fastcash-mx.com/api/loans/verification?limit=1000`)
     const dataVerification = await resCases.json()
     const casesVerification = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
     console.log("cantidad de casos: ", casesVerification);
@@ -131,8 +131,8 @@ export default function FormDistributtonCasesSegment() {
           }
 
           const url = window?.location?.href?.includes("localhost")
-            ? `http://localhost:3000/api/verification/${i._id}`
-            : `https://api.fastcash-mx.com/api/verification/${i._id}`;
+            ? `http://localhost:3000/api/loans/verification/${i._id}`
+            : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`;
 
           const response = await fetch(url, {
             method: "PUT",
@@ -168,7 +168,7 @@ export default function FormDistributtonCasesSegment() {
     setCalculate(true);
     setType("BySegment");
 
-    const resUsers = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}&limit=1000`);
+    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
 
@@ -177,7 +177,7 @@ export default function FormDistributtonCasesSegment() {
       idCasosAsignados: []
     }));
 
-    const resCases = await fetch("https://api.fastcash-mx.com/api/verification?&limit=1000");
+    const resCases = await fetch("https://api.fastcash-mx.com/api/loans/verification?&limit=1000");
     const dataVerification = await resCases.json();
 
     const casosPorSegmento = {
@@ -247,7 +247,7 @@ export default function FormDistributtonCasesSegment() {
     setType('EquallyBySegment');
 
     // Obtener usuarios
-    const resUsers = await fetch(`https://api.fastcash-mx.com/api/auth/users?tipoDeGrupo=${query}&limit=1000`);
+    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
 
@@ -255,7 +255,7 @@ export default function FormDistributtonCasesSegment() {
     const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
 
     // Obtener casos
-    const resCases = await fetch("https://api.fastcash-mx.com/api/verification?&limit=1000");
+    const resCases = await fetch("https://api.fastcash-mx.com/api/loans/verification?&limit=1000");
     const dataVerification = await resCases.json();
     const casos = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito);
 

@@ -35,8 +35,8 @@ export default function PayPage() {
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(window?.location?.href.includes('localhost')
-                ? `http://localhost:3000/api/verification/${id}`
-                : `https://api.fastcash-mx.com/api/verification/${id}`)
+                ? `http://localhost:3000/api/loans/verification/${id}`
+                : `https://api.fastcash-mx.com/api/loans/verification/${id}`)
             const res = await response.json();
             setItemData(res);
         };

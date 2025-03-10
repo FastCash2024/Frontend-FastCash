@@ -98,8 +98,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     // searchParams with a provided key/value pair
 
     const fetchCustomersFlow = async () => {
-        const local = 'http://localhost:3000/api/applications/customers';
-        const server = 'https://api.fastcash-mx.com/api/applications/customers';
+        const local = 'http://localhost:3000/api/users/applications/customers';
+        const server = 'https://api.fastcash-mx.com/api/users/applications/customers';
         
         try {
             // Seleccionar la URL correcta

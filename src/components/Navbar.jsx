@@ -54,8 +54,8 @@ export default function Navbar({ rol }) {
             const urlServer = "https://api.fastcash-mx.com";
 
             const url = window?.location?.href?.includes("localhost")
-                ? `${urlLocal}/api/attendance/registerAttendance`
-                : `${urlServer}/api/attendance/registerAttendance`;
+                ? `${urlLocal}/api/users/attendance/registerAttendance`
+                : `${urlServer}/api/users/attendance/registerAttendance`;
 
             const response = await fetch(url, {
                 method: 'POST',

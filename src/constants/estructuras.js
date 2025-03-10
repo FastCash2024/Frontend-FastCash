@@ -1,5 +1,5 @@
 // ----------------------- SOLICITUD DE PRESTAMO
-// POST http://localhost:3000/api/verification
+// POST http://localhost:3000/api/loans/verification
 const json1 = {
     "numeroDePrestamo": "12345",
     "idDeSubFactura": "SUB12345",
@@ -17,7 +17,7 @@ const json1 = {
     "nombreDeLaEmpresa": "Finanzas SA",
 }
 // ----------------------- VERIFICACION DE PRESTAMO
-// PUT http://localhost:3000/api/verification/:id
+// PUT http://localhost:3000/api/loans/verification/:id
 const json2 = {
     "estadoDeCredito": "Pendiente",
     "apodoDeUsuarioDeCobro": "CobroJuan"

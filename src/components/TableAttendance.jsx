@@ -54,8 +54,8 @@ export default function TableAttendance() {
         const { startDate: defaultStartDate, endDate: defaultEndDate } = getStartAndEndOfWeek();
         startDate = startDate || defaultStartDate;
         endDate = endDate || defaultEndDate;
-        const local = 'http://localhost:3000/api/attendance';
-        const server = 'https://api.fastcash-mx.com/api/attendance';
+        const local = 'http://localhost:3000/api/users/attendance';
+        const server = 'https://api.fastcash-mx.com/api/users/attendance';
 
         const urlParams = new URLSearchParams(window.location.search);
         const filterParams = {};

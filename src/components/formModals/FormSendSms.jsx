@@ -55,8 +55,8 @@ export default function FormSendSms() {
 
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/sms/smsSend'
-                : 'https://api.fastcash-mx.com/api/sms/smsSend', {
+                ? 'http://localhost:3000/api/notifications/sms/smsSend'
+                : 'https://api.fastcash-mx.com/api/notifications/sms/smsSend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -76,8 +76,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
 
     const fetchCustomersFlow = async () => {
-        const local = 'http://localhost:3000/api/applications/customers';
-        const server = 'https://api.fastcash-mx.com/api/applications/customers';
+        const local = 'http://localhost:3000/api/users/applications/customers';
+        const server = 'https://api.fastcash-mx.com/api/users/applications/customers';
         
         try {
             // Seleccionar la URL correcta
@@ -134,7 +134,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de reembolso:
                                 </label>
-                                <SelectSimple arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado', "Error de dispercion STP"]} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <div className='flex justify-end items-center'>
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>

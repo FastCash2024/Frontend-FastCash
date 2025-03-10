@@ -66,8 +66,8 @@ export default function AddAccount() {
         try {
             setLoader('Guardando...')
             const response = await fetch(window?.location?.href.includes('localhost')
-                ? `http://localhost:3000/api/verification/creditoaprobado/${itemSelected._id}`
-                : `https://api.fastcash-mx.com/api/verification/creditoaprobado/${itemSelected._id}`, {
+                ? `http://localhost:3000/api/loans/verification/creditoaprobado/${itemSelected._id}`
+                : `https://api.fastcash-mx.com/api/loans/verification/creditoaprobado/${itemSelected._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

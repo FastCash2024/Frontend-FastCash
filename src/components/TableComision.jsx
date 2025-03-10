@@ -16,8 +16,8 @@ export default function TableComision() {
   async function handlerFetch() {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/verification/reportcomision?nombreUsuario=${user.email}`
-        : `https://api.fastcash-mx.com/api/verification/reportcomision?nombreUsuario=${user.email}`
+        ? `http://localhost:3000/api/loans/verification/reportcomision?nombreUsuario=${user.email}`
+        : `https://api.fastcash-mx.com/api/loans/verification/reportcomision?nombreUsuario=${user.email}`
     );
     const result = await res.json();
     console.log("data: ", result);
@@ -42,8 +42,8 @@ export default function TableComision() {
 
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3000/api/verification?estadoDeCredito=Dispersado,Pagado&limit=${limit}`
-      : `https://api.fastcash-mx.com/api/verification?estadoDeCredito=Dispersado,Pagado&limit=${limit}`;
+      ? `http://localhost:3000/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=${limit}`
+      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=${limit}`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);

@@ -102,7 +102,7 @@ export default function Home() {
     const [attendance, setAttendace] = useState({})
 
     async function handlerFetch(startDate = '', endDate = '') {
-        const local = 'http://localhost:3000/api/attendance';
+        const local = 'http://localhost:3000/api/users/attendance';
 
         const urlParams = new URLSearchParams(window.location.search);
         const filterParams = {};
@@ -154,8 +154,8 @@ export default function Home() {
 
 
     async function handlerFetchPersonalAttendance(personId, limit = 52, page = 1) {
-        const local = `http://localhost:3000/api/attendance/${personId}`;
-        const server = `https://api.fastcash-mx.com/api/attendance/${personId}`;
+        const local = `http://localhost:3000/api/users/attendance/${personId}`;
+        const server = `https://api.fastcash-mx.com/api/users/attendance/${personId}`;
 
         const urlParams = new URLSearchParams(window.location.search);
         const filterParams = {};

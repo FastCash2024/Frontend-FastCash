@@ -6,8 +6,8 @@ export default function TableCustomerFlow() {
   const [filtro_2, setFiltro_2] = useState({});
 
   const fetchCustomersFlow = async () => {
-    const local = 'http://localhost:3000/api/applications/customers';
-    const server = 'https://api.fastcash-mx.com/api/applications/customers';
+    const local = 'http://localhost:3000/api/users/applications/customers';
+    const server = 'https://api.fastcash-mx.com/api/users/applications/customers';
 
     try {
       // Seleccionar la URL correcta
@@ -34,8 +34,8 @@ export default function TableCustomerFlow() {
   };
 
   const fetchCustomers = async (dates) => {
-    const local = 'http://localhost:3000/api/verification/customer';
-    const server = 'https://api.fastcash-mx.com/api/verification/customer';
+    const local = 'http://localhost:3000/api/loans/verification/customer';
+    const server = 'https://api.fastcash-mx.com/api/loans/verification/customer';
 
     try {
       // Seleccionar la URL correcta

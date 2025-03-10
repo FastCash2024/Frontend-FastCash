@@ -90,8 +90,8 @@ export default function AddAccount() {
             console.log("imprimir: ", checkedArr);
 
             const finalURL = window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/auth/registerPersonal/${checkedArr._id}`
-                : `https://api.fastcash-mx.com/api/auth/registerPersonal/${checkedArr._id}`;
+                ? `http://localhost:3000/api/authSystem/registerPersonal/${checkedArr._id}`
+                : `https://api.fastcash-mx.com/api/authSystem/registerPersonal/${checkedArr._id}`;
 
             console.log("imprimir url: ", finalURL);
 
