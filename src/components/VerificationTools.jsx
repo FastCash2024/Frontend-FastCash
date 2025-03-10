@@ -23,7 +23,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [filter, setFilter] = useState({})
     const [filtro_1, setFiltro_1] = useState([]);
     const [query, setQuery] = useState('');
-    
+
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }
         setFilter(db)
@@ -32,23 +32,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     function onChangeHandlerDate(e) {
         const { name, value } = e.target;
-    
+
         setFilter((prevFilter) => {
             const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
-            
+
             let updatedValues;
             if (prevValue.length >= 2) {
                 updatedValues = [prevValue[0], value];
             } else {
                 updatedValues = [...prevValue, value];
             }
-    
+
             const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
             setQuery(objectToQueryString(updatedFilter));
             return updatedFilter;
         });
     }
-    
+
     function handlerSelectClick(name, i, uuid) {
         const db = { ...filter, [name]: i }
         setFilter(db)
@@ -64,39 +64,39 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         if (!obj || typeof obj !== "object") {
             throw new Error("La entrada debe ser un objeto.");
         }
-    
+
         const url = Object.keys(obj)
             .filter(key => obj[key] !== undefined && obj[key] !== null) // Filtrar valores nulos o indefinidos
             .map((key, index) => `${index === 0 ? '' : '&'}filter[${encodeURIComponent(key)}]=${encodeURIComponent(obj[key])}`) // Codificar clave=valor
             .join(""); // Unir con ""
-    
+
         console.log("url: ", url);
-    
+
         return url;
     }
 
     const fetchCustomersFlow = async () => {
-        const local = 'http://localhost:3000/api/users/applications/customers';
+        const local = 'http://localhost:3006/api/users/applications/customers';
         const server = 'https://api.fastcash-mx.com/api/users/applications/customers';
-        
+
         try {
             // Seleccionar la URL correcta
             const url = window?.location?.href?.includes("localhost") ? local : server;
-    
+
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error en la solicitud');
             }
-    
+
             const result = await response.json();
             console.log('Clientes:', result);
-            
+
             setFiltro_1(result);
         } catch (error) {
             console.error('Error al obtener los clientes:', error);
@@ -104,15 +104,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     };
 
     useEffect(() => {
-      if (item === "Recolección y Validación de Datos" || item === "Lista final") {
-        void fetchCustomersFlow();
-      }
+        if (item === "Recolección y Validación de Datos" || item === "Lista final") {
+            void fetchCustomersFlow();
+        }
     }, [item])
-    
+
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
-           <div>
+            <div>
                 <div className="w-full   relative  scroll-smooth mb-2">
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
@@ -164,23 +164,26 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    {/* <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
-                        <div className='w-[330px] space-y-2'>
-                            <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
-                                <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta')}>Asignar cuenta</Button>
+                    {
+                        item === "Recolección y Validación de Datos" &&
+                        <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                            <div className='w-[330px] space-y-2'>
+                                <div className='flex justify-between space-x-3'>
+                                    <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
+                                    <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta')}>Asignar cuenta</Button>
+                                </div>
+                            </div>
+                            <div className='w-[300px] space-y-2'>
+                                <div className='flex justify-between space-x-3'>
+                                    <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
+                                </div>
+                            </div>
+                            <div className='w-[300px] space-y-2'>
+                                <div className='flex justify-between space-x-3'>
+                                </div>
                             </div>
                         </div>
-                        <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
-                            </div>
-                        </div>
-                        <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between space-x-3'>
-                            </div>
-                        </div>
-                    </div> */}
+                    }
                 </div>
             </div>
         </div>

@@ -216,7 +216,7 @@ export default function Home() {
                   dataArray={[""]}
                   dataFilter={(i) => true}
                   local={
-                    "http://localhost:3000/api/loans/verification?estadoDeCredito=Dispersado"
+                    "http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado"
                   }
                   server={
                     "https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado"
@@ -233,7 +233,7 @@ export default function Home() {
                   dataArray={[""]}
                   dataFilter={(i) => i}
                   local={
-                    "http://localhost:3000/api/users/applications/getApplications"
+                    "http://localhost:3006/api/users/applications/getApplications"
                   }
                   server={
                     "https://api.fastcash-mx.com/api/users/applications/getApplications"
@@ -247,7 +247,7 @@ export default function Home() {
                   dataArray={[""]}
                   dataFilter={(i) => i}
                   local={
-                    `http://localhost:3000/api/users/applications/aplicationbyid/${application}`
+                    `http://localhost:3006/api/users/applications/aplicationbyid/${application}`
                   }
                   server={
                     `https://api.fastcash-mx.com/api/users/applications/aplicationbyid/${application}`
@@ -260,7 +260,7 @@ export default function Home() {
                   headArray={encabezadoIncurrirEnUnaEstaciónDeTrabajo}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/loans/verification"}
+                  local={"http://localhost:3003/api/loans/verification"}
                   server={"https://api.fastcash-mx.com/api/loans/verification"}
                 />
               )}
@@ -270,7 +270,7 @@ export default function Home() {
                   headArray={encabezadoGestionDeCuentasDeColección}
                   // dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users"}
                   server={"https://api.fastcash-mx.com/api/authSystem/users"}
                 />
               )}
@@ -281,7 +281,7 @@ export default function Home() {
                   headArray={encabezadoRegistroDeSMS}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/notifications/sms/obtenersms"}
+                  local={"http://localhost:3005/api/notifications/sms/obtenersms"}
                   server={"https://api.fastcash-mx.com/api/notifications/sms/obtenersms"}
                 />
               )}
@@ -300,7 +300,7 @@ export default function Home() {
                   headArray={encabezadoCobroYValance}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/loans/verification?estadoDeCredito=Dispersado"}
+                  local={"http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado"}
                   server={"https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado"}
                 />
               )}
@@ -321,8 +321,8 @@ export default function Home() {
                   headArray={encabezadoRegistroHistorico}
                   dataArray={[""]}
                   dataFilter={(i) => true}
-                  local={"http://localhost:3000/api/trakingoperaciones"}
-                  server={"https://api.fastcash-mx.com/api/trakingoperaciones"}
+                  local={"http://localhost:3006/api/users/trakingoperaciones"}
+                  server={"https://api.fastcash-mx.com/api/users/trakingoperaciones"}
                 />
               )}
               {item === "Monitoreo de Transacciones" && (
@@ -331,7 +331,7 @@ export default function Home() {
                   headArray={encabezadoMonitoreoDeTransacciones}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/loans/verification?estadoDeCredito=Pagado,Dispersado"}
+                  local={"http://localhost:3003/api/loans/verification?estadoDeCredito=Pagado,Dispersado"}
                   server={"https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Pagado,Dispersado"}
                 />
               )}
@@ -354,7 +354,7 @@ export default function Home() {
                   headArray={encabezadoControlDeCumplimiento}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3000/api/multas/multas"}
+                  local={"http://localhost:3006/api/users/multas/multas"}
                   server={"https://api.fastcash-mx.com/api/multas/multas"}
                 />
               )}
@@ -366,7 +366,7 @@ export default function Home() {
                   dataArray={[""]}
                   dataFilter={(i) => true}
                   local={
-                    "http://localhost:3000/api/loans/verification?estadoDeCredito=Pendiente"
+                    "http://localhost:3003/api/loans/verification?estadoDeCredito=Pendiente"
                   }
                   server={
                     "https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Pendiente"
@@ -401,7 +401,7 @@ export default function Home() {
                   headArray={encabezadoCasosDeVerificacion}
                   dataFilter={(i) => true}
                   local={
-                    "http://localhost:3000/api/loans/verification?estadoDeCredito=Aprobado,Reprobado"
+                    "http://localhost:3003/api/loans/verification?estadoDeCredito=Aprobado,Reprobado"
                   }
                   server={
                     "https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Aprobado,Reprobado"
@@ -414,7 +414,7 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoGestionDeAccesos}
                   dataFilter={(i) => i.tipoDeGrupo === "Admin"}
-                  local={"http://localhost:3000/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users"}
                   server={"https://api.fastcash-mx.com/api/authSystem/users"}
                 />
               )}
@@ -425,7 +425,7 @@ export default function Home() {
                   dataFilter={(i) =>
                     i?.tipoDeGrupo?.toLowerCase().includes("recursos humanos")
                   }
-                  local={"http://localhost:3000/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users"}
                   server={"https://api.fastcash-mx.com/api/authSystem/users"}
                 />
               )}
@@ -436,7 +436,7 @@ export default function Home() {
                   dataFilter={(i) =>
                     i?.tipoDeGrupo?.toLowerCase().includes("manager")
                   }
-                  local={"http://localhost:3000/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users"}
                   server={"https://api.fastcash-mx.com/api/authSystem/users"}
                 />
               )}
@@ -447,7 +447,7 @@ export default function Home() {
                   dataFilter={(i) => true}
                   // local={'http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor'}
                   local={
-                    "http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor"
+                    "http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor"
                   }
                   server={"https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor"}
                 />
@@ -459,7 +459,7 @@ export default function Home() {
                   dataFilter={(i) => true}
                   // local={'http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor'}
                   local={
-                    "http://localhost:3000/api/comision"
+                    "http://localhost:3006/api/users/comision"
                   }
                   server={"https://api.fastcash-mx.com/api/comision"}
                 />
@@ -469,7 +469,7 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoGestionDeAccesosPersonales}
                   dataFilter={(i) => true}
-                  local={"http://localhost:3000/api/authSystem/personalAccounts"}
+                  local={"http://localhost:3002/api/authSystem/personalAccounts"}
                   server={
                     "https://api.fastcash-mx.com/api/authSystem/personalAccounts"
                   }

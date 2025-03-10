@@ -22,44 +22,96 @@ export default function FormPagadoExtension() {
     const item = searchParams.get('item')
     const [valorDiasDeProrroga, setDiasDeProrroga] = useState("7");
 
-    async function generateAndCopyURL() {
+    async function updateCobroExtencion() {
         if (!itemSelected || !itemSelected._id) {
             setAlerta("Error: No se encontró el préstamo.");
             return;
         }
 
-        const tackingData = {
-            descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+        const trackingData = {
+            descripcionDeExcepcion: getDescripcionDeExcepcion(itemSelected),
             subID: itemSelected._id,
             cuentaOperadora: userDB.cuenta,
             cuentaPersonal: userDB.emailPersonal,
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
-            contenidoDeOperacion: `se ha generado una linea de pago (por extensión) para el caso ${itemSelected.numeroDePrestamo}.`,
+            contenidoDeOperacion: `Se ha registrado el pago para el caso ${itemSelected.numeroDePrestamo}.`,
             fechaDeOperacion: new Date().toISOString()
+        };
+
+        const updateData = {
+            estadoDeCredito: 'Pagado con extensión'
+        };
+
+        // Crear una copia del objeto itemSelected y eliminar el campo _id
+        const { _id, ...newCreditData } = {
+            ...itemSelected,
+            estadoDeCredito: 'Dispersado',
+            fechaDeReembolso: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString()
+        };
+
+        try {
+            setLoader('Guardando...');
+            const response = await fetch(
+                window?.location?.href.includes('localhost')
+                    ? `http://localhost:3003/api/loans/verification/creditoaprobado/${itemSelected._id}`
+                    : `https://api.fastcash-mx.com/api/loans/verification/creditoaprobado/${itemSelected._id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify(updateData),
+                }
+            );
+
+            console.log("respuesta dispersion: ", response);
+
+            if (!response.ok) {
+                setLoader('');
+                setAlerta('Error de datos!');
+                throw new Error('Registration failed');
+            }
+
+            if (response.ok) {
+                const newCreditResponse = await fetch(
+                    window?.location?.href.includes('localhost')
+                        ? `http://localhost:3003/api/loans/verification/add`
+                        : `https://api.fastcash-mx.com/api/loans/verification/add`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                        },
+                        body: JSON.stringify(newCreditData),
+                    }
+                );
+
+                if (!newCreditResponse.ok) {
+                    setLoader('');
+                    setAlerta('Error al duplicar el crédito!');
+                    throw new Error('Duplication failed');
+                }
+
+                setAlerta('Operación exitosa!');
+                setModal('');
+                setLoader('');
+
+                await postTracking(trackingData);
+            } else {
+                setLoader('');
+                setAlerta('Error de datos!');
+                throw new Error('Registration failed');
+            }
+        } catch (error) {
+            setLoader('');
+            setAlerta('Error de datos!');
+            console.error("Error:", error);
         }
-        setLoader('Guardando...');
-        const encryptedId = CryptoJS.AES.encrypt(itemSelected._id, SECRET_KEY).toString();
-        const encodedId = encodeURIComponent(encryptedId);
-
-        const generatedURL = window?.location?.href.includes('localhost')
-            ? `http://localhost:3001/pay?caso=${encodedId}&seccion=extension&item=data`
-            : `https://collection.fastcash-mx.com/pay?caso=${encodedId}&seccion=extension&item=data`;
-
-
-        navigator.clipboard.writeText(generatedURL)
-            .then(() => setAlerta("¡Enlace copiado al portapapeles!"))
-            .catch(() => setAlerta("Error al copiar el enlace"));
-
-        await postTracking(tackingData);
-        setAlerta('Operación exitosa!')
-        setModal('')
-        setLoader('')
     }
-
-    console.log("itemSelected: ", itemSelected);
-
-
+    
     return (
         <div
             className="fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50"
@@ -144,7 +196,7 @@ export default function FormPagadoExtension() {
 
                 <button
                     type="button"
-                    onClick={generateAndCopyURL}
+                    onClick={updateCobroExtencion}
                     className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                 >
                     Aceptar

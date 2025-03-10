@@ -72,7 +72,7 @@ export default function FormUpdateMulta() {
             console.log("data a enviar: ", multaData);
 
             const finalURL = window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/multas/multas/${multa._id}`
+                ? `http://localhost:3006/api/users/multas/multas/${multa._id}`
                 : `https://api.fastcash-mx.com/api/multas/multas/${multa._id}`;
 
             console.log("final url: ", finalURL);

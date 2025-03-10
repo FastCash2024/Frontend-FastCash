@@ -72,7 +72,7 @@ export default function AddAccount() {
         try {
             // url: https://api.fastcash-mx.com/api/authApk/register
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/users/applications/register'
+                ? 'http://localhost:3006/api/users/applications/register'
                 : 'https://api.fastcash-mx.com/api/users/applications/register', {
                 method: 'POST',
                 body: formData,

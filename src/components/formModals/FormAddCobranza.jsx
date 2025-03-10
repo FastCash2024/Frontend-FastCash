@@ -77,7 +77,7 @@ export default function FormAddCobranza() {
             setLoader("Guardando...");
             const response = await fetch(
                 window?.location?.href.includes("localhost")
-                    ? `http://localhost:3000/api/loans/verification/${itemSelected._id}`
+                    ? `http://localhost:3003/api/loans/verification/${itemSelected._id}`
                     : `https://api.fastcash-mx.com/api/loans/verification/${itemSelected._id}`,
                 {
                     method: "PUT", // El método es PUT para actualizar

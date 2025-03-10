@@ -33,7 +33,7 @@ export default function TableControl() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
         : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
     );
     const result = await res.json();
@@ -46,7 +46,7 @@ export default function TableControl() {
   async function handlerFetchVerification(date) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/loans/verification?limit=1000`
+        ? `http://localhost:3003/api/loans/verification?limit=1000`
         : `https://api.fastcash-mx.com/api/loans/verification?limit=1000`
     );
     const result = await res.json();

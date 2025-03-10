@@ -21,7 +21,7 @@ export default function TableReporteDiarioAuditoria() {
 
     async function handlerFetch(limit, page) {
 
-        const local = "http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria";
+        const local = "http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria";
         const server = "https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria";
         // const local = "http://localhost:3000/api/authSystem/users";
         // const server = "https://api.fastcash-mx.com/api/authSystem/users";
@@ -119,7 +119,7 @@ export default function TableReporteDiarioAuditoria() {
     
         // console.log("querys: ", urlParams);
         const baseUrl = window?.location?.href?.includes("localhost")
-          ? `http://localhost:3000/api/loans/verification?estadoDeCredito=Dispersado,Pagado`
+          ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado`
           : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado`;
     
         const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
@@ -140,8 +140,8 @@ export default function TableReporteDiarioAuditoria() {
     async function handlerFetchDetails() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/multas/reporte'
-                : 'https://api.fastcash-mx.com/api/multas/reporte')
+                ? 'http://localhost:3006/api/users/multas/reporte'
+                : 'https://api.fastcash-mx.com/api/users/multas/reporte')
         const data = await res.json()
         console.log(data)
         setDetails(data.data)

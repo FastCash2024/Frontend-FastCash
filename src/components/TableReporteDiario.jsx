@@ -168,7 +168,7 @@ export default function Home() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+        ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
         : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
     );
     const result = await res.json();
@@ -197,7 +197,7 @@ export default function Home() {
 
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3000/api/loans/verification?estadoDeCredito=Dispersado,Pagado`
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado`
       : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
@@ -218,7 +218,7 @@ export default function Home() {
   async function handlerFetchTotales() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/loans/verification/totalreportecobro'
+        ? 'http://localhost:3003/api/loans/verification/totalreportecobro'
         : 'https://api.fastcash-mx.com/api/loans/verification/totalreportecobro')
     const data = await res.json()
     setTotales(data.data)
@@ -243,7 +243,7 @@ export default function Home() {
   async function handlerFetchDetails() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
+        ? 'http://localhost:3003/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
         : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados?estadoDeCredito=Pagado')
     const data = await res.json()
     console.log("data detalle: ", data)

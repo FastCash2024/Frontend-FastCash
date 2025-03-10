@@ -1,7 +1,6 @@
 import React from 'react';
 import { useAppContext } from "@/context/AppContext";
 import Input from "@/components/Input";
-import CryptoJS from "crypto-js";
 import { useSearchParams } from "next/navigation";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
@@ -20,40 +19,73 @@ export default function FormPagado() {
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
 
-    async function generateAndCopyURL() {
+    async function updateCobro() {
         if (!itemSelected || !itemSelected._id) {
             setAlerta("Error: No se encontró el préstamo.");
             return;
         }
 
-        const tackingData = {
-            descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+        const trackingData = {
+            descripcionDeExcepcion: getDescripcionDeExcepcion(itemSelected),
             subID: itemSelected._id,
             cuentaOperadora: userDB.cuenta,
             cuentaPersonal: userDB.emailPersonal,
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
-            contenidoDeOperacion: `se ha generado una linea de pago para el caso ${itemSelected.numeroDePrestamo}.`,
+            contenidoDeOperacion: `Se ha registrado el pago para el caso ${itemSelected.numeroDePrestamo}.`,
             fechaDeOperacion: new Date().toISOString()
+        };
+
+        const updateData = {
+            estadoDeCredito: 'Pagado',
+            trackingDeOperaciones: [
+                ...itemSelected.trackingDeOperaciones,
+                trackingData
+            ]
+        };
+
+        console.log("update Data: ", updateData);
+
+        try {
+            setLoader('Guardando...');
+            const response = await fetch(
+                window?.location?.href.includes('localhost')
+                    ? `http://localhost:3003/api/loans/verification/creditoaprobado/${itemSelected._id}`
+                    : `https://api.fastcash-mx.com/api/loans/verification/creditoaprobado/${itemSelected._id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify(updateData),
+                }
+            );
+
+            console.log("respuesta dispersion: ", response);
+
+            if (!response.ok) {
+                setLoader('');
+                setAlerta('Error de datos!');
+                throw new Error('Registration failed');
+            }
+
+            if (response.ok) {
+                setAlerta('Operación exitosa!');
+                setModal('');
+                setLoader('');
+
+                await postTracking(trackingData);
+            } else {
+                setLoader('');
+                setAlerta('Error de datos!');
+                throw new Error('Registration failed');
+            }
+        } catch (error) {
+            setLoader('');
+            setAlerta('Error de datos!');
+            console.error("Error:", error);
         }
-
-        setLoader('Guardando...');
-        const encryptedId = CryptoJS.AES.encrypt(itemSelected._id, SECRET_KEY).toString();
-        const encodedId = encodeURIComponent(encryptedId);
-
-        const generatedURL = window?.location?.href.includes('localhost')
-            ? `http://localhost:3001/pay?caso=${encodedId}&seccion=payment&item=data`
-            : `https://collection.fastcash-mx.com/pay?caso=${encodedId}&seccion=payment&item=data`;
-
-        navigator.clipboard.writeText(generatedURL)
-            .then(() => setAlerta("¡Enlace copiado al portapapeles!"))
-            .catch(() => setAlerta("Error al copiar el enlace"));
-
-        await postTracking(tackingData);
-
-        setAlerta('Operación exitosa!')
-        setModal('')
-        setLoader('')
     }
 
     console.log("itemSelected: ", itemSelected);
@@ -99,7 +131,7 @@ export default function FormPagado() {
                 {/* Botón para generar y copiar URL */}
                 <button
                     type="button"
-                    onClick={generateAndCopyURL}
+                    onClick={updateCobro}
                     className="w-[300px] text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                 >
                     Aceptar

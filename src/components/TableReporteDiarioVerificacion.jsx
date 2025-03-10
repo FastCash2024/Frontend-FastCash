@@ -142,7 +142,7 @@ export default function Home() {
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? `http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación&limit=${limit}&page=${page}`
+        ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación&limit=${limit}&page=${page}`
         : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación&limit=${limit}&page=${page}`)
     const result = await res.json()
     // console.log(data)
@@ -180,7 +180,7 @@ export default function Home() {
 
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3000/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`
       : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
@@ -201,7 +201,7 @@ export default function Home() {
   async function handlerFetchDetails() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/loans/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
+        ? 'http://localhost:3003/api/loans/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
         : 'https://api.fastcash-mx.com/api/loans/verification/reporte?estadoDeCredito=Pendiente,Reprobado')
     const data = await res.json()
     console.log(data)
@@ -211,7 +211,7 @@ export default function Home() {
   async function handlerFetchTotales() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/loans/verification/totalreporteverificacion'
+        ? 'http://localhost:3003/api/loans/verification/totalreporteverificacion'
         : 'https://api.fastcash-mx.com/api/loans/verification/totalreporteverificacion')
     const data = await res.json()
     setTotales(data.totalesGenerales)

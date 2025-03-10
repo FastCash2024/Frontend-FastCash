@@ -45,7 +45,7 @@ export default function TableAtencionAlCliente() {
       .join("&");
 
     const baseURL = window.location.href.includes("localhost")
-      ? "http://localhost:3000/api/authApk/userschat"
+      ? "http://localhost:3004/api/authApk/userschat"
       : "https://api.fastcash-mx.com/api/authApk/userschat";
 
     const finalURL = queryString ? `${baseURL}?${queryString}` : baseURL;

@@ -50,7 +50,7 @@ export default function FormAddTipoApp() {
         
         try {
             const urlBase = window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/users/applications/addtipoaplicacion`
+                ? `http://localhost:3006/api/users/applications/addtipoaplicacion`
                 : `https://api.fastcash-mx.com/api/users/applications/addtipoaplicacion`;
     
             const response = await fetch(`${urlBase}/${applicationTipo._id}`, {

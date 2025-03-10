@@ -58,7 +58,7 @@ export default function AddAccount() {
       const id = userDB.id ?? user.id;
       const response = await fetch(
         window?.location?.href?.includes("localhost")
-          ? `http://localhost:3000/api/authSystem/registerPersonal/${id}`
+          ? `http://localhost:3002/api/authSystem/registerPersonal/${id}`
           : `https://api.fastcash-mx.com/api/authSystem/registerPersonal/${id}`,
         {
           method: "PUT",

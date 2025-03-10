@@ -12,7 +12,7 @@ export default function ModalDeleteApplication() {
         setLoader('Eliminando...');
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/users/applications/delete/${application._id}`
+                ? `http://localhost:3006/api/users/applications/delete/${application._id}`
                 : `https://api.fastcash-mx.com/api/users/applications/delete/${application._id}`, {
                 method: 'DELETE',
             });

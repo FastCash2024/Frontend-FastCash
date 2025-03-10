@@ -119,7 +119,7 @@ export default function AddAccount() {
 
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
-                    ? 'http://localhost:3000/api/authSystem/register'
+                    ? 'http://localhost:3002/api/authSystem/register'
                     : 'https://api.fastcash-mx.com/api/authSystem/register', {
                 method: 'POST',
                 headers: {
@@ -270,7 +270,7 @@ export default function AddAccount() {
             // Realiza la solicitud GET al servidor para obtener el contador
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3000/api/loans/counter/${counterName}`
+                    ? `http://localhost:3003/api/loans/counter/${counterName}`
                     : `https://api.fastcash-mx.com//loans/api/counter/${counterName}`);
 
             // Si la respuesta es exitosa (status 200)

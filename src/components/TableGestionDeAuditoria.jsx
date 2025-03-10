@@ -33,8 +33,8 @@ export default function TableGestionDeAuditoria() {
 
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3000/api/multas/multas?cuentaPersonal=${user.email}`
-      : `https://api.fastcash-mx.com/api/multas/multas?cuentaPersonal=${user.email}`;
+      ? `http://localhost:3006/api/users/multas/multas?cuentaPersonal=${user.email}`
+      : `https://api.fastcash-mx.com/api/users/multas/multas?cuentaPersonal=${user.email}`;
 
     const paginationParams = `limit=${limit}&page=${page}`;
     const finalURL = queryString

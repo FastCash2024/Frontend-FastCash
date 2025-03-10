@@ -39,7 +39,7 @@ export default function FormAddMulta() {
     async function handlerFetch(limit, page) {
         const res = await fetch(
             window?.location?.href?.includes("localhost")
-                ? "http://localhost:3000/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza"
+                ? "http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza"
                 : "https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza"
         );
         const result = await res.json();
@@ -85,8 +85,8 @@ export default function FormAddMulta() {
             console.log("data a enviar: ", multaData);
 
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/multas/multas`
-                : `https://api.fastcash-mx.com/api/multas/multas`, {
+                ? `http://localhost:3006/api/users/multas/multas`
+                : `https://api.fastcash-mx.com/api/users/multas/multas`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

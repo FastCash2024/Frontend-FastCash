@@ -24,7 +24,7 @@ export default function ApplicationPage() {
     const fetchDataApplication = async (id) => {
         try {
             const response = await fetch(window?.location?.href.includes('localhost')
-                ? `http://localhost:3000/api/users/applications/aplicationbyid/${id}`
+                ? `http://localhost:3006/api/users/applications/aplicationbyid/${id}`
                 : `https://api.fastcash-mx.com/api/users/applications/aplicationbyid/${id}`)
             const res = await response.json();
             setDataAapplication(res);

@@ -90,7 +90,7 @@ export default function AddAccount() {
             console.log("imprimir: ", checkedArr);
 
             const finalURL = window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/authSystem/registerPersonal/${checkedArr._id}`
+                ? `http://localhost:3002/api/authSystem/registerPersonal/${checkedArr._id}`
                 : `https://api.fastcash-mx.com/api/authSystem/registerPersonal/${checkedArr._id}`;
 
             console.log("imprimir url: ", finalURL);
@@ -116,7 +116,7 @@ export default function AddAccount() {
             console.log("imprimir result: ", result);
 
             await fetch(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/email/send'
+                ? 'http://localhost:3005/api/notifications/email/send'
                 : `https://api.fastcash-mx.com/api/email/send`, {
                 method: 'POST',
                 headers: {

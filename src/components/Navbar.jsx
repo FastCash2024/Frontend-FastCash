@@ -50,7 +50,7 @@ export default function Navbar({ rol }) {
             const userId = userDB?.id || user?.id;
             console.log("userId", userId);
 
-            const urlLocal = "http://localhost:3000";
+            const urlLocal = "http://localhost:3006";
             const urlServer = "https://api.fastcash-mx.com";
 
             const url = window?.location?.href?.includes("localhost")

@@ -42,7 +42,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
 
     const fetchCustomersFlow = async () => {
-        const local = 'http://localhost:3000/api/users/applications/customers';
+        const local = 'http://localhost:3006/api/users/applications/customers';
         const server = 'https://api.fastcash-mx.com/api/users/applications/customers';
 
         try {
@@ -70,7 +70,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     };
 
     const fetchDataApplication = async () => {
-        const local = `http://localhost:3000/api/users/applications/aplicationbyid/${applicationId}`;
+        const local = `http://localhost:3006/api/users/applications/aplicationbyid/${applicationId}`;
         const server = `https://api.fastcash-mx.com/api/users/applications/aplicationbyid/${applicationId}`;
 
         try {
@@ -259,7 +259,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     async function handlerFetchCTotales() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/loans/verification/totalreportecobro'
+                ? 'http://localhost:3003/api/loans/verification/totalreportecobro'
                 : 'https://api.fastcash-mx.com/api/loans/verification/totalreportecobro')
         const data = await res.json()
         setTotalesCobro(data.data)
@@ -268,7 +268,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     async function handlerFetchVTotales() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/loans/verification/totalreporteverificacion'
+                ? 'http://localhost:3002/api/loans/verification/totalreporteverificacion'
                 : 'https://api.fastcash-mx.com/api/loans/verification/totalreporteverificacion')
         const data = await res.json()
         setTotalesVerification(data.totalesGenerales)
@@ -277,7 +277,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     async function handlerFetchDetails() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
+                ? 'http://localhost:3003/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
                 : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados?estadoDeCredito=Pagado')
         const data = await res.json()
         console.log("data detalle: ", data)

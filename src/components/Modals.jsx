@@ -82,6 +82,8 @@ import ModalDeleteComision from './modals/ModalDeleteComision'
 import FormDistributtonCasesSegment from './formModals/FormDistributtonCasesSegment'
 import FormRestablecimientoAuditors from './formModals/FormRestablecimientoAuditors'
 import FormDistributionAuditors from './formModals/FormDistributionMasiveAuditors'
+import FormPagado from './formModals/FormPagado'
+import FormPagadoExtension from './formModals/FormPagadoExtension'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -500,6 +502,9 @@ export default function Home() {
             {modal === 'Registrar Pago' && <FormAddPago />}
             {modal === 'Extension' && <FormAddExtension />}
 
+            {/* Modales para registar Pagos y extensiones */}
+            {modal === 'Registro Pago' && <FormPagado />}
+            {modal === 'Registro Pago Extension' && <FormPagadoExtension />}
 
 
             {modal === 'Registrar Cobor y Blance' && <FormEditCyB />}

@@ -51,7 +51,7 @@ export default function Home() {
 
     async function handlerFetch() {
         const res = await fetch(window?.location?.href.includes('localhost')
-            ? `http://localhost:3000/api/authSystem/users?emailPersonal=${userDB?.email || user?.email}`
+            ? `http://localhost:3002/api/authSystem/users?emailPersonal=${userDB?.email || user?.email}`
             : `https://api.fastcash-mx.com/api/authSystem/users?emailPersonal=${userDB?.email || user?.email}`)
         const resData = await res.json()
         setData(resData)

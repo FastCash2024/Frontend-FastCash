@@ -27,7 +27,7 @@ function Home({ children }) {
         const token = sessionStorage.getItem('token'); // Obtener el JWT desde sessionStorage
         try {
             const response = await fetch(window?.location?.href.includes('localhost')
-                ? 'http://localhost:3000/api/authSystem/validate'
+                ? 'http://localhost:3002/api/authSystem/validate'
                 : 'https://api.fastcash-mx.com/api/authSystem/validate', {
                 method: 'GET',
                 headers: {
@@ -45,7 +45,7 @@ function Home({ children }) {
                     setUserDB(data.user)
                     if (data.user?.emailPersonal) {
                         const res = await fetch(window?.location?.href.includes('localhost')
-                            ? `http://localhost:3000/api/authSystem/personalAccounts?email=${data.user?.emailPersonal}`
+                            ? `http://localhost:3002/api/authSystem/personalAccounts?email=${data.user?.emailPersonal}`
                             : `https://api.fastcash-mx.com/api/authSystem/personalAccounts?email=${data.user?.emailPersonal}`)
                         const resData = await res.json()
                         console.log('restData layour noAuth',resData)

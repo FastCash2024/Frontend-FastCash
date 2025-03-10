@@ -12,7 +12,7 @@ export default function ModalDeleteNewslater() {
         setLoader('Eliminando...');
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3000/api/notifications/newsletter/delete/${newslater._id}`
+                ? `http://localhost:3005/api/notifications/newsletter/delete/${newslater._id}`
                 : `https://api.fastcash-mx.com/api/notifications/newsletter/delete/${newslater._id}`, {
                 method: 'DELETE',
             });

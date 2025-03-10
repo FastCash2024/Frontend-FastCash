@@ -29,7 +29,7 @@ export default function Home() {
       let password = e.target[1].value;
       const response = await axios.post(
         window?.location?.href.includes("localhost")
-          ? "http://localhost:3000/api/authSystem/loginPersonal"
+          ? "http://localhost:3006/api/authSystem/loginPersonal"
           : "https://api.fastcash-mx.com/api/authSystem/loginPersonal",
         {
           email,

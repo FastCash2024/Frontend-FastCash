@@ -23,7 +23,7 @@ export default function Page() {
     try {
       
       const finalURL = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3000/api/notifications/chat/${id}?limit=${limit}&page=${page}`
+      ? `http://localhost:3005/api/notifications/chat/${id}?limit=${limit}&page=${page}`
       : `https://api.fastcash-mx.com/api/notifications/chat/${id}?limit=${limit}&page=${page}`;
       
       const res = await fetch(finalURL);
@@ -72,7 +72,7 @@ export default function Page() {
     };
 
     const apiUrl = window?.location?.href?.includes("localhost")
-      ? "http://localhost:3000/api/notifications/chat/savechat"
+      ? "http://localhost:3005/api/notifications/chat/savechat"
       : "https://api.fastcash-mx.com/api/notifications/chat/savechat";
 
     try {

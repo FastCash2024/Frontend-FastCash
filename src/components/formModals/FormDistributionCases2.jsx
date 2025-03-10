@@ -135,7 +135,7 @@ export default function AddAccount({query, estadoDeCredito,}) {
             if (i?.cuenta !== undefined, i?.nombreDeLaEmpresa !== undefined)
                 try {
                     const response = await fetch(window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3000/api/loans/verification/${i._id}`
+                        ? `http://localhost:3003/api/loans/verification/${i._id}`
                         : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`, {
                         method: "PUT",
                         headers: {

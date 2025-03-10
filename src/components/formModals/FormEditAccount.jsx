@@ -109,7 +109,7 @@ export default function AddAccount() {
             })
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3000/api/authSystem/register/${db._id}`
+                    ? `http://localhost:3002/api/authSystem/register/${db._id}`
                     : `https://api.fastcash-mx.com/api/authSystem/register/${db._id}`, {
                 method: 'PUT', // El método es PUT para actualizar
                 headers: {
@@ -133,8 +133,8 @@ export default function AddAccount() {
             if (response.ok) {
 
                 const res = await fetch(window?.location?.href?.includes('localhost')
-                    ? 'http://localhost:3000/api/email/send'
-                    : 'https://api.fastcash-mx.com/api/email/send', {
+                    ? 'http://localhost:3005/api/notifications/email/send'
+                    : 'https://api.fastcash-mx.com/api/notifications/email/send', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

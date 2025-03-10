@@ -53,7 +53,7 @@
     
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/users/attendance/update'
+                ? 'http://localhost:3006/api/users/attendance/update'
                 : 'https://api.fastcash-mx.com/api/users/attendance/update', {
                 method: 'PUT',
                 headers: {

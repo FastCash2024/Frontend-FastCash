@@ -53,7 +53,7 @@ export default function FormAddComision() {
       console.log("data comision: ", dataComision);
 
       const url = window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3000/api/comision'
+        ? 'http://localhost:3006/api/users/comision'
         : 'https://api.fastcash-mx.com/api/comision';
 
       const response = await fetch(url, {

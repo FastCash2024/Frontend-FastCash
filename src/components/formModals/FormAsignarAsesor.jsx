@@ -84,7 +84,7 @@ export default function AddAccount() {
             console.log("selectAccount",selectAccount)
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3000/api/authSystem/register/${checkedArr[0]._id}`
+                    ? `http://localhost:3002/api/authSystem/register/${checkedArr[0]._id}`
                     : `https://api.fastcash-mx.com/api/authSystem/register/${checkedArr[0]._id}`, {
                 method: 'PUT', // El método es PUT para actualizar
                 headers: {
@@ -103,8 +103,8 @@ export default function AddAccount() {
             if (response.ok) {
 
                 const res = await fetch(window?.location?.href?.includes('localhost')
-                    ? 'http://localhost:3000/api/email/send'
-                    : 'https://api.fastcash-mx.com/api/email/send', {
+                    ? 'http://localhost:3005/api/notifications/email/send'
+                    : 'https://api.fastcash-mx.com/api/notifications/email/send', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -166,7 +166,7 @@ export default function AddAccount() {
     const fetchUsers = async () => {
         try {
             const response = await axios.get(window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3000/api/authSystem/usersFilter'
+                ? 'http://localhost:3002/api/authSystem/usersFilter'
                 : 'https://api.fastcash-mx.com/api/authSystem/usersFilter', {
                 params: {
                     nombreCompleto: data.nombreCompleto,
