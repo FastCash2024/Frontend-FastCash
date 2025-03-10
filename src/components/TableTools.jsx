@@ -850,7 +850,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 </div>
             </div>}
 
-            {item === "Cobro y valance" && <div>
+            {item === "Cobro y balance" && <div>
 
                 <div className='grid grid-cols-3 gap-x-[50px] gap-y-4 w-[950px]'>
                     <div className='w-[300px] space-y-2'>
@@ -875,11 +875,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                     </div>
 
-                </div>
-                <div className='pt-3 flex space-x-3'>
-                    <Button type="button" theme="Success" click={() => setModal('Añadir aplicacion')}>
-                        Añadir Aplicación
-                    </Button>
                 </div>
             </div>}
 

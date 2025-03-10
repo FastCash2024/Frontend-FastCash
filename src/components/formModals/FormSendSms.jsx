@@ -1,5 +1,8 @@
 'use client'
+import { postTracking } from '@/app/service/TrackingApi/tracking.service';
 import { useAppContext } from '@/context/AppContext.js'
+import { getDescripcionDeExcepcion } from '@/utils/utility-tacking';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react'
 
 const templates = [
@@ -22,21 +25,12 @@ const templateIds = [
 
 export default function FormSendSms() {
 
-
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const searchParams = useSearchParams()
+    const seccion = searchParams.get('seccion')
+    const item = searchParams.get('item')
     const [smsText, setSmsText] = useState('')
     const [selectedTemplate, setSelectedTemplate] = useState('');
-
-    // console.log("user data: ", userDB);
-    // console.log("data sms: ", destinatario);
-
-    // {
-    //   "telefono": "75789134",
-    //   "message": "Juan Pardo, este es un mensaje de prueba.",
-    //   "codigoDeProducto": "12345",
-    //   "remitenteDeSms": "Sistema",
-    //   "producto": "Crédito Personal"
-    // }
 
     async function sendSmsHandler() {
         const smsData = {
@@ -46,7 +40,18 @@ export default function FormSendSms() {
             remitenteDeSms: userDB.cuenta,
             producto: destinatario.nombreDelProducto
         };
-        console.log("data sms: ", smsData);
+
+        // Registrar el seguimiento
+        const trackingData = {
+            descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+            subID: destinatario._id,
+            cuentaOperadora: userDB.cuenta,
+            cuentaPersonal: userDB.emailPersonal,
+            codigoDeSistema: destinatario.nombreDelProducto,
+            codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
+            contenidoDeOperacion: `Se ha enviado un sms al caso ${destinatario.numeroDePrestamo}.`,
+            fechaDeOperacion: new Date().toISOString(),
+        };
 
         try {
             const response = await fetch(window?.location?.href?.includes('localhost')
@@ -64,6 +69,8 @@ export default function FormSendSms() {
             }
 
             await response.json();
+
+            await postTracking(trackingData);
             setAlerta('Operación exitosa!')
             setModal('')
             setLoader('')

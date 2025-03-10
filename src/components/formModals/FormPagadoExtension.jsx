@@ -1,14 +1,13 @@
-"use client";
-
+import React from 'react'
+import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import Input from "@/components/Input";
 import CryptoJS from "crypto-js";
-import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { useSearchParams } from "next/navigation";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
-const SECRET_KEY = "mi-clave-segura";
 
-export default function FormAddPago() {
+export default function FormPagadoExtension() {
     const {
         user,
         userDB,
@@ -21,6 +20,7 @@ export default function FormAddPago() {
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
+    const [valorDiasDeProrroga, setDiasDeProrroga] = useState("7");
 
     async function generateAndCopyURL() {
         if (!itemSelected || !itemSelected._id) {
@@ -35,24 +35,23 @@ export default function FormAddPago() {
             cuentaPersonal: userDB.emailPersonal,
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
-            contenidoDeOperacion: `se ha generado una linea de pago para el caso ${itemSelected.numeroDePrestamo}.`,
+            contenidoDeOperacion: `se ha generado una linea de pago (por extensión) para el caso ${itemSelected.numeroDePrestamo}.`,
             fechaDeOperacion: new Date().toISOString()
         }
-
         setLoader('Guardando...');
         const encryptedId = CryptoJS.AES.encrypt(itemSelected._id, SECRET_KEY).toString();
         const encodedId = encodeURIComponent(encryptedId);
 
         const generatedURL = window?.location?.href.includes('localhost')
-            ? `http://localhost:3001/pay?caso=${encodedId}&seccion=payment&item=data`
-            : `https://collection.fastcash-mx.com/pay?caso=${encodedId}&seccion=payment&item=data`;
+            ? `http://localhost:3001/pay?caso=${encodedId}&seccion=extension&item=data`
+            : `https://collection.fastcash-mx.com/pay?caso=${encodedId}&seccion=extension&item=data`;
+
 
         navigator.clipboard.writeText(generatedURL)
             .then(() => setAlerta("¡Enlace copiado al portapapeles!"))
             .catch(() => setAlerta("Error al copiar el enlace"));
 
         await postTracking(tackingData);
-
         setAlerta('Operación exitosa!')
         setModal('')
         setLoader('')
@@ -76,29 +75,73 @@ export default function FormAddPago() {
                 >
                     X
                 </button>
-                <h4 className="text-gray-950">Pago</h4>
+                <h4 className="text-gray-950">Extension</h4>
 
                 {/* Numero de prestamo */}
                 <div className="flex justify-between items-center w-[100%]">
-                    <label className="mr-5 text-[11px] text-gray-950">Numero de préstamo:</label>
-                    <Input type="number" value={itemSelected.numeroDePrestamo} disabled />
+                    <label
+                        htmlFor="cantidadAsignacionIgualitaria"
+                        className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
+                    >
+                        Numero de prestamo:
+                    </label>
+                    <Input
+                        type="number"
+                        name="cantidadAsignacionIgualitaria"
+                        value={itemSelected.numeroDePrestamo}
+                        disabled
+                        uuid="123"
+                        required
+                    />
                 </div>
-
-                {/* Reembolso Completo */}
                 <div className="flex justify-between items-center w-[100%]">
-                    <label className="mr-5 text-[11px] text-gray-950">Reembolso Completo:</label>
+                    <label
+                        htmlFor="cantidadAsignacionIgualitaria"
+                        className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
+                    >
+                        Numero de prestamo:
+                    </label>
                     <span className="text-[10px] p-3 w-[200px] bg-gray-100 text-gray-950 rounded-[5px]">
                         {itemSelected?.valorSolicitado || "N/A"}
                     </span>
                 </div>
 
-                {/* Importe Adeudado */}
+                {/* Tarifa de prolongación */}
                 <div className="flex justify-between items-center w-[100%]">
-                    <label className="mr-5 text-[11px] text-gray-950">Importe Adeudado:</label>
-                    <Input type="number" value={itemSelected?.valorSolicitado} disabled />
+                    <label
+                        htmlFor="cantidadAsignacionIgualitaria"
+                        className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
+                    >
+                        Tarifa de prolongación:
+                    </label>
+                    <Input
+                        type="number"
+                        name="cantidadAsignacionIgualitaria"
+                        value={itemSelected.valorExtencion}
+                        disabled
+                        uuid="123"
+                        required
+                    />
                 </div>
 
-                {/* Botón para generar y copiar URL */}
+                {/* Días de prórroga */}
+                <div className="flex justify-between items-center w-[100%]">
+                    <label
+                        htmlFor="cantidadAsignacionIgualitaria"
+                        className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
+                    >
+                        Días de prórroga:
+                    </label>
+                    <Input
+                        type="number"
+                        name="cantidadAsignacionIgualitaria"
+                        value={valorDiasDeProrroga}
+                        disabled
+                        uuid="123"
+                        required
+                    />
+                </div>
+
                 <button
                     type="button"
                     onClick={generateAndCopyURL}
@@ -109,4 +152,4 @@ export default function FormAddPago() {
             </div>
         </div>
     );
-}
+}    

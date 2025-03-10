@@ -5,6 +5,7 @@ import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
 import { useSearchParams } from 'next/navigation'
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 
 export default function AddAccount() {
     const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
@@ -36,21 +37,6 @@ export default function AddAccount() {
     console.log("user: ", user);
     console.log("user: ", userDB);
 
-    const getDescripcionDeExcepcion = (cc) => {
-        switch (cc) {
-            case 'Casos de Cobranza':
-                return 'CC01';
-            case 'Incurrir en una estación de trabajo':
-                return 'CC02';
-            case 'Cobro y valance':
-                return 'CC08';
-            case 'Recolección y Validación de Datos':
-                return 'VC01';
-            default:
-                return 'DSC00';
-        }
-    };
-
     async function updateUser() {
         if (!data.acotacionVerificador) {
             setAlerta('Falta acotación!')
@@ -72,19 +58,7 @@ export default function AddAccount() {
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
             contenidoDeOperacion: `Credito ${itemSelected.numeroDePrestamo} ${value} con exito.`,
-            fechaDeOperacion: new Date().toISOString(),
-            // caso: itemSelected.numeroDePrestamo,
-            // seccion: seccion, 
-            // subID: itemSelected._id,
-            // codigoDeOperacion: itemSelected.idDeSubFactura,
-            // codigoDeProducto: itemSelected.nombreDelProducto,
-            // operacion: "Registro de estado de verificacion",
-            // modificacion: value,
-            // fecha: new Date().toISOString(),
-            // cuenta: userDB.cuenta,
-            // asesor: user.nombreCompleto,
-            // emailAsesor: userDB.emailPersonal,
-            // acotacion: data.acotacionVerificador,
+            fechaDeOperacion: new Date().toISOString()
         }
 
         console.log("update Data: ", upadateData);

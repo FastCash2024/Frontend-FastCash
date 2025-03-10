@@ -294,7 +294,7 @@ export default function Home() {
                 user.rol === "Manager de Verificación") &&
                 seccion === "coleccion" &&
                 item === "Reporte diario" && <TableReporteDiario />}
-              {item === "Cobro y valance" && (
+              {item === "Cobro y balance" && (
                 <Table
                   access={true}
                   headArray={encabezadoCobroYValance}

@@ -1,11 +1,12 @@
 "use client";
-
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import Input from "@/components/Input";
 import CryptoJS from "crypto-js";
+import { useSearchParams } from "next/navigation";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 const SECRET_KEY = "mi-clave-segura";
-
 
 export default function FormAddExtension() {
     const {
@@ -17,8 +18,9 @@ export default function FormAddExtension() {
         setLoader,
         theme
     } = useAppContext();
-    const [data, setData] = useState({});
-    const [value, setValue] = useState("Por favor elige");
+    const searchParams = useSearchParams()
+    const seccion = searchParams.get('seccion')
+    const item = searchParams.get('item')
     const [valorDiasDeProrroga, setDiasDeProrroga] = useState("7");
 
     async function generateAndCopyURL() {
@@ -26,7 +28,17 @@ export default function FormAddExtension() {
             setAlerta("Error: No se encontró el préstamo.");
             return;
         }
-        
+
+        const tackingData = {
+            descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+            subID: itemSelected._id,
+            cuentaOperadora: userDB.cuenta,
+            cuentaPersonal: userDB.emailPersonal,
+            codigoDeSistema: itemSelected.nombreDelProducto,
+            codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
+            contenidoDeOperacion: `se ha generado una linea de pago (por extensión) para el caso ${itemSelected.numeroDePrestamo}.`,
+            fechaDeOperacion: new Date().toISOString()
+        }
         setLoader('Guardando...');
         const encryptedId = CryptoJS.AES.encrypt(itemSelected._id, SECRET_KEY).toString();
         const encodedId = encodeURIComponent(encryptedId);
@@ -39,9 +51,11 @@ export default function FormAddExtension() {
         navigator.clipboard.writeText(generatedURL)
             .then(() => setAlerta("¡Enlace copiado al portapapeles!"))
             .catch(() => setAlerta("Error al copiar el enlace"));
-            setAlerta('Operación exitosa!')
-            setModal('')
-            setLoader('')
+
+        await postTracking(tackingData);
+        setAlerta('Operación exitosa!')
+        setModal('')
+        setLoader('')
     }
 
     console.log("itemSelected: ", itemSelected);

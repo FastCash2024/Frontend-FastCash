@@ -1,14 +1,12 @@
-"use client";
-
+import React from 'react';
 import { useAppContext } from "@/context/AppContext";
 import Input from "@/components/Input";
 import CryptoJS from "crypto-js";
-import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { useSearchParams } from "next/navigation";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
-const SECRET_KEY = "mi-clave-segura";
 
-export default function FormAddPago() {
+export default function FormPagado() {
     const {
         user,
         userDB,

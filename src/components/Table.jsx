@@ -18,6 +18,8 @@ import {
 import { Paginator } from "./Paginator";
 import { formatearFecha } from "@/utils";
 import { extraerCodigo, reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
 const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   const {
@@ -305,6 +307,21 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     );
   };
 
+  const registerTracking = async (itemSelected) => {
+    const data = {
+      descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+      subID: itemSelected._id,
+      cuentaOperadora: userDB.cuenta,
+      cuentaPersonal: userDB.emailPersonal,
+      codigoDeSistema: itemSelected.nombreDelProducto,
+      codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
+      contenidoDeOperacion: `El caso ${itemSelected.numeroDePrestamo} ha sido visitado.`,
+      fechaDeOperacion: new Date().toISOString(),
+    }
+
+    await postTracking(data);
+  }
+
   return (
     access && (
       <>
@@ -490,6 +507,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     className=""
                                   >
                                     <button
+                                      onClick={() => registerTracking(i)}
                                       type="button"
                                       className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     >
@@ -520,6 +538,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     className=""
                                   >
                                     <button
+                                      onClick={() => registerTracking(i)}
                                       type="button"
                                       className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     >
@@ -540,7 +559,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                             {/* Operar balance */}
                             {it.toLowerCase() === "operar" &&
                               seccion.toLowerCase() === "coleccion" &&
-                              (item?.toLowerCase().includes("cobro y valance")) && (
+                              (item?.toLowerCase().includes("cobro y balance")) && (
                                 <div className="flex justify-between space-x-3">
                                   <Link
                                     href={`/Home/Datos?caso=${i._id}&seccion=info&item=Cobranza`}
@@ -553,7 +572,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                       Visitar
                                     </button>
                                   </Link>
-                                  <button
+                                  {/* <button
                                     type="button"
                                     className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
                                     onClick={() =>
@@ -561,7 +580,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     }
                                   >
                                     Registrar
-                                  </button>
+                                  </button> */}
                                   <div className="relative">
                                     <CurrencyDollarIcon
                                       className="h-6 w-6 fill-[#1ab418] cursor-pointer"
@@ -574,13 +593,13 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                       >
                                         <button
                                           className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
-                                          onClick={() => handlerItemPE("Registrar Pago", i)}
+                                          onClick={() => handlerItemPE("Registro Pago", i)}
                                         >
                                           Hacer Pago
                                         </button>
                                         <button
                                           className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
-                                          onClick={() => handlerItemPE("Extension", i)}
+                                          onClick={() => handlerItemPE("Registro Pago Extension", i)}
                                         >
                                           Extensión
                                         </button>
@@ -606,7 +625,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 <Link
                                   href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
                                 >
-                                  <UserCircleIcon className="h-6 w-6 fill-[#ebbb40]" />
+                                  <UserCircleIcon onClick={() => registerTracking(i)} className="h-6 w-6 fill-[#ebbb40]" />
                                 </Link>
                                 <ClipboardDocumentCheckIcon
                                   className="h-6 w-6 fill-[#ebbb40] cursor-pointer"

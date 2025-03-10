@@ -145,7 +145,7 @@ const menuArray = {
         { subtitle: "Registro de SMS", icon: <OutlineDocumentTextIcon className="h-5 w-5" /> },
         { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Asistencia", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
-        { subtitle: "Cobro y valance", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
+        { subtitle: "Cobro y balance", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Gestion de aplicaciones", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
       ],
       length: 'h-[390px]'

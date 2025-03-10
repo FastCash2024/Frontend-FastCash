@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import SelectSimple from "@/components/SelectSimple";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
+import { useSearchParams } from "next/navigation";
 
 const optionsArray = [
     "Por favor elige",
@@ -24,13 +27,16 @@ export default function FormAddCobranza() {
         setModal,
         setLoader,
     } = useAppContext();
+    const searchParams = useSearchParams()
+    const seccion = searchParams.get('seccion')
+    const item = searchParams.get('item')
     const [data, setData] = useState({});
     const [value, setValue] = useState("Por favor elige");
 
     function onChangeHandler(e) {
         setData({ ...data, [e.target.name]: e.target.value });
     }
-    
+
     function handlerSelectClick(name, i, uuid) {
         setValue(i);
         setData((prevData) => ({
@@ -38,12 +44,8 @@ export default function FormAddCobranza() {
             estadoDeCredito: i,
         }));
     }
-    
-    
-    console.log("itemSelected: ", itemSelected);
 
     async function updateCobro() {
-
         if (!data.acotacionCobrador) {
             setAlerta("Falta acotación!");
             return;
@@ -63,27 +65,14 @@ export default function FormAddCobranza() {
         });
 
         console.log("nuevas acotaciones: ", nuevasAcotaciones);
-        
 
         const upadateData = {
             fechaRegistroComunicacion: new Date().toISOString(),
             estadoDeComunicacion: value,
-            acotacionesCobrador: nuevasAcotaciones,
-            trackingDeOperaciones: [
-                ...itemSelected.trackingDeOperaciones,
-                {
-                    operacion: "Registro Estado De Cobranza",
-                    modificacion: value,
-                    fecha: new Date().toISOString(),
-
-                    cuenta: userDB.cuenta,
-                    asesor: user.nombreCompleto,
-                    emailAsesor: user.email,
-                },
-            ],
+            acotacionesCobrador: nuevasAcotaciones
         };
         console.log("update data: ", upadateData);
-        
+
         try {
             setLoader("Guardando...");
             const response = await fetch(
@@ -99,26 +88,37 @@ export default function FormAddCobranza() {
                     body: JSON.stringify(upadateData), // Los datos que queremos actualizar
                 }
             );
-            if (!response.ok) {
-                setLoader("");
-                setAlerta("Error de datos!");
-                throw new Error("Registration failed");
-            }
+
+            // console.log("response cobrador: ", response.ok, response.status);
 
             // Verificar si la respuesta es exitosa
             if (response.ok) {
+                // console.log("response ok: ", response);
+
                 setAlerta("Operación exitosa!");
                 setModal("");
                 setLoader("");
-            } else {
-                setLoader("");
-                setAlerta("Error de datos!");
-                throw new Error("Registration failed");
+
+                // Registrar el seguimiento
+                const trackingData = {
+                    descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+                    subID: itemSelected._id,
+                    cuentaOperadora: userDB.cuenta,
+                    cuentaPersonal: userDB.emailPersonal,
+                    codigoDeSistema: itemSelected.nombreDelProducto,
+                    codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
+                    contenidoDeOperacion: `Se ha enviado un sms al caso ${itemSelected.numeroDePrestamo}.`,
+                    fechaDeOperacion: new Date().toISOString(),
+                };
+
+                await postTracking(trackingData);
+                // console.log("resp cobrador tacking: ", resp);
+
             }
         } catch (error) {
             setLoader("");
             setAlerta("Error de datos!");
-            throw new Error("Registration failed");
+            console.error("Error:", error); // Agregar un log para el error
         }
     }
 

@@ -164,7 +164,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                    {/* <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
@@ -180,7 +180,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             <div className='flex justify-between space-x-3'>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

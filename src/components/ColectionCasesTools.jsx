@@ -126,7 +126,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     };
 
     useEffect(() => {
-      if (item === "Casos de Cobranza" || item === "Cobro y valance") {
+      if (item === "Casos de Cobranza" || item === "Cobro y balance") {
         void fetchCustomersFlow();
       }
     }, [item])

@@ -2120,7 +2120,7 @@ export default function Home() {
                         />
                     }
                     {
-                        item === 'Cobro y valance' && <Table
+                        item === 'Cobro y balance' && <Table
                             access={true}
                             headArray={encabezadoCobroYValance}
                             dataArray={['']}

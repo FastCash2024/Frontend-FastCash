@@ -93,7 +93,7 @@ export const encabezadoCasosDeVerificacion = () => {
     const { user } = useAppContext();
     return !user?.rol?.includes('asesor')
         ? [
-            "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
+            /*"Seleccionar"*/, "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito", "Nombre del cliente", "Número de teléfono móvil",
             "Cliente nuevo", "Valor solicitado (VS)", "Valor enviado (VE)", "Registro de notas",
             "Nombre del producto", "Fecha de reembolso", "Fecha de creación de la tarea",
