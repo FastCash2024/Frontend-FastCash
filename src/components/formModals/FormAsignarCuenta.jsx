@@ -169,7 +169,7 @@ export default function AddAccount({ section, query, cuenta }) {
             >
                 X
             </button>
-            <h4 className='w-full text-center text-gray-950'>Asignar Cuenta Cobrador</h4>
+            <h4 className='w-full text-center text-gray-950'>{item === 'Recolección y Validación de Datos'  ? 'Asignar Cuenta Verificador' : 'Asignar Cuenta Cobrador'}</h4>
             <div className='flex justify-between w-full max-w-[300px]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar cuenta:

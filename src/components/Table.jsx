@@ -531,7 +531,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               seccion.toLowerCase() === "coleccion" &&
                               (item?.toLowerCase().includes("recolección") ||
                                 item?.toLowerCase().includes("casos") ||
-                                item?.toLowerCase().includes("lista")) && item !== "Casos de Cobranza" (
+                                item?.toLowerCase().includes("lista")) && item !== "Casos de Cobranza" && (
                                 <div className="flex justify-between space-x-3">
                                   <Link
                                     href={`/Home/Datos?caso=${i._id}&seccion=info&item=Cobranza`}
