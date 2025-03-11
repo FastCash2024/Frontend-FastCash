@@ -321,7 +321,6 @@ const menuArray = {
     }
   ],
   ['Manager de Auditoria']: [
-
     {
       icon: <PresentationChartLineIcon className="h-6 w-6" />,
       hash: 'auditoria',
@@ -335,14 +334,12 @@ const menuArray = {
         { subtitle: "Usuarios de Auditoria", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Asistencia", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
-
       ],
       length: 'h-[230px] overflow-auto'
     },
 
   ],
   ['Manager de Cobranza']: [
-
     {
       icon: <CircleStackIcon className="h-6 w-6" />,
       hash: 'coleccion',
@@ -351,15 +348,13 @@ const menuArray = {
         { subtitle: "Casos de Cobranza", icon: <NumberedListIcon className="h-5 w-5" /> },
         { subtitle: "Incurrir en una estación de trabajo", icon: <OutlineUsersIcon className="h-5 w-5" /> },
         { subtitle: "Flujo de Clientes", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
-        { subtitle: "Usuarios de Cobranza", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
+        { subtitle: "Gestión de cuentas de Colección", icon: <OutlineCheckCircleIcon className="h-5 w-5" /> },
+        { subtitle: "Registro de SMS", icon: <OutlineDocumentTextIcon className="h-5 w-5" /> },
         { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
-        { subtitle: "Asistencia", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
-
-
+        { subtitle: "Asistencia", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
       ],
-      length: 'h-[50px]'
-    }
-
+      length: 'h-[390px]'
+    },
   ],
   ['Manager de Verificación']: [
     {
@@ -369,24 +364,21 @@ const menuArray = {
       options: [
         { subtitle: "Recolección y Validación de Datos", icon: <OutlineDocumentTextIcon className="h-5 w-5" /> },
         { subtitle: "Lista final", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
-        { subtitle: "Usuarios de verificación", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Asistencia", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
       ],
       length: 'h-[100px]'
     },
-
   ],
   ['Asesor de Auditoria']: [
-
     {
       icon: <PresentationChartLineIcon className="h-6 w-6" />,
       hash: 'auditoria',
       title: "Auditoría y control de calidad",
       options: [
-        { subtitle: "Monitoreo de Transacciones", icon: <OutlinePresentationChartLineIcon className="h-5 w-5" /> },
         { subtitle: "Control de Cumplimiento", icon: <OutlineCheckCircleIcon className="h-5 w-5" /> },
         { subtitle: "Auditoria Periódica", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
+        { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Atención al Cliente", icon: <OutlineUsersIcon className="h-5 w-5" /> }
       ],
       length: 'h-[230px] overflow-auto'
@@ -399,6 +391,7 @@ const menuArray = {
       title: "Colección de casos",
       options: [
         { subtitle: "Casos de Cobranza", icon: <NumberedListIcon className="h-5 w-5" /> },
+        { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
       ],
       length: 'h-[50px]'
     }
