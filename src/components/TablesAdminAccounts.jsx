@@ -392,7 +392,7 @@ export default function Home() {
                 user.rol === "Manager de Auditoria" ||
                 user.rol === "Manager de Verificación" ||
                 user.rol === "Asesor de Verificación") &&
-                (seccion === "auditoria" || seccion === "verificacion") &&
+                (seccion === "Auditoria" || seccion === "auditoria") &&
                 item === "Reporte diario" && <TableReporteDiarioAuditoria />}
 
               {item === "Lista final" && (
