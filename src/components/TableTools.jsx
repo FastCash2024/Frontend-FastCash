@@ -963,7 +963,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                     </div>
                     {/*-------- BUTTONS */}
-                    <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                   {  !user.rol.includes("Asesor") && <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
 
                             <div className='flex justify-between space-x-3'>
@@ -981,7 +981,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <Button type="button" theme={'Danger'} click={() => setModal('Realizar Backoup')}>Realizar el Backoup</Button>
                             </div>
                         </div>
-                    </div>
+                    </div>}
                 </div>
             </div>}
             {item === 'Lista final' && <VerificationTools />}
