@@ -415,8 +415,8 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoGestionDeAccesos}
                   dataFilter={(i) => i.tipoDeGrupo === "Admin"}
-                  local={"http://localhost:3002/api/authSystem/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users?tipoGrupo=Admin"}
+                  server={"https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Admin"}
                 />
               )}
               {item === "Gestión de RH" && (
@@ -426,8 +426,8 @@ export default function Home() {
                   dataFilter={(i) =>
                     i?.tipoDeGrupo?.toLowerCase().includes("recursos humanos")
                   }
-                  local={"http://localhost:3002/api/authSystem/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users?tipoDeGrupo=Recursos%20Humanos"}
+                  server={"https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Recursos%20Humanos"}
                 />
               )}
               {item === "Gestión de managers" && (
@@ -437,8 +437,8 @@ export default function Home() {
                   dataFilter={(i) =>
                     i?.tipoDeGrupo?.toLowerCase().includes("manager")
                   }
-                  local={"http://localhost:3002/api/authSystem/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users?tipoDeGrupo=Manager"}
+                  server={"https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Manager"}
                 />
               )}
               {item === "Gestión de asesores" && (
