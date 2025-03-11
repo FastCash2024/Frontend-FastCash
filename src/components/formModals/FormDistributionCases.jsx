@@ -136,6 +136,8 @@ export default function AddAccount() {
         setType('Totaly')
         const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`)
         const data = await res.json()
+        console.log("data cobradores: ", data);
+        
         const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
         const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
         const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification?&limit=1000')
@@ -149,11 +151,11 @@ export default function AddAccount() {
 
         // Actualizar las asignaciones con idUsuario y registrar en el mapa
         const asignacionesConUsuarios = asignaciones.map(asignacion => {
-            const cuenta = usuarios[usuarioIndex].cuenta;
-            const nombreDeLaEmpresa = usuarios[usuarioIndex].origenDeLaCuenta;
+            const cuenta = usuarios[usuarioIndex]?.cuenta;
+            const nombreDeLaEmpresa = usuarios[usuarioIndex]?.origenDeLaCuenta;
             // Agregar esta tarea al usuario correspondiente
             const usuario = administracion.find(admin => admin.cuenta === cuenta);
-            usuario.idCasosAsignados.push(asignacion.numeroDePrestamo);
+            usuario?.idCasosAsignados.push(asignacion.numeroDePrestamo);
             // Avanzar al siguiente usuario (circular)
             usuarioIndex = (usuarioIndex + 1) % usuarios.length;
 

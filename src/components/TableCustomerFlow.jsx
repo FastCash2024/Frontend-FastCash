@@ -251,7 +251,7 @@ export default function TableCustomerFlow() {
                     {
                       dates.map((date, idx) => (
                         <td key={idx} className="px-3 py-2 text-center">
-                          {filtro_2[date]?.[item]?.totalCobrado}/{filtro_2[date]?.[item]?.total}
+                          {filtro_2[date]?.[item]?.totalMontoCobrado}/{filtro_2[date]?.[item]?.total}
                         </td>
                       ))}
                   </tr>

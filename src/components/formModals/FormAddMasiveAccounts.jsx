@@ -271,7 +271,7 @@ export default function AddAccount() {
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
                     ? `http://localhost:3003/api/loans/counter/${counterName}`
-                    : `https://api.fastcash-mx.com//loans/api/counter/${counterName}`);
+                    : `https://api.fastcash-mx.com/loans/api/counter/${counterName}`);
 
             // Si la respuesta es exitosa (status 200)
             if (response.ok) {
