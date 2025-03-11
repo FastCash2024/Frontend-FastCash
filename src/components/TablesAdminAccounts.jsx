@@ -288,12 +288,13 @@ export default function Home() {
               {(user?.rol === "Admin" ||
                 user.rol === "Super Admin" ||
                 user?.rol === "Recursos Humanos" ||
-                user.rol === "Manager de Cobranza" ||
+                user.rol === "Manager de Verificación" ||
                 user.rol === "Manager de Cobranza" ||
                 user.rol === "Manager de Auditoria" ||
-                user.rol === "Manager de Verificación") &&
+                user.rol === "Asesor de Cobranza") &&
                 seccion === "coleccion" &&
                 item === "Reporte diario" && <TableReporteDiario />}
+
               {item === "Cobro y balance" && (
                 <Table
                   access={true}

@@ -620,7 +620,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 </div>
                               )}
 
-                            {item == "Incurrir en una estación de trabajo" && it.toLowerCase() === "operar" && (
+                            {(item == "Incurrir en una estación de trabajo" || item == "Casos de Cobranza" ) && it.toLowerCase() === "operar" && (
                               <div className="flex justify-between space-x-3">
                                 <Link
                                   href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
