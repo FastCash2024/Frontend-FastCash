@@ -108,7 +108,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             void fetchCustomersFlow();
         }
     }, [item])
-
+console.log(user)
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
@@ -154,18 +154,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 name2="fechaDeReembolso"
                                 label="Fecha de Reembolso: "
                             />
-                            <div className='flex justify-start space-x-3'>
+                            {<div className='flex justify-start space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <Button type="button" theme={'Success'} >Consultar</Button>
                                 </Link>
                                 <Link href={`?seccion=${seccion}&item=${item}`}>
                                     <Button click={resetFilter} type="button" theme={'MiniPrimary'} >Restablecer</Button>
                                 </Link>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                     {
-                        item === "Recolección y Validación de Datos" &&
+                      !user.rol.includes("Asesor") &&  item === "Recolección y Validación de Datos" &&
                         <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                             <div className='w-[330px] space-y-2'>
                                 <div className='flex justify-between space-x-3'>
