@@ -10,10 +10,38 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
 
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
 
+    const realizarBackoup = async () => {        
+        try {
+            setLoader('Guardando...')
+                            
+            const response = await fetch(
+                window?.location?.href?.includes('localhost')
+                    ? `http://localhost:3007/api/loansBuckup/getTodos`
+                    : `https://api.fastcash-mx.com/api/loansBuckup/getTodos`, {
+                method: 'GET', 
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+                }
+            });
 
-
-
-
+            const data = await response.json();
+                                    
+            if (data.status) {
+                setAlerta('Backup realizado con éxito.')
+                setModal('')
+                setLoader('')
+            } else {
+                setAlerta('No se encontraron registros para guardar.')
+                setModal('')
+                setLoader('')
+            }
+        } catch (error) {
+            setLoader('')
+            setAlerta('No se encontraron registros para guardar.')
+            throw new Error(error);
+        }
+    };
 
     const restabecimientoTotal =  () => {
 
@@ -100,11 +128,15 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
         }
         return
     };
+
     function save(e) {
         e.preventDefault();
         seccion === "verificacion individual" && restablecimientoIndividual()
         seccion === "verificacion total" && restabecimientoTotal()
+        seccion === "verificacion total" && restabecimientoTotal()
+        seccion === "realizar backoup" && realizarBackoup()
     }
+
     return (
         <FormLayout>
             <div className="p-6 text-center">
@@ -112,13 +144,15 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
                 <div className='text-[12px]'>
-
                     {
-                    seccion === "verificacion individual" && `Esta por restablecer la asignacion de cuenta personal a la cuenta operativa: ${checkedArr[0].cuenta}`
-                }
-                {
-                    seccion === "verificacion total" && 'Esta por restablecer todas las asignaciones de cuentas personales a cuentas operativas'
-                }  
+                        seccion === "verificacion individual" && `Esta por restablecer la asignacion de cuenta personal a la cuenta operativa: ${checkedArr[0].cuenta}`
+                    }
+                    {
+                        seccion === "verificacion total" && 'Esta por restablecer todas las asignaciones de cuentas personales a cuentas operativas'
+                    }  
+                    {
+                        seccion === "realizar backoup" && 'Esta por realizar un backoup todas las asignaciones de cuentas personales a cuentas operativas'
+                    }
                 </div>
               <br />
                 <Button type="button" theme='Danger' className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg  inline-flex items-center px-5 py-4 text-center"

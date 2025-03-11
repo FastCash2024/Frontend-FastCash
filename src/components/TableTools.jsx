@@ -978,6 +978,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
+                                <Button type="button" theme={'Danger'} click={() => setModal('Realizar Backoup')}>Realizar el Backoup</Button>
                             </div>
                         </div>
                     </div>

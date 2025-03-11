@@ -33,7 +33,8 @@ export default function Home() {
       {(alerta === "Operación exitosa!" ||
         alerta === "Cuenta creada!" ||
         alerta === "Cambios realizados correctamente!"||
-        alerta ==="Asignado correctamente!"    
+        alerta ==="Asignado correctamente!"||
+        alerta ==="Backup realizado con éxito."    
     ) && (
         <Alert
           type={"success"}
@@ -44,7 +45,7 @@ export default function Home() {
           {alerta}
         </Alert>
       )}
-      {(alerta === "Error de datos!" || alerta === "Usuario existente!"|| alerta === "Error al asignar!") && (
+      {(alerta === "No se encontraron registros para guardar." ||alerta === "Error de datos!" || alerta === "Usuario existente!"|| alerta === "Error al asignar!") && (
         <Alert
           type={"error"}
           textColor={"text-gray-950"}
