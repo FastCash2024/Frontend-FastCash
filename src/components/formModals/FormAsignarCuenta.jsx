@@ -31,12 +31,10 @@ export default function AddAccount({ section, query, cuenta }) {
 
 
 
+    // console.log("select account: ", selectAccount);
+    // console.log("select case: ", checkedArr);
 
-
-
-    console.log("select account: ", selectAccount);
-    console.log("select case: ", checkedArr);
-    
+    console.log("query: ", query);
 
     const codificacionDeRoles = {
         'Recursos Humanos': ['Recursos Humanos'],
@@ -146,10 +144,12 @@ export default function AddAccount({ section, query, cuenta }) {
     const fetchUsers = async () => {
         try {
             const response = await axios.get(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}`
-                : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}`,
+                ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
+                : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`,
             );
-            setFilterArr(response.data); // Actualiza la lista de usuarios
+            setFilterArr(response.data);
+            console.log("response: ", response.data);
+            
         } catch (error) {
             console.error("Error fetching users:", error);
         }
