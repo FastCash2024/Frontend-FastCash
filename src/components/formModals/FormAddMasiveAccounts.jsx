@@ -142,8 +142,8 @@ export default function AddAccount() {
             // Hacer la solicitud GET al servidor para obtener el contador
             const res = await fetch(
                 window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3000/api/counter/${counterName}`
-                    : `https://api.fastcash-mx.com/api/counter/${counterName}`);
+                    ? `http://localhost:3003/api/loans/counter/${counterName}`
+                    : `https://api.fastcash-mx.com/api/loans/counter/${counterName}`);
 
             // Verificar si la respuesta fue exitosa (status 200)
             if (res.ok) {
@@ -153,8 +153,8 @@ export default function AddAccount() {
                 // Hacer la solicitud PUT al servidor para actualizar el contador
                 const response = await fetch(
                     window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3000/api/counter/${counterName}/increment`
-                        : `https://api.fastcash-mx.com/api/counter/${counterName}/increment`, {
+                        ? `http://localhost:3003/api/loans/counter/${counterName}/increment`
+                        : `https://api.fastcash-mx.com/api/loans/counter/${counterName}/increment`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -263,45 +263,64 @@ export default function AddAccount() {
 
 
     async function generateCuentasMasivas() {
-
-
         try {
-            const counterName = value2 === 'Asesor de Cobranza' ? nameDocument[value3.split(' ')[0]] : nameDocument[value3]
-            // Realiza la solicitud GET al servidor para obtener el contador
+            const counterName = value2 === 'Asesor de Cobranza' 
+                ? nameDocument[value3.split(' ')[0]] 
+                : nameDocument[value3];
+    
+            // Obtener el contador desde la API
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
                     ? `http://localhost:3003/api/loans/counter/${counterName}`
-                    : `https://api.fastcash-mx.com/loans/api/counter/${counterName}`);
-
-            // Si la respuesta es exitosa (status 200)
-            if (response.ok) {
-                const db = await response.json();
-                // console.log(`El contador ${counterName} tiene el valor:`, db.count)
-                const count = db.count;
-                const code = value2 === 'Asesor de Cobranza' ? codeAccount[value3.split(' ')[0]] : codeAccount[value3]
-                const generator = infiniteSequence(count);
-
-
-                let arr = []
-                if (data?.cantidad && value1 !== 'Por favor elige' && value2 !== 'Por favor elige' && value3 !== 'Por favor elige') {
-                    for (let i = 0; i < data.cantidad; i++) {
-                        arr.push(`${code}${generator.next().value}`)
-                        // // console.log(`${code}${generator.next().value}`);
-                    }
-                }
-                setNewAccounts(arr)
-            } else {
-                // Si la respuesta no es exitosa
+                    : `https://api.fastcash-mx.com/api/loans/counter/${counterName}`
+            );
+    
+            if (!response.ok) {
                 console.error('Error al obtener el contador:', response.statusText);
+                return;
             }
+    
+            const db = await response.json();
+            const count = db.count;
+            const code = value2 === 'Asesor de Cobranza' 
+                ? codeAccount[value3.split(' ')[0]] 
+                : codeAccount[value3];
+            const generator = infiniteSequence(count);
+    
+            // Obtener lista de usuarios existentes para evitar duplicados
+            const usersResponse = await fetch(
+                window?.location?.href?.includes('localhost')
+                    ? `http://localhost:3002/api/authSystem/users?limit=1000`
+                    : `https://api.fastcash-mx.com/api/authSystem/users?limit=1000`
+            );
+    
+            if (!usersResponse.ok) {
+                console.error('Error al obtener la lista de usuarios:', usersResponse.statusText);
+                return;
+            }
+    
+            const usersData = await usersResponse.json();
+            const existingAccounts = new Set(usersData.data.map(user => user.cuenta)); // Guardar en un Set para búsqueda rápida
+    
+            let arr = [];
+            if (data?.cantidad && value1 !== 'Por favor elige' && value2 !== 'Por favor elige' && value3 !== 'Por favor elige') {
+                while (arr.length < data.cantidad) {
+                    let newAccount;
+                    do {
+                        newAccount = `${code}${generator.next().value}`;
+                    } while (existingAccounts.has(newAccount)); // Generar hasta que no exista
+    
+                    arr.push(newAccount);
+                    existingAccounts.add(newAccount); // Añadir a la lista para evitar duplicados en la misma ejecución
+                }
+            }
+    
+            setNewAccounts(arr);
         } catch (error) {
             console.error('Error en la solicitud:', error);
         }
-
-
-
-
     }
+    
 
 
 

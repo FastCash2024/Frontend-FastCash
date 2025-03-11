@@ -122,7 +122,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         <div className='w-[330px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme="Success" click={() => setModal('Añadir cuenta')} >Crear Usuarios</Button>
-                                <Button type="button" theme="Success" click={() => setModal('Añadir cuenta masivas')} >Crear Usuarios Masivos</Button>
+                                {
+                                    (item === 'Gestión de asesores') &&
+                                    <Button type="button" theme="Success" click={() => setModal('Añadir cuenta masivas')} >Crear Usuarios Masivos</Button>
+                                }
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
