@@ -318,7 +318,7 @@ export default function Home() {
               <td className='px-4 py-2'></td>
               <td className='px-4 py-2'></td>
               <td className='px-4 py-2'>
-                {data?.data?.reduce((acc, i) => acc + cases?.filter(it => it.cuentaCobrador === i.cuenta).length, 0)}
+                {data?.data?.reduce((acc, i) => acc + cases?.filter(it => it.cuentaVerificador === i.cuenta).length, 0)}
               </td>
               <td className="px-4 py-2 bg-yellow-400">{totales?.aprobados10am}</td>
               <td className="px-4 py-2">{totales?.reprobados10am}</td>

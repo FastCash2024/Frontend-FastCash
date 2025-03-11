@@ -31,16 +31,22 @@ export default function TableControl() {
   }
 
   async function handlerFetch(limit, page) {
-    const res = await fetch(
-      window?.location?.href?.includes("localhost")
-        ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-        : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-    );
+
+    const url = window?.location?.href?.includes("localhost")
+      ? `http://localhost:3002/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+      : `https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
+
+      console.log("asesores url: ", url);
+      
+    const res = await fetch(url);
     const result = await res.json();
     setData(result.data); // Solo almacena el array de datos
     setCurrentPage(result.currentPage);
     setTotalPages(result.totalPages);
     setTotalDocuments(result.totalDocuments);
+
+    console.log('data asesores:', result.data);
+
   }
 
   async function handlerFetchVerification(date) {
