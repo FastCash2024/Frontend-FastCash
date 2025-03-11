@@ -105,7 +105,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <label htmlFor="tipoDeGrupo" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Tipo de Usuario:
                                 </label>
-                                <SelectSimple arr={['Asesor de Verificación', 'Asesor de Cobranza']} name='tipoDeGrupo' click={handlerSelectClick} defaultValue={filter['tipoDeGrupo']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple arr={['Asesor de Verificación', 'Asesor de Cobranza', 'Asesor de Auditoria']} name='tipoDeGrupo' click={handlerSelectClick} defaultValue={filter['tipoDeGrupo']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <div className='flex justify-end space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
