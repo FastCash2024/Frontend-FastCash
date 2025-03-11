@@ -27,7 +27,7 @@ const PaymentInfoCard = () => {
 
     useEffect(() => {
         fetchAuditById(caso)
-        .then(setAudit)
+            .then(setAudit)
     }, []);
     const paymentInfo = {
         clientId: 'f5d743b5ed45489798e0c445b030d5a4',
@@ -97,7 +97,7 @@ const PaymentInfoCard = () => {
         ocrComparison: "Igual"
     };
 
-    
+
 
     const loanData2 = [
         {
@@ -296,7 +296,7 @@ const PaymentInfoCard = () => {
     //     fetchData()
     // }, [seccion])
 
-    
+
     return (
         <div className="mx-auto bg-gray-100 ">
             {/* {
@@ -488,6 +488,35 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                         <p><strong>Dirección:</strong> {companyInfo.address}</p> */}
                     </div>
                 </div>
+
+
+                <div className=" grid grid-cols-3">
+
+                    <div className="p-6">
+                        <ImageCard
+                            imageUrl={clientData?.photoURLs?.[0]}
+                            altText="Descripción de la imagen"
+                        />
+                    </div>
+                    <div className="p-6">
+                        <ImageCard
+                            imageUrl={clientData?.photoURLs?.[1]}
+                            altText="Descripción de la imagen"
+                        />
+                    </div>
+                    <div className="p-6">
+                        <ImageCard
+                            imageUrl={clientData?.photoURLs?.[2]}
+                            altText="Descripción de la imagen"
+                        />
+                    </div>
+
+                </div>
+
+
+
+
+
 
             </div>}
 
