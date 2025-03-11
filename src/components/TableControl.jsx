@@ -44,9 +44,7 @@ export default function TableControl() {
     setCurrentPage(result.currentPage);
     setTotalPages(result.totalPages);
     setTotalDocuments(result.totalDocuments);
-
-    console.log('data asesores:', result.data);
-
+    // console.log('data asesores:', result.data);
   }
 
   async function handlerFetchVerification(date) {
