@@ -462,7 +462,7 @@ export default function Home() {
                   local={
                     "http://localhost:3006/api/users/comision"
                   }
-                  server={"https://api.fastcash-mx.com/api/comision"}
+                  server={"https://api.fastcash-mx.com/api/users/comision"}
                 />
               )}
               {item === "Gestión de cuentas personales" && (

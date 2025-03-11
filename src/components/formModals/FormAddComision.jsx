@@ -54,7 +54,7 @@ export default function FormAddComision() {
 
       const url = window?.location?.href?.includes('localhost')
         ? 'http://localhost:3006/api/users/comision'
-        : 'https://api.fastcash-mx.com/api/comision';
+        : 'https://api.fastcash-mx.com/api/users/comision';
 
       const response = await fetch(url, {
         method: 'POST',
