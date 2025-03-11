@@ -89,6 +89,7 @@ export default function AddAccount({ section, query, cuenta }) {
         
           if (selectAccount.tipoDeGrupo === "Asesor de Verificación") {
             body.cuentaVerificador = selectAccount.cuenta;
+            body.fechaDeTramitacionDelCaso=new Date().toISOString();
           } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
             body.cuentaCobrador = selectAccount.cuenta;
             body.fechaDeTramitacionDeCobro = new Date().toISOString();
