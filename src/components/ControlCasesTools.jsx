@@ -11,7 +11,7 @@ import SearchInput from "@/components/SearchInput";
 import MultipleInput from '@/components/MultipleInput';
 
 const ControlCasesTools = () => {
-    const { checkedArr, setModal, loader, setLoader } = useAppContext()
+    const { checkedArr, setModal, loader, setLoader, user } = useAppContext()
     const searchParams = useSearchParams()
     const { theme, toggleTheme } = useTheme();
     const seccion = searchParams.get('seccion')
@@ -133,7 +133,7 @@ const ControlCasesTools = () => {
                             </div>
                         </div>
                     </div>
-                    {item === "Control de Cumplimiento" && (
+                    { !user.rol.includes("Asesor") && item === "Control de Cumplimiento" && (
 
                         <div className='grid grid-cols-3 gap-x-0 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
