@@ -24,7 +24,8 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                         },
                         body: JSON.stringify({
                             cuentaVerificador: "no asignado",
-                            nombreDeLaEmpresa:  "no asignado"
+                            nombreDeLaEmpresa:  "no asignado",
+                            fechaDeTramitacionDelCaso: null,
                         }), // Datos a enviar en el cuerpo de la petición
                     });
 
