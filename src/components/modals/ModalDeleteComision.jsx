@@ -13,7 +13,7 @@ export default function ModalDeleteComision() {
     try {
       const response = await fetch(window?.location?.href?.includes('localhost')
         ? `http://localhost:3006/api/users/comision/delete/${appComision._id}`
-        : `https://api.fastcash-mx.com/api/comision/delete/${appComision._id}`, {
+        : `https://api.fastcash-mx.com/api/users/comision/delete/${appComision._id}`, {
         method: 'DELETE',
       });
 
