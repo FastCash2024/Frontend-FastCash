@@ -194,7 +194,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    {item === "Casos de Cobranza" && (
+                    { !user.rol.includes("Asesor") && item === "Casos de Cobranza" && (
 
                         <div className='grid grid-cols-3 gap-x-0 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>
