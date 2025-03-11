@@ -213,13 +213,6 @@ const menuArray = {
       hash: 'coleccion',
       title: "Colección de casos",
       options: [
-        { subtitle: "Casos de Cobranza", icon: <NumberedListIcon className="h-5 w-5" /> },
-        { subtitle: "Distribución de casos", icon: <AdjustmentsHorizontalIcon className="h-5 w-5" /> },
-        { subtitle: "Incurrir en una estación de trabajo", icon: <OutlineUsersIcon className="h-5 w-5" /> },
-        { subtitle: "Flujo de Clientes", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
-        // { subtitle: "Gestión de cuentas de Colección", icon: <OutlineCheckCircleIcon className="h-5 w-5" /> },
-        { subtitle: "Registro de SMS", icon: <OutlineDocumentTextIcon className="h-5 w-5" /> },
-        { subtitle: "Reporte diario", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
         { subtitle: "Asistencia", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
       ],
       length: 'h-[380px]'
@@ -230,10 +223,7 @@ const menuArray = {
       title: "Auditoría y control de calidad",
       options: [
         { subtitle: "Registro Histórico", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
-        { subtitle: "Monitoreo de Transacciones", icon: <OutlinePresentationChartLineIcon className="h-5 w-5" /> },
-        { subtitle: "Control de Cumplimiento", icon: <OutlineCheckCircleIcon className="h-5 w-5" /> },
         { subtitle: "Auditoria Periódica", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> },
-
         { subtitle: "Atención al Cliente", icon: <OutlineUsersIcon className="h-5 w-5" /> }
       ],
       length: 'h-[230px] overflow-auto'
@@ -243,7 +233,6 @@ const menuArray = {
       hash: '#Verificacion',
       title: "Verificación de Créditos",
       options: [
-        { subtitle: "Recolección y Validación de Datos", icon: <OutlineDocumentTextIcon className="h-5 w-5" /> },
         { subtitle: "Lista final", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
       ],
       length: 'h-[100px]'
@@ -256,9 +245,28 @@ const menuArray = {
         { subtitle: "Gestión de administradores", icon: <OutlineUsersIcon className="h-5 w-5" /> },
         { subtitle: "Gestión de managers", icon: <OutlineUsersIcon className="h-5 w-5" /> },
         { subtitle: "Gestión de asesores", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
+        { subtitle: "Gestión de cuentas personales", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
       ],
       length: 'h-[0px]'
-    }
+    },
+    {
+      icon: <CircleStackIcon className="h-6 w-6" />,
+      hash: 'comunicacion',
+      title: "Newslater",
+      options: [
+        { subtitle: "Newslater", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
+      ],
+      length: 'h-[420px]'
+    },
+    {
+      icon: <CircleStackIcon className="h-6 w-6" />,
+      hash: 'Contabilidad',
+      title: "Contabilidad",
+      options: [
+        { subtitle: "Comisión", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
+      ],
+      length: 'h-[420px]'
+    },
   ],
   ['Admin']: [
     {
