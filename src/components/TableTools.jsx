@@ -312,7 +312,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         handlerFetchVTotales();
         handlerFetchDetails();
         calcularTotalesPorSegmento();
-    }, [loader]);
+    }, [loader, item]);
 
 
     return (
@@ -447,7 +447,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div> */}
                         <div className='text-center px-2 flex flex-col align-center'>
-                            <Velocimetro></Velocimetro>
+                            <Velocimetro value={totalesCobro.pagosTotal}></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de caso</h4>
                             <div className='grid grid-cols-3 w-[300px]'>
                                 <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.tasaRecuperacionTotal ?? 0} <br />Cobro de hoy.</p>
