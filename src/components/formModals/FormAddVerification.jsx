@@ -6,6 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
 import { useSearchParams } from 'next/navigation'
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
+import { getLocalISOString } from "@/utils/getDates";
 
 export default function AddAccount() {
     const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
@@ -58,7 +59,7 @@ export default function AddAccount() {
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
             contenidoDeOperacion: `Credito ${itemSelected.numeroDePrestamo} ${value} con exito.`,
-            fechaDeOperacion: new Date().toISOString()
+            fechaDeOperacion: getLocalISOString()
         }
 
         console.log("update Data: ", upadateData);

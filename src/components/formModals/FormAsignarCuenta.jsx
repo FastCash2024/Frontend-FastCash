@@ -11,6 +11,7 @@ import { generarContrasena } from '@/utils'
 import { toast } from 'react-hot-toast';
 import Input from '@/components/Input'
 import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import { getLocalISOString } from "@/utils/getDates";
 
 
 export default function AddAccount({ section, query, cuenta }) {
@@ -87,10 +88,10 @@ export default function AddAccount({ section, query, cuenta }) {
         
           if (selectAccount.tipoDeGrupo === "Asesor de Verificación") {
             body.cuentaVerificador = selectAccount.cuenta;
-            body.fechaDeTramitacionDelCaso=new Date().toISOString();
+            body.fechaDeTramitacionDelCaso=getLocalISOString();
           } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
             body.cuentaCobrador = selectAccount.cuenta;
-            body.fechaDeTramitacionDeCobro = new Date().toISOString();
+            body.fechaDeTramitacionDeCobro = getLocalISOString();
           }
           body.historialDeAsesores = [
             ...(checkedArr.historialDeAsesores || []), // Mantener los anteriores si existen
@@ -98,7 +99,7 @@ export default function AddAccount({ section, query, cuenta }) {
               nombreAsesor: selectAccount.nombrePersonal,
               cuentaOperativa: selectAccount.cuenta,
               cuentaPersonal: selectAccount.emailPersonal,
-              fecha: new Date().toISOString(),
+              fecha: getLocalISOString(),
             }
           ];
         console.log("data enviada: ", body)
