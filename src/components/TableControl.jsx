@@ -14,6 +14,7 @@ export default function TableControl() {
   } = useAppContext();
 
   const [cases, setCases] = useState([]);
+  const [cuentas, setCuentas] = useState([]);
   const searchParams = useSearchParams();
   const date = getCurrentDate();
   const [data, setData] = useState([]); // Aquí solo debe almacenar el array de datos, no más propiedades
@@ -47,7 +48,17 @@ export default function TableControl() {
     // console.log('data asesores:', result.data);
   }
 
-  async function handlerFetchVerification(date) {
+  async function handlerFetchVerification() {
+    const res = await fetch(
+      window?.location?.href?.includes("localhost")
+        ? `http://localhost:3002/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=1000`
+        : `https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=1000`
+    );
+    const result = await res.json();
+    setCuentas(result.data);
+  }
+
+  async function handlerFetchVerification() {
     const res = await fetch(
       window?.location?.href?.includes("localhost")
         ? `http://localhost:3003/api/loans/verification?limit=1000`
@@ -59,7 +70,7 @@ export default function TableControl() {
 
   useEffect(() => {
     handlerFetch(itemsPerPage, currentPage);
-    handlerFetchVerification(date);
+    handlerFetchVerification();
   }, [loader, itemsPerPage, currentPage]);
 
   useEffect(() => {
@@ -81,7 +92,6 @@ export default function TableControl() {
 
   console.log('data arr:', checkedArr);
 
-
   return (
     <>
       <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
@@ -94,7 +104,7 @@ export default function TableControl() {
               <th className="px-4 py-2 text-gray-700">SEGMENTO</th>
               <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA</th>
               <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
-              <th className="px-4 py-2 text-gray-700">NUMERO DE CASO</th>
+              <th className="px-4 py-2 text-gray-700">NUMERO DE CASOS</th>
               <th className="px-4 py-2 text-gray-700">NOMBRE DE LA EMPRESA</th>
               <th className="px-4 py-2 text-gray-700">CUENTA AUDITORA</th>
               <th className="px-4 py-2 text-gray-700">OPERACION</th>
@@ -117,10 +127,10 @@ export default function TableControl() {
                   {cases?.filter((it) => it.cuentaVerificador === item.cuenta || it.cuentaCobrador === item.cuenta).length || '0'}
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
-                  {cases?.find((it) => it.cuentaVerificador === item.cuenta || it.cuentaCobrador === item.cuenta)?.nombreDelProducto || 'Sin nombre de producto'}
+                  {item?.origenDeLaCuenta}
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
-                  {cases?.find((it) => it.cuentaVerificador === item.cuenta || it.cuentaCobrador === item.cuenta)?.cuentaAuditor || 'Sin auditor'}
+                  {item?.cuentaAuditor}
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
                   <button

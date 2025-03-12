@@ -131,16 +131,16 @@ export default function Home() {
   // console.log("item: ", item);
   // console.log("date: ", baseDate);
   // console.log("filtro_1: ", filtro_1);
-  
-
-  
 
 
-      
 
-    
 
-    
+
+
+
+
+
+
 
   let menu = user?.rol
     ? menuArray[user.rol].filter((i) => i.hash === seccion)
@@ -171,14 +171,14 @@ export default function Home() {
   function formatDateToISO(dateStr) {
     const [day, month, year] = dateStr.split('/');
     return `${year}-${month}-${day}`;
- }
+  }
 
   console.log(formatDateToISO(getDay(-2).val));
-  
 
- 
 
-  
+
+
+
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -192,7 +192,11 @@ export default function Home() {
     setCurrentPage(1);
   };
 
-  const handleReload = () => {};
+  const handleReload = () => { };
+
+  console.log("userDB: ", userDB);
+  console.log("user: ", user);
+
 
   return (
     <div className="overflow-x-auto">
@@ -285,13 +289,14 @@ export default function Home() {
                   server={"https://api.fastcash-mx.com/api/notifications/sms/obtenersms"}
                 />
               )}
+
               {(user?.rol === "Admin" ||
                 user.rol === "Super Admin" ||
                 user?.rol === "Recursos Humanos" ||
                 user.rol === "Manager de Verificación" ||
                 user.rol === "Manager de Cobranza" ||
                 user.rol === "Manager de Auditoria" ||
-                userDB.tipoDeGrupo === "Asesor de Cobranza") &&
+                user.rol === "Asesor de Cobranza") &&
                 seccion === "coleccion" &&
                 item === "Reporte diario" && <TableReporteDiario />}
 

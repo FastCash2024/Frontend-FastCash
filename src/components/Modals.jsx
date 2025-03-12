@@ -84,6 +84,7 @@ import FormRestablecimientoAuditors from './formModals/FormRestablecimientoAudit
 import FormDistributionAuditors from './formModals/FormDistributionMasiveAuditors'
 import FormPagado from './formModals/FormPagado'
 import FormPagadoExtension from './formModals/FormPagadoExtension'
+import FormAsignarCuentaAuditor from './formModals/FormAsignarCuentaAuditor'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -524,6 +525,7 @@ export default function Home() {
 
             {modal === 'Asignar Asesor' && <FormAsignarAsesor />}
             {modal === 'Asignar Cuenta' && <FormAsignarCuenta query="Asesor de Verificación" cuenta="cuentaVerificador"/>}
+            {modal === 'Asignar Cuenta Auditoria' && <FormAsignarCuentaAuditor />}
 
             {  modal === 'Distribuir Casos' && <FormDistributionCases query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
             {  modal === 'Distribuir Casos Segmento' && <FormDistributtonCasesSegment query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}

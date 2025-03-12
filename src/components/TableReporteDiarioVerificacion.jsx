@@ -55,6 +55,7 @@ import {
 } from '@/constants/TableHeaders.jsx'
 import { obtenerSegmento } from '@/utils'
 import { Paginator } from './Paginator';
+import { today } from '@/utils/getDates'
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -178,10 +179,10 @@ export default function Home() {
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
       .join("&");
 
-    // console.log("querys: ", urlParams);
+    console.log("today: ", today);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`
-      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000`;
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`
+      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);

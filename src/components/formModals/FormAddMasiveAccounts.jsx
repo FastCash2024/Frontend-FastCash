@@ -203,6 +203,9 @@ export default function AddAccount() {
         ['Gestión de administradores']: [
             'Admin',
         ],
+        ['Gestión de cuentas de Colección']: [
+            'Asesor de Cobranza',
+        ],
         ['Gestión de RH']: [
             'Recursos Humanos',
         ],
@@ -320,9 +323,6 @@ export default function AddAccount() {
             console.error('Error en la solicitud:', error);
         }
     }
-    
-
-
 
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>
         <div className='relative flex flex-col items-start justify-center bg-gray-200 w-[450px] h-[450px] p-5 px-12 space-y-3 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
@@ -374,7 +374,7 @@ export default function AddAccount() {
                     Tipo de grupo:
                 </label>
                 <SelectSimple
-                    arr={arrTipoDeGrupo[item === "Gestión de cuentas de Colección" ? "Gestión de asesores" : item]}
+                    arr={arrTipoDeGrupo[item]}
                     name='Tipo de grupo'
                     click={handlerSelectClick2}
                     defaultValue={value2}
