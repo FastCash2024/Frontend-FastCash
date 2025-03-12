@@ -9,6 +9,7 @@ import FormLayout from "@/components/formModals/FormLayout";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { obtenerSegmento } from "@/utils";
+import { getLocalISOString } from "@/utils/getDates";
 
 export default function FormDistributtonCasesSegment() {
   const {
@@ -313,8 +314,8 @@ export default function FormDistributtonCasesSegment() {
             cuenta: usuario.cuenta,
             nombreDeLaEmpresa: usuario.origenDeLaCuenta,
             segmentoAsignado: segmento,
-            fechaDeTramitacionDelCaso: caso.estadoDeCredito === "Pendiente" ? fechaActual.toISOString() : caso.fechaDeTramitacionDelCaso,
-            fechaDeTramitacionDeCobro: caso.estadoDeCredito === "Dispersado" ? fechaActual.toISOString() : caso.fechaDeTramitacionDeCobro
+            // fechaDeTramitacionDelCaso: caso.estadoDeCredito === "Pendiente" ? fechaActual.toISOString() : caso.fechaDeTramitacionDelCaso,
+            fechaDeTramitacionDeCobro: caso.estadoDeCredito === "Dispersado" ? getLocalISOString() : caso.fechaDeTramitacionDeCobro
           });
   
           usuarioIndex = (usuarioIndex + 1) % usuariosSegmento.length;

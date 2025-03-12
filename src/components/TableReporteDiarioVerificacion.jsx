@@ -202,8 +202,8 @@ export default function Home() {
   async function handlerFetchDetails() {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3003/api/loans/verification/reporte?estadoDeCredito=Pendiente,Reprobado'
-        : 'https://api.fastcash-mx.com/api/loans/verification/reporte?estadoDeCredito=Pendiente,Reprobado')
+        ? 'http://localhost:3003/api/loans/verification/reporte'
+        : 'https://api.fastcash-mx.com/api/loans/verification/reporte')
     const data = await res.json()
     console.log(data)
     setDetails(data.data)
@@ -233,7 +233,7 @@ export default function Home() {
     handlerFetchDetails()
     handlerFetch(itemsPerPage, currentPage)
     handlerFetchVerification();
-  }, [loader, itemsPerPage, currentPage, searchParams]);
+  }, [loader, itemsPerPage, currentPage, searchParams, item]);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -248,7 +248,7 @@ export default function Home() {
     handlerFetch(itemsPerPage, currentPage);
   }
   console.log("tabla reporte", data.data)
-  console.log("tabla cases", cases)
+  console.log("tabla details", details)
   return (
     <>
       <div className='max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth'>
@@ -281,6 +281,11 @@ export default function Home() {
 
 
               <th className="px-4 py-2 text-green-400">APROBADOS TOTAL</th>
+              {
+                !user?.rol.includes('Asesor') && (
+                  <th className="px-4 py-2 text-red-400">OTROS TOTAL</th>
+                )
+              }
               <th className="px-4 py-2 text-red-400">REPROBADOS TOTAL</th>
 
             </tr>
@@ -309,6 +314,10 @@ export default function Home() {
                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.aprobados16pm}</td>
                 <td className="px-4 py-2">{details[i.cuenta]?.reprobados16pm}</td>
                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.aprobadosTotal}</td>
+                {!user?.rol.includes('Asesor') && (
+                  <td className="px-4 py-2">{details[i.cuenta]?.otrosTotal}</td>
+                )
+                }
                 <td className="px-4 py-2">{details[i.cuenta]?.reprobadosTotal}</td>
 
               </tr>
@@ -326,8 +335,13 @@ export default function Home() {
               <td className="px-4 py-2 bg-yellow-400">{totales?.aprobados14pm}</td>
               <td className="px-4 py-2">{totales?.reprobados14pm}</td>
               <td className="px-4 py-2 bg-yellow-400">{totales?.aprobados16pm}</td>
-              <td className="px-4 py-2">{totales?.aprobados16pm}</td>
+              <td className="px-4 py-2">{totales?.reprobados16pm}</td>
               <td className="px-4 py-2 bg-yellow-400">{totales?.aprobadosTotal}</td>
+              {
+                !user?.rol.includes('Asesor') && (
+                  <td className="px-4 py-2">{totales?.totalCasosConAsesorErrados}</td>
+                )
+              }
               <td className="px-4 py-2">{totales?.reprobadosTotal}</td>
             </tr>
           </tbody>

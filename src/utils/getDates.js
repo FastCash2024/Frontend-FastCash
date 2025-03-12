@@ -79,3 +79,10 @@ export function getStartAndEndOfWeek() {
 }
 
 export const today = new Date().toISOString().split('T')[0];
+
+export const getLocalISOString = () => {
+    const now = new Date();
+    const offset = now.getTimezoneOffset() * 60000;
+    return new Date(now - offset).toISOString();
+}
+
