@@ -6,6 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import Input from "@/components/Input";
 import SelectSimple from "@/components/SelectSimple";
 import { useSearchParams } from "next/navigation";
+import { getDay, today } from "@/utils/getDates";
 
 const optionsArray = [
     "Sin Observaciones",
@@ -74,8 +75,8 @@ export default function FormAddMulta() {
                 importeMulta: data.importeMulta,
                 cuentaOperativa: itemSelected.cuenta,
                 cuentaPersonal: itemSelected.emailAsesor ?? itemSelected.emailPersonal,
-                fechaDeOperacion: itemSelected.fecha ?? new Date().toISOString(),
-                fechaDeAuditoria: new Date().toISOString(),
+                fechaDeOperacion: itemSelected.fecha ?? today,
+                fechaDeAuditoria: today,
                 acotacion: data.acotacion,
                 cuentaPersonalAuditor: userDB.emailPersonal,
                 cuentaAuditor: userDB.cuenta,

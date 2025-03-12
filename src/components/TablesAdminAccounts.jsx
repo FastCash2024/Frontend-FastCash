@@ -354,12 +354,12 @@ export default function Home() {
                 //   server={"https://api.fastcash-mx.com/api/multas/multas"}
                 // />
               )}
-              {item === "Auditoria Periodica" && (
+              {item === "Auditoria Periodica" || item === "Auditoria Periódica" && (
                 <Table
                   access={true}
                   headArray={encabezadoControlDeCumplimiento}
                   dataArray={[""]}
-                  dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
+                  dataFilter={(i) => i}
                   local={"http://localhost:3006/api/users/multas/multas"}
                   server={"https://api.fastcash-mx.com/api/multas/multas"}
                 />
@@ -397,7 +397,9 @@ export default function Home() {
                 user.rol === "Manager de Cobranza" ||
                 user.rol === "Manager de Auditoria" ||
                 user.rol === "Manager de Verificación" ||
-                user.rol === "Asesor de Verificación") &&
+                user.rol === "Asesor de Verificación" ||
+                user.rol === "Asesor de Auditoria"
+              ) &&
                 (seccion === "Auditoria" || seccion === "auditoria") &&
                 item === "Reporte diario" && <TableReporteDiarioAuditoria />}
 
