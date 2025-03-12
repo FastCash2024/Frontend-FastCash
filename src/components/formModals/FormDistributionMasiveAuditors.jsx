@@ -73,104 +73,129 @@ export default function FormDistributionAuditors() {
     }
     return cociente;
   }
+
+  // Asignacion igualitaria
   const assignMaximEqualy = async () => {
     const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
     const verificadores = await res.json()
+
+    
     const updatedUsers = verificadores.data.map(user => ({ ...user, idCasosAsignados: [] }));
-    const resCases = await fetch(`https://api.fastcash-mx.com/api/loans/verification?limit=1000`)
+    const resCases = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=1000`)
     const dataVerification = await resCases.json()
     // const casesVerification = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
-    console.log("cantidad de casos: ", casesVerification);
+    // console.log("cantidad de casos: ", casesVerification);
     console.log("cantidad de verificadores: ", verificadores);
-
+    
     const resultado = dividir(dataVerification.data.length * 1, verificadores.data.length * 1);
     setMaximoAsignacion(resultado)
   }
-  //Asignacion igualitaria
+
+  // Asignacion igualitaria
   const assignCasesEqually = async () => {
-    setCalculate(true)
-    setType('Equaly')
-    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
-    const data = await res.json()
-
-    const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
-    const updatedUsers = verificadores.filter(user => user.emailPersonal).map(user => ({ ...user, idCasosAsignados: [] }));
-    // const updatedUsers = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-    const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification?&limit=1000')
-    const dataVerification = await resCases.json()
-    // const casesVerification = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
+    setCalculate(true);
+    setType('Equaly');
+  
+    // Obtener asesores de auditoría
+    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`);
+    const data = await res.json();
+    
+    // Filtrar solo los asesores con emailPersonal
+    const auditores = data.data
+      .filter(user => user.emailPersonal)
+      .map(user => ({ ...user, idCasosAsignados: [] }));
+  
+    // Obtener los usuarios de verificación y cobranza
+    const resCases = await fetch('https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=1000');
+    const dataVerification = await resCases.json();
     let unassignedCases = [...dataVerification.data];
-
-    updatedUsers.forEach(user => {
-      if (unassignedCases.length >= maximoAsignacion) {
-        user.idCasosAsignados =
-          unassignedCases
-            .slice(0, maximoAsignacion)
-            .map(caso => caso.numeroDePrestamo)
-        unassignedCases = unassignedCases.slice(maximoAsignacion);
+  
+    if (auditores.length === 0 || unassignedCases.length === 0) {
+      console.warn("No hay auditores o casos disponibles para asignar.");
+      return;
+    }
+  
+    // Calcular la cantidad de casos que se pueden asignar equitativamente
+    const totalCasos = unassignedCases.length;
+    const totalAuditores = auditores.length;
+    const casosPorAuditor = Math.min(maximoAsignacion, Math.floor(totalCasos / totalAuditores));
+    let casosSobrantes = totalCasos % totalAuditores; // Casos que sobran después de la distribución equitativa
+  
+    let index = 0;
+    unassignedCases.forEach(caso => {
+      if (auditores[index].idCasosAsignados.length < casosPorAuditor || (casosSobrantes > 0 && auditores[index].idCasosAsignados.length < maximoAsignacion)) {
+        auditores[index].idCasosAsignados.push(caso.cuenta);
+        caso.cuentaAuditor = auditores[index].cuenta;
+        caso.apodoDeUsuarioDeAuditoria = auditores[index].emailPersonal;
+  
+        if (auditores[index].idCasosAsignados.length === casosPorAuditor + 1) {
+          casosSobrantes--;
+        }
       }
+  
+      index = (index + 1) % totalAuditores;
     });
+  
+    // Filtrar los casos no asignados
+    // const casosNoAsignados = unassignedCases.filter(caso => !caso.cuentaAuditor);
 
-    // const fechaActual = new Date().toISOString();
-
-    const updatedCases = dataVerification.data.map(caso => {
-      const assignedUser = updatedUsers.find(user => user.idCasosAsignados.includes(caso.numeroDePrestamo));
-      console.log("users: caso: ", updatedUsers);
-      
-      
-      // let fechaDeTramitacionDelCaso = caso.estadoDeCredito === "Pendiente" ? fechaActual : caso.fechaDeTramitacionDelCaso;
-      // let fechaDeTramitacionDeCobro = caso.estadoDeCredito === "Dispersado" ? fechaActual : caso.fechaDeTramitacionDeCobro;
-
-      return assignedUser ? { ...caso, cuenta: assignedUser.cuenta, apodoDeUsuarioDeAuditoria: assignedUser.emailPersonal /*nombreDeLaEmpresa: assignedUser.origenDeLaCuenta, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro*/ } : caso;
-    });
-    setusuariosConAsignacion(updatedUsers)
-    setCasosNoAsignados(unassignedCases)
-    setCasosAsignados(updatedCases)
-  }
+    console.log("casos asignados: ", unassignedCases);
+    
+  
+    setusuariosConAsignacion(auditores);
+    setCasosAsignados(unassignedCases);
+  };
+  
+  
   //Asignacion totalitaria
   async function assignCasesTotally() {
-    setCalculate(true)
-    setType('Totaly')
-    const res = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`)
-    const data = await res.json()
-    const verificadores = data.data.filter(i => i.tipoDeGrupo === tipoDeGrupo)
-    const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-    const resCases = await fetch('https://api.fastcash-mx.com/api/loans/verification?&limit=1000')
-    const dataVerification = await resCases.json()
+    setCalculate(true);
+    setType('Totaly');
+
+    // Obtener asesores de auditoría
+    const resAuditores = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`);
+    const dataAuditores = await resAuditores.json();
+    const auditores = dataAuditores.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
+
+    // Crear estructura de usuarios auditores con array vacío de casos asignados
+    const auditoresAsignados = auditores.map(user => ({ ...user, idCasosAsignados: [] }));
+
+    // Obtener asesores de verificación y cobranza
+    const resCases = await fetch('https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=1000');
+    const dataVerification = await resCases.json();
+
     console.log("data verification: ", dataVerification);
 
-    // const asignaciones = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito)
-    let usuarioIndex = 0; // Índice del usuario al que se asignará la siguiente tarea
-    // Crear un mapa para rastrear las asignaciones por usuario
-    const administracion = usuarios.map(usuario => ({ ...usuario, idCasosAsignados: [] }));
+    let auditorIndex = 0;
+    const administracion = auditoresAsignados.map(auditor => ({ ...auditor, idCasosAsignados: [] }));
 
-    const usuariosValidos = usuarios.filter(user => user.emailPersonal);
+    // Filtrar solo usuarios válidos con emailPersonal
+    const auditoresValidos = auditoresAsignados.filter(user => user.emailPersonal);
 
-    console.log("usuariosValidos casos: ", usuariosValidos);
-    
+    // Asignar cada caso de verificación/cobranza a un auditor
+    const asignacionesConAuditores = dataVerification.data.map(asignacion => {
+        const auditorAsignado = auditoresValidos[auditorIndex]; // Seleccionamos un auditor de la lista
+        const cuentaAuditor = auditorAsignado.cuenta;
+        const apodoDeUsuarioDeAuditoria = auditorAsignado.emailPersonal;
 
-    // Actualizar las asignaciones con idUsuario y registrar en el mapa
-    const asignacionesConUsuarios = dataVerification.data.map(asignacion => {
-      const cuenta = usuariosValidos[usuarioIndex].cuenta;
-      const apodoDeUsuarioDeAuditoria = usuariosValidos[usuarioIndex].emailPersonal;
-      // Agregar esta tarea al usuario correspondiente
-      const usuario = administracion.find(admin => admin.cuenta === cuenta);
-      usuario.idCasosAsignados.push(asignacion.numeroDePrestamo);
-      // Avanzar al siguiente usuario (circular)
-      usuarioIndex = (usuarioIndex + 1) % usuarios.length;
+        console.log("auditor asignado caso: ", auditorAsignado);
+        
+        const auditor = administracion.find(admin => admin.cuenta === cuentaAuditor);
+        if (auditor) {
+            auditor.idCasosAsignados.push(asignacion.numeroDePrestamo);
+        }
 
-      console.log("asignacion caso: ", asignacion);
-      
-      // let fechaDeTramitacionDelCaso = asignacion.estadoDeCredito === "Pendiente" ? fechaActual : asignacion.fechaDeTramitacionDelCaso;
-      // let fechaDeTramitacionDeCobro = asignacion.estadoDeCredito === "Dispersado" ? fechaActual : asignacion.fechaDeTramitacionDeCobro;
-      // Retornar la asignación actualizada
-      return { ...asignacion, cuenta, apodoDeUsuarioDeAuditoria/*nombreDeLaEmpresa, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro*/ };
+        // Avanzar en el índice circularmente para la siguiente asignación
+        auditorIndex = (auditorIndex + 1) % auditoresValidos.length;
+
+        return { ...asignacion, cuentaAuditor, apodoDeUsuarioDeAuditoria };
     });
-    setusuariosConAsignacion(administracion)
-    setCasosAsignados(asignacionesConUsuarios)
-    // setCasosNoAsignados(unassignedCases)
-    // console.log({ asignacionesConUsuarios, administracion })
-  }
+    console.log("casos asignados: ", asignacionesConAuditores);
+    console.log("admin casos: ", administracion);
+    setusuariosConAsignacion(administracion);
+    setCasosAsignados(asignacionesConAuditores);
+}
+
 
   const abortAssignment = () => {
     setMaximoAsignacion(2);
@@ -193,16 +218,18 @@ export default function FormDistributionAuditors() {
         
         // if (i?.apodoDeUsuarioDeAuditoria !== undefined && i?.cuentaAuditor !== undefined) {
         // }
+
+        console.log("casos que se van a modificar bodyData: ", i);
+        
         let bodyData = {
-          [cuentaUpdate]: i.cuenta,
-          apodoDeUsuarioDeAuditoria: i.apodoDeUsuarioDeAuditoria
+          cuentaAuditor: i.cuentaAuditor,
+          cuentaPersonalAuditor: i.apodoDeUsuarioDeAuditoria
         };
         console.log("caso bodyData: ", bodyData);
 
-
         const url = window?.location?.href?.includes('localhost')
-          ? `http://localhost:3003/api/loans/verification/${i._id}`
-          : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`;
+          ? `http://localhost:3002/api/authSystem/register/${i._id}`
+          : `http://localhost:3002/api/authSystem/register/${i._id}`;
 
         const response = await fetch(url, {
           method: "PUT",

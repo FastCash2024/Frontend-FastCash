@@ -6,25 +6,24 @@ import FormLayout from '@/components/formModals/FormLayout'
 
 import Button from '@/components/Button'
 
-export default function FormRestablecimientoAuditors ({ successText, seccion }) {
-    const { setAlerta, checkedArr, setModal, loader, setLoader} = useAppContext()
-    
+export default function FormRestablecimientoAuditors({ successText, seccion }) {
+    const { setAlerta, checkedArr, setModal, loader, setLoader } = useAppContext()
+
     const restabecimientoTotal = () => {
 
         checkedArr.map(async (i) => {
 
             try {
                 const response = await fetch(window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3003/api/loans/verification/${i._id}`
-                    : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`, {
+                    ? `http://localhost:3002/api/authSystem/register/${i._id}`
+                    : `https://api.fastcash-mx.com/api/authSystem/register/${i._id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        cuentaVerificador: "no asignado",
-                        nombreDeLaEmpresa: "no asignado",
-                        fechaDeTramitacionDelCaso: null,
+                        cuentaAuditor: "no asignado",
+                        cuentaPersonalAuditor: "no asignado",
                     }), // Datos a enviar en el cuerpo de la petición
                 });
 

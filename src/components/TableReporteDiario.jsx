@@ -260,14 +260,6 @@ export default function Home() {
   }
 
   return (
-    (user?.rol === "Admin" ||
-      user.rol === "Super Admin" ||
-      user?.rol === "Recursos Humanos" ||
-      user.rol === "Manager de Cobranza" ||
-      user.rol === "Manager de Cobranza" ||
-      user.rol === "Manager de Auditoria" ||
-      user.rol === "Manager de Verificación") &&
-    item === "Reporte diario" && (
       <>
         <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
           <table className="w-full min-w-[2000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
@@ -407,5 +399,4 @@ export default function Home() {
         </div>
       </>
     )
-  );
 }

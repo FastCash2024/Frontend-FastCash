@@ -187,7 +187,7 @@ export default function AddAccount() {
             'Asesor de Auditoria',
             'Asesor de Cobranza',
             'Asesor de Verificación',
-            'Cuenta personal'
+            // 'Cuenta personal'
         ],
         ['Gestión de cuentas personales']: [
             'Cuenta personal'
@@ -235,7 +235,7 @@ console.log(item)
                     Tipo de grupo:
                 </label>
                 <SelectSimple
-                    arr={arrTipoDeGrupo[item === "Gestión de cuentas de Colección" ? "Gestión de asesores": item ]}
+                    arr={arrTipoDeGrupo[item]}
                     name='Tipo de grupo'
                     click={handlerSelectClick2}
                     defaultValue={value2}

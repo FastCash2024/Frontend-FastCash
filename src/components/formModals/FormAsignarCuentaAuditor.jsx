@@ -1,78 +1,25 @@
-'use client'
-
-import { useState, useEffect } from "react"
-import { useAppContext } from '@/context/AppContext'
+import { useAppContext } from '@/context/AppContext';
+import React, { useEffect, useState } from 'react'
+import Input from '../Input';
+import { UserCircleIcon } from '@heroicons/react/24/solid';
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
-import { generarContrasena } from '@/utils'
-import { toast } from 'react-hot-toast';
-import Input from '@/components/Input'
-import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
 
-
-export default function AddAccount({ section, query, cuenta }) {
+export default function FormAsignarCuentaAuditor() {
     const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const { theme, toggleTheme } = useTheme();
-    const [data, setData] = useState({})
-    const [value1, setValue1] = useState('Por favor elige')
-    const [value2, setValue2] = useState('Por favor elige')
-    const [value3, setValue3] = useState('Por favor elige')
-    const [showPassword, setShowPassword] = useState(false)
     const [filter, setFilter] = useState('');
-    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
     const [filterArr, setFilterArr] = useState([])
     const [selectAccount, setSelectAccount] = useState(null);
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
 
-
-
-    // console.log("select account: ", selectAccount);
-    // console.log("select case: ", checkedArr);
-
-    console.log("query: ", query);
-
-    const codificacionDeRoles = {
-        'Recursos Humanos': ['Recursos Humanos'],
-        'Admin': ['Admin'],
-        'Manager de Auditoria': ['Manager de Auditoria'],
-        'Manager de Cobranza': ['Manager de Cobranza'],
-        'Manager de Verificación': ['Manager de Verificación'],
-        'Usuario de Auditoria': ['Usuario de Auditoria'],
-        'Usuario de Cobranza': [
-            'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
-            'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
-            'D0 = DIA DE LA FECHA DE COBRO',
-            'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
-            'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
-        ],
-        'Usuario de Verificación': ['Usuario de Verificación'],
-        'Cuenta personal': ['Cuenta personal'],
-    }
-    function handleCheckboxChange(index) {
-        setSelectedCheckbox(index);
-    };
     function onChangeHandler(e) {
         // console.log(e.target.value)
         setFilter(e.target.value)
     }
-    function handlerSelectClick2(name, i, uuid) {
-        if (name === 'Origen de la cuenta') {
-            setValue1(i)
-        }
-        if (name === 'Tipo de grupo') {
-            setValue2(i)
-            setValue3('Por favor elige')
-        }
-        if (name === 'Codificación de roles') {
-            setValue3(i)
-        }
-    }
-
 
     function handlerSelectAccount(i) {
         setSelectAccount(i)
@@ -80,42 +27,30 @@ export default function AddAccount({ section, query, cuenta }) {
 
     const saveAccount = (e) => {
         e.preventDefault();
+        console.log("select account: ", selectAccount);
 
         let body = {
-            nombreDeLaEmpresa: selectAccount.origenDeLaCuenta
-          };
-        
-          if (selectAccount.tipoDeGrupo === "Asesor de Verificación") {
-            body.cuentaVerificador = selectAccount.cuenta;
-            body.fechaDeTramitacionDelCaso=new Date().toISOString();
-          } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
-            body.cuentaCobrador = selectAccount.cuenta;
-            body.fechaDeTramitacionDeCobro = new Date().toISOString();
-          }
-          body.historialDeAsesores = [
-            ...(checkedArr.historialDeAsesores || []), // Mantener los anteriores si existen
-            {
-              nombreAsesor: selectAccount.nombrePersonal,
-              cuentaOperativa: selectAccount.cuenta,
-              cuentaPersonal: selectAccount.emailPersonal,
-              fecha: new Date().toISOString(),
-            }
-          ];
+            cuentaAuditor: selectAccount.cuenta,
+            cuentaPersonalAuditor: selectAccount.emailPersonal
+        };
         console.log("data enviada: ", body)
 
         setLoader('Guardando...')
+
+        console.log("data enviada selecionada: ", checkedArr);
+
 
         checkedArr.map(async (i) => {
             if (selectAccount?.cuenta !== undefined && selectAccount?.origenDeLaCuenta !== undefined)
                 try {
                     const response = await fetch(window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3003/api/loans/verification/${i._id}`
-                        : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`, {
+                        ? `http://localhost:3002/api/authSystem/register/${i._id}`
+                        : `http://localhost:3002/api/authSystem/register/${i._id}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify(body), // Datos a enviar en el cuerpo de la petición
+                        body: JSON.stringify(body), 
                     });
 
                     console.log(response)
@@ -143,12 +78,12 @@ export default function AddAccount({ section, query, cuenta }) {
     const fetchUsers = async () => {
         try {
             const response = await axios.get(window?.location?.href?.includes('localhost')
-                ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
-                : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`,
+                ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`
+                : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=1000`,
             );
             setFilterArr(response.data);
             console.log("response: ", response.data);
-            
+
         } catch (error) {
             console.error("Error fetching users:", error);
         }
@@ -166,7 +101,7 @@ export default function AddAccount({ section, query, cuenta }) {
             >
                 X
             </button>
-            <h4 className='w-full text-center text-gray-950'>{item === 'Recolección y Validación de Datos'  ? 'Asignar Cuenta Verificador' : 'Asignar Cuenta Cobrador'}</h4>
+            <h4 className='w-full text-center text-gray-950'>{item === 'Recolección y Validación de Datos' ? 'Asignar Cuenta Verificador' : 'Asignar Cuenta Cobrador'}</h4>
             <div className='flex justify-between w-full max-w-[300px]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar cuenta:

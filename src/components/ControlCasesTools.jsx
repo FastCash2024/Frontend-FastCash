@@ -139,7 +139,7 @@ const ControlCasesTools = () => {
                         <div className='w-[330px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
                                 <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos Auditoria')}>Distribuir</Button>
-                                {/* <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta Auditor')}>Asignar cuenta</Button> */}
+                                <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta Auditoria')}>Asignar cuenta</Button>
                             </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
