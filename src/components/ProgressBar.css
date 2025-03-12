@@ -1,0 +1,22 @@
+.wrapper {
+    border: 1px solid black;
+    
+  }
+  
+  .container {
+    background-color: rgb(225, 225, 225);
+  }
+  
+  .barCompleted {
+    background-color: #00b61c;
+    width: 80%;
+  }
+  
+  .label {
+    font-size: 20px;
+    color: green;
+  }
+  .progressBar div  div div {
+    background-color: #00b61c !important ;
+  }
+  
