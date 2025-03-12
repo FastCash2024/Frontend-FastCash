@@ -438,15 +438,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {item === 'Incurrir en una estación de trabajo' &&
                 <div>
                     <div className='flex flex-wrap justify-around relative top-[-25px]'>
-                        <div className='px-2'>
+                        {/* <div className='px-2'>
                             <Velocimetro></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de finalizacion hoy</h4>
                             <div className='grid grid-cols-3 w-[300px]'>
                                 <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.tasaRecuperacionTotal ?? 0} <br />El número de recordatorios en el dia que se asigna en el día.</p>
                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.pagosTotal ?? 0} <br />Añadir el número hoy.</p>
                             </div>
-                        </div>
-                        <div className=' px-2'>
+                        </div> */}
+                        <div className='text-center px-2 flex flex-col align-center'>
                             <Velocimetro></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de caso</h4>
                             <div className='grid grid-cols-3 w-[300px]'>
