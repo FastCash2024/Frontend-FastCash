@@ -45,7 +45,7 @@ export default function FormAddExtension() {
 
         const generatedURL = window?.location?.href.includes('localhost')
             ? `http://localhost:3001/pay?caso=${encodedId}&seccion=extension&item=data`
-            : `https://collection.fastcash-mx.com/pay?caso=${encodedId}&seccion=extension&item=data`;
+            : `https://liga.fastcash-mx.com/pay?caso=${encodedId}&seccion=extension&item=data`;
 
 
         navigator.clipboard.writeText(generatedURL)

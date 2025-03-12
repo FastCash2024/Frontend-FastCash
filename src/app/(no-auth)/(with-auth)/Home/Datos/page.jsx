@@ -273,7 +273,7 @@ const PaymentInfoCard = () => {
             setcaseData(res);
             setPhone(res?.numeroDeTelefonoMovil);
 
-            const phone = res?.numeroDeTelefonoMovil?.replaceAll('+', '');
+            const phone = res?.numeroDeTelefonoMovil;
             const response2 = await fetch(window?.location?.href.includes('localhost')
                 ? `http://localhost:3004/api/authApk/usersApkFromWeb?phoneNumber=${phone}`
                 : `https://api.fastcash-mx.com/api/authApk/usersApkFromWeb?phoneNumber=${phone}`)
@@ -290,7 +290,8 @@ const PaymentInfoCard = () => {
         fetchData();
     }, [])
 
-
+console.log("CLientDATA", clientData)
+console.log("photoURL",clientData?.photoURLs?.[0])
     // useEffect(() => {
 
     //     fetchData()
@@ -582,7 +583,7 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {audit.acotacionesCobrador.map((item, index) => (
+                            {audit?.acotacionesCobrador?.map((item, index) => (
                                 <tr key={index} className='w-full '>
                                     <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{audit.cuentaCobrador}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{audit.numeroDePrestamo}</td>
