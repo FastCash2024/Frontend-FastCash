@@ -63,7 +63,7 @@ export const encabezadoDeAplicacion = () => ["nivel de prestamo", "valor Prestad
 export const encabezadoRegistroHistorico = () => [
     /*"Seleccionar",*/ /*"Caso (Descripción de la excepción) [Número de préstamo]", "Cuenta Operativa [cuenta]", "Cuenta personal [email asesor]",*/
   "descripcion de excepcion", "cuenta operadora", "cuenta personal", "codigo de sistema",
-  "codigo de operacion", "contenido de operacion", "fecha de operacion", "operar"
+  "codigo de operacion", "contenido de operacion", "fecha de operacion"
     // "Código de sistema [Código de producto]", "Código de operacion [acotacion]", /*"Modificacion (Resultados de la operación)",*/
     // "Contenido de la operacion [modificacion]", "Fecha de operacion [fecha]", "operar"
 ];
