@@ -515,7 +515,19 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     </button>
                                   </Link>
                                   {
-                                    !user?.rol.includes("Asesor") &&
+                                    !item?.toLowerCase().includes("lista")&&
+                                    <button
+                                      type="button"
+                                      className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                      onClick={() =>
+                                        handlerVerification(i, "Verificacion")
+                                      }
+                                    >
+                                      Registrar
+                                    </button>
+                                  }
+                                  {
+                                    item?.toLowerCase().includes("lista") && !user?.rol.includes("Asesor") &&
                                     <button
                                       type="button"
                                       className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"

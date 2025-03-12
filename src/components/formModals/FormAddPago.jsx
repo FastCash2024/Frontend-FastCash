@@ -44,8 +44,8 @@ export default function FormAddPago() {
         const encodedId = encodeURIComponent(encryptedId);
 
         const generatedURL = window?.location?.href.includes('localhost')
-            ? `http://localhost:3001/pay?caso=${encodedId}&seccion=payment&item=data`
-            : `https://collection.fastcash-mx.com/pay?caso=${encodedId}&seccion=payment&item=data`;
+            ? `https://liga.fastcash-mx.com/pay?caso=${encodedId}&seccion=payment&item=data`
+            : `https://liga.fastcash-mx.com/pay?caso=${encodedId}&seccion=payment&item=data`;
 
         navigator.clipboard.writeText(generatedURL)
             .then(() => setAlerta("¡Enlace copiado al portapapeles!"))
