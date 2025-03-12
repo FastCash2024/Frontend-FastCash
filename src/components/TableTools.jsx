@@ -11,6 +11,7 @@ import AccessTools from '@/components/AccessTools'
 import ColectionCasesTools from '@/components/ColectionCasesTools'
 import SearchInput from "@/components/SearchInput";
 import MultipleInput from "@/components/MultipleInput";
+import ProgressBarComponent from "@/components/ProgressBar";
 
 import {
     refunds, historial,
@@ -455,7 +456,12 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                         <div className=' px-2'>
-                            <Velocimetro></Velocimetro>
+
+
+
+                        <ProgressBarComponent completed="60"/>
+
+                            {/* <Velocimetro></Velocimetro> */}
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de grupo</h4>
                             <div>
                                 {Object.keys(totales).map((segmento) => (
@@ -803,7 +809,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </div>
 
                             </div>
-                            <div className='flex justify-between space-x-3'>
+                            <div className='flex justify-between flex space-x-3'>
                                 <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2">Consultar</button>
                                 <button type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
                             </div>
