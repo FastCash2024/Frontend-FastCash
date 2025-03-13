@@ -40,7 +40,7 @@ export default function FormPagadoExtension() {
         };
 
         const updateData = {
-            estadoDeCredito: 'Pagado con extensión'
+            estadoDeCredito: 'Pagado con Extensión'
         };
 
         // Crear una copia del objeto itemSelected y eliminar el campo _id

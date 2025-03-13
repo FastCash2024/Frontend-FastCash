@@ -6,6 +6,7 @@ import SelectSimple from "@/components/SelectSimple";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { useSearchParams } from "next/navigation";
+import { getLocalISOString } from "@/utils/getDates";
 
 const optionsArray = [
     "Por favor elige",
@@ -61,13 +62,13 @@ export default function FormAddCobranza() {
             cuenta: userDB.cuenta,
             asesor: user.nombreCompleto,
             emailAsesor: user.email,
-            fecha: new Date().toISOString(),
+            fecha: getLocalISOString(),
         });
 
         console.log("nuevas acotaciones: ", nuevasAcotaciones);
 
         const upadateData = {
-            fechaRegistroComunicacion: new Date().toISOString(),
+            fechaRegistroComunicacion: getLocalISOString(),
             estadoDeComunicacion: value,
             acotacionesCobrador: nuevasAcotaciones
         };

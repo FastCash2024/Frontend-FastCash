@@ -274,8 +274,8 @@ export default function Home() {
                   headArray={encabezadoGestionDeCuentasDeColección}
                   // dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3002/api/authSystem/users"}
-                  server={"https://api.fastcash-mx.com/api/authSystem/users"}
+                  local={"http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza"}
+                  server={"https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza"}
                 />
               )}
               {/* numero de prestamo, apodo de usuario, codigo de producto = arl fac, codico de operacion, contenido (descripcion), resultado de la operacion (true , false reporte actual), fecha */}

@@ -263,7 +263,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 ? 'http://localhost:3003/api/loans/verification/totalreportecobro'
                 : 'https://api.fastcash-mx.com/api/loans/verification/totalreportecobro')
         const data = await res.json()
-        setTotalesCobro(data.data)
+        setTotalesCobro(data.totales)
     }
 
     async function handlerFetchVTotales() {
@@ -278,8 +278,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     async function handlerFetchDetails() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3003/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
-                : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados?estadoDeCredito=Pagado')
+                ? 'http://localhost:3003/api/loans/verification/reportecobrados'
+                : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados')
         const data = await res.json()
         console.log("data detalle: ", data)
         setDetails(data.data)
@@ -289,24 +289,41 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     const calcularTotalesPorSegmento = () => {
         const totalesPorSegmento = {};
-
         Object.keys(details).forEach((cuenta) => {
             const segmento = obtenerSegmento(cuenta);
-            console.log(`Cuenta: ${cuenta}, Segmento: ${segmento}`); // <-- Verifica qué segmentos se generan
-
             if (!segmento) {
                 console.log(`Segmento no encontrado para cuenta: ${cuenta}`);
+                return;
             }
-
-            if (!totalesPorSegmento[segmento]) {
-                totalesPorSegmento[segmento] = 0;
+            const pagosTotal = details[cuenta]?.pagosTotal;
+            if (typeof pagosTotal === "number" && !isNaN(pagosTotal)) {
+                if (!totalesPorSegmento[segmento]) {
+                    totalesPorSegmento[segmento] = 0;
+                }
+                totalesPorSegmento[segmento] += pagosTotal;
+            } else {
+                console.log(`No se encontró pagos válidos para la cuenta: ${cuenta}`);
             }
-            totalesPorSegmento[segmento] += 1;
         });
 
-        console.log("Totales por segmento:", totalesPorSegmento); // <-- Muestra el resultado final
-        setTotales(totalesPorSegmento);
+        const segmentosPosibles = ["D0", "D1", "D2", "S1", "S2"];
+
+        segmentosPosibles.forEach((segmento) => {
+            if (totalesPorSegmento[segmento] === undefined) {
+                totalesPorSegmento[segmento] = 0;
+            }
+        });
+
+        const totalesFiltrados = Object.keys(totalesPorSegmento)
+            .reduce((obj, segmento) => {
+                obj[segmento] = totalesPorSegmento[segmento] || 0;
+                return obj;
+            }, {});
+
+        setTotales(totalesFiltrados);
     };
+
+
 
     useEffect(() => {
         handlerFetchCTotales();
@@ -324,48 +341,48 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {item === 'Incurrir en una estación de trabajo' &&
                 <div>
                     <div className='flex flex-wrap justify-around relative top-[-25px]'>
-                        {/* <div className='px-2'>
-                            <Velocimetro></Velocimetro>
-                            <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de finalizacion hoy</h4>
-                            <div className='grid grid-cols-3 w-[300px]'>
-                                <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.tasaRecuperacionTotal ?? 0} <br />El número de recordatorios en el dia que se asigna en el día.</p>
-                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.pagosTotal ?? 0} <br />Añadir el número hoy.</p>
-                            </div>
-                        </div> */}
                         <div className='text-center px-2 flex flex-col align-center'>
                             <Velocimetro value={totalesCobro.pagosTotal}></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de caso</h4>
                             <div className='grid grid-cols-3 w-[300px]'>
                                 <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.tasaRecuperacionTotal ?? 0} <br />Cobro de hoy.</p>
-                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.pagosTotal ?? 0} <br /> Número total de casos.</p>
+                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro.totalesConAsesor ?? 0} <br /> Número total de casos.</p>
                             </div>
                         </div>
                         <div className=' px-2'>
 
-
-
-                            <ProgressBarComponent completed="60" />
-
-                            {/* <Velocimetro></Velocimetro> */}
-                            <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de grupo</h4>
                             <div>
+                                <h4
+                                    className={`text-center text-[14px] m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1]'
+                                        } dark:text-text-[#55abf1]`}
+                                >
+                                    Tasa de recuperación de grupo
+                                </h4>
+
+                                {/* ProgressBar que toma el valor de totales[segmento] */}
                                 {Object.keys(totales).map((segmento) => (
-                                    <div key={segmento} className="grid grid-cols-3 w-[300px]">
-                                        <p
-                                            className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
-                                                } dark:text-white`}
-                                        >
-                                            {segmento} <br /> Segmento.
-                                        </p>
-                                        <p
-                                            className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
-                                                } dark:text-white`}
-                                        >
-                                            {totales[segmento] ?? 0} <br /> Número total de casos cobrados.
-                                        </p>
+                                    <div key={segmento} className="mb-4">
+                                        <ProgressBarComponent value={totales[segmento] ?? 0} />
+
+                                        <div className="grid grid-cols-3 w-[300px]">
+                                            <p
+                                                className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
+                                                    } dark:text-white`}
+                                            >
+                                                {segmento} <br /> Segmento.
+                                            </p>
+                                            <p
+                                                className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
+                                                    } dark:text-white`}
+                                            >
+                                                {totales[segmento] ?? 0} <br /> Número total de casos cobrados.
+                                            </p>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
+
+
 
                             {/* <h4 className='text-center text-[14px] text-green-600  m-0 p-0 pb-2'> <span className='bg-green-600 mr-2 w-[10px] h-[10px] inline-block'></span>Tasa de recuperación de grupos</h4> */}
 
@@ -741,7 +758,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 </div>
             }
 
-            {item === 'Auditoria Periodica' &&
+            {(item === 'Auditoria Periodica' || item === "Auditoria Periódica") &&
                 <div className="w-full relative scroll-smooth mb-2 ">
                     <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
                         <div className='w-[330px] space-y-2'>

@@ -75,6 +75,7 @@ import {
 } from "@/constants/TableHeaders.jsx";
 import { Paginator } from "./Paginator";
 import { obtenerSegmento } from "@/utils";
+import { today } from "@/utils/getDates";
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -197,8 +198,8 @@ export default function Home() {
 
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado`
-      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado`;
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000&fechaDeTramitacionDeCobro=${today}`
+      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000&fechaDeTramitacionDeCobro=${today}`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
@@ -221,7 +222,7 @@ export default function Home() {
         ? 'http://localhost:3003/api/loans/verification/totalreportecobro'
         : 'https://api.fastcash-mx.com/api/loans/verification/totalreportecobro')
     const data = await res.json()
-    setTotales(data.data)
+    setTotales(data.totales)
   }
 
   useEffect(() => {
@@ -363,7 +364,7 @@ export default function Home() {
                 <td className='px-4 py-2'></td>
                 <td className='px-4 py-2'></td>
                 <td className='px-4 py-2'>
-                  {data?.data?.reduce((acc, i) => acc + cases?.filter(it => it.cuentaCobrador === i.cuenta).length, 0)}
+                  {totales?.totalesConAsesor}
                 </td>
                 <td className='px-4 py-2'></td>
                 <td className="px-4 py-2  bg-yellow-400">{totales?.pagos10am}</td>
