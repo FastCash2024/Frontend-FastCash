@@ -140,7 +140,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     const roleQueries = {
       "Asesor de Verificación": `&cuentaVerificador=${userDB.cuenta}`,
       "Asesor de Cobranza": `&cuentaCobrador=${userDB.cuenta}`,
-      "Asesor de Auditoria": `&cuentaAuditor=${userDB.cuenta}`,
+      // "Asesor de Auditoria": `&cuentaAuditor=${userDB.cuenta}`,
     };
 
     const query2 = roleQueries[user?.rol] || "";
