@@ -354,7 +354,7 @@ export default function Home() {
                 //   server={"https://api.fastcash-mx.com/api/multas/multas"}
                 // />
               )}
-              {item === "Auditoria Periodica" || item === "Auditoria Periódica" && (
+              {item.toLowerCase().includes("auditoria")  && (
                 <Table
                   access={true}
                   headArray={encabezadoControlDeCumplimiento}
