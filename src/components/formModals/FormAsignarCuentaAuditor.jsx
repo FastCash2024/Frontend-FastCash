@@ -47,7 +47,7 @@ export default function FormAsignarCuentaAuditor() {
                 try {
                     const response = await fetch(window?.location?.href?.includes('localhost')
                         ? `http://localhost:3002/api/authSystem/register/${i._id}`
-                        : `http://localhost:3002/api/authSystem/register/${i._id}`, {
+                        : `https://api.fastcash-mx.com/api/authSystem/register/${i._id}`, {
                         method: "PUT",
                         headers: {
                             "Content-Type": "application/json",
