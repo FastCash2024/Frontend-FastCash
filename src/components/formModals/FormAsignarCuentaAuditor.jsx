@@ -5,6 +5,7 @@ import { UserCircleIcon } from '@heroicons/react/24/solid';
 import { useTheme } from '@/context/ThemeContext';
 import { useSearchParams } from 'next/navigation';
 import axios from 'axios';
+import { getLocalISOString } from '@/utils/getDates';
 
 export default function FormAsignarCuentaAuditor() {
     const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
@@ -31,7 +32,8 @@ export default function FormAsignarCuentaAuditor() {
 
         let body = {
             cuentaAuditor: selectAccount.cuenta,
-            cuentaPersonalAuditor: selectAccount.emailPersonal
+            cuentaPersonalAuditor: selectAccount.emailPersonal,
+            fechaDeAuditoria: getLocalISOString()
         };
         console.log("data enviada: ", body)
 
@@ -101,7 +103,7 @@ export default function FormAsignarCuentaAuditor() {
             >
                 X
             </button>
-            <h4 className='w-full text-center text-gray-950'>{item === 'Recolección y Validación de Datos' ? 'Asignar Cuenta Verificador' : 'Asignar Cuenta Cobrador'}</h4>
+            <h4 className='w-full text-center text-gray-950'>Asignar Cuenta Auditor</h4>
             <div className='flex justify-between w-full max-w-[300px]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar cuenta:

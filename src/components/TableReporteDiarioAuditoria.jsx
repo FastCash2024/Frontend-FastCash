@@ -19,13 +19,12 @@ export default function TableReporteDiarioAuditoria() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
   const [selectedRight, setSelectedRight] = useState(-1);
   const [cases, setCases] = useState([]);
+  const [totales, setTotales] = useState({})
 
   async function handlerFetch(limit, page) {
 
     const local = "http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria";
     const server = "https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria";
-    // const local = "http://localhost:3000/api/authSystem/users";
-    // const server = "https://api.fastcash-mx.com/api/authSystem/users";
 
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -47,7 +46,7 @@ export default function TableReporteDiarioAuditoria() {
     const roleQueries = {
       "Asesor de Verificación": `&cuentaVerificador=${userDB.cuenta}`,
       "Asesor de Cobranza": `&cuentaCobrador=${userDB.cuenta}`,
-      "Asesor de Auditoria": `&cuentaAuditor=${userDB.cuenta}`,
+      // "Asesor de Auditoria": `&cuentaAuditor=${userDB.cuenta}`,
     };
 
     const query2 = roleQueries[user?.rol] || '';
@@ -74,6 +73,9 @@ export default function TableReporteDiarioAuditoria() {
         ? `${server.split('?')[0]}?${stg}${query2}${dataParams}`
         : `${server}?${stg}${query2}${dataParams}`
       : `${server}${query2}${dataParams}`
+
+    console.log("url local reporte diario: ", urlLocal);
+    console.log("url server reporte diario: ", urlServer);
 
     const res = await fetch(
       window?.location?.href?.includes('localhost') ? `${urlLocal}` : `${urlServer}`
@@ -125,7 +127,7 @@ export default function TableReporteDiarioAuditoria() {
   }
 
   console.log("cases: ", cases);
-  
+
 
   async function handlerFetchDetails() {
     const res = await fetch(
@@ -138,7 +140,18 @@ export default function TableReporteDiarioAuditoria() {
     console.log("data details: ", details);
 
   }
+
+  async function handlerFetchTotales() {
+    const res = await fetch(
+      window?.location?.href?.includes('localhost')
+        ? 'http://localhost:3006/api/users/multas/reporteTotales'
+        : 'https://api.fastcash-mx.com/api/users/multas/reporteTotales')
+    const data = await res.json()
+    setTotales(data.totalesGenerales)
+  }
+
   useEffect(() => {
+    handlerFetchTotales()
     handlerFetch(itemsPerPage, currentPage);
     handlerFetchVerification();
   }, [loader, searchParams, itemsPerPage, currentPage])
@@ -184,7 +197,7 @@ export default function TableReporteDiarioAuditoria() {
   }, [])
 
   console.log("array: ", checkedArr);
-  
+
 
   return (
     <>
@@ -256,6 +269,23 @@ export default function TableReporteDiarioAuditoria() {
 
               </tr>
             ))}
+            <tr className="bg-gray-200 font-bold">
+              <td className='px-4 py-2'>Totales</td>
+              <td className='px-4 py-2'></td>
+              <td className='px-4 py-2'></td>
+              <td className='px-4 py-2'></td>
+              <td className='px-4 py-2'>{cases?.filter(it => it.cuentaAuditor).length}</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.multados10am}</td>
+              <td className="px-4 py-2">{totales?.sinMulta10am}</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.multados12am}</td>
+              <td className="px-4 py-2">{totales?.sinMulta12am}</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.multados14pm}</td>
+              <td className="px-4 py-2">{totales?.sinMulta14pm}</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.multados16pm}</td>
+              <td className="px-4 py-2">{totales?.sinMulta16pm}</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.multadosTotal}</td>
+              <td className="px-4 py-2">{totales?.sinMultaTotal}</td>
+            </tr>
           </tbody>
         </table>
       </div>

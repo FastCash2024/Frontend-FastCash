@@ -6,6 +6,8 @@ import { formatearFecha, getCurrentDate, obtenerSegmento } from '@/utils';
 
 export default function TableControl() {
   const {
+    user,
+    userDB,
     checkedArr,
     setCheckedArr,
     loader,
@@ -16,6 +18,8 @@ export default function TableControl() {
   const [cases, setCases] = useState([]);
   const [cuentas, setCuentas] = useState([]);
   const searchParams = useSearchParams();
+  const seccion = searchParams.get("seccion");
+  const item = searchParams.get("item");
   const date = getCurrentDate();
   const [data, setData] = useState([]); // Aquí solo debe almacenar el array de datos, no más propiedades
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,22 +35,65 @@ export default function TableControl() {
     }
   }
 
+  console.log("usuario url: ", user);
+  console.log("usuario db url: ", userDB);
+
+  console.log("item tipo", item);
+
   async function handlerFetch(limit, page) {
-
-    const url = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3002/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-      : `https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
-
-      console.log("asesores url: ", url);
-      
-    const res = await fetch(url);
-    const result = await res.json();
-    setData(result.data); // Solo almacena el array de datos
-    setCurrentPage(result.currentPage);
-    setTotalPages(result.totalPages);
-    setTotalDocuments(result.totalDocuments);
-    // console.log('data asesores:', result.data);
+    const isLocalhost = window?.location?.href?.includes("localhost");
+    const baseUrl = isLocalhost
+      ? "http://localhost:3002/api/authSystem/users"
+      : "https://api.fastcash-mx.com/api/authSystem/users";
+  
+    // Determinar la URL según el rol y el item seleccionado
+    const url =
+      user?.rol === "Asesor de Auditoria" && item === "Control de Cumplimiento"
+        ? `${baseUrl}?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&cuentaAuditor=${userDB.cuenta}`
+        : `${baseUrl}?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza`;
+  
+    // Obtener parámetros de filtro de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterParams = {};
+  
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1); // Extraer el nombre de la clave dentro de "filter[]"
+        filterParams[fieldName] = value;
+      }
+    });
+  
+    // Convertir filtros a string de consulta
+    const filterQuery = Object.entries(filterParams)
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+      .join("&");
+  
+    console.log(filterQuery ? "existen filtros" : "no existen filtros");
+  
+    // Parámetros por defecto
+    const finalLimit = limit || 5;
+    const finalPage = page || 1;
+  
+    // Construir la URL final con filtros y paginación
+    const dataParams = `limit=${finalLimit}&page=${finalPage}`;
+    const fullUrl = `${url}${filterQuery ? `&${filterQuery}` : ""}&${dataParams}`;
+  
+    console.log("URL final:", fullUrl);
+  
+    try {
+      const res = await fetch(fullUrl);
+      if (!res.ok) throw new Error("Error al obtener los datos");
+      const result = await res.json();
+  
+      setData(result.data); // Solo almacena el array de datos
+      setCurrentPage(result.currentPage);
+      setTotalPages(result.totalPages);
+      setTotalDocuments(result.totalDocuments);
+    } catch (error) {
+      console.error("Error en handlerFetch:", error);
+    }
   }
+  
 
   async function handlerFetchVerification() {
     const res = await fetch(
@@ -71,7 +118,7 @@ export default function TableControl() {
   useEffect(() => {
     handlerFetch(itemsPerPage, currentPage);
     handlerFetchVerification();
-  }, [loader, itemsPerPage, currentPage]);
+  }, [loader, searchParams, itemsPerPage, currentPage]);
 
   useEffect(() => {
     setCheckedArr([]); // Asegurarse de que inicia vacío
@@ -102,8 +149,8 @@ export default function TableControl() {
                 <input type="checkbox" onClick={handlerSelectAllCheck} />
               </th>
               <th className="px-4 py-2 text-gray-700">SEGMENTO</th>
-              <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA</th>
               <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
+              <th className="px-4 py-2 text-gray-700">CUENTA OPERATIVA</th>
               <th className="px-4 py-2 text-gray-700">NUMERO DE CASOS</th>
               <th className="px-4 py-2 text-gray-700">NOMBRE DE LA EMPRESA</th>
               <th className="px-4 py-2 text-gray-700">FECHA DE AUDITORIA</th>

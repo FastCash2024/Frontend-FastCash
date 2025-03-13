@@ -6,7 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import Input from "@/components/Input";
 import SelectSimple from "@/components/SelectSimple";
 import { useSearchParams } from "next/navigation";
-import { getDay, today } from "@/utils/getDates";
+import { getDay, getLocalISOString, today } from "@/utils/getDates";
 
 const optionsArray = [
     "Sin Observaciones",
@@ -48,15 +48,8 @@ export default function FormAddMulta() {
         setDataUser(result);
     }
 
-    // async function handlerFetchDetails() {
-    //     const res = await fetch(
-    //         window?.location?.href?.includes('localhost')
-    //             ? 'http://localhost:3000/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
-    //             : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados?estadoDeCredito=Pagado')
-    //     const data = await res.json()
-    //     console.log("data detalle: ", data)
-    //     setDetails(data.data)
-    // }
+    console.log("itemSelected: ", itemSelected);
+    
 
     useEffect(() => {
         handlerFetch();
@@ -75,8 +68,8 @@ export default function FormAddMulta() {
                 importeMulta: data.importeMulta,
                 cuentaOperativa: itemSelected.cuenta,
                 cuentaPersonal: itemSelected.emailAsesor ?? itemSelected.emailPersonal,
-                fechaDeOperacion: itemSelected.fecha ?? today,
-                fechaDeAuditoria: today,
+                fechaDeOperacion: itemSelected.fecha ?? getLocalISOString(),
+                fechaDeAuditoria: getLocalISOString(),
                 acotacion: data.acotacion,
                 cuentaPersonalAuditor: userDB.emailPersonal,
                 cuentaAuditor: userDB.cuenta,
