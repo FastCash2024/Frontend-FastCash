@@ -83,7 +83,7 @@ export default function FormAddMulta() {
                 observaciones: data.observaciones,
                 seccionMulta: item
             };
-            console.log("data a enviar: ", multaData);
+            console.log("data a enviaaaaaaaaaaaaaaaaaaaaaaaaaar: ", multaData);
 
             const response = await fetch(window?.location?.href?.includes('localhost')
                 ? `http://localhost:3006/api/users/multas/multas`
