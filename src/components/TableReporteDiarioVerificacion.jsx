@@ -220,10 +220,8 @@ export default function Home() {
 
   function handlerSelectAllCheck(e, i) {
     if (e.target.checked) {
-      // Si está marcado, agrega el índice al array
       setCheckedArr(data.data);
     } else {
-      // Si no está marcado, quita el índice del array
       setCheckedArr([]);
     }
 
@@ -247,8 +245,8 @@ export default function Home() {
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
   }
-  console.log("tabla reporte", data.data)
-  console.log("tabla details", details)
+  console.log("array: ", checkedArr);
+  
   return (
     <>
       <div className='max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth'>
@@ -258,7 +256,7 @@ export default function Home() {
 
             <tr className=' bg-gray-800'>
               <th className='px-3 py-2'>
-                <input type="checkbox" onClick={(e) => handlerSelectAllCheck(e)} />
+                <input type="checkbox" onClick={handlerSelectAllCheck} />
               </th>
               <th className="px-4 py-2 text-white">SEGMENTO</th>
               <th className="px-4 py-2 text-white">Nombres</th>
@@ -296,7 +294,7 @@ export default function Home() {
 
                 <td className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? 'bg-white' : 'bg-white'} ${selectedLeft === 1 ? 'sticky left-0 z-10' : ''}`} >
                   <input type="checkbox"
-                    checked={checkedArr.data?.some(value => value._id === i._id)}
+                    checked={checkedArr.some(value => value._id === i._id)}
                     onChange={(e) => handlerSelectCheck(e, i)} />
                 </td>
                 <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>

@@ -2,7 +2,7 @@ import { useAppContext } from '@/context/AppContext';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { Paginator } from './Paginator';
-import { getCurrentDate, obtenerSegmento } from '@/utils';
+import { formatearFecha, getCurrentDate, obtenerSegmento } from '@/utils';
 
 export default function TableControl() {
   const {
@@ -90,7 +90,7 @@ export default function TableControl() {
     setModal(modal);
   }
 
-  console.log('data arr:', checkedArr);
+  // console.log('data arr:', checkedArr);
 
   return (
     <>
@@ -106,6 +106,7 @@ export default function TableControl() {
               <th className="px-4 py-2 text-gray-700">CUENTA PERSONAL</th>
               <th className="px-4 py-2 text-gray-700">NUMERO DE CASOS</th>
               <th className="px-4 py-2 text-gray-700">NOMBRE DE LA EMPRESA</th>
+              <th className="px-4 py-2 text-gray-700">FECHA DE AUDITORIA</th>
               <th className="px-4 py-2 text-gray-700">CUENTA AUDITORA</th>
               <th className="px-4 py-2 text-gray-700">OPERACION</th>
             </tr>
@@ -128,6 +129,9 @@ export default function TableControl() {
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
                   {item?.origenDeLaCuenta}
+                </td>
+                <td className="px-4 py-2 bg-[#ffffff]">
+                  {formatearFecha(item?.fechaDeAuditoria)}
                 </td>
                 <td className="px-4 py-2 bg-[#ffffff]">
                   {item?.cuentaAuditor}

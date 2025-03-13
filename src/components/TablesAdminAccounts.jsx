@@ -361,7 +361,7 @@ export default function Home() {
                   dataArray={[""]}
                   dataFilter={(i) => i}
                   local={"http://localhost:3006/api/users/multas/multas"}
-                  server={"https://api.fastcash-mx.com/api/multas/multas"}
+                  server={"https://api.fastcash-mx.com/api/users/multas/multas"}
                 />
               )}
               {/* --------------------------------- VERIFICACION DE CREDITOS --------------------------------- */}

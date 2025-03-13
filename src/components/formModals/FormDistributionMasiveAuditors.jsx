@@ -6,6 +6,7 @@ import FormLayout from "@/components/formModals/FormLayout";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { obtenerSegmento } from "@/utils";
+import { getLocalISOString, today } from "@/utils/getDates";
 export default function FormDistributionAuditors() {
   const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
   const { theme, toggleTheme } = useTheme();
@@ -210,7 +211,7 @@ export default function FormDistributionAuditors() {
 
   //Gardar asignaciones
   async function saveAsignation() {
-    console.log("Cantidad de usuarios asignados: ", casosAsignados);
+    // console.log("Cantidad de usuarios asignados: ", casosAsignados);
     setLoader('Guardando...');
 
     try {
@@ -223,7 +224,8 @@ export default function FormDistributionAuditors() {
         
         let bodyData = {
           cuentaAuditor: i.cuentaAuditor,
-          cuentaPersonalAuditor: i.apodoDeUsuarioDeAuditoria
+          cuentaPersonalAuditor: i.apodoDeUsuarioDeAuditoria,
+          fechaDeAuditoria: getLocalISOString()
         };
         console.log("caso bodyData: ", bodyData);
 
@@ -261,7 +263,7 @@ export default function FormDistributionAuditors() {
 
   return (
     <FormLayout>
-      <h4 className="text-gray-950">Distribuir Casos Masivoooos</h4>
+      <h4 className="text-gray-950">Distribuir Casos Masivos Auditoria</h4>
       {!calculate &&
         <div className='flex justify-between items-center w-[100%] '>
           <label htmlFor="cantidadAsignacionIgualitaria" className={`mr-5 text-[11px]  ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
