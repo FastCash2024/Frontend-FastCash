@@ -40,7 +40,7 @@ export default function TableGestionDeAuditoria() {
     const finalURL = queryString
       ? `${baseUrl}&${paginationParams}&${queryString}`
       : `${baseUrl}&${paginationParams}`;
-    console.log("url local solicitada: ", finalURL);
+    // console.log("url local solicitada: ", finalURL);
     try {
       const res = await fetch(finalURL);
       const result = await res.json();
@@ -50,13 +50,14 @@ export default function TableGestionDeAuditoria() {
       setTotalPages(result.totalPages);
       setTotalDocuments(result.totalDocuments);
     } catch (error) {
-      console.error("Error al obtener datos: ", error)
+      // console.error("Error al obtener datos: ", error)
       setLoader(false);
     }
     // const result = await res.json();
     // console.log(data)
   }
 
+  console.log("USEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER", user)
   useEffect(() => {
     if (item === "Gestion de auditoria") {
       handlerFetchMultas(itemsPerPage, currentPage);
@@ -78,7 +79,7 @@ export default function TableGestionDeAuditoria() {
 
   return (
     <>
-      <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
+      {/* <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
 
         <table className="w-full min-w-[1500px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
           <thead className="text-[10px] text-white uppercase bg-gray-900 sticky top-[0px] z-20">
@@ -130,7 +131,7 @@ export default function TableGestionDeAuditoria() {
           onItemsPerPageChange={handleItemsPerPageChange}
           onReload={handleReload}
         />
-      </div>
+      </div> */}
     </>
   )
 }

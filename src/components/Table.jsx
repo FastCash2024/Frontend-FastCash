@@ -190,6 +190,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setTotalDocuments(result.totalDocuments);
     setLoader(false);
   }
+  console.log("useeeeeeeeeeeeeeeer: ", user);
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
@@ -323,7 +324,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   }
 
   return (
-    access && (
+ access && (
       <>
         <div className="max-h-[calc(100vh-120px)] pb-2 overflow-y-auto relative scroll-smooth drop-shadow-2xl border">
           <table className="min-w-full shadow border-collapse drop-shadow-2xl ">
