@@ -5,7 +5,7 @@ export const encabezadoCasosDeCobranza = () => {
         ? [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
-            "Cliente nuevo", "Valor Enviado" /*, Importe reembolsable (Rp)*/, "Importe pagado (Rp)",
+            "Cliente nuevo", "Valor Enviado", "Importe pagado (Rp)",
             "Registro de notas", "Nombre del producto", "Fecha de reembolso",
             "Días Vencidos", "fecha de tramitacion de cobro", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Cuenta Cobrador (Asesor)",
@@ -14,7 +14,7 @@ export const encabezadoCasosDeCobranza = () => {
         : [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
-            "Cliente nuevo", "Valor Enviado"/*"Importe reembolsable (Rp)"*/, "Importe pagado (Rp)",
+            "Cliente nuevo", "Valor Enviado", "Importe pagado (Rp)",
             "Registro de notas", "nombreDelProducto", "Fecha de reembolso",
             "Días Vencidos", "fecha de tramitacion de cobro", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Operar"
@@ -25,9 +25,9 @@ export const encabezadoIncurrirEnUnaEstaciónDeTrabajo = () => [
     "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
     "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
     "Cliente nuevo", "valor solicitado (Importe adeudado MXN)", "Cantidad dispersada (Importe pagado MXN)", "fecha De Dispersion",
-    "Registro de notas", "Nombre Del Producto (Código de producto)", "Fecha de reembolso", "Días Vencidos",
+    "Nombre Del Producto (Código de producto)", "Fecha de reembolso", "Días Vencidos",
     "fecha de tramitacion de cobro", "Fecha de creación de la tarea",
-    "Fecha de tramitación del caso", "Nombre de la empresa", "Apodo de usuario de cobro",
+    "Fecha de tramitación del caso", "Nombre de la empresa",
     "Operar"
 ];
 
@@ -95,17 +95,17 @@ export const encabezadoCasosDeVerificacion = () => {
         ? [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito", "Nombre del cliente", "Número de teléfono móvil",
-            "Cliente nuevo", "Valor solicitado (VS)", "Valor enviado (VE)", "Registro de notas",
-            "Nombre del producto", "Fecha de reembolso", "Fecha de creación de la tarea",
-            "Fecha de tramitación del caso", "Nombre de la empresa", "Cuenta Verificador (Asesor)",
+            "Cliente nuevo", "Valor solicitado (VS)", "Valor enviado (VE)",
+            "Nombre del producto", "Fecha de creación de la tarea",
+            "Fecha de tramitación del caso", "Fecha de reembolso", "Nombre de la empresa", "Cuenta Verificador (Asesor)",
             "Operar"
         ]
         : [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito", "Nombre del cliente", "Número de teléfono móvil",
-            "Cliente nuevo", "Valor solicitado (VS)", "Valor enviado (VE)", "Registro de notas",
-            "Nombre del producto", "Fecha de reembolso", "Fecha de creación de la tarea",
-            "Fecha de tramitación del caso", "Nombre de la empresa", "Operar"
+            "Cliente nuevo", "Valor solicitado (VS)", "Valor enviado (VE)",
+            "Nombre del producto", "Fecha de creación de la tarea",
+            "Fecha de tramitación del caso", "Fecha de reembolso", "Nombre de la empresa", "Operar"
         ];
 };
 export const encabezadoListaFinal = () => [

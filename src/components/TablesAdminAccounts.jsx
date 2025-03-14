@@ -263,9 +263,9 @@ export default function Home() {
                   access={true}
                   headArray={encabezadoIncurrirEnUnaEstaciónDeTrabajo}
                   dataArray={[""]}
-                  dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3003/api/loans/verification"}
-                  server={"https://api.fastcash-mx.com/api/loans/verification"}
+                  dataFilter={(i) => i?.estadoDeCredito === "Dispersado"}
+                  local={"http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado&"}
+                  server={"http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado&"}
                 />
               )}
               {item === "Gestión de cuentas de Colección" && (

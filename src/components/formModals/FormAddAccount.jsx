@@ -306,32 +306,6 @@ console.log(item)
                     Generar
                 </button>
             </div>
-            <div className='flex justify-between'>
-                <label htmlFor="apodo" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Apodo:
-                </label>
-                <Input
-                    type="apodo"
-                    name="apodo"
-                    onChange={onChangeHandler}
-                    placeholder="user123"
-                    uuid='123'
-                    required
-                />
-            </div>
-            <div className='flex justify-between'>
-                <label htmlFor="email" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Email:
-                </label>
-                <Input
-                    type="email"
-                    name="email"
-                    onChange={onChangeHandler}
-                    placeholder="example@gmail.com"
-                    uuid='123'
-                    required
-                />
-            </div>
             <div className="flex  space-x-2"><span className='text-[10px] pr-5 text-gray-950'>Situacion laboral:</span>
                 {['En el trabajo', 'Dimitir', 'Reposo'].map((num, index) => (
                     <label key={index} className="flex items-center space-x-2 text-gray-950">

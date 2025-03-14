@@ -81,7 +81,6 @@ export default function AddAccount() {
             setLoader('Guardando...')
             //GENERACION DE NUEVA CONTRASEÑA
             let password = generarContrasena()
-            console.log("selectAccount",selectAccount)
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
                     ? `http://localhost:3002/api/authSystem/register/${checkedArr[0]._id}`
@@ -194,7 +193,7 @@ export default function AddAccount() {
             >
                 X
             </button>
-            <h4 className='w-full text-center text-gray-950'>Asignar Asesor</h4>
+            <h4 className='w-full text-center text-gray-950'>Asignar Cuenta Personal</h4>
 
             <div className='flex justify-between w-full max-w-[300px]'>
                 <label htmlFor="email" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>

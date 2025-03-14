@@ -181,8 +181,8 @@ export default function Home() {
 
     console.log("today: ", today);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`
-      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`;
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`
+      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);

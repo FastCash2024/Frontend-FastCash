@@ -19,7 +19,7 @@ const styles = {
     },
   };
   
-  const Barometer = ({ id, value = 50, title = "" }) => {
+  const Barometer = ({ id, value = 0, title = "" }) => {
     return (
       <div style={styles.container}>
         <div style={styles.dial}>

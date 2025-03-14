@@ -459,9 +459,9 @@ const Jumlah = [
 
 const estadoRembolso = [
   'Por favor elige',
-  'Cobrado',
-  'No pagado'
-
+  "Dispersado", 
+  "Pagado" , 
+  "Pagado con Extensión"
 ]
 
 const estado = ['En verficación', 'Transfiriendo', 'Exitoso', 'Rechazado']

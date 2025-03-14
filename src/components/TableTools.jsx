@@ -359,14 +359,11 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Tasa de recuperación de grupo
                                 </h4>
 
-                                {/* ProgressBar que toma el valor de totales[segmento] */}
                                 {Object.keys(totales).map((segmento) => (
-                                    <div key={segmento} className="mb-4">
-                                        <ProgressBarComponent value={totales[segmento] ?? 0} />
-
-                                        <div className="grid grid-cols-3 w-[300px]">
+                                    <div key={segmento} className="flex flex-row w-[500px] gap-6 mb-4">
+                                        <div className="grid grid-cols-2 w-[200px]">
                                             <p
-                                                className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
+                                                className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
                                                     } dark:text-white`}
                                             >
                                                 {segmento} <br /> Segmento.
@@ -378,39 +375,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                                 {totales[segmento] ?? 0} <br /> Número total de casos cobrados.
                                             </p>
                                         </div>
+                                        <div className="flex-grow flex items-center justify-center">
+                                            <div className="w-full max-w-[300px]">
+                                                <ProgressBarComponent value={totales[segmento] ?? 0} />
+                                            </div>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
-
-
-
-                            {/* <h4 className='text-center text-[14px] text-green-600  m-0 p-0 pb-2'> <span className='bg-green-600 mr-2 w-[10px] h-[10px] inline-block'></span>Tasa de recuperación de grupos</h4> */}
-
-                        </div>
-                        <div className=' p-2 border my-5 flex flex-col justify-between'>
-                            <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Ranking de hoy</h4>
-                            <br />
-                            <div className='grid grid-cols-2 gap-2'>
-                                <div>
-                                    <h4 className='text-center text-[18px] text-[steelblue] m-0 p-0 pb-2'>NO.0</h4>
-                                    <p className='col-span-2 text-center text-[12px] text-gray-500'>Ranking Individual <br /> por Equipos</p>
-
-                                </div>
-                                <div>
-                                    <h4 className='text-center text-[18px] text-[steelblue] m-0 p-0 pb-2'>0.00</h4>
-                                    <p className='col-span-2 text-center text-[12px] text-gray-500'>Monto del cobro</p>
-
-                                </div>
-
-                            </div>
-                            <br />
-
-                            <h4 className='text-center text-[18px] text-[steelblue] m-0 p-0 pb-2'>0.00</h4>
-
-
-                            <p className='col-span-2 text-center text-[12px] text-gray-500'>Monto del cobro</p>
-
-
                         </div>
                     </div>
 
@@ -419,7 +391,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         <div className='w-[350px] space-y-2'>
                             <div className='flex items-center justify-end '>
                                 <label htmlFor="" className={`ql-align-right mr-2 text-[10px] text-right ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Producto del proyecto:
+                                    Codigo del Producto:
                                 </label>
                                 <SelectSimple click={handlerSelectClick} arr={filtro_1} name='nombreDelProducto' defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
@@ -438,12 +410,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </label>
                                 <SelectSimple arr={[...estadoRembolso, 'Reembolso Parcial']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-                            <div className='flex justify-end items-center'>
-                                <label htmlFor="" className={`ql-align-right mr-2 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Angsuran:
-                                </label>
-                                <SelectSimple arr={['Por favor elige', 'Si', 'No']} name='Clientes nuevos y antiguos' click={handlerSelectClick} defaultValue={filter['Clientes nuevos y antiguos']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+
                             <div className='flex justify-end space-x-3 p-4 pr-0'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Consultar</button>
@@ -482,12 +449,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 name2="fechaDeReembolso"
                                 label="Fecha de Reembolso: "
                             />
-                            <div className='flex justify-end items-center'>
-                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Número de etapas:
-                                </label>
-                                <SelectSimple arr={['Por favor elige', '1', '2']} name='Número de etapas' click={handlerSelectClick} defaultValue={filter['Número de etapas']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
+
                         </div>
                         <div className='w-[350px] space-y-2'>
                             <SearchInput
@@ -518,13 +480,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 name2="fechaDeTramitacionDelCaso"
                                 label="Fecha de asignación: "
                             />
-                            <div className='flex justify-end items-center'>
-                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Collected employe ID:
-                                </label>
-                                <SelectSimple arr={['Opción 1', 'Opción 2']} name='Collected employee ID' click={handlerSelectClick} defaultValue={filter['Collected employee ID']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                            </div>
-
                         </div>
                     </div>
                 </div>}

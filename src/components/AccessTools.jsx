@@ -129,8 +129,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 }
                             </div>
                         </div>
-                        <div className='w-[300px] space-y-2'>
+                        <div className={`${(item === 'Gestión de asesores' || item === 'Gestión de cuentas de Colección') ? "w-[300px]" : "w-[480px]"}  space-y-2`}>
                             <div className='flex justify-between space-x-3'>
+                                {(item !== 'Gestión de asesores' && item !== 'Gestión de cuentas de Colección') && (
+                                    <Button
+                                        type="button"
+                                        theme={checkedArr.length > 0 ? 'Success' : 'Disable'}
+                                        click={() => checkedArr.length > 0 && setModal('Asignar Asesor')}
+                                    >
+                                        Asignar Cuenta
+                                    </Button>
+                                )}
+
                                 <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Editar cuenta')}>Restablecimiento masivo de contraseñas</Button>
                             </div>
                         </div>
