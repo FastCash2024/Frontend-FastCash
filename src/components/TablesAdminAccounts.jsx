@@ -265,7 +265,7 @@ export default function Home() {
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "Dispersado"}
                   local={"http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado&"}
-                  server={"http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado&"}
+                  server={"https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado"}
                 />
               )}
               {item === "Gestión de cuentas de Colección" && (
