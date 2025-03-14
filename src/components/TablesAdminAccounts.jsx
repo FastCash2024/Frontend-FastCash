@@ -354,27 +354,18 @@ export default function Home() {
                 //   server={"https://api.fastcash-mx.com/api/multas/multas"}
                 // />
               )}
-              {user?.codificacionDeRoles === "Cuenta Personal" && item?.toLowerCase().includes("auditoria")  ? 
-              (
-                <Table
-                  access={true}
-                  headArray={encabezadoControlDeCumplimiento}
-                  dataArray={[""]}
-                  dataFilter={(i) => user?.email === i?.cuentaPersonal}
-                  local={"http://localhost:3006/api/users/multas/multas"}
-                  server={"https://api.fastcash-mx.com/api/users/multas/multas"}
-                />
-              )
-              : (
-                <Table
-                  access={true}
-                  headArray={encabezadoControlDeCumplimiento}
-                  dataArray={[""]}
-                  dataFilter={(i) => i}
-                  local={"http://localhost:3006/api/users/multas/multas"}
-                  server={"https://api.fastcash-mx.com/api/users/multas/multas"}
-                />
-              )}
+              {item?.toLowerCase().includes("auditoria")
+                (
+                  <Table
+                    access={true}
+                    headArray={encabezadoControlDeCumplimiento}
+                    dataArray={[""]}
+                    dataFilter={(i) => user?.email === i?.cuentaPersonal}
+                    local={"http://localhost:3006/api/users/multas/multas"}
+                    server={"https://api.fastcash-mx.com/api/users/multas/multas"}
+                  />
+                )
+              }
               {/* --------------------------------- VERIFICACION DE CREDITOS --------------------------------- */}
               {item === "Recolección y Validación de Datos" && (
                 <Table
