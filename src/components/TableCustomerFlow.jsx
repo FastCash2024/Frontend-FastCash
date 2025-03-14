@@ -86,7 +86,7 @@ export default function TableCustomerFlow() {
 
   const totalCobrado = dates.reduce((acc, date) => {
     const total = filtro_1.reduce((sum, item) => {
-      return sum + (filtro_2[date]?.[item]?.totalMontoCobrado || 0);
+      return sum + (filtro_2[date]?.[item]?.totalCasosCobrados || 0);
     }, 0);
     acc[date] = total;
     return acc;
@@ -94,7 +94,7 @@ export default function TableCustomerFlow() {
 
   const totalGeneral = dates.reduce((acc, date) => {
     const total = filtro_1.reduce((sum, item) => {
-      return sum + (filtro_2[date]?.[item]?.totalMonto || 0);
+      return sum + (filtro_2[date]?.[item]?.total || 0);
     }, 0);
     acc[date] = total;
     return acc;
@@ -251,7 +251,7 @@ export default function TableCustomerFlow() {
                     {
                       dates.map((date, idx) => (
                         <td key={idx} className="px-3 py-2 text-center">
-                          {filtro_2[date]?.[item]?.totalMontoCobrado}/{filtro_2[date]?.[item]?.total}
+                          {filtro_2[date]?.[item]?.totalCasosCobrados}/{filtro_2[date]?.[item]?.total}
                         </td>
                       ))}
                   </tr>
