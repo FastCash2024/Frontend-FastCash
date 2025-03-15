@@ -239,21 +239,6 @@ export default function FormUpdateAplication() {
                     placeholder='4.3'
                     required />
             </div>
-            <div className='relative flex justify-between  w-[100%]'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Acceso a usuarios:
-                </label>
-                <SelectSimple
-                    arr={['Libre', 'Estandar', 'Premium']}
-                    name='categoria'
-                    click={handlerSelectClick2}
-                    defaultValue={data?.categoria ? data?.categoria : 'Seleccionar'}
-                    uuid='123'
-                    label='Filtro 1'
-                    position='absolute left-0 top-[25px]'
-                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}
-                    required />
-            </div>
             <button type="button"
                 className="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"
                 onClick={handleSubmit}>Actualizar Aplicación
