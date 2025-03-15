@@ -5,8 +5,7 @@ export const encabezadoCasosDeCobranza = () => {
         ? [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
-            "Cliente nuevo", "Valor Enviado", "Importe pagado (Rp)",
-            "Registro de notas", "Nombre del producto", "Fecha de reembolso",
+            "Cliente nuevo", "Valor Enviado", "Importe pagado (Rp)", "Nombre del producto", "Fecha de reembolso",
             "Días Vencidos", "fecha de tramitacion de cobro", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Cuenta Cobrador (Asesor)",
             "Operar"
@@ -15,7 +14,7 @@ export const encabezadoCasosDeCobranza = () => {
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
             "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
             "Cliente nuevo", "Valor Enviado", "Importe pagado (Rp)",
-            "Registro de notas", "nombreDelProducto", "Fecha de reembolso",
+             "nombreDelProducto", "Fecha de reembolso",
             "Días Vencidos", "fecha de tramitacion de cobro", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Operar"
         ];

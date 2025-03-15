@@ -324,7 +324,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   }
 
   return (
- access && (
+    access && (
       <>
         <div className="max-h-[calc(100vh-120px)] pb-2 overflow-y-auto relative scroll-smooth drop-shadow-2xl border">
           <table className="min-w-full shadow border-collapse drop-shadow-2xl ">
@@ -516,7 +516,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     </button>
                                   </Link>
                                   {
-                                    !item?.toLowerCase().includes("lista")&&
+                                    !item?.toLowerCase().includes("lista") &&
                                     <button
                                       type="button"
                                       className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
@@ -638,6 +638,15 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   />
                                 </div>
                               )}
+
+                            {it.toLowerCase() === "días vencidos" && (
+                              <div className="flex justify-center min-w-[60px]">
+                                {
+
+                                  Math.floor((new Date(i.fechaDeTramitacionDelCaso) - new Date()) * (-1) / (1000 * 60 * 60 * 24))
+                                }
+                              </div>
+                            )}
 
                             {(item == "Incurrir en una estación de trabajo" || item == "Casos de Cobranza") && it.toLowerCase() === "operar" && (
                               <div className="flex justify-between space-x-3">

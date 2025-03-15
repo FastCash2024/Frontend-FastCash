@@ -168,41 +168,48 @@ export default function FormDistributtonCasesSegment() {
   const assignCasesBySegment = async () => {
     setCalculate(true);
     setType("BySegment");
-  
+
     const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
-  
+
     const usuarios = verificadores.map(user => ({
       ...user,
       idCasosAsignados: []
     }));
-  
+
     const resCases = await fetch("https://api.fastcash-mx.com/api/loans/verification?&limit=1000");
     const dataVerification = await resCases.json();
-  
+
     const casosPorSegmento = { D0: [], D1: [], D2: [], S1: [], S2: [] };
     const fechaActual = new Date();
-  
-    dataVerification.data.forEach(caso => {
+
+    dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito).forEach(caso => {
       const fechaReembolso = new Date(caso.fechaDeReembolso);
       const fechaTramitacion = new Date(caso.fechaDeTramitacionDelCaso);
-  
-      const diferenciaDiasReembolso = Math.floor((fechaReembolso - fechaActual) / (1000 * 60 * 60 * 24));
-      const diferenciaDiasTramitacion = Math.floor((fechaActual - fechaTramitacion) / (1000 * 60 * 60 * 24));
-  
+
+
+      const fechaOriginal = new Date(caso.fechaDeTramitacionDelCaso);
+      fechaOriginal.setUTCDate(fechaOriginal.getUTCDate() + 7);
+
+      const diferenciaDiasReembolso = Math.floor((fechaOriginal - fechaActual)*(-1)  / (1000 * 60 * 60 * 24));
+      const diferenciaDiasTramitacion = Math.floor((fechaTramitacion - fechaActual) *(-1) / (1000 * 60 * 60 * 24));
+      
+      
+      console.log(fechaTramitacion)
+      console.log("diferenciaDiasTramitacion",diferenciaDiasTramitacion)
       // Validación: Si la fecha de tramitación es hoy, no se asigna
       if (diferenciaDiasTramitacion === 0) {
         console.log(`El caso ${caso.numeroDePrestamo} es reciente y no puede asignarse.`);
         return;
       }
-  
+
       // Validación: Solo se asignan casos cuya fecha de tramitación tenga al menos 5 días
       if (diferenciaDiasTramitacion < 5) {
         console.log(`El caso ${caso.numeroDePrestamo} aún no puede asignarse. Se necesita esperar ${5 - diferenciaDiasTramitacion} días más.`);
         return;
       }
-  
+      console.log(diferenciaDiasReembolso)
       if (diferenciaDiasReembolso === 0) {
         casosPorSegmento.D0.push(caso);
       } else if (diferenciaDiasReembolso === 1) {
@@ -215,74 +222,85 @@ export default function FormDistributtonCasesSegment() {
         casosPorSegmento.S2.push(caso);
       }
     });
-  
+
     const asignacionesFinales = [];
-  
+
     Object.keys(casosPorSegmento).forEach(segmento => {
       const casos = casosPorSegmento[segmento];
       const usuariosSegmento = usuarios.filter(user => obtenerSegmento(user.cuenta) === segmento);
-  
+
       let usuarioIndex = 0;
-  
+
       casos.forEach(caso => {
         if (usuariosSegmento.length > 0) {
           const usuario = usuariosSegmento[usuarioIndex];
           usuario.idCasosAsignados.push(caso.numeroDePrestamo);
-  
+
           asignacionesFinales.push({
             ...caso,
             cuenta: usuario.cuenta,
             nombreDeLaEmpresa: usuario.origenDeLaCuenta,
             segmentoAsignado: segmento,
-            fechaDeTramitacionDelCaso: caso.estadoDeCredito === "Pendiente" ? fechaActual.toISOString() : caso.fechaDeTramitacionDelCaso,
+            // fechaDeTramitacionDelCaso: caso.estadoDeCredito === "Pendiente" ? fechaActual.toISOString() : caso.fechaDeTramitacionDelCaso,
             fechaDeTramitacionDeCobro: caso.estadoDeCredito === "Dispersado" ? fechaActual.toISOString() : caso.fechaDeTramitacionDeCobro
           });
-  
+
           usuarioIndex = (usuarioIndex + 1) % usuariosSegmento.length;
         }
       });
     });
-  
+
     console.log("Casos asignados: ", asignacionesFinales);
-  
+
     setusuariosConAsignacion(usuarios);
     setCasosAsignados(asignacionesFinales);
     setCasosPorSegmento(casosPorSegmento);
   };
-  
+
 
   const assignCasesEquallyBySegment = async () => {
     setCalculate(true);
     setType('EquallyBySegment');
-  
+
     const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
-  
+
     const usuarios = verificadores.map(user => ({ ...user, idCasosAsignados: [] }));
-  
+
     const resCases = await fetch("https://api.fastcash-mx.com/api/loans/verification?&limit=1000");
     const dataVerification = await resCases.json();
     const casos = dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito);
-  
+
     const casosPorSegmento = {
       D0: [], D1: [], D2: [], S1: [], S2: []
     };
-  
+
     const fechaActual = new Date();
-  
+
     casos.forEach(caso => {
       const fechaReembolso = new Date(caso.fechaDeReembolso);
       const fechaTramitacion = new Date(caso.fechaDeTramitacionDelCaso);
-      const diferenciaDias = Math.floor((fechaReembolso - fechaActual) / (1000 * 60 * 60 * 24));
-  
+      // const diferenciaDias = Math.floor((fechaReembolso - fechaActual) / (1000 * 60 * 60 * 24));
+
       // Validar que la fecha de tramitación sea al menos 5 días antes
-      const diferenciaDiasTramitacion = Math.floor((fechaActual - fechaTramitacion) / (1000 * 60 * 60 * 24));
+      // const diferenciaDiasTramitacion = Math.floor((fechaActual - fechaTramitacion) / (1000 * 60 * 60 * 24));
+
+
+
+      const fechaOriginal = new Date(caso.fechaDeTramitacionDelCaso);
+      fechaOriginal.setUTCDate(fechaOriginal.getUTCDate() + 7);
+
+      const diferenciaDias = Math.floor((fechaOriginal - fechaActual)*(-1)  / (1000 * 60 * 60 * 24));
+      const diferenciaDiasTramitacion = Math.floor((fechaTramitacion - fechaActual) *(-1) / (1000 * 60 * 60 * 24));
+
+
+
       if (diferenciaDiasTramitacion < 5) {
         console.log(`Caso ${caso.numeroDePrestamo} no se asigna porque es reciente.`);
         return;
       }
-  
+
       if (diferenciaDias === 0) {
         casosPorSegmento.D0.push(caso);
       } else if (diferenciaDias === 1) {
@@ -295,20 +313,20 @@ export default function FormDistributtonCasesSegment() {
         casosPorSegmento.S2.push(caso);
       }
     });
-  
+
     const asignacionesFinales = [];
-  
+
     Object.keys(casosPorSegmento).forEach(segmento => {
       const casosSegmento = casosPorSegmento[segmento];
       const usuariosSegmento = usuarios.filter(user => obtenerSegmento(user.cuenta) === segmento);
-  
+
       let usuarioIndex = 0;
-  
+
       casosSegmento.forEach(caso => {
         if (usuariosSegmento.length > 0) {
           const usuario = usuariosSegmento[usuarioIndex];
           usuario.idCasosAsignados.push(caso.numeroDePrestamo);
-  
+
           asignacionesFinales.push({
             ...caso,
             cuenta: usuario.cuenta,
@@ -317,12 +335,12 @@ export default function FormDistributtonCasesSegment() {
             // fechaDeTramitacionDelCaso: caso.estadoDeCredito === "Pendiente" ? fechaActual.toISOString() : caso.fechaDeTramitacionDelCaso,
             fechaDeTramitacionDeCobro: caso.estadoDeCredito === "Dispersado" ? getLocalISOString() : caso.fechaDeTramitacionDeCobro
           });
-  
+
           usuarioIndex = (usuarioIndex + 1) % usuariosSegmento.length;
         }
       });
     });
-  
+
     setusuariosConAsignacion(usuarios);
     setCasosAsignados(asignacionesFinales);
     setCasosPorSegmento(casosPorSegmento);
@@ -355,7 +373,7 @@ export default function FormDistributtonCasesSegment() {
       </div>
       <div className="mt-4">
         {Object.keys(casosPorSegmento).map(segmento => (
-          <p key={segmento} className="text-sm text-gray-700">
+          <p key={segmento} className={`text-sm text-gray-700 ${casosPorSegmento[segmento].length > 0 && " bg-green-300"}`}>
             {segmento}: {casosPorSegmento[segmento].length} casos
           </p>
         ))}

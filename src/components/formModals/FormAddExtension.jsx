@@ -118,9 +118,9 @@ export default function FormAddExtension() {
                     <Input
                         type="number"
                         name="cantidadAsignacionIgualitaria"
-                        value={itemSelected.valorExtencion}
-                        disabled
+                        defaultVlue={itemSelected.valorExtencion}
                         uuid="123"
+                        disabled
                         required
                     />
                 </div>
