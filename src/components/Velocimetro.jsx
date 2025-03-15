@@ -24,7 +24,7 @@ const styles = {
       <div style={styles.container}>
         <div style={styles.dial}>
           <Chart
-            height={200}
+            height={150}
             chartType="Gauge"
             loader={<div></div>}
             data={[

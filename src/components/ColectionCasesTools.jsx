@@ -33,23 +33,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     function onChangeHandlerDate(e) {
         const { name, value } = e.target;
-    
+
         setFilter((prevFilter) => {
             const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
-            
+
             let updatedValues;
             if (prevValue.length >= 2) {
                 updatedValues = [prevValue[0], value];
             } else {
                 updatedValues = [...prevValue, value];
             }
-    
+
             const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
             setQuery(objectToQueryString(updatedFilter));
             return updatedFilter;
         });
     }
-    
+
 
     function handlerSelectClick(name, i, uuid) {
         const db = { ...filter, [name]: i }
@@ -58,7 +58,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
 
     console.log('query:', setQuery);
-    
+
 
     function objectToQueryString(obj) {
         if (!obj || typeof obj !== "object") {
@@ -100,25 +100,25 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const fetchCustomersFlow = async () => {
         const local = 'http://localhost:3006/api/users/applications/customers';
         const server = 'https://api.fastcash-mx.com/api/users/applications/customers';
-        
+
         try {
             // Seleccionar la URL correcta
             const url = window?.location?.href?.includes("localhost") ? local : server;
-    
+
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
-    
+
             if (!response.ok) {
                 throw new Error('Error en la solicitud');
             }
-    
+
             const result = await response.json();
             console.log('Clientes:', result);
-            
+
             setFiltro_1(result);
         } catch (error) {
             console.error('Error al obtener los clientes:', error);
@@ -126,9 +126,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     };
 
     useEffect(() => {
-      if (item === "Casos de Cobranza" || item === "Cobro y balance") {
-        void fetchCustomersFlow();
-      }
+        if (item === "Casos de Cobranza" || item === "Cobro y balance") {
+            void fetchCustomersFlow();
+        }
     }, [item])
 
 
@@ -163,16 +163,16 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <SelectSimple arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <SearchInput
-                                    label="Número de páginas:"
-                                    name="numeroDePaginas"
-                                    value={filter['numeroDePaginas'] || ''}
-                                    onChange={onChangeHandler}
-                                    theme={theme}
-                                    type="number"
-                                    placeholder="Buscar por numero de páginas"
-                                    required
+                                label="Número de páginas:"
+                                name="numeroDePaginas"
+                                value={filter['numeroDePaginas'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                type="number"
+                                placeholder="Buscar por numero de páginas"
+                                required
                             />
-                        </div> 
+                        </div>
                         <div className='w-[300px] space-y-2'>
                             <MultipleInput
                                 key={query}
@@ -194,26 +194,30 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             </div>
                         </div>
                     </div>
-                    { !user.rol.includes("Asesor") && item === "Casos de Cobranza" && (
+                    {!user.rol.includes("Asesor") && item === "Casos de Cobranza" && (
 
-                        <div className='grid grid-cols-3 gap-x-0 gap-y-2 w-[1050px]'>
-                        <div className='w-[330px] space-y-2'>
-                            <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button>
-                                <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta Cobrador')}>Asignar cuenta</Button>
+                        <div className='grid grid-cols-3 gap-x-0 gap-y-2 w-[1050px] pt-1.5'>
+                            <div className='w-[330px] space-y-2'>
+                                <div className='flex justify-between space-x-3'>
+                                    {/* <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button> */}
+                                    <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta Cobrador')}>Asignar cuenta</Button>
+                                </div>
                             </div>
-                        </div>
-                        <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos Segmento')}>Distribucion por segmento</Button>
-                                <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
+                            <div className='w-[300px] space-y-2'>
+                                <div className='flex justify-between space-x-3'>
+                                    <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos Segmento')}>Distribucion por segmento</Button>
+                                </div>
                             </div>
-                        </div>
-                        {/* <div className='w-[300px] space-y-2'>
+                            <div className='w-[300px] space-y-2'>
+                                <div className='flex justify-between space-x-3'>
+                                    <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
+                                </div>
+                            </div>
+                            {/* <div className='w-[300px] space-y-2'>
                             <div className='flex justify-between flex space-x-3'>
                             </div>
                             </div> */}
-                    </div>
+                        </div>
                     )}
                 </div>
             </div>

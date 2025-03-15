@@ -200,7 +200,7 @@ export default function Home() {
 
   return (
     <div className="overflow-x-auto">
-      <main className={` h-full pt-[20px] `}>
+      <main className={` h-full pt-[10px] `}>
         {/* <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block left-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-30 lg:left-[8px]' onClick={prev}>{'<'}</button>
                 <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block right-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-30 lg:right-[8px]' onClick={next}>{'>'}</button>
                 */}

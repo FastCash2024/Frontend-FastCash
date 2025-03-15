@@ -658,13 +658,6 @@ export default function Home() {
         user?.rol && <main className={` h-full pt-[20px] `}>
 
 
-
-
-
-
-
-
-
             {/* 
             <nav className='fixed left-0 top-[60px] w-full px-5 bg-gray-900 z-20 py-1'>
                 {menu.length === 1 && <ul className='flex justify-around space-x-5'>

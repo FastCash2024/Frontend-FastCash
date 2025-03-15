@@ -339,28 +339,27 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {(item === 'Casos de Cobranza') && <ColectionCasesTools />}
 
             {item === 'Incurrir en una estación de trabajo' &&
-                <div>
-                    <div className='flex flex-wrap justify-around relative top-[-25px]'>
+                <div className='flex '>
+                    <div className='flex justify-start relative py-3  border shadow pr-12 bg-slate-100'>
                         <div className='text-center px-2 flex flex-col align-center'>
                             <Velocimetro value={totalesCobro?.pagosTotal}></Velocimetro>
-                            <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1] '} dark:text-text-[#55abf1]`}>Tasa de recuperación de caso</h4>
-                            <div className='grid grid-cols-3 w-[300px]'>
-                                <p className={`col-span-2 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.tasaRecuperacionTotal ?? 0} <br />Cobro de hoy.</p>
-                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.totalesConAsesor ?? 0} <br /> Número total de casos.</p>
+                            <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 text-[#55abf1] `}>Tasa de recuperación de caso</h4>
+                            <div className='grid grid-cols-2 w-[300px]'>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.tasaRecuperacionTotal ?? 0} <br />Cobro de hoy.</p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.totalesConAsesor ?? 0} <br /> Número total de casos.</p>
                             </div>
                         </div>
-                        <div className=' px-2'>
-
+                        <div className='pl-12 px-2'>
                             <div>
                                 <h4
                                     className={`text-center text-[14px] m-0 p-0 pb-2 ${theme === 'light' ? ' text-[steelblue]' : ' text-[#55abf1]'
                                         } dark:text-text-[#55abf1]`}
                                 >
-                                    Tasa de recuperación de grupo
+                                    Tasa de recuperación por grupo
                                 </h4>
 
                                 {Object.keys(totales).map((segmento) => (
-                                    <div key={segmento} className="flex flex-row w-[500px] gap-6 mb-4">
+                                    <div key={segmento} className="flex flex-row w-[500px] gap-6 mb-2">
                                         <div className="grid grid-cols-2 w-[200px]">
                                             <p
                                                 className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
@@ -372,7 +371,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                                 className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
                                                     } dark:text-white`}
                                             >
-                                                {totales[segmento] ?? 0} <br /> Número total de casos cobrados.
+                                                {totales[segmento] ?? 0} <br /> casos cobrados.
                                             </p>
                                         </div>
                                         <div className="flex-grow flex items-center justify-center">
@@ -386,11 +385,11 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                     </div>
 
-                    <div className='flex space-x-12 w-full mb-0 p-5 bg-slate-100 shadow-xl'>
+                    <div className='flex space-x-5 mb-0 '>
 
                         <div className='w-[350px] space-y-2'>
                             <div className='flex items-center justify-end '>
-                                <label htmlFor="" className={`ql-align-right mr-2 text-[10px] text-right ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                <label htmlFor="" className={`ql-align-right mr-2 text-[10px] text-right `}>
                                     Codigo del Producto:
                                 </label>
                                 <SelectSimple click={handlerSelectClick} arr={filtro_1} name='nombreDelProducto' defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
@@ -410,17 +409,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </label>
                                 <SelectSimple arr={[...estadoRembolso, 'Reembolso Parcial']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
-
-                            <div className='flex justify-end space-x-3 p-4 pr-0'>
-                                <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
-                                    <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Consultar</button>
-                                </Link>
-                                <Link href={`?seccion=${seccion}&item=${item}`}>
-                                    <button onClick={resetFilter} type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
-                                </Link>
-                            </div>
-                        </div>
-                        <div className='w-[350px] space-y-3'>
                             <SearchInput
                                 label="Número de prestamo:"
                                 name="numeroDePrestamo"
@@ -439,6 +427,27 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 placeholder="Nombre del Cliente"
                                 required
                             />
+                            <SearchInput
+                                label="ID de sub-factura:"
+                                name="idDeSubFactura"
+                                value={filter['idDeSubFactura'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="ID de sub-factura"
+                                required
+                            />
+                        </div>
+                        <div className='w-[350px] space-y-3'>
+
+                            <div className='flex justify-end items-center'>
+                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                    filtrar por  Dias vencidos:
+                                </label>
+                                <div className='grid grid-cols-2 gap-1'>
+                                    <input className={`h-[25px] max-w-[173px] w-[84.5px] px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-white' : ' text-black bg-white'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Minimo dias vencido' onChange={onChangeHandler} placeholder='Minimo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                    <input className={`h-[25px] max-w-[173px] w-[84.5px] px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-white' : ' text-black bg-white'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Maximo dias vencido' onChange={onChangeHandler} placeholder='Maximo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                </div>
+                            </div>
                             <MultipleInput
                                 key={query}
                                 defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
@@ -450,26 +459,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 label="Fecha de Reembolso: "
                             />
 
-                        </div>
-                        <div className='w-[350px] space-y-2'>
-                            <SearchInput
-                                label="ID de sub-factura:"
-                                name="idDeSubFactura"
-                                value={filter['idDeSubFactura'] || ''}
-                                onChange={onChangeHandler}
-                                theme={theme}
-                                placeholder="ID de sub-factura"
-                                required
-                            />
-                            <div className='flex justify-end items-center'>
-                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Dias vencidos:
-                                </label>
-                                <div className='grid grid-cols-2 gap-1'>
-                                    <input className={`h-[25px] max-w-[173px] w-[84.5px] px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-white' : ' text-black bg-white'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Minimo dias vencido' onChange={onChangeHandler} placeholder='Minimo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                    <input className={`h-[25px] max-w-[173px] w-[84.5px] px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-white' : ' text-black bg-white'} dark:text-white  dark:bg-transparent`} arr={['Opción 1', 'Opción 2']} name='Maximo dias vencido' onChange={onChangeHandler} placeholder='Maximo' defaultValue={filter['Nombre del cliente']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                                </div>
-                            </div>
                             <MultipleInput
                                 key={query}
                                 defaultValue1={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[0] : ""}
@@ -480,7 +469,17 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 name2="fechaDeTramitacionDelCaso"
                                 label="Fecha de asignación: "
                             />
+
+                            <div className='flex justify-end space-x-3  pr-0'>
+                                <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                    <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Consultar</button>
+                                </Link>
+                                <Link href={`?seccion=${seccion}&item=${item}`}>
+                                    <button onClick={resetFilter} type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                </Link>
+                            </div>
                         </div>
+
                     </div>
                 </div>}
             {item === 'Gestión de cuentas de Colección' && <div>
@@ -565,7 +564,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {item === 'Gestion de aplicaciones' && <div>
 
                 <div className='grid grid-cols-3 gap-x-[50px] gap-y-4 w-[950px]'>
-                    <div className='w-[300px] space-y-2'>
+                    {/* <div className='w-[300px] space-y-2'>
                         <SearchInput
                             label="Aplicación:"
                             name="nombre"
@@ -575,12 +574,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             placeholder="Buscar por nombre"
                             required
                         />
-                        <div className='flex justify-end items-center'>
-                            <label htmlFor="" className={`ml-1 pr-0 mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                Categoria:
-                            </label>
-                            <SelectSimple arr={['Libre', 'Estandar', 'Premium']} name='ID de sub-factura' click={handlerSelectClick} defaultValue={filter['ID de sub-factura']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
-                        </div>
+
                     </div>
                     <div className='w-[300px] space-y-2'>
                         <div className='flex justify-center space-x-3'>
@@ -591,14 +585,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <button onClick={resetFilter} type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
                             </Link>
                         </div>
+                    </div> */}
+                    <div className='pt-3 flex space-x-3'>
+                        <Button type="button" theme="Success" click={() => setModal('Añadir aplicacion')}>
+                            Añadir Aplicación
+                        </Button>
                     </div>
+                </div>
 
-                </div>
-                <div className='pt-3 flex space-x-3'>
-                    <Button type="button" theme="Success" click={() => setModal('Añadir aplicacion')}>
-                        Añadir Aplicación
-                    </Button>
-                </div>
             </div>}
 
             {item === "Cobro y balance" && <div>

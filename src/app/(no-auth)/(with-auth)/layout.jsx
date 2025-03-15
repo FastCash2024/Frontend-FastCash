@@ -309,7 +309,7 @@ function Home({ children }) {
 
                     </nav>
                     
-                    <div className="lg:px-[20px] pt-[85px] pb-[65px] md:pt-[85px] md:pb-0 h-screen w-full overflow-y-auto">
+                    <div className="lg:px-[20px] pt-[85px] pb-[65px] md:pt-[65px] md:pb-0 h-screen w-full overflow-y-auto">
                         {children}
                     </div>
                     {/* {user && user !== undefined && <div className="fixed bottom-0  z-30 w-full h-[65px] bg-[#2A52BE] rounded-t-[40px] border-t-[1px] border-gray-50 border- lg:hidden">
