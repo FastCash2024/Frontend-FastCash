@@ -111,7 +111,7 @@ export default function FormPagadoExtension() {
             console.error("Error:", error);
         }
     }
-    
+
     return (
         <div
             className="fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50"
@@ -151,9 +151,9 @@ export default function FormPagadoExtension() {
                         htmlFor="cantidadAsignacionIgualitaria"
                         className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
                     >
-                        Numero de prestamo:
+                        Importe adeudado:
                     </label>
-                    <span className="text-[10px] p-3 w-[200px] bg-gray-100 text-gray-950 rounded-[5px]">
+                    <span className="text-[10px] p-3 w-[173px] bg-yellow-500 text-gray-950 rounded-[5px]">
                         {itemSelected?.valorSolicitado || "N/A"}
                     </span>
                 </div>
@@ -164,12 +164,12 @@ export default function FormPagadoExtension() {
                         htmlFor="cantidadAsignacionIgualitaria"
                         className={`mr-5 text-[11px] ${theme === 'light' ? 'text-gray-950' : 'text-gray-950'} dark:text-gray-950`}
                     >
-                        Tarifa de prolongación:
+                        Importe de extensión:
                     </label>
                     <Input
                         type="number"
                         name="cantidadAsignacionIgualitaria"
-                        value={itemSelected.valorExtencion}
+                        defaultVlue={itemSelected.valorExtencion}
                         disabled
                         uuid="123"
                         required

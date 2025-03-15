@@ -60,6 +60,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const [activeMenu, setActiveMenu] = useState(null);
+  const [operarCobro, setOperarCobro] = useState("");
 
   const toCamelCase = (str) => {
     let cleanedStr = str.toLowerCase();
@@ -86,6 +87,12 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     console.log("id: ", id);
 
     setActiveMenu(activeMenu === id ? null : id);
+  };
+  const toggleMenu2 = (id, tipo) => {
+    console.log("id: ", id);
+
+    setActiveMenu(activeMenu === id ? null : id);
+    setOperarCobro(tipo)
   };
 
   function handlerCobroBalance(i) {
@@ -591,40 +598,67 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                       Visitar
                                     </button>
                                   </Link>
-                                  {/* <button
-                                    type="button"
-                                    className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
-                                    onClick={() =>
-                                      handlerCobroBalance(i)
-                                    }
-                                  >
-                                    Registrar
-                                  </button> */}
+
                                   <div className="relative">
-                                    <CurrencyDollarIcon
-                                      className="h-6 w-6 fill-[#1ab418] cursor-pointer"
-                                      onClick={() => toggleMenu(i._id)}
-                                    />
-                                    {activeMenu === i._id && (
+                                    <button
+                                      type="button"
+                                      className="w-full flex text-white bg-gradient-to-br from-green-600 to-gr-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                      onClick={() => toggleMenu2(i._id, "liquidar")}
+                                    >
+                                      Liquidar pago
+                                    </button>
+
+                                    {operarCobro === "liquidar"&&  activeMenu === i._id && (
                                       <div
-                                        className="fixed z-50 right-0 transform -translate-x-1/2 -translate-y-1/2 
-                                                  min-w-[100px] bg-white border rounded-lg shadow-lg p-2"
+                                        className="absolute w-[150px] z-50 right-[100px] top-[-5px]
+                                                  min-w-[100px] bg-white border rounded-lg shadow-lg"
                                       >
                                         <button
-                                          className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
                                           onClick={() => handlerItemPE("Registro Pago", i)}
                                         >
                                           Hacer Pago
                                         </button>
                                         <button
-                                          className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
                                           onClick={() => handlerItemPE("Registro Pago Extension", i)}
                                         >
                                           Extensión
                                         </button>
                                       </div>
                                     )}
+
                                   </div>
+                                  <div className="relative">
+                                    <button
+                                      type="button"
+                                      className="w-full flex text-white bg-gradient-to-br from-green-600 to-gr-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center me-2 mb-2"
+                                      onClick={() => toggleMenu2(i._id, "liga")}
+                                    >
+                                      Liga de pago
+                                    </button>
+                                    {operarCobro === "liga"&& activeMenu === i._id && (
+                                       <div
+                                       className="absolute w-[150px] z-50 right-[100px] top-[-5px]
+                                                 min-w-[100px] bg-white border rounded-lg shadow-lg"
+                                     >
+                                        <button
+                                          className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          onClick={() => handlerItemPE("Registrar Pago", i)}
+                                        >
+                                          Hacer Pago
+                                        </button>
+                                        <button
+                                          className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                          onClick={() => handlerItemPE("Extension", i)}
+                                        >
+                                          Extensión
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+
+
                                 </div>
                               )}
 
@@ -670,18 +704,18 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     onClick={() => toggleMenu(i._id)}
                                   />
                                   {activeMenu === i._id && (
-                                    <div
-                                      className="fixed z-50 right-0 transform -translate-x-1/2 -translate-y-1/2 
-                                                  min-w-[100px] bg-white border rounded-lg shadow-lg p-2"
-                                    >
+                                   <div
+                                   className="absolute w-[150px] z-50 right-[100px] top-[-5px]
+                                             min-w-[100px] bg-white border rounded-lg shadow-lg"
+                                 >
                                       <button
-                                        className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                        className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
                                         onClick={() => handlerItemPE("Registrar Pago", i)}
                                       >
                                         Hacer Pago
                                       </button>
                                       <button
-                                        className="relative px-4 py-2 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                        className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
                                         onClick={() => handlerItemPE("Extension", i)}
                                       >
                                         Extensión

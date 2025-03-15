@@ -306,8 +306,8 @@ export default function Home() {
                   headArray={encabezadoCobroYValance}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado"}
-                  server={"https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado"}
+                  local={"http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado&numeroDePrestamo=klsklsd"}
+                  server={"https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado&numeroDePrestamo=klsklsd"}
                 />
               )}
               {/* --------------------------------- AUDITORIA Y CONTROL DE CALIDAD --------------------------------- */}

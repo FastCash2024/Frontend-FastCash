@@ -102,7 +102,7 @@ export default function FormAddExtension() {
                     >
                         Numero de prestamo:
                     </label>
-                    <span className="text-[10px] p-3 w-[200px] bg-gray-100 text-gray-950 rounded-[5px]">
+                    <span className="text-[10px] p-3 w-[173px] bg-yellow-500 text-gray-950 rounded-[5px]">
                         {itemSelected?.valorSolicitado || "N/A"}
                     </span>
                 </div>
@@ -118,7 +118,7 @@ export default function FormAddExtension() {
                     <Input
                         type="number"
                         name="cantidadAsignacionIgualitaria"
-                        defaultVlue={itemSelected.valorExtencion}
+                        value={itemSelected.valorExtencion}
                         uuid="123"
                         disabled
                         required

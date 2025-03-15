@@ -117,15 +117,15 @@ export default function FormPagado() {
                 {/* Reembolso Completo */}
                 <div className="flex justify-between items-center w-[100%]">
                     <label className="mr-5 text-[11px] text-gray-950">Reembolso Completo:</label>
-                    <span className="text-[10px] p-3 w-[200px] bg-gray-100 text-gray-950 rounded-[5px]">
+                    <span className="text-[10px] p-3 w-[173px] bg-yellow-500 text-gray-950 rounded-[5px]">
                         {itemSelected?.valorSolicitado || "N/A"}
                     </span>
                 </div>
 
                 {/* Importe Adeudado */}
                 <div className="flex justify-between items-center w-[100%]">
-                    <label className="mr-5 text-[11px] text-gray-950">Importe Adeudado:</label>
-                    <Input type="number" value={itemSelected?.valorSolicitado} disabled />
+                    <label className="mr-5 text-[11px] text-gray-950">Importe de liquidacion:</label>
+                    <Input type="number" defaultVlue={itemSelected?.valorSolicitado} disabled />
                 </div>
 
                 {/* Botón para generar y copiar URL */}
