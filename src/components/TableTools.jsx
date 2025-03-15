@@ -405,9 +405,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             />
                             <div className='flex justify-end items-center'>
                                 <label htmlFor="" className={`ql-align-right mr-2 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Estado de reembolso:
+                                    Estado de credito:
                                 </label>
-                                <SelectSimple arr={[...estadoRembolso, 'Reembolso Parcial']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple arr={['Dispersado', 'Pagado', 'Pagado por extencion', 'Pago parcial', 'Liquidado por sistema']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <SearchInput
                                 label="Número de prestamo:"
