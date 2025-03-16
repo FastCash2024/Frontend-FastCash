@@ -6,6 +6,9 @@ import CryptoJS from "crypto-js";
 import { useSearchParams } from "next/navigation";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
+
+
 const SECRET_KEY = "mi-clave-segura";
 
 export default function FormAddExtension() {
@@ -37,7 +40,7 @@ export default function FormAddExtension() {
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
             contenidoDeOperacion: `se ha generado una linea de pago (por extensión) para el caso ${itemSelected.numeroDePrestamo}.`,
-            fechaDeOperacion: new Date().toISOString()
+            fechaDeOperacion: obtenerFechaMexicoISO()
         }
         setLoader('Guardando...');
         const encryptedId = CryptoJS.AES.encrypt(itemSelected._id, SECRET_KEY).toString();

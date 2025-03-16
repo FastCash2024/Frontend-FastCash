@@ -6,6 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
 import SelectSimple from "@/components/SelectSimple";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 const optionsArray = [
     "Sin Observaciones",
@@ -62,7 +63,7 @@ export default function FormUpdateMulta() {
 
             const multaData = {
                 importeMulta: data.importeMulta,
-                fechaDeAuditoria: new Date().toISOString(),
+                fechaDeAuditoria: obtenerFechaMexicoISO(),
                 acotacion: data.acotacion,
                 cuentaPersonalAuditor: userDB.emailPersonal,
                 cuentaAuditor: userDB.cuenta,

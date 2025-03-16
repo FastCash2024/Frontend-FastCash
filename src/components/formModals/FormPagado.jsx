@@ -4,6 +4,7 @@ import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 export default function FormPagado() {
     const {
@@ -33,7 +34,7 @@ export default function FormPagado() {
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
             contenidoDeOperacion: `Se ha registrado el pago para el caso ${itemSelected.numeroDePrestamo}.`,
-            fechaDeOperacion: new Date().toISOString()
+            fechaDeOperacion: obtenerFechaMexicoISO()
         };
 
         const updateData = {

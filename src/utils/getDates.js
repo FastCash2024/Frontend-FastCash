@@ -66,7 +66,57 @@ export function getMondayOfCurrentWeek() {
     const monday = new Date(today.setDate(diff));
     return monday.toISOString().split('T')[0]; // Formato YYYY-MM-DD
 }
+export function obtenerFechaMexicoISO() {
+    // Obtener la fecha actual en UTC
+    const fechaUTC = new Date();
 
+    // Obtener la fecha en la zona horaria de México
+    const opciones = { 
+        timeZone: "America/Mexico_City",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+    };
+
+    // Convertir la fecha UTC a la hora de México (como string)
+    const fechaMexicoString = new Intl.DateTimeFormat("en-US", opciones).format(fechaUTC);
+
+    // Extraer valores (mes/día/año hora:minuto:segundo)
+    const [month, day, year, hour, minute, second] = fechaMexicoString.match(/\d+/g);
+
+    // Crear una fecha correcta en México sin errores de zona horaria
+    const fechaMexico = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+
+    // Obtener el offset real de México (en minutos)
+    const offsetMinutos = new Date().getTimezoneOffset(); // JavaScript ya lo da correcto
+    const offsetHoras = -(offsetMinutos / 60);
+    const signo = offsetHoras >= 0 ? "+" : "-";
+    const offsetStr = `${signo}${String(Math.abs(offsetHoras)).padStart(2, "0")}:00`;
+
+    // Convertir a formato ISO con el offset correcto
+    return fechaMexico.toISOString().replace("Z", offsetStr);
+}
+export function diferenciaEnDias(fecha1, fecha2) {
+    // Crear objetos Date para las fechas de inicio y fin
+    const inicio = new Date(fecha1);
+    const fin = new Date(fecha2);
+
+    // Ajustar la fecha de inicio a las 00:01 del primer día
+    inicio.setHours(0, 1, 0, 0);
+
+    // Ajustar la fecha de fin a las 23:59 del último día
+    fin.setHours(23, 59, 59, 999);
+
+    // Calcular la diferencia en milisegundos
+    const diferenciaMs = fin - inicio;
+
+    // Convertir a días y redondear
+    return Math.round(diferenciaMs / (1000 * 60 * 60 * 24));
+}
 export function getStartAndEndOfWeek() {
     const today = new Date();
     const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes
@@ -78,7 +128,7 @@ export function getStartAndEndOfWeek() {
     return { startDate, endDate };
 }
 
-export const today = new Date().toISOString().split('T')[0];
+export const today = obtenerFechaMexicoISO().split('T')[0];
 
 export const getLocalISOString = () => {
     const now = new Date();

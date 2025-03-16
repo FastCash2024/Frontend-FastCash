@@ -313,7 +313,7 @@ console.log("photoURL",clientData?.photoURLs?.[0])
                         <div className='relative flex justify-between w-[300px] text-gray-950'>
 
                             <label htmlFor="" className="mr-5 text-[10px]">
-                                Estado de reembolso:
+                                Estado de credito:
                             </label>
                             <SelectSimple arr={optionsArray} name='Estado de reembolso' click={handlerSelectClick} defaultValue={value} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg='white' required />
                         </div>

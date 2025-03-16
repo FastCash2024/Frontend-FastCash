@@ -20,6 +20,8 @@ import { formatearFecha } from "@/utils";
 import { extraerCodigo, reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
+import {diferenciaEnDias} from "@/utils/getDates";
 
 const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   const {
@@ -324,7 +326,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       codigoDeSistema: itemSelected.nombreDelProducto,
       codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
       contenidoDeOperacion: `El caso ${itemSelected.numeroDePrestamo} ha sido visitado.`,
-      fechaDeOperacion: new Date().toISOString(),
+      fechaDeOperacion: obtenerFechaMexicoISO(),
     }
 
     await postTracking(data);
@@ -676,8 +678,8 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                             {it.toLowerCase() === "días vencidos" && (
                               <div className="flex justify-center min-w-[60px]">
                                 {
-
-                                  Math.floor((new Date(i.fechaDeTramitacionDelCaso) - new Date()) * (-1) / (1000 * 60 * 60 * 24))
+                                  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) 
+                                  // Math.floor((new Date(obtenerFechaMexicoISO()) - new Date(i.fechaDeTramitacionDelCaso) )  / (1000 * 60 * 60 * 24))
                                 }
                               </div>
                             )}

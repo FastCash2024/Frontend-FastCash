@@ -4,6 +4,7 @@ import { useAppContext } from '@/context/AppContext.js'
 import { getDescripcionDeExcepcion } from '@/utils/utility-tacking';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react'
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 const templates = [
     "Plantilla 1: Recordatorio amistoso\nHola, [name]. Te recordamos que el pago de [producto], con vencimiento el [fecha], está pendiente por un valor de [valor_de_pago]. Por favor, realiza tu pago para evitar inconvenientes. Si ya lo hiciste, ¡ignora este mensaje! 😊",
@@ -50,7 +51,7 @@ export default function FormSendSms() {
             codigoDeSistema: destinatario.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
             contenidoDeOperacion: `Se ha enviado un sms al caso ${destinatario.numeroDePrestamo}.`,
-            fechaDeOperacion: new Date().toISOString(),
+            fechaDeOperacion: obtenerFechaMexicoISO(),
         };
 
         try {

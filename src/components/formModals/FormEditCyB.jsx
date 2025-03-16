@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import SelectSimple from "@/components/SelectSimple";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 const optionsArray = [
     "Por favor elige",
@@ -47,7 +48,7 @@ export default function FormEditCyB() {
             return;
         }
         const upadateData = {
-            fechaDeReembolso: new Date().toISOString(),
+            fechaDeReembolso: obtenerFechaMexicoISO(),
             estadoDeCredito: value,
             acotacionesCobrador: [
                 ...itemSelected.acotaciones,
@@ -56,7 +57,7 @@ export default function FormEditCyB() {
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,
                     emailAsesor: user.email,
-                    fecha: new Date().toISOString(),
+                    fecha: obtenerFechaMexicoISO(),
                 },
             ],
             trackingDeOperaciones: [
@@ -64,7 +65,7 @@ export default function FormEditCyB() {
                 {
                     operacion: "Registro Estado De Cobranza",
                     modificacion: value,
-                    fecha: new Date().toISOString(),
+                    fecha: obtenerFechaMexicoISO(),
 
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,
@@ -130,7 +131,7 @@ export default function FormEditCyB() {
                 <h4 className="text-gray-950">Registro estado de cobro</h4>
                 <div className="relative flex justify-between w-[300px] text-gray-950">
                     <label htmlFor="" className="mr-5 text-[10px]">
-                        Estado de reembolso:{" "}
+                        Estado de credito:{" "}
                     </label>
                     <SelectSimple
                         arr={optionsArray}

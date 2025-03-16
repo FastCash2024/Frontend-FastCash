@@ -7,6 +7,7 @@ import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { useSearchParams } from "next/navigation";
 import { getLocalISOString } from "@/utils/getDates";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 const optionsArray = [
     "Por favor elige",
@@ -109,7 +110,7 @@ export default function FormAddCobranza() {
                     codigoDeSistema: itemSelected.nombreDelProducto,
                     codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
                     contenidoDeOperacion: `Se ha enviado un sms al caso ${itemSelected.numeroDePrestamo}.`,
-                    fechaDeOperacion: new Date().toISOString(),
+                    fechaDeOperacion: obtenerFechaMexicoISO(),
                 };
 
                 await postTracking(trackingData);
@@ -141,7 +142,7 @@ export default function FormAddCobranza() {
                 <h4 className="text-gray-950">Registro de cobro</h4>
                 <div className="relative flex justify-between w-[300px] text-gray-950">
                     <label htmlFor="" className="mr-5 text-[10px]">
-                        Estado de reembolso:{" "}
+                        Estado de credito:{" "}
                     </label>
                     <SelectSimple
                         arr={optionsArray}

@@ -6,6 +6,8 @@ import CryptoJS from "crypto-js";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { useSearchParams } from "next/navigation";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
+
 const SECRET_KEY = "mi-clave-segura";
 
 export default function FormAddPago() {
@@ -36,7 +38,7 @@ export default function FormAddPago() {
             codigoDeSistema: itemSelected.nombreDelProducto,
             codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
             contenidoDeOperacion: `se ha generado una linea de pago para el caso ${itemSelected.numeroDePrestamo}.`,
-            fechaDeOperacion: new Date().toISOString()
+            fechaDeOperacion: obtenerFechaMexicoISO()
         }
 
         setLoader('Guardando...');

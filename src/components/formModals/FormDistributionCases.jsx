@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 import FormLayout from '@/components/formModals/FormLayout'
 import Button from '@/components/Button'
 import Input from "@/components/Input";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 
 
@@ -42,11 +43,12 @@ export default function AddAccount() {
             ? 'Asesor de Cobranza'
             : 'Asesor de Auditoria'
 
-    const estadoDeCredito = seccion === 'Verificacion'
-        ? 'Pendiente'
-        : seccion === 'coleccion'
-            ? 'Dispersado'
-            : 'Pendiente'
+    // const estadoDeCredito = seccion === 'Verificacion'
+    //     ? 'Pendiente'
+    //     : seccion === 'coleccion'
+    //         ? 'Dispersado'
+    //         : 'Pendiente'
+    const estadoDeCredito = 'Pendiente'
 
     const query = seccion === 'Verificacion'
         ? 'Asesor de Verificación'
@@ -117,12 +119,11 @@ export default function AddAccount() {
             }
         });
 
-        const fechaActual = new Date().toISOString();
+        const fechaActual = obtenerFechaMexicoISO();
 
         const updatedCases = casesVerification.map(caso => {
             const assignedUser = updatedUsers.find(user => user.idCasosAsignados.includes(caso.numeroDePrestamo));
             let fechaDeTramitacionDelCaso = caso.estadoDeCredito === "Pendiente" ? fechaActual : caso.fechaDeTramitacionDelCaso;
-            let fechaDeTramitacionDeCobro = caso.estadoDeCredito === "Dispersado" ? fechaActual : caso.fechaDeTramitacionDeCobro;
             
             return assignedUser ? { ...caso, cuenta: assignedUser.cuenta, nombreDeLaEmpresa: assignedUser.origenDeLaCuenta, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro  } : caso;
         });
@@ -147,7 +148,7 @@ export default function AddAccount() {
         // Crear un mapa para rastrear las asignaciones por usuario
         const administracion = usuarios.map(usuario => ({ ...usuario, idCasosAsignados: [] }));
 
-        const fechaActual = new Date().toISOString();
+        const fechaActual = obtenerFechaMexicoISO();
 
         // Actualizar las asignaciones con idUsuario y registrar en el mapa
         const asignacionesConUsuarios = asignaciones.map(asignacion => {
@@ -160,9 +161,8 @@ export default function AddAccount() {
             usuarioIndex = (usuarioIndex + 1) % usuarios.length;
 
             let fechaDeTramitacionDelCaso = asignacion.estadoDeCredito === "Pendiente" ? fechaActual : asignacion.fechaDeTramitacionDelCaso;
-            let fechaDeTramitacionDeCobro = asignacion.estadoDeCredito === "Dispersado" ? fechaActual : asignacion.fechaDeTramitacionDeCobro;
             // Retornar la asignación actualizada
-            return { ...asignacion, cuenta, nombreDeLaEmpresa, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro };
+            return { ...asignacion, cuenta, nombreDeLaEmpresa, fechaDeTramitacionDelCaso };
         });
         setusuariosConAsignacion(administracion)
         setCasosAsignados(asignacionesConUsuarios)
@@ -236,7 +236,7 @@ export default function AddAccount() {
 
     return (
         <FormLayout>
-            <h4 className="text-gray-950">Distribuir Casos Masivos</h4>
+            <h4 className="text-gray-950">Distribuir Casos a Verificacion</h4>
             {!calculate &&
                 <div className='flex justify-between items-center w-[100%] '>
                     <label htmlFor="cantidadAsignacionIgualitaria" className={`mr-5 text-[11px]  ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>

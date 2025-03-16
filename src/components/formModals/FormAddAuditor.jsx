@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation'
 
 import { toast } from 'react-hot-toast';
 import  FormLayout  from  '@/components/formModals/FormLayout'  
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 
 export default function AddAccount() {
@@ -49,14 +50,14 @@ export default function AddAccount() {
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,
                     emailAsesor: user.email,
-                    fecha: new Date().toISOString()
+                    fecha: obtenerFechaMexicoISO()
                 }],
             trackingDeOperaciones: [
                 ...itemSelected.trackingDeOperaciones,
                 {
                     operacion: "Registro Estado De Verificación",
                     modificacion: value,
-                    fecha: new Date().toISOString(),
+                    fecha: obtenerFechaMexicoISO(),
 
                     cuenta: userDB.cuenta,
                     asesor: user.nombreCompleto,

@@ -12,6 +12,7 @@ import ColectionCasesTools from '@/components/ColectionCasesTools'
 import SearchInput from "@/components/SearchInput";
 import MultipleInput from "@/components/MultipleInput";
 import ProgressBarComponent from "@/components/ProgressBar";
+import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 import {
     refunds, historial,
@@ -132,7 +133,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                 setHoraEntrada(responseData.data);
             } else {
-                const horaActual = new Date().toISOString().split("T")[1].slice(0, 5);
+                const horaActual = obtenerFechaMexicoISO().split("T")[1].slice(0, 5);
                 setHoraEntrada(horaActual);
             }
         } catch (error) {
@@ -539,7 +540,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                             <div className='flex justify-between'>
                                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
-                                    Estado de reembolso:
+                                    Estado de credito:
                                 </label>
                                 <SelectSimple arr={['Aprobado', 'Reprobado']} name='Estado de reembolso' click={handlerSelectClick} defaultValue={filter['Estado de reembolso']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
