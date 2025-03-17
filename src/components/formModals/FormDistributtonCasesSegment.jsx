@@ -219,7 +219,7 @@ export default function FormDistributtonCasesSegment() {
     const fechaActual = new Date();
 
     dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito).forEach(caso => {
-      const fechaTramitacion = ajustarFechaInicio(caso.fechaDeTramitacionDelCaso)
+      const fechaTramitacion = ajustarFechaInicio(caso.fechaDeTramitacionDelCaso) 
 
       const fechaOriginal = new Date();
       fechaOriginal.setUTCDate(fechaOriginal.getUTCDate() + 7);

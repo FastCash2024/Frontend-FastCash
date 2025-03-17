@@ -290,6 +290,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     const calcularTotalesPorSegmento = () => {
         const totalesPorSegmento = {};
+
+        console.log("details",details)
         Object.keys(details).forEach((cuenta) => {
             const segmento = obtenerSegmento(cuenta);
             if (!segmento) {
@@ -324,7 +326,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setTotales(totalesFiltrados);
     };
 
-
+console.log(totales)
 
     useEffect(() => {
         handlerFetchCTotales();
