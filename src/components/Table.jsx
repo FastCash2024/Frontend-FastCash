@@ -500,6 +500,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 formatearFecha(i[toCamelCase(it)])
                               )
                             }
+
                             {/* {
                               it.toLowerCase().includes("segmento") && (
                                 extraerCodigo(i[toCamelCase(it)])

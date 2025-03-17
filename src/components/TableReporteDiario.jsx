@@ -339,22 +339,22 @@ export default function Home() {
                   {/* <td className="px-4 py-2">{i.llamadasRealizadas}</td> */}
                   <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.pagos10am}</td>
                   <td className="px-4 py-2">{details[i.cuenta]?.ptp10am}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion10am}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion10am}%</td>
                   <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos12am}</td>
                   <td className="px-4 py-2">{details[i.cuenta]?.ptp12am}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion12am}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion12am}%</td>
                   <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos2pm}</td>
                   <td className="px-4 py-2">{details[i.cuenta]?.ptp2pm}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion2pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion2pm}%</td>
                   <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos4pm}</td>
                   <td className="px-4 py-2">{details[i.cuenta]?.ptp4pm}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion4pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion4pm}%</td>
                   <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos6pm}</td>
                   <td className="px-4 py-2">{details[i.cuenta]?.ptp6pm}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion6pm}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacion6pm}%</td>
                   <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagosTotal}</td>
 
-                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacionTotal}</td>
+                  <td className="px-4 py-2">{details[i.cuenta]?.tasaRecuperacionTotal}%</td>
                 </tr>
               ))}
               <tr className="bg-gray-200 font-bold">
@@ -368,21 +368,21 @@ export default function Home() {
                 {/* <td className='px-4 py-2'></td> */}
                 <td className="px-4 py-2  bg-yellow-400">{totales?.pagos10am}</td>
                 <td className="px-4 py-2">{totales?.ptp10am}</td>
-                <td className="px-4 py-2">{totales?.tasaRecuperacion10am}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion10am}%</td>
                 <td className="px-4 py-2 bg-yellow-400">{totales?.pagos12am}</td>
                 <td className="px-4 py-2">{totales?.ptp12am}</td>
-                <td className="px-4 py-2">{totales?.tasaRecuperacion12am}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion12am}%</td>
                 <td className="px-4 py-2 bg-yellow-400">{totales?.pagos2pm}</td>
                 <td className="px-4 py-2">{totales?.ptp2pm}</td>
-                <td className="px-4 py-2">{totales?.tasaRecuperacion2pm}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion2pm}%</td>
                 <td className="px-4 py-2 bg-yellow-400">{totales?.pagos4pm}</td>
                 <td className="px-4 py-2">{totales?.ptp4pm}</td>
-                <td className="px-4 py-2">{totales?.tasaRecuperacion4pm}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion4pm}%</td>
                 <td className="px-4 py-2 bg-yellow-400">{totales?.pagos6pm}</td>
                 <td className="px-4 py-2">{totales?.ptp6pm}</td>
-                <td className="px-4 py-2">{totales?.tasaRecuperacion6pm}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacion6pm}%</td>
                 <td className="px-4 py-2 bg-yellow-400">{totales?.pagosTotal}</td>
-                <td className="px-4 py-2">{totales?.tasaRecuperacionTotal}</td>
+                <td className="px-4 py-2">{totales?.tasaRecuperacionTotal}%</td>
               </tr>
             </tbody>
           </table>
