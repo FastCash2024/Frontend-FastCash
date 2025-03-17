@@ -343,10 +343,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 <div className='flex '>
                     <div className='flex justify-start relative py-3  border shadow pr-12 bg-slate-100'>
                         <div className='text-center px-2 flex flex-col align-center'>
-                            <Velocimetro value={totalesCobro?.pagosTotal}></Velocimetro>
+                            <Velocimetro value={(totalesCobro?.pagosTotal / totalesCobro?.totalesConAsesor) * 100}></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 text-[#55abf1] `}>Tasa de recuperación de caso</h4>
                             <div className='grid grid-cols-2 w-[300px]'>
-                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.tasaRecuperacionTotal ?? 0} <br />Cobro de hoy.</p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.pagosTotal ?? 0} <br />Cobro de hoy.</p>
                                 <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.totalesConAsesor ?? 0} <br /> Número total de casos.</p>
                             </div>
                         </div>
