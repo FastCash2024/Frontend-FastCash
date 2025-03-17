@@ -12,7 +12,7 @@ import ColectionCasesTools from '@/components/ColectionCasesTools'
 import SearchInput from "@/components/SearchInput";
 import MultipleInput from "@/components/MultipleInput";
 import ProgressBarComponent from "@/components/ProgressBar";
-import {obtenerFechaMexicoISO} from "@/utils/getDates";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 import {
     refunds, historial,
@@ -114,8 +114,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const obtenerHoraEntrada = async () => {
         try {
             const endpoint = window?.location?.href.includes("localhost")
-                ? "http://localhost:3000/api/entryhour/gethour"
-                : "https://api.fastcash-mx.com/api/entryhour/gethour";
+                ? "http://localhost:3006/api/users/entryhour/gethour"
+                : "https://api.fastcash-mx.com/api/users/entryhour/gethour";
 
             const response = await fetch(endpoint, {
                 method: "GET",
@@ -291,7 +291,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const calcularTotalesPorSegmento = () => {
         const totalesPorSegmento = {};
 
-        console.log("details",details)
+        console.log("details", details)
         Object.keys(details).forEach((cuenta) => {
             const segmento = obtenerSegmento(cuenta);
             if (!segmento) {
@@ -326,7 +326,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setTotales(totalesFiltrados);
     };
 
-console.log(totales)
+    console.log(totales)
 
     useEffect(() => {
         handlerFetchCTotales();
@@ -944,6 +944,17 @@ console.log(totales)
                                     required
                                 />
                                 <SearchInput
+                                    label="Buscar por email:"
+                                    name="page"
+                                    value={filter['page'] || ''}
+                                    onChange={onChangeHandler}
+                                    theme={theme}
+                                    placeholder="example@gmail.com"
+                                    required
+                                />
+                            </div>
+                            <div className='w-[300px] space-y-2'>
+                                <SearchInput
                                     label="Número de páginas:"
                                     name="page"
                                     value={filter['page'] || ''}
@@ -952,10 +963,7 @@ console.log(totales)
                                     placeholder="5"
                                     required
                                 />
-                            </div>
-                            <div className='w-[300px] space-y-2'>
-
-                                <div className='flex justify-start space-x-3'>
+                                <div className='flex justify-end space-x-3'>
                                     <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                         <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Consultar</button>
                                     </Link>

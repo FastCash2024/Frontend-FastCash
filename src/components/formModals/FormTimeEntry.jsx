@@ -64,16 +64,17 @@ export default function FormTimeEntry() {
             setLoader("Guardando...");
 
             const response = await fetch(window?.location?.href.includes("localhost")
-                ? `http://localhost:3000/api/users/entryhour/register`
+                ? `http://localhost:3006/api/users/entryhour/register`
                 : `https://api.fastcash-mx.com/api/users/entryhour/register`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestData)
-                });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            });
 
-            console.log("response: ", response);
+
+            console.log("responseHour: ", response);
 
             if (!response.ok) {
                 setLoader("");
