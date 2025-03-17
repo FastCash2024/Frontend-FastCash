@@ -12,7 +12,7 @@ import ColectionCasesTools from '@/components/ColectionCasesTools'
 import SearchInput from "@/components/SearchInput";
 import MultipleInput from "@/components/MultipleInput";
 import ProgressBarComponent from "@/components/ProgressBar";
-import {obtenerFechaMexicoISO} from "@/utils/getDates";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 import {
     refunds, historial,
@@ -286,12 +286,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setDetails(data.data)
     }
 
-
-
     const calcularTotalesPorSegmento = () => {
         const totalesPorSegmento = {};
 
-        console.log("details",details)
         Object.keys(details).forEach((cuenta) => {
             const segmento = obtenerSegmento(cuenta);
             if (!segmento) {
@@ -299,34 +296,45 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 return;
             }
             const pagosTotal = details[cuenta]?.pagosTotal;
+            const casosTotales = details[cuenta]?.casosTotales;
+
+            if (!totalesPorSegmento[segmento]) {
+                totalesPorSegmento[segmento] = { casosPagados: 0, casosTotal: 0 };
+            }
+
             if (typeof pagosTotal === "number" && !isNaN(pagosTotal)) {
-                if (!totalesPorSegmento[segmento]) {
-                    totalesPorSegmento[segmento] = 0;
-                }
-                totalesPorSegmento[segmento] += pagosTotal;
+                totalesPorSegmento[segmento].casosPagados += pagosTotal;
             } else {
                 console.log(`No se encontró pagos válidos para la cuenta: ${cuenta}`);
+            }
+
+            if (typeof casosTotales === "number" && !isNaN(casosTotales)) {
+                totalesPorSegmento[segmento].casosTotal += casosTotales;
+            } else {
+                console.log(`No se encontró casos totales válidos para la cuenta: ${cuenta}`);
             }
         });
 
         const segmentosPosibles = ["D0", "D1", "D2", "S1", "S2"];
 
         segmentosPosibles.forEach((segmento) => {
-            if (totalesPorSegmento[segmento] === undefined) {
-                totalesPorSegmento[segmento] = 0;
+            if (!totalesPorSegmento[segmento]) {
+                totalesPorSegmento[segmento] = { casosPagados: 0, casosTotal: 0 };
             }
         });
 
-        const totalesFiltrados = Object.keys(totalesPorSegmento)
-            .reduce((obj, segmento) => {
-                obj[segmento] = totalesPorSegmento[segmento] || 0;
-                return obj;
-            }, {});
+        const totalesFiltrados = Object.keys(totalesPorSegmento).reduce((obj, segmento) => {
+            obj[segmento] = {
+                casosPagados: totalesPorSegmento[segmento].casosPagados || 0,
+                casosTotal: totalesPorSegmento[segmento].casosTotal || 0,
+            };
+            return obj;
+        }, {});
 
         setTotales(totalesFiltrados);
     };
 
-console.log(totales)
+    console.log("totales: ", totales)
 
     useEffect(() => {
         handlerFetchCTotales();
@@ -345,7 +353,7 @@ console.log(totales)
                 <div className='flex '>
                     <div className='flex justify-start relative py-3  border shadow pr-12 bg-slate-100'>
                         <div className='text-center px-2 flex flex-col align-center'>
-                            <Velocimetro value={(totalesCobro?.pagosTotal / totalesCobro?.totalesConAsesor) * 100}></Velocimetro>
+                            <Velocimetro value={((totalesCobro?.pagosTotal / totalesCobro?.totalesConAsesor) * 100).toFixed(2)}></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 text-[#55abf1] `}>Tasa de recuperación de caso</h4>
                             <div className='grid grid-cols-2 w-[300px]'>
                                 <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.pagosTotal ?? 0} <br />Cobro de hoy.</p>
@@ -361,29 +369,30 @@ console.log(totales)
                                     Tasa de recuperación por grupo
                                 </h4>
 
-                                {Object.keys(totales).map((segmento) => (
-                                    <div key={segmento} className="flex flex-row w-[500px] gap-6 mb-2">
-                                        <div className="grid grid-cols-2 w-[200px]">
-                                            <p
-                                                className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
-                                                    } dark:text-white`}
-                                            >
-                                                {segmento} <br /> Segmento.
-                                            </p>
-                                            <p
-                                                className={`col-span-1 text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '
-                                                    } dark:text-white`}
-                                            >
-                                                {totales[segmento] ?? 0} <br /> casos cobrados.
-                                            </p>
-                                        </div>
-                                        <div className="flex-grow flex items-center justify-center">
-                                            <div className="w-full max-w-[300px]">
-                                                <ProgressBarComponent value={totales[segmento] ?? 0} />
+                                {Object.keys(totales).map((segmento) => {
+                                    const { casosPagados = 0, casosTotal = 0 } = totales[segmento] || {};
+
+                                    const porcentaje = casosTotal > 0 ? (casosPagados / casosTotal) * 100 : 0;
+
+                                    return (
+                                        <div key={segmento} className="flex flex-row w-[500px] gap-6 mb-2">
+                                            <div className="grid grid-cols-2 w-[200px]">
+                                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
+                                                    {segmento} <br /> Segmento.
+                                                </p>
+                                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
+                                                    {casosPagados} <br /> Casos cobrados.
+                                                </p>
+                                            </div>
+                                            <div className="flex-grow flex items-center justify-center">
+                                                <div className="w-full max-w-[300px]">
+                                                    <ProgressBarComponent value={porcentaje.toFixed(2)} />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
+
                             </div>
                         </div>
                     </div>
