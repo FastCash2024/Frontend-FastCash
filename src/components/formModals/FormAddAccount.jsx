@@ -192,12 +192,15 @@ export default function AddAccount() {
         ['Gestión de cuentas personales']: [
             'Cuenta personal'
         ],
+        ['Gestión de cuentas de Colección']: [
+            'Asesor de Cobranza'
+        ],
     }
 
 
 
 
-console.log(item)
+    console.log("item: ", arrTipoDeGrupo[item])
 
 
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>

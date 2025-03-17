@@ -131,8 +131,6 @@ export function getStartAndEndOfWeek() {
 export const today = obtenerFechaMexicoISO().split('T')[0];
 
 export const getLocalISOString = () => {
-    const now = new Date();
-    const offset = now.getTimezoneOffset() * 60000;
-    return new Date(now - offset).toISOString();
-}
-
+    const fechaMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
+    return new Date(fechaMexico).toISOString();
+};
