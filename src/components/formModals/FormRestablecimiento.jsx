@@ -10,42 +10,48 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
 
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
 
-    const realizarBackoup = async () => {        
+    console.log("seccion: ", seccion);
+
+    const realizarBackup = async (tipo) => {
         try {
-            setLoader('Guardando...')
-                            
-            const response = await fetch(
-                window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3007/api/loansBuckup/getTodos`
-                    : `https://api.fastcash-mx.com/api/loansBuckup/getTodos`, {
-                method: 'GET', 
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`, 
+            setLoader('Guardando...');
+
+            const url = window?.location?.href?.includes('localhost')
+                ? `http://localhost:3007/api/loansBuckup/getTodos?tipo=${tipo}`
+                : `https://api.fastcash-mx.com/api/loansBuckup/getTodos?tipo=${tipo}`;
+
+            console.log("url seccion: ", url);
+
+            const response = await fetch(url,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    }
                 }
-            });
+            );
 
             const data = await response.json();
-                                    
+
             if (data.status) {
-                setAlerta('Backup realizado con éxito.')
-                setModal('')
-                setLoader('')
+                setAlerta(`Backup realizado con éxito. Guardados: ${data.registrosGuardados}, Actualizados: ${data.registrosActualizados}`);
             } else {
-                setAlerta('No se encontraron registros para guardar.')
-                setModal('')
-                setLoader('')
+                setAlerta('No se encontraron registros para guardar.');
             }
+
+            setModal('');
+            setLoader('');
         } catch (error) {
-            setLoader('')
-            setAlerta('No se encontraron registros para guardar.')
-            throw new Error(error);
+            setLoader('');
+            setAlerta('Ocurrió un error al realizar el backup.');
+            console.error(error);
         }
     };
 
-    const restabecimientoTotal =  () => {
+    const restabecimientoTotal = () => {
 
-        checkedArr.map(async (i, index)=>{
+        checkedArr.map(async (i, index) => {
             try {
                 setLoader('Guardando...')
                 //GENERACION DE NUEVA CONTRASEÑA
@@ -68,9 +74,9 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                 }
                 // Verificar si la respuesta es exitosa
                 if (response.ok) {
-                  index +1 === checkedArr.length &&  setAlerta('Operación exitosa!')
-                  index +1 === checkedArr.length &&  setModal('')
-                  index +1 === checkedArr.length &&   setLoader('')
+                    index + 1 === checkedArr.length && setAlerta('Operación exitosa!')
+                    index + 1 === checkedArr.length && setModal('')
+                    index + 1 === checkedArr.length && setLoader('')
                     // navigate('/dashboard');
                 } else {
                     setLoader('')
@@ -83,10 +89,10 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                 console.log(error)
                 throw new Error(error);
             }
-            return 
+            return
         })
 
-  
+
     };
     const restablecimientoIndividual = async () => {
         try {
@@ -134,7 +140,8 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
         seccion === "verificacion individual" && restablecimientoIndividual()
         seccion === "verificacion total" && restabecimientoTotal()
         seccion === "verificacion total" && restabecimientoTotal()
-        seccion === "realizar backoup" && realizarBackoup()
+        seccion === "cobro" && realizarBackup(seccion)
+        seccion === "verificacion" && realizarBackup(seccion)
     }
 
     return (
@@ -149,12 +156,15 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                     }
                     {
                         seccion === "verificacion total" && 'Esta por restablecer todas las asignaciones de cuentas personales a cuentas operativas'
-                    }  
+                    }
                     {
-                        seccion === "realizar backoup" && 'Esta por realizar un backoup todas las asignaciones de cuentas personales a cuentas operativas'
+                        seccion === "cobro" && 'Esta por realizar un backoup todas las asignaciones de cuentas personales a cuentas operativas'
+                    }
+                    {
+                        seccion === "verificacion" && 'Esta por realizar un backoup todas las asignaciones de cuentas personales a cuentas operativas'
                     }
                 </div>
-              <br />
+                <br />
                 <Button type="button" theme='Danger' className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg  inline-flex items-center px-5 py-4 text-center"
                     click={save}>
                     {successText ? successText : 'Si, confirmar.'}

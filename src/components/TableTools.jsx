@@ -343,6 +343,13 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         calcularTotalesPorSegmento();
     }, [loader, item]);
 
+    const modalBackup = () => {
+        if (seccion === "coleccion") {
+            setModal("Realizar Backoup cobro")
+        } else {
+            setModal("Realizar Backoup verificacion")
+        }
+    }
 
     return (
         <div className='pt-5'>
@@ -906,7 +913,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <div className='flex justify-between space-x-3'>
-                                <Button type="button" theme={'Danger'} click={() => setModal('Realizar Backoup')}>Realizar el Backoup</Button>
+                                <Button type="button" theme={'Danger'} click={() => setModal(modalBackup)}>Realizar el Backoup</Button>
                             </div>
                         </div>
                     </div>}

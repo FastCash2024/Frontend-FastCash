@@ -520,7 +520,8 @@ export default function Home() {
             {modal === 'Restablecer Asesor' && <FormRestablecimiento seccion="verificacion individual" />}
             {modal === 'Restablecer Cuenta' && <FormRestablecimientoCuenta seccion="" />}
             {modal === 'Restablecimiento Masivo' && <FormRestablecimiento seccion="verificacion total" />}
-            {modal === 'Realizar Backoup' && <FormRestablecimiento seccion="realizar backoup" />}
+            {modal === 'Realizar Backoup cobro' && <FormRestablecimiento seccion="cobro" />}
+            {modal === 'Realizar Backoup verificacion' && <FormRestablecimiento seccion="verificacion" />}
             {modal === 'Restablecimiento Masivo Cuenta' && <FormRestablecimientoCuenta seccion="verificacion total" />}
 
             {modal === 'Asignar Asesor' && <FormAsignarAsesor />}
