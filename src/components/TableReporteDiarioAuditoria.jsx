@@ -223,7 +223,7 @@ export default function TableReporteDiarioAuditoria() {
               <th className="px-4 py-2 text-gray-100">SIN MULTA 12:00 pm</th>
 
               <th className="px-4 py-2 text-green-400 ">MULTADOS 14:00 PM</th>
-              <th className="px-4 py-2 text-gray-100">SIN MULTA 14:00 pm</th>
+              <th className="px-4 py-2 text-gray-100">SIN MULTA 14:00 PM</th>
 
               <th className="px-4 py-2 text-green-400 ">MULTADOS 16:00 PM</th>
 
@@ -258,7 +258,7 @@ export default function TableReporteDiarioAuditoria() {
                 <td className="px-4 py-2">{details[i.cuenta]?.sinMulta12am}</td>
 
                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.multados14pm}</td>
-                <td className="px-4 py-2">{details[i.cuenta]?.sinMulta14am}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.sinMulta14pm}</td>
 
                 <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.multados16pm}</td>
                 <td className="px-4 py-2">{details[i.cuenta]?.sinMulta16pm}</td>

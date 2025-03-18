@@ -270,7 +270,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     async function handlerFetchVTotales() {
         const res = await fetch(
             window?.location?.href?.includes('localhost')
-                ? 'http://localhost:3002/api/loans/verification/totalreporteverificacion'
+                ? 'http://localhost:3003/api/loans/verification/totalreporteverificacion'
                 : 'https://api.fastcash-mx.com/api/loans/verification/totalreporteverificacion')
         const data = await res.json()
         setTotalesVerification(data.totalesGenerales)

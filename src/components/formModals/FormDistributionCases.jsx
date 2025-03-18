@@ -125,7 +125,7 @@ export default function AddAccount() {
             const assignedUser = updatedUsers.find(user => user.idCasosAsignados.includes(caso.numeroDePrestamo));
             let fechaDeTramitacionDelCaso = caso.estadoDeCredito === "Pendiente" ? fechaActual : caso.fechaDeTramitacionDelCaso;
             
-            return assignedUser ? { ...caso, cuenta: assignedUser.cuenta, nombreDeLaEmpresa: assignedUser.origenDeLaCuenta, fechaDeTramitacionDelCaso, fechaDeTramitacionDeCobro  } : caso;
+            return assignedUser ? { ...caso, cuenta: assignedUser.cuenta, nombreDeLaEmpresa: assignedUser.origenDeLaCuenta, fechaDeTramitacionDelCaso } : caso;
         });
         setusuariosConAsignacion(updatedUsers)
         setCasosNoAsignados(unassignedCases)
