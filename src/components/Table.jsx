@@ -866,7 +866,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
                             {it.toLowerCase() === "número de préstamo" &&
                               <Link
-                                href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
+                                href={`/Home/Datos?caso=${i._id}&seccion=info&item=${item === "Casos de Cobranza" ?"Cobranza":"Verificacion"}`}
                               >
                                 {i[toCamelCase(it)]}
                               </Link>
