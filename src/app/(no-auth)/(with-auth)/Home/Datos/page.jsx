@@ -447,8 +447,8 @@ const PaymentInfoCard = () => {
                                 (data.estadoDeCredito === "Dispersado" || data.estadoDeCredito === "Pagado") && <tr key={index}>
                                     <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{data.numeroDePrestamo}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.idDeSubFactura}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.cantidadDispersada}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.cantidadDispersada}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.valorSolicitado}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.valorPrestamoMenosInteres}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.nombreDelProducto}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.numeroDeCuenta}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.nombreBanco}</td>
