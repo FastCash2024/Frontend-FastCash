@@ -20,8 +20,8 @@ import { formatearFecha } from "@/utils";
 import { extraerCodigo, reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
-import {obtenerFechaMexicoISO} from "@/utils/getDates";
-import {diferenciaEnDias} from "@/utils/getDates";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
+import { diferenciaEnDias } from "@/utils/getDates";
 
 const Table = ({ headArray, dataFilter, access, local, server, query }) => {
   const {
@@ -413,6 +413,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               />
                             )}
 
+                            {/* Contactos */}
                             {it.toLowerCase() === "contactos" && (
                               <div className="flex justify-around items-center">
                                 {/* {console.log( checkedArr.some(value => value._id === i._id))} */}
@@ -495,17 +496,80 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               </div>
                             )}
 
+                            {/* Operar Verficador */}
                             {
                               it.toLowerCase().includes("fecha") && (
                                 formatearFecha(i[toCamelCase(it)])
                               )
                             }
 
-                            {/* {
-                              it.toLowerCase().includes("segmento") && (
-                                extraerCodigo(i[toCamelCase(it)])
-                              )
-                            } */}
+
+
+                            {/* Icon */}
+                            {it.toLowerCase() === "icon" &&
+                              item?.toLowerCase().includes("aplicacion") && (
+                                <div className="flex justify-center min-w-[60px]">
+                                  <img
+                                    src={i[toCamelCase(it)]}
+                                    className="inline-block w-[70px] h-[70px] rounded-md"
+                                    alt=""
+                                  />
+                                </div>
+                              )}
+
+                            {/* DIas vencidos */}
+                            {it.toLowerCase() === "días vencidos" && (
+                              <div className="flex justify-center min-w-[60px]">
+                                {
+                                  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO())
+                                }
+                              </div>
+                            )}
+
+                            {/* Incurrir y casos de cobranzo */}
+                            {(item == "Incurrir en una estación de trabajo" || item == "Casos de Cobranza") && it.toLowerCase() === "operar" && (
+                              <div className="flex justify-between space-x-3">
+                                <Link
+                                  href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
+                                >
+                                  <UserCircleIcon onClick={() => registerTracking(i)} className="h-6 w-6 fill-[#ebbb40]" />
+                                </Link>
+                                <ClipboardDocumentCheckIcon
+                                  className="h-6 w-6 fill-[#ebbb40] cursor-pointer"
+                                  onClick={() => handlerAcount("Registrar Cobranza", i)}
+                                />
+                                <ChatBubbleLeftEllipsisIcon
+                                  className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"
+                                  onClick={() => handlerMessage(i)}
+                                />
+
+                                <div className="relative">
+                                  <CurrencyDollarIcon
+                                    className="h-6 w-6 fill-[#1ab418] cursor-pointer"
+                                    onClick={() => toggleMenu(i._id)}
+                                  />
+                                  {activeMenu === i._id && (
+                                    <div
+                                      className="absolute w-[150px] z-50 right-[100px] top-[-5px]
+                                             min-w-[100px] bg-white border rounded-lg shadow-lg"
+                                    >
+                                      <button
+                                        className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                        onClick={() => handlerItemPE("Registrar Pago", i)}
+                                      >
+                                        Hacer Pago
+                                      </button>
+                                      <button
+                                        className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
+                                        onClick={() => handlerItemPE("Extension", i)}
+                                      >
+                                        Extensión
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            )}
 
                             {/* Operar Verficador */}
                             {it.toLowerCase() === "operar" &&
@@ -611,7 +675,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                       Liquidar pago
                                     </button>
 
-                                    {operarCobro === "liquidar"&&  activeMenu === i._id && (
+                                    {operarCobro === "liquidar" && activeMenu === i._id && (
                                       <div
                                         className="absolute w-[150px] z-50 right-[100px] top-[-5px]
                                                   min-w-[100px] bg-white border rounded-lg shadow-lg"
@@ -640,11 +704,11 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                     >
                                       Liga de pago
                                     </button>
-                                    {operarCobro === "liga"&& activeMenu === i._id && (
-                                       <div
-                                       className="absolute w-[150px] z-50 right-[100px] top-[-5px]
+                                    {operarCobro === "liga" && activeMenu === i._id && (
+                                      <div
+                                        className="absolute w-[150px] z-50 right-[100px] top-[-5px]
                                                  min-w-[100px] bg-white border rounded-lg shadow-lg"
-                                     >
+                                      >
                                         <button
                                           className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
                                           onClick={() => handlerItemPE("Registrar Pago", i)}
@@ -665,90 +729,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 </div>
                               )}
 
-                            {it.toLowerCase() === "icon" &&
-                              item?.toLowerCase().includes("aplicacion") && (
-                                <div className="flex justify-center min-w-[60px]">
-                                  <img
-                                    src={i[toCamelCase(it)]}
-                                    className="inline-block w-[70px] h-[70px] rounded-md"
-                                    alt=""
-                                  />
-                                </div>
-                              )}
-
-                            {it.toLowerCase() === "días vencidos" && (
-                              <div className="flex justify-center min-w-[60px]">
-                                {
-                                  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) 
-                                  // Math.floor((new Date(obtenerFechaMexicoISO()) - new Date(i.fechaDeTramitacionDelCaso) )  / (1000 * 60 * 60 * 24))
-                                }
-                              </div>
-                            )}
-
-                            {(item == "Incurrir en una estación de trabajo" || item == "Casos de Cobranza") && it.toLowerCase() === "operar" && (
-                              <div className="flex justify-between space-x-3">
-                                <Link
-                                  href={`/Home/Datos?caso=${i._id}&seccion=info&item=Verificacion`}
-                                >
-                                  <UserCircleIcon onClick={() => registerTracking(i)} className="h-6 w-6 fill-[#ebbb40]" />
-                                </Link>
-                                <ClipboardDocumentCheckIcon
-                                  className="h-6 w-6 fill-[#ebbb40] cursor-pointer"
-                                  onClick={() => handlerAcount("Registrar Cobranza", i)}
-                                />
-                                <ChatBubbleLeftEllipsisIcon
-                                  className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"
-                                  onClick={() => handlerMessage(i)}
-                                />
-
-                                <div className="relative">
-                                  <CurrencyDollarIcon
-                                    className="h-6 w-6 fill-[#1ab418] cursor-pointer"
-                                    onClick={() => toggleMenu(i._id)}
-                                  />
-                                  {activeMenu === i._id && (
-                                   <div
-                                   className="absolute w-[150px] z-50 right-[100px] top-[-5px]
-                                             min-w-[100px] bg-white border rounded-lg shadow-lg"
-                                 >
-                                      <button
-                                        className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
-                                        onClick={() => handlerItemPE("Registrar Pago", i)}
-                                      >
-                                        Hacer Pago
-                                      </button>
-                                      <button
-                                        className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
-                                        onClick={() => handlerItemPE("Extension", i)}
-                                      >
-                                        Extensión
-                                      </button>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            )}
-
-                            {item?.toLowerCase().includes("gestión de") &&
-                              item?.toLowerCase().includes("personales") &&
-                              !item?.toLowerCase().includes("colección") &&
-                              it.toLowerCase() === "operar" && (
-                                <div className="flex justify-between space-x-3">
-                                  <UserCircleIcon
-                                    className="h-6 w-6 fill-[#ebbb40]"
-                                    onClick={() =>
-                                      handlerAcountUser("Administrar Asesor", i)
-                                    }
-                                  />
-                                  {/* <DocumentTextIcon className='h-6 w-6 fill-[#5c78d3] cursor-pointer' onClick={() => setModal('Registrar')} /> */}
-                                  <ChatBubbleLeftEllipsisIcon
-                                    className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"
-                                    onClick={() => setModal("SMS")}
-                                  />
-                                  <CurrencyDollarIcon className="h-6 w-6 fill-[#1ab418] cursor-pointer" />
-                                  {/* <FolderPlusIcon className='h-6 w-6 fill-[#eba140]' /> */}
-                                </div>
-                              )}
+                            {/* Operar aplicaciones */}
                             {item?.toLowerCase().includes("aplicaciones") &&
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex pl-12 justify-center space-x-6">
@@ -768,7 +749,6 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button>
                                   <Link href={`/Home?seccion=coleccion&item=Gestion de aplicacion&application=${i._id}`}>
                                     <button
-                                      // onClick={setApplication(i)}
                                       type="button"
                                       className="w-full max-w-[70px] text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                     >
@@ -777,6 +757,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </Link>
                                 </div>
                               )}
+
                             {item === 'Gestion de aplicacion' &&
                               it.toLowerCase() === "operar" && (
                                 <div className="flex justify-center space-x-3">
@@ -797,6 +778,28 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 </div>
                               )}
 
+                            {/* Operar gestión de Accesos Personales*/}
+                            {item?.toLowerCase().includes("gestión de") &&
+                              item?.toLowerCase().includes("personales") &&
+                              !item?.toLowerCase().includes("colección") &&
+                              it.toLowerCase() === "operar" && (
+                                <div className="flex justify-center space-x-3">
+                                  <UserCircleIcon
+                                    className="h-6 w-6 fill-[#ebbb40]"
+                                    onClick={() =>
+                                      handlerAcountUser("Administrar Asesor", i)
+                                    }
+                                  />
+                                  {/* <ChatBubbleLeftEllipsisIcon
+                                    className="h-6 w-6 fill-[#5bc0cf] cursor-pointer"
+                                    onClick={() => setModal("SMS")}
+                                  />
+                                */}
+                                </div>
+                              )}
+
+
+                            {/* Operar gestion de accesos cuentas operativas */}
                             {(item?.toLowerCase().includes("gestión de cuentas de colección") || item?.toLowerCase().includes("gestión de asesores") || item?.toLowerCase().includes("gestión de administradores") || item?.toLowerCase().includes("gestión de managers") || item?.toLowerCase().includes("gestión de rh")) &&
                               it.toLowerCase() === "operar" && (
                                 <div className="flex justify-center">
@@ -809,6 +812,8 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button>
                                 </div>
                               )}
+
+                            {/* Operar registro histórico */}
                             {(item?.toLowerCase().includes("registro histórico")) &&
                               it.toLowerCase() === "operar" && (
                                 <div className="flex justify-center gap-6">
@@ -824,6 +829,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button> */}
                                 </div>
                               )}
+
                             {(item === "Auditoria Periodica") &&
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex max-w-[150px] justify-between space-x-3">
@@ -836,6 +842,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button>
                                 </div>
                               )}
+
                             {(item === "Comisión") &&
                               it.toLowerCase() === "operar" && (
                                 <div className="relative flex flex-row max-w-[100%] items-center justify-center space-x-3">
@@ -855,8 +862,21 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button>
                                 </div>
                               )}
+
+
+                            {it.toLowerCase() === "número de préstamo" &&
+                              <Link
+                                href={`/Home/Datos?caso=${i._id}&seccion=info&item=${item === "Casos de Cobranza" ?"Cobranza":"Verificacion"}`}
+                              >
+                                {i[toCamelCase(it)]}
+                              </Link>
+                            }
+
+                            {/* Los demas items */}
                             {it.toLowerCase() !== "operar" &&
                               it !== "Contactos" &&
+
+                              it.toLowerCase() !== "número de préstamo" &&
                               it.toLowerCase() !== "icon" &&
                               !it.toLowerCase().includes("fecha") && (
                                 <span

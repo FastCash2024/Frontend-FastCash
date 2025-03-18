@@ -55,76 +55,8 @@ const PaymentInfoCard = () => {
         isBlacklisted: 'Sí',
         systemRemarks: 'overdue day more than 5 day'
     };
-    const clientData123 = {
-        name: 'MIGUEL ANTONIO',
-        idNumber: 'HESM900117HVZRLG04',
-        idType: 'CURP',
-        gender: 'femenino',
-        educationLevel: 'Grado universitario/politécnica',
-        maritalStatus: 'Soltero',
-        childrenStatus: 0,
-        age: 0,
-        birthDate: '00-00-0000',
-        religiousBelief: '',
-        whatsappAccount: null,
-        residenceTime: '',
-        residentialAddress: '/ Las Choapas / Veracruz',
-        companyAddress: '/ /',
-        appLocation: ''
-    };
-    const companyInfo = {
-        companyName: "Tech Innovations",
-        jobType: "Desarrollador de Software",
-        monthlyIncome: "Más de $15,000",
-        businessScope: "Tecnología",
-        companyPhone: "9876543210",
-        startDate: "2022-01-15",
-        jobNature: "Jornada completa",
-        payFrequency: "Mensual",
-        payDate: "5 de cada mes",
-        incomeSource: "Salario",
-        province: "Madrid",
-        city: "Madrid",
-        address: "Calle de la Innovación, 12"
-    };
+
     const renderValue = (value, defaultValue = 'No disponible') => (value !== null && value !== '' ? value : defaultValue);
-    const ocrRecognition = {
-        result: "SUCCESS",
-        ocrRecognitionName: "Reconocimiento de OCR",
-        idNumber: "HESM900117HVZRLG04",
-        clientName: "MIGUEL ANTONIO",
-        clientId: "HESM900117HVZRLG04",
-        ocrComparison: "Igual"
-    };
-
-
-
-    const loanData2 = [
-        {
-            orderId: '12591208',
-            loanId: '1697553',
-            borrowedAmount: '1,600',
-            receivedAmount: '1,200',
-            projectCode: 'BUC',
-            cardNumber: '4169160824695887',
-            bankName: 'BANCOPPEL',
-            cardHolder: 'HERNANDEZ FLORES DIEGO',
-            finalStatus: 'Ha llegado a la cuenta'
-        }
-    ];
-
-    const contacts = [
-        { id: 1, name: 'Juan Pérez', phone: '+521234567890' },
-        { id: 2, name: 'María López', phone: '+521234567891' },
-        { id: 3, name: 'Carlos García', phone: '+521234567892' },
-        { id: 4, name: 'Ana Torres', phone: '+521234567893' },
-        { id: 5, name: 'Luis Fernández', phone: '+521234567894' },
-        { id: 6, name: 'Sofía Martínez', phone: '+521234567895' },
-        { id: 7, name: 'Jorge Sánchez', phone: '+521234567896' },
-        { id: 8, name: 'Marta Díaz', phone: '+521234567897' },
-        { id: 9, name: 'Raúl Hernández', phone: '+521234567898' },
-        { id: 10, name: 'Laura Gómez', phone: '+521234567899' },
-    ];
 
     const handleWhatsAppMessage = (phone) => {
         const whatsappUrl = `https://wa.me/${phone}`;
@@ -152,61 +84,6 @@ const PaymentInfoCard = () => {
         // Puedes agregar más objetos aquí
     ];
 
-    const loanData = [
-        {
-            orderId: '12715726',
-            loanId: '1759694',
-            borrowedAmount: '4,100',
-            receivedAmount: '2,660',
-            projectCode: 'BUC',
-            cardNumber: '4766841741793395',
-            bankName: 'BANAMEX',
-            cardHolder: 'AGUILAR GOMEZ YASMIN CAROLINA',
-            finalStatus: 'Ha llegado a la cuenta'
-        },
-        {
-            orderId: '12628463',
-            loanId: '1715548',
-            borrowedAmount: '2,600',
-            receivedAmount: '1,690',
-            projectCode: 'BUC',
-            cardNumber: '646650146403466414',
-            bankName: 'STP',
-            cardHolder: 'AGUILAR GOMEZ YASMIN CAROLINA',
-            finalStatus: 'Ha llegado a la cuenta'
-        },
-        {
-            orderId: '12627167',
-            loanId: '1714879',
-            borrowedAmount: '1,700',
-            receivedAmount: '1,100',
-            projectCode: 'BUC',
-            cardNumber: '646650146403466414',
-            bankName: 'STP',
-            cardHolder: 'AGUILAR GOMEZ YASMIN CAROLINA',
-            finalStatus: 'Ha llegado a la cuenta'
-        }
-    ];
-    const optionsArray = [
-        "Por favor elige",
-        "Sin contactar",
-        "No contactable",
-        "Contactado",
-        "Propósito de retrasar",
-        "Propósito de pagar",
-        "Promete a pagar",
-        "Pagará pronto"
-    ];
-    const auditData = [
-        {
-            auditId: '5244351',
-            reviewerId: 'system',
-            operatorNickname: 'system',
-            assignmentStatus: 'Pago exitoso',
-            reviewDate: '2023-12-12 10:13',
-        }
-    ];
-
     const loanData3 = {
         loanType: '0',
         loanAmount: '1,600',
@@ -220,18 +97,6 @@ const PaymentInfoCard = () => {
         observation: '',
         cardNumber: '012792015738860887',
     };
-
-
-    const bankData = [
-        {
-            bankName: 'BBVA BANCOMER',
-            cardHolder: '********',
-            cardNumber: '012792015738860887',
-            verificationStatus: '1',
-            additionDate: '2023-12-12 10:12',
-            operation: '-----'
-        }
-    ];
 
     function handlerCobranza(i) {
         setItemSelected(i);
@@ -281,7 +146,7 @@ const PaymentInfoCard = () => {
             setClientData(res2);
 
             const response3 = await fetch(window?.location?.href.includes('localhost')
-                ? `http://localhost:3002/api/loans/verification/phone?numeroDeTelefonoMovil=${phone}`
+                ? `http://localhost:3003/api/loans/verification/phone?numeroDeTelefonoMovil=${phone}`
                 : `https://api.fastcash-mx.com/api/loans/verification/phone?numeroDeTelefonoMovil=${phone}`)
             const res3 = await response3.json();
             setCasesData(res3);
@@ -290,12 +155,8 @@ const PaymentInfoCard = () => {
         fetchData();
     }, [])
 
-console.log("CLientDATA", clientData)
-console.log("photoURL",clientData?.photoURLs?.[0])
-    // useEffect(() => {
-
-    //     fetchData()
-    // }, [seccion])
+    console.log("CLientDATA", clientData)
+    console.log("photoURL", clientData?.photoURLs?.[0])
 
 
     return (
@@ -352,8 +213,6 @@ console.log("photoURL",clientData?.photoURLs?.[0])
             </ul>
             {seccion === 'info' && <div className={`mx-auto bg-white shadow-lg rounded-b-lg overflow-hidden`}>
 
-
-
                 <div className="p-6">
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Información basica</h3>
 
@@ -385,94 +244,21 @@ console.log("photoURL",clientData?.photoURLs?.[0])
                     </div>
                 </div>
 
-                {/* <div className="p-6">
-<h3 className="text-xl font-semibold mb-4">Información de Pago</h3>
-<div className="space-y-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    <div className="flex items-center space-x-2">
-        <UserIcon className="w-6 h-6 text-blue-500" />
-        <span><strong>ID de Cliente:</strong> {paymentInfo.clientId}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <DocumentTextIcon className="w-6 h-6 text-green-500" />
-        <span><strong>ID de Pedido:</strong> {paymentInfo.orderId}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <PhoneIcon className="w-6 h-6 text-red-500" />
-        <span><strong>Teléfono:</strong> {paymentInfo.phone}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <span><strong>Rootear o no:</strong> {paymentInfo.rootStatus !== null ? paymentInfo.rootStatus : 'No disponible'}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <span><strong>Marca del Dispositivo:</strong> {paymentInfo.deviceBrand}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <DevicePhoneMobileIcon className="w-6 h-6 text-teal-500" />
-        <span><strong>Modelo del Dispositivo:</strong> {paymentInfo.deviceModel}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <DocumentDuplicateIcon className="w-6 h-6 text-indigo-500" />
-        <span><strong>Nombre del Paquete APP:</strong> {paymentInfo.appPackageName}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <span><strong>Estado de la Solicitud:</strong> {paymentInfo.requestStatus}</span>
-    </div>
-    <div className="flex items-center space-x-2">
-        <CalendarIcon className="w-6 h-6 text-pink-500" />
-        <span><strong>Tiempo de Aplicación:</strong> {paymentInfo.applicationTime || 'No disponible'}</span>
-    </div>
-</div>
-</div> */}
-                {/* apellidos: "Choque Romero "
-cantidadPrestamos: "1"
-contactNameAmigo: "Abdom"
-contactNameFamiliar: ".. ¡¡ Maciel. !!!"
-contacto: "69941749"
-estadoCivil: "Soltero"
-fechaNacimiento: "22/5/1996"
-ingreso: "Entre 15 000 y 19 999"
-nivelEducativo: "Colegio"
-nombreBanco: "BANOBRAS"
-nombres: "Raul"
-numeroDeCedulaDeIdentidad: "7512877"
-numeroDeTarjetaBancari: "82828282929"
-phoneNumberAmigo: "+59171443219"
-phoneNumberFamiliar: "+59170541636"
-photoURLs: 
-["https://api.fastcash-mx.com/undefined", "https://api.fastcash-mx.com/undefined",…]
-prestamoEnLinea: "Si"
-prestamosPendientes: "2"
-provinciaCiudad: "Baja California Sur"
-sexo: "Masculino"
-tipoCuenta: Tarjeta de debito"
-trabajo: "Baja California Sur"
-userID: "678ee6b9694a2e87172cb1c2" */}
-
-
                 <div className="p-6">
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Datos personales</h3>
                     <div className="space-y-2 text-gray-950 grid grid-cols-3">
                         <p><strong>Nombre:</strong> {clientData?.nombres} {clientData?.apellidos}</p>
                         <p><strong>Número de Cédula de Identidad:</strong> {clientData?.numeroDeCedulaDeIdentidad}</p>
-                        {/* <p><strong>Tipo de Documento de Identidad:</strong></p> */}
                         <p><strong>Fecha de Nacimiento:</strong> {clientData?.fechaNacimiento && calcularEdad(clientData.fechaNacimiento)}</p>
                         <p><strong>Genero:</strong> {clientData?.sexo}</p>
-                        {/* <p><strong>Nivel Educativo:</strong> {clientData?.educationLevel}</p>
-                        <p><strong>Estado Civil:</strong> {clientData?.maritalStatus}</p> */}
-                        {/* <p><strong>Situación de los Hijos:</strong> {clientData?.childrenStatus}</p> */}
                         <p><strong>Estado Civil:</strong>{clientData?.estadoCivil}</p>
                         <p><strong>Provincia/Ciudad:</strong> {clientData?.provinciaCiudad}</p>
-                        {/* <p><strong>Creencia Religiosa:</strong> {clientData?.religiousBelief || 'No disponible'}</p> */}
                         <p><strong>Nivel Educativo:</strong> {clientData?.nivelEducativo}</p>
                         <p><strong>Número de Tarjeta Bancaria:</strong> {clientData?.numeroDeTarjetaBancari || 'No disponible'}</p>
-                        {/* <p><strong>Dirección Residencial:</strong> {clientData?.residentialAddress}</p>
-                        <p><strong>Dirección de la Empresa:</strong> {clientData?.companyAddress}</p>
-                        <p><strong>Ubicación de la Aplicación Móvil:</strong> {clientData?.appLocation || 'No disponible'}</p> */}
                     </div>
                 </div>
                 <div className="p-6">
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Información de empleo</h3>
-
                     <div className="space-y-2 text-gray-950 grid grid-cols-3 gap-4">
                         <p><strong>Trabajo Actual :</strong> {clientData?.trabajo}</p>
                         <p><strong>Ingreso Mensual:</strong> {clientData?.ingreso}</p>
@@ -481,18 +267,10 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                         <p><strong>Cantidad de Préstamos:</strong> {clientData?.cantidadPrestamos}</p>
                         <p><strong>Préstamo en Línea?:</strong> {renderValue(clientData?.prestamoEnLinea)}</p>
                         <p><strong>Préstamos Pendientes:</strong> {clientData?.prestamosPendientes}</p>
-                        {/* <p><strong>Frecuencia de Nómina:</strong> {companyInfo.payFrequency}</p>
-                        <p><strong>Fecha de Pago:</strong> {companyInfo.payDate}</p>
-                        <p><strong>Fuente de Ingreso:</strong> {companyInfo.incomeSource}</p>
-                        <p><strong>Provincia:</strong> {companyInfo.province}</p>
-                        <p><strong>Ciudad:</strong> {companyInfo.city}</p>
-                        <p><strong>Dirección:</strong> {companyInfo.address}</p> */}
                     </div>
                 </div>
 
-
                 <div className=" grid grid-cols-3">
-
                     <div className="p-6">
                         <ImageCard
                             imageUrl={clientData?.photoURLs?.[0]}
@@ -511,14 +289,7 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                             altText="Descripción de la imagen"
                         />
                     </div>
-
                 </div>
-
-
-
-
-
-
             </div>}
 
 
@@ -527,7 +298,7 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Registro histórico de revisión de aplicaciones</h3>
                     <div className="relative w-[100%] overflow-auto ">
 
-                        <table className="relative divide-y divide-gray-200  ">
+                        {/* <table className="relative divide-y divide-gray-200  ">
                             <thead className="bg-gray-50">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID de pedido</th>
@@ -564,14 +335,38 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                                     </tr>
                                 ))}
                             </tbody>
+                        </table> */}
+                        {console.log("cases", casesData)}
+
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Numero de Prestamo</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Producto</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor (mas interes)</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cuenta de Verificador</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado de Credito</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de creacion</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de tramitacion</th>
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {casesData.filter(item => item.estadoDeCredito === "Reprobado" || item.estadoDeCredito === "Dispersado").map((item, index) => (
+                                    <tr key={index}>
+                                        <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.numeroDePrestamo}</td>
+                                        <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.nombreDelProducto}</td>
+                                        <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.valorSolicitado} MX</td>
+                                        <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cuentaVerificador}</td>
+                                        <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.estadoDeCredito === "Dispersado" ? "Aprobado" : item.estadoDeCredito}</td>
+                                        <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{formatearFecha(item.fechaDeCreacionDeLaTarea)}</td>
+                                        <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{formatearFecha(item.fechaDeTramitacionDelCaso)}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
                         </table>
 
                     </div>
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Registros de cobro</h3>
-
-
-
-
 
                     <table className="w-full  overflow-x-auto divide-y divide-gray-200">
                         <thead className="bg-gray-50">
@@ -593,7 +388,6 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                             ))}
                         </tbody>
                     </table>
-
 
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Información de la tarjeta bancaria</h3>
                     <table className="min-w-full divide-y divide-gray-200">
@@ -634,8 +428,6 @@ userID: "678ee6b9694a2e87172cb1c2" */}
 
                     </table>
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Registro de préstamos</h3>
-
-
                     <table className="w-full  overflow-x-auto divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
@@ -652,11 +444,11 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {casesData.map((data, index) => (
-                                <tr key={index}>
+                                (data.estadoDeCredito === "Dispersado" || data.estadoDeCredito === "Pagado") && <tr key={index}>
                                     <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{data.numeroDePrestamo}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.idDeSubFactura}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.cantidadDispersada}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.cantidadDispersada}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.valorSolicitado}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.valorPrestamoMenosInteres}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.nombreDelProducto}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.numeroDeCuenta}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{data.nombreBanco}</td>
@@ -667,93 +459,62 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                         </tbody>
                     </table>
 
-
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Información sobre el préstamo</h3>
 
-
-
                     <div className="p-6 mx-auto bg-white shadow-lg rounded-lg">
-                        <ul className="space-y-4 grid grid-cols-3 gap-3 w-full">
-                            <li className="">
-                                <span className="font-semibold">Tipo de préstamo:</span>
-                                <span>{loanData3.loanType}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Monto del préstamo:</span>
-                                <span>{loanData3.loanAmount}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Tipo de reembolso:</span>
-                                <span>{loanData3.repaymentType}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Periodo:</span>
-                                <span>{loanData3.period}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Propósito de la aplicación:</span>
-                                <span>{loanData3.applicationPurpose}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Canal de aplicación:</span>
-                                <span>{loanData3.applicationChannel}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Motivo de rechazo:</span>
-                                <span>{loanData3.rejectionReason}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Cargo por servicio:</span>
-                                <span>{loanData3.serviceCharge}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Tasa de interés:</span>
-                                <span>{loanData3.interestRate}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Observación:</span>
-                                <span>{loanData3.observation}</span>
-                            </li>
-                            <li className="">
-                                <span className="font-semibold">Número de la tarjeta bancaria:</span>
-                                <span>{loanData3.cardNumber}</span>
-                            </li>
+                        <ul className="space-y-4 grid grid-cols-3 gap-3 place-items-center w-full">
+
+
+                            <div className="space-y-4  w-full">
+                                <li className="">
+                                    <span className="font-semibold">Nombre del producto:</span>
+                                    <span>{caseData.nombreDelProducto}</span>
+                                </li>
+                                <li className="">
+                                    <span className="font-semibold">Periodo:</span>
+                                    <span>7 dias</span>
+                                </li>
+                                <li className="">
+                                    <span className="font-semibold">Estado de credito:</span>
+                                    <span>{caseData.estadoDeCredito}</span>
+                                </li>
+                            </div>
+                            <div className="space-y-4  w-full">
+                                <li className="">
+                                    <span className="font-semibold">Monto de prestamo:</span>
+                                    <span>{caseData.valorSolicitado}</span>
+                                </li>
+                                <li className="">
+                                    <span className="font-semibold">Monto liquido de dispersion:</span>
+                                    <span>{caseData.valorPrestamoMenosInteres}</span>
+                                </li>
+                                <li className="">
+                                    <span className="font-semibold">Valor de extencion:</span>
+                                    <span>{caseData.valorExtension}</span>
+                                </li>
+
+
+                            </div>
+                            <div className="space-y-4  w-full">
+
+                                <li className="">
+                                    <span className="font-semibold">Tasa de interes:</span>
+                                    <span>{caseData.valorPrestamoMenosInteres/7}</span>
+                                </li>
+                                <li className="">
+                                    <span className="font-semibold">Nombre de banco:</span>
+                                    <span>{caseData.nombreBanco}</span>
+                                </li>
+                                <li className="">
+                                    <span className="font-semibold">Numero de tarjeta bancaria:</span>
+                                    <span>{caseData.numeroDeCuenta}</span>
+                                </li>
+                            </div>
                         </ul>
                     </div>
 
 
-                    <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Registro de aprobación</h3>
-
-
-
-
-
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Numero de Prestamo</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cuenta de Verificador</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado de Credito</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Dipersion</th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {casesData.filter(item => item.estadoDeCredito === "Aprobado").map((item, index) => (
-                                <tr key={index}>
-                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.numeroDePrestamo}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cantidadDispersada}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.cuentaVerificador}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.estadoDeCredito}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.fechaDeDispersion}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-
                 </>}
-
-
 
             {seccion === 'contactos' && <div className={`mx-auto bg-white shadow-lg rounded-b-lg overflow-hidden`}>
                 <div className="p-6">
@@ -815,24 +576,6 @@ userID: "678ee6b9694a2e87172cb1c2" */}
                                     <tr key={contact.id} className="hover:bg-gray-100 text-gray-950">
                                         <td className="py-2 px-4 border-b">{contact.sender}</td>
                                         <td className="py-2 px-4 border-b">{contact.body}</td>
-                                        {/* <td className="py-2 px-4 border-b flex items-center space-x-2">
-                                            <button
-                                                onClick={() => handleWhatsAppMessage(contact.phoneNumber)}
-                                                className=" text-white px-3 py-1 rounded "
-                                                title="Enviar mensaje por WhatsApp"
-                                            >
-                                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="50" height="50" viewBox="0 0 48 48">
-                                                    <path fill="#fff" d="M4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98c-0.001,0,0,0,0,0h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303z"></path><path fill="#fff" d="M4.868,43.803c-0.132,0-0.26-0.052-0.355-0.148c-0.125-0.127-0.174-0.312-0.127-0.483l2.639-9.636c-1.636-2.906-2.499-6.206-2.497-9.556C4.532,13.238,13.273,4.5,24.014,4.5c5.21,0.002,10.105,2.031,13.784,5.713c3.679,3.683,5.704,8.577,5.702,13.781c-0.004,10.741-8.746,19.48-19.486,19.48c-3.189-0.001-6.344-0.788-9.144-2.277l-9.875,2.589C4.953,43.798,4.911,43.803,4.868,43.803z"></path><path fill="#cfd8dc" d="M24.014,5c5.079,0.002,9.845,1.979,13.43,5.566c3.584,3.588,5.558,8.356,5.556,13.428c-0.004,10.465-8.522,18.98-18.986,18.98h-0.008c-3.177-0.001-6.3-0.798-9.073-2.311L4.868,43.303l2.694-9.835C5.9,30.59,5.026,27.324,5.027,23.979C5.032,13.514,13.548,5,24.014,5 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974C24.014,42.974,24.014,42.974,24.014,42.974 M24.014,4C24.014,4,24.014,4,24.014,4C12.998,4,4.032,12.962,4.027,23.979c-0.001,3.367,0.849,6.685,2.461,9.622l-2.585,9.439c-0.094,0.345,0.002,0.713,0.254,0.967c0.19,0.192,0.447,0.297,0.711,0.297c0.085,0,0.17-0.011,0.254-0.033l9.687-2.54c2.828,1.468,5.998,2.243,9.197,2.244c11.024,0,19.99-8.963,19.995-19.98c0.002-5.339-2.075-10.359-5.848-14.135C34.378,6.083,29.357,4.002,24.014,4L24.014,4z"></path><path fill="#40c351" d="M35.176,12.832c-2.98-2.982-6.941-4.625-11.157-4.626c-8.704,0-15.783,7.076-15.787,15.774c-0.001,2.981,0.833,5.883,2.413,8.396l0.376,0.597l-1.595,5.821l5.973-1.566l0.577,0.342c2.422,1.438,5.2,2.198,8.032,2.199h0.006c8.698,0,15.777-7.077,15.78-15.776C39.795,19.778,38.156,15.814,35.176,12.832z"></path><path fill="#fff" fillRule="evenodd" d="M19.268,16.045c-0.355-0.79-0.729-0.806-1.068-0.82c-0.277-0.012-0.593-0.011-0.909-0.011c-0.316,0-0.83,0.119-1.265,0.594c-0.435,0.475-1.661,1.622-1.661,3.956c0,2.334,1.7,4.59,1.937,4.906c0.237,0.316,3.282,5.259,8.104,7.161c4.007,1.58,4.823,1.266,5.693,1.187c0.87-0.079,2.807-1.147,3.202-2.255c0.395-1.108,0.395-2.057,0.277-2.255c-0.119-0.198-0.435-0.316-0.909-0.554s-2.807-1.385-3.242-1.543c-0.435-0.158-0.751-0.237-1.068,0.238c-0.316,0.474-1.225,1.543-1.502,1.859c-0.277,0.317-0.554,0.357-1.028,0.119c-0.474-0.238-2.002-0.738-3.815-2.354c-1.41-1.257-2.362-2.81-2.639-3.285c-0.277-0.474-0.03-0.731,0.208-0.968c0.213-0.213,0.474-0.554,0.712-0.831c0.237-0.277,0.316-0.475,0.474-0.791c0.158-0.317,0.079-0.594-0.04-0.831C20.612,19.329,19.69,16.983,19.268,16.045z" clipRule="evenodd"></path>
-                                                </svg>
-                                            </button>
-                                            <button
-                                                onClick={() => handleCall(contact.phoneNumber)}
-                                                className="bg-blue-500 text-white px-3 py-3 inline rounded hover:bg-blue-600"
-                                                title="Llamar"
-                                            >
-                                                <PhoneIcon className="w-5 h-5 stroke-white" />
-                                            </button>
-                                        </td> */}
                                     </tr>
                                 ))}
                             </tbody>
