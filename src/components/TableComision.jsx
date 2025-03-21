@@ -43,42 +43,39 @@ export default function TableComision() {
     setTotalDocuments(result.totalDocs);
   }
 
-  async function handlerFetchVerification() {
-    const urlParams = new URLSearchParams(window.location.search);
+  // async function handlerFetchVerification() {
+  //   const urlParams = new URLSearchParams(window.location.search);
 
-    const filterParams = {};
+  //   const filterParams = {};
 
-    urlParams.forEach((value, key) => {
-      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
-        const fieldName = key.slice(7, -1);
-        filterParams[fieldName] = value;
-      }
-    });
+  //   urlParams.forEach((value, key) => {
+  //     if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+  //       const fieldName = key.slice(7, -1);
+  //       filterParams[fieldName] = value;
+  //     }
+  //   });
 
-    const queryString = Object.keys(filterParams)
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
-      .join("&");
+  //   const queryString = Object.keys(filterParams)
+  //     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+  //     .join("&");
 
-    // console.log("querys: ", urlParams);
-    const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`
-      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`;
+  //   // console.log("querys: ", urlParams);
+  //   const baseUrl = window?.location?.href?.includes("localhost")
+  //     ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`
+  //     : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`;
 
-    const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
-    console.log("url local solicitada: ", finalURL);
-    try {
-      const res = await fetch(finalURL);
-      const result = await res.json();
+  //   const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
+  //   console.log("url local solicitada: ", finalURL);
+  //   try {
+  //     const res = await fetch(finalURL);
+  //     const result = await res.json();
 
-      setCases(result.data);
-    } catch (error) {
-      console.error("Error al obtener datos: ", error)
-      setLoader(false);
-    }
-    // const result = await res.json();
-    // console.log(data)
-  }
-  console.log("DATA2 cases", cases);
+  //     setCases(result.data);
+  //   } catch (error) {
+  //     console.error("Error al obtener datos: ", error)
+  //     setLoader(false);
+  //   }
+  // }
 
   async function handlerFetchComision() {
 
@@ -99,7 +96,7 @@ export default function TableComision() {
   useEffect(() => {
     handlerFetch(itemsPerPage, currentPage);
     handlerFetchComision();
-    handlerFetchVerification()
+    // handlerFetchVerification()
   }, [loader, itemsPerPage, currentPage, searchParams]);
 
   function handlerSelectCheck(e, i) {
