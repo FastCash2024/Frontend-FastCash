@@ -196,10 +196,12 @@ export default function Home() {
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
       .join("&");
 
-    // console.log("querys: ", urlParams);
+    console.log("query String: ", queryString);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000&fechaDeTramitacionDeCobro=${today}`
-      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000&fechaDeTramitacionDeCobro=${today}`;
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000${queryString ? `&${queryString}` : `&fechaDeTramitacionDeCobro=${today}`
+      }`
+      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000${queryString ? `&${queryString}` : `&fechaDeTramitacionDeCobro=${today}`
+      }`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
@@ -212,15 +214,34 @@ export default function Home() {
       console.error("Error al obtener datos: ", error)
       setLoader(false);
     }
-    // const result = await res.json();
-    // console.log(data)
   }
 
   async function handlerFetchTotales() {
-    const res = await fetch(
-      window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3003/api/loans/verification/totalreportecobro'
-        : 'https://api.fastcash-mx.com/api/loans/verification/totalreportecobro')
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterParams = {};
+
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1);
+        filterParams[fieldName] = value;
+      }
+    });
+
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+
+    const baseUrl = window?.location?.href?.includes("localhost")
+      ? "http://localhost:3003/api/loans/verification/totalreportecobro"
+      : "https://api.fastcash-mx.com/api/loans/verification/totalreportecobro";
+
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+    console.log("Final URL:", url);
+
+    const res = await fetch(url)
     const data = await res.json()
     setTotales(data.totales)
   }
@@ -242,10 +263,30 @@ export default function Home() {
   };
 
   async function handlerFetchDetails() {
-    const res = await fetch(
-      window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3003/api/loans/verification/reportecobrados?estadoDeCredito=Pagado'
-        : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados?estadoDeCredito=Pagado')
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterParams = {};
+
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1);
+        filterParams[fieldName] = value;
+      }
+    });
+
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+    
+    const baseUrl = window?.location?.href?.includes('localhost')
+    ? 'http://localhost:3003/api/loans/verification/reportecobrados'
+    : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados'
+
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+    console.log("url reporte cobrado: ", url);
+    
+    const res = await fetch(url)
     const data = await res.json()
     console.log("data detalle: ", data)
     setDetails(data.data)
@@ -254,145 +295,145 @@ export default function Home() {
   useEffect(() => {
     handlerFetchDetails();
     setCheckedArr([]);
-  }, []);
+  }, [loader, itemsPerPage, currentPage, searchParams]);
 
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
   }
 
   return (
-      <>
-        <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
-          <table className="w-full min-w-[2000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
-            <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
-              <tr className=" bg-slate-200">
-                <th className="px-3 py-2">{/* <input type="checkbox" /> */}</th>
-                <th className="px-4 py-2 text-gray-700">SEGMENTO</th>
-                <th className="px-4 py-2 text-gray-700">Nombres</th>
+    <>
+      <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
+        <table className="w-full min-w-[2000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
+          <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
+            <tr className=" bg-slate-200">
+              <th className="px-3 py-2">{/* <input type="checkbox" /> */}</th>
+              <th className="px-4 py-2 text-gray-700">SEGMENTO</th>
+              <th className="px-4 py-2 text-gray-700">Nombres</th>
 
-                <th className="px-4 py-2 text-gray-700">Cuenta</th>
+              <th className="px-4 py-2 text-gray-700">Cuenta</th>
 
-                <th className="px-4 py-2 text-gray-700">CASOS FUERA DE HORARIO</th>
-                <th className="px-4 py-2 text-gray-700">CASOS</th>
+              <th className="px-4 py-2 text-gray-700">CASOS FUERA DE HORARIO</th>
+              <th className="px-4 py-2 text-gray-700">CASOS</th>
 
-                <th className="px-4 py-2 text-yellow-500 ">PAGOS 10:00 am</th>
-                <th className="px-4 py-2 text-gray-700">PTP 10:00 am</th>
-                <th className="px-4 py-2 text-gray-700">
-                  Tasa de recuperación
-                </th>
+              <th className="px-4 py-2 text-yellow-500 ">PAGOS 10:00 am</th>
+              <th className="px-4 py-2 text-gray-700">PTP 10:00 am</th>
+              <th className="px-4 py-2 text-gray-700">
+                Tasa de recuperación
+              </th>
 
-                <th className="px-4 py-2 text-yellow-500 ">PAGOS 12:00 am</th>
-                <th className="px-4 py-2 text-gray-700">PTP 12:00 am</th>
-                <th className="px-4 py-2 text-gray-700">
-                  Tasa de recuperación
-                </th>
+              <th className="px-4 py-2 text-yellow-500 ">PAGOS 12:00 am</th>
+              <th className="px-4 py-2 text-gray-700">PTP 12:00 am</th>
+              <th className="px-4 py-2 text-gray-700">
+                Tasa de recuperación
+              </th>
 
-                <th className="px-4 py-2 text-yellow-500 ">PAGOS 2:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">PTP 2:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">
-                  Tasa de recuperación
-                </th>
+              <th className="px-4 py-2 text-yellow-500 ">PAGOS 2:00 pm</th>
+              <th className="px-4 py-2 text-gray-700">PTP 2:00 pm</th>
+              <th className="px-4 py-2 text-gray-700">
+                Tasa de recuperación
+              </th>
 
-                <th className="px-4 py-2 text-yellow-500 ">PAGOS 4:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">PTP 4:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">
-                  Tasa de recuperación
-                </th>
+              <th className="px-4 py-2 text-yellow-500 ">PAGOS 4:00 pm</th>
+              <th className="px-4 py-2 text-gray-700">PTP 4:00 pm</th>
+              <th className="px-4 py-2 text-gray-700">
+                Tasa de recuperación
+              </th>
 
-                <th className="px-4 py-2 text-yellow-500 ">PAGOS 6:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">PTP 6:00 pm</th>
-                <th className="px-4 py-2 text-gray-700">
-                  Tasa de recuperación
-                </th>
+              <th className="px-4 py-2 text-yellow-500 ">PAGOS 6:00 pm</th>
+              <th className="px-4 py-2 text-gray-700">PTP 6:00 pm</th>
+              <th className="px-4 py-2 text-gray-700">
+                Tasa de recuperación
+              </th>
 
-                <th className="px-4 py-2 text-yellow-500">Pagos total</th>
-                <th className="px-4 py-2 text-gray-700">
-                  Tasa de recuperación
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {data?.data?.map((i, index) => (
-                <tr
-                  key={index}
-                  className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-                    }`}
+              <th className="px-4 py-2 text-yellow-500">Pagos total</th>
+              <th className="px-4 py-2 text-gray-700">
+                Tasa de recuperación
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.data?.map((i, index) => (
+              <tr
+                key={index}
+                className={`bg-gray-200 border-b text-[12px] ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
+                  }`}
+              >
+                <td
+                  className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
+                    } ${selectedLeft === 1 ? "sticky left-0 z-10" : ""}`}
                 >
-                  <td
-                    className={`px-3 py-2 text-[12px] border-b ${index % 2 === 0 ? "bg-gray-300" : "bg-gray-200"
-                      } ${selectedLeft === 1 ? "sticky left-0 z-10" : ""}`}
-                  >
-                    <input
-                      type="checkbox"
-                      onChange={(e) => handlerSelectCheck(e, i)}
-                    />
-                  </td>
-                  <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>
-                  <td className="px-4 py-2">{i.nombrePersonal}</td>
-                  <td className="px-4 py-2">{i.cuenta}</td>
+                  <input
+                    type="checkbox"
+                    onChange={(e) => handlerSelectCheck(e, i)}
+                  />
+                </td>
+                <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>
+                <td className="px-4 py-2">{i.nombrePersonal}</td>
+                <td className="px-4 py-2">{i.cuenta}</td>
 
-                  <td className="px-4 py-2">{details[i.cuenta]?.casosFueraDeHorario}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.casosTotales}</td>
-                  {/* <td className="px-4 py-2">{i.llamadasRealizadas}</td> */}
-                  <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.pagos10am}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.ptp10am}</td>
-                  <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion10am)?.toFixed(2)}%</td>
-                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos12am}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.ptp12am}</td>
-                  <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion12am)?.toFixed(2)}%</td>
-                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos2pm}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.ptp2pm}</td>
-                  <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion2pm)?.toFixed(2)}%</td>
-                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos4pm}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.ptp4pm}</td>
-                  <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion4pm)?.toFixed(2)}%</td>
-                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos6pm}</td>
-                  <td className="px-4 py-2">{details[i.cuenta]?.ptp6pm}</td>
-                  <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion6pm)?.toFixed(2)}%</td>
-                  <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagosTotal}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.casosFueraDeHorario}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.casosTotales}</td>
+                {/* <td className="px-4 py-2">{i.llamadasRealizadas}</td> */}
+                <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.pagos10am}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.ptp10am}</td>
+                <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion10am)?.toFixed(2)}%</td>
+                <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos12am}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.ptp12am}</td>
+                <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion12am)?.toFixed(2)}%</td>
+                <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos2pm}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.ptp2pm}</td>
+                <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion2pm)?.toFixed(2)}%</td>
+                <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos4pm}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.ptp4pm}</td>
+                <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion4pm)?.toFixed(2)}%</td>
+                <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagos6pm}</td>
+                <td className="px-4 py-2">{details[i.cuenta]?.ptp6pm}</td>
+                <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacion6pm)?.toFixed(2)}%</td>
+                <td className="px-4 py-2 bg-yellow-400">{details[i.cuenta]?.pagosTotal}</td>
 
-                  <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacionTotal)?.toFixed(2)}%</td>
-                </tr>
-              ))}
-              <tr className="bg-gray-200 font-bold">
-                <td className='px-4 py-2'>Totales</td>
-                <td className='px-4 py-2'></td>
-                <td className='px-4 py-2'></td>
-                <td className='px-4 py-2'></td>
-                <td className='px-4 py-2'>{totales?.casosFueraDeHorario}</td>
-                <td className='px-4 py-2'>{totales?.totalesConAsesor}</td>
-                {/* <td className='px-4 py-2'></td> */}
-                <td className="px-4 py-2  bg-yellow-400">{totales?.pagos10am}</td>
-                <td className="px-4 py-2">{totales?.ptp10am}</td>
-                <td className="px-4 py-2">{(totales?.tasaRecuperacion10am)?.toFixed(2)}%</td>
-                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos12am}</td>
-                <td className="px-4 py-2">{totales?.ptp12am}</td>
-                <td className="px-4 py-2">{(totales?.tasaRecuperacion12am)?.toFixed(2)}%</td>
-                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos2pm}</td>
-                <td className="px-4 py-2">{totales?.ptp2pm}</td>
-                <td className="px-4 py-2">{(totales?.tasaRecuperacion2pm)?.toFixed(2)}%</td>
-                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos4pm}</td>
-                <td className="px-4 py-2">{totales?.ptp4pm}</td>
-                <td className="px-4 py-2">{(totales?.tasaRecuperacion4pm)?.toFixed(2)}%</td>
-                <td className="px-4 py-2 bg-yellow-400">{totales?.pagos6pm}</td>
-                <td className="px-4 py-2">{totales?.ptp6pm}</td>
-                <td className="px-4 py-2">{(totales?.tasaRecuperacion6pm)?.toFixed(2)}%</td>
-                <td className="px-4 py-2 bg-yellow-400">{totales?.pagosTotal}</td>
-                <td className="px-4 py-2">{(totales?.tasaRecuperacionTotal)?.toFixed(2)}%</td>
+                <td className="px-4 py-2">{(details[i.cuenta]?.tasaRecuperacionTotal)?.toFixed(2)}%</td>
               </tr>
-            </tbody>
-          </table>
-        </div>
-        <div>
-          <Paginator
-            totalItems={totalDocuments}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-            onReload={handleReload}
-          />
-        </div>
-      </>
-    )
+            ))}
+            <tr className="bg-gray-200 font-bold">
+              <td className='px-4 py-2'>Totales</td>
+              <td className='px-4 py-2'></td>
+              <td className='px-4 py-2'></td>
+              <td className='px-4 py-2'></td>
+              <td className='px-4 py-2'>{totales?.casosFueraDeHorario}</td>
+              <td className='px-4 py-2'>{totales?.totalesConAsesor}</td>
+              {/* <td className='px-4 py-2'></td> */}
+              <td className="px-4 py-2  bg-yellow-400">{totales?.pagos10am}</td>
+              <td className="px-4 py-2">{totales?.ptp10am}</td>
+              <td className="px-4 py-2">{(totales?.tasaRecuperacion10am)?.toFixed(2)}%</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.pagos12am}</td>
+              <td className="px-4 py-2">{totales?.ptp12am}</td>
+              <td className="px-4 py-2">{(totales?.tasaRecuperacion12am)?.toFixed(2)}%</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.pagos2pm}</td>
+              <td className="px-4 py-2">{totales?.ptp2pm}</td>
+              <td className="px-4 py-2">{(totales?.tasaRecuperacion2pm)?.toFixed(2)}%</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.pagos4pm}</td>
+              <td className="px-4 py-2">{totales?.ptp4pm}</td>
+              <td className="px-4 py-2">{(totales?.tasaRecuperacion4pm)?.toFixed(2)}%</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.pagos6pm}</td>
+              <td className="px-4 py-2">{totales?.ptp6pm}</td>
+              <td className="px-4 py-2">{(totales?.tasaRecuperacion6pm)?.toFixed(2)}%</td>
+              <td className="px-4 py-2 bg-yellow-400">{totales?.pagosTotal}</td>
+              <td className="px-4 py-2">{(totales?.tasaRecuperacionTotal)?.toFixed(2)}%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <Paginator
+          totalItems={totalDocuments}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+          onReload={handleReload}
+        />
+      </div>
+    </>
+  )
 }

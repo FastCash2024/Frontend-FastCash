@@ -153,16 +153,6 @@ export default function Home() {
     setTotalDocuments(result.totalDocuments);
   }
 
-  // async function handlerFetchVerification() {
-  //   const res = await fetch(
-  //     window?.location?.href?.includes('localhost')
-  //       ? 'http://localhost:3000/api/loans/verification?estadoDeCredito=Pendiente,Reprobado'
-  //       : 'https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Pendiente,Reprobado')
-  //   const data = await res.json()
-  //   console.log("cases: ", data)
-  //   setCases(data.data)
-  // }
-
   async function handlerFetchVerification() {
     const urlParams = new URLSearchParams(window.location.search);
 
@@ -181,8 +171,8 @@ export default function Home() {
 
     console.log("today: ", today);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`
-      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000&fechaDeTramitacionDelCaso=${today}`;
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000${queryString ? `&${queryString}` : `&fechaDeTramitacionDeCobro=${today}`}`
+      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000${queryString ? `&${queryString}` : `&fechaDeTramitacionDeCobro=${today}`}`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
@@ -200,20 +190,58 @@ export default function Home() {
   }
 
   async function handlerFetchDetails() {
-    const res = await fetch(
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterParams = {};
+
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1);
+        filterParams[fieldName] = value;
+      }
+    });
+
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+
+    const baseUrl =
       window?.location?.href?.includes('localhost')
         ? 'http://localhost:3003/api/loans/verification/reporte'
-        : 'https://api.fastcash-mx.com/api/loans/verification/reporte')
+        : 'https://api.fastcash-mx.com/api/loans/verification/reporte'
+
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+    const res = await fetch(url)
     const data = await res.json()
     console.log(data)
     setDetails(data.data)
   }
 
   async function handlerFetchTotales() {
-    const res = await fetch(
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterParams = {};
+
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1);
+        filterParams[fieldName] = value;
+      }
+    });
+
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+
+    const baseUrl =
       window?.location?.href?.includes('localhost')
         ? 'http://localhost:3003/api/loans/verification/totalreporteverificacion'
-        : 'https://api.fastcash-mx.com/api/loans/verification/totalreporteverificacion')
+        : 'https://api.fastcash-mx.com/api/loans/verification/totalreporteverificacion';
+
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+    const res = await fetch(url)
     const data = await res.json()
     setTotales(data.totalesGenerales)
   }
@@ -246,7 +274,7 @@ export default function Home() {
     handlerFetch(itemsPerPage, currentPage);
   }
   console.log("array: ", checkedArr);
-  
+
   return (
     <>
       <div className='max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth'>

@@ -882,7 +882,16 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Fecha de tramitacion de cobro:
                                 </label>
-                                <input type='date' className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]  " arr={['Opción 1', 'Opción 2']} name='fechaDeTramitacionDeCobro' onChange={onChangeHandler} defaultValue={filter['fechaDeTramitacionDeCobro']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+
+                                <input
+                                    type='date'
+                                    className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px]"
+                                    name='fecha'
+                                    onChange={onChangeHandler}
+                                    value={filter['fecha'] || ''}
+                                    required
+                                />
+
                             </div>
                         </div>
 

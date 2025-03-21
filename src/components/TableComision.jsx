@@ -2,9 +2,10 @@ import { useAppContext } from '@/context/AppContext';
 import { formatearFecha, obtenerSegmento } from '@/utils';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { Paginator } from './Paginator';
 
 export default function TableComision() {
-  const { user, loader, selectedLeft, setLoader, setCheckedArr, checkedArr } = useAppContext();
+  const { user, userDB, loader, selectedLeft, setLoader, setCheckedArr, checkedArr } = useAppContext();
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
@@ -12,19 +13,37 @@ export default function TableComision() {
   const [filter_1, setFilter_1] = useState([])
   const [totalDocuments, setTotalDocuments] = useState(1);
   const [cases, setCases] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(1);
 
-  async function handlerFetch() {
-    const res = await fetch(
-      window?.location?.href?.includes("localhost")
-        ? `http://localhost:3003/api/loans/verification/reportcomision?nombreUsuario=${user.email}`
-        : `https://api.fastcash-mx.com/api/loans/verification/reportcomision?nombreUsuario=${user.email}`
-    );
+  console.log("usuarioDB url: ", userDB);
+  console.log("usuario url: ", user);
+
+
+  async function handlerFetch(limit, page) {
+
+    console.log("url limit: ", limit);
+    console.log("url page: ", page);
+    
+
+    const baseUrl = window?.location?.href?.includes("localhost")
+      ? `http://localhost:3007/api/loansBuckup/getcasos?limit=${limit}&page=${page}`
+      : `https://api.fastcash-mx.com/api/loansBuckup/getcasos?limit=${limit}&page=${page}`;
+
+    const res = await fetch(baseUrl);
+
+    console.log("url: ", baseUrl);
+
     const result = await res.json();
     console.log("data: ", result);
     setData(result);
+    setCurrentPage(result.currentPage);
+    setTotalPages(result.totalPages);
+    setTotalDocuments(result.totalDocuments);
   }
 
-  async function handlerFetchVerification(limit, page) {
+  async function handlerFetchVerification() {
     const urlParams = new URLSearchParams(window.location.search);
 
     const filterParams = {};
@@ -42,8 +61,8 @@ export default function TableComision() {
 
     // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=${limit}`
-      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=${limit}`;
+      ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`
+      : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
@@ -63,24 +82,26 @@ export default function TableComision() {
   console.log("DATA2 cases", cases);
 
   async function handlerFetchComision() {
-    const res = await fetch(
+
+    const baseUrl =
       window?.location?.href?.includes("localhost")
-        ? `http://localhost:3006/api/users/comision`
-        : `https://api.fastcash-mx.com/api/users/comision`
-    );
+        ? `http://localhost:3006/api/users/comision?limit=1000`
+        : `https://api.fastcash-mx.com/api/users/comision?limit=1000`
+
+    const res = await fetch(baseUrl);
 
     const result = await res.json();
-    console.log("data: ", result);
-    setFilter_1(result);
+    console.log("url comision: ", result.data);
+    setFilter_1(result.data);
   }
 
   console.log("data comision: ", filter_1);
 
   useEffect(() => {
-    handlerFetch();
+    handlerFetch(itemsPerPage, currentPage);
     handlerFetchComision();
-    handlerFetchVerification(totalDocuments)
-  }, [loader, searchParams, totalDocuments]);
+    handlerFetchVerification()
+  }, [loader, itemsPerPage, currentPage, searchParams]);
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
@@ -92,11 +113,24 @@ export default function TableComision() {
     }
   }
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleItemsPerPageChange = (itemsPerPage) => {
+    setItemsPerPage(itemsPerPage);
+    setCurrentPage(1);
+  };
+
+  const handleReload = () => {
+    handlerFetch(itemsPerPage, currentPage);
+  }
+
   return (
     <>
-    <div className='flex w-full p-4 justify-between text-gray-950 items-center'>
-      <p className='font-bold text-2xl'>Asesor: {user.nombreCompleto}</p>
-    </div>
+      <div className='flex w-full p-4 justify-between text-gray-950 items-center'>
+        <p className='font-bold text-2xl'>Asesor: {user.nombreCompleto}</p>
+      </div>
       <div className="max-h-[calc(100vh-90px)] pb-2 overflow-y-auto relative scroll-smooth">
         <table className="w-full min-w-[1000px] border-[1px] bg-white text-[14px] text-left text-gray-500 border-t-4 border-t-gray-400">
           <thead className="text-[10px] text-white uppercase bg-slate-200 sticky top-[0px] z-20">
@@ -132,7 +166,7 @@ export default function TableComision() {
                     onChange={(e) => handlerSelectCheck(e, i)}
                   />
                 </td>
-                <td className="px-4 py-2">{ formatearFecha(i.fecha)}</td>
+                <td className="px-4 py-2">{formatearFecha(i.fecha)}</td>
                 <td className="px-4 py-2">{i.cuentaOperativa}</td>
                 <td className="px-4 py-2">{i.cuentaPersonal}</td>
                 <td className="px-4 py-2">
@@ -154,10 +188,10 @@ export default function TableComision() {
                     : "0%"}
                 </td>
                 <td className="px-4 py-2">
-                  {filter_1.data?.find((it) => it.segmento === obtenerSegmento(i.cuentaOperativa))?.comisionPorCobro}
+                  {filter_1?.find((it) => it.segmento === obtenerSegmento(i.cuentaOperativa))?.comisionPorCobro}
                 </td>
                 <td className="px-4 py-2">
-                  {(filter_1.data?.find((it) => it.segmento === obtenerSegmento(i.cuentaOperativa))?.comisionPorCobro) * (i.totalCasos)}
+                  {(filter_1?.find((it) => it.segmento === obtenerSegmento(i.cuentaOperativa))?.comisionPorCobro) * (i.totalCasos)}
                 </td>
               </tr>
             ))}
@@ -165,14 +199,14 @@ export default function TableComision() {
         </table>
       </div>
       <div>
-        {/* <Paginator
-              totalItems={totalDocuments}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
-              onReload={handleReload}
-            /> */}
+        <Paginator
+          totalItems={totalDocuments}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+          onReload={handleReload}
+        />
       </div>
     </>
   )

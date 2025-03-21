@@ -23,70 +23,17 @@ export default function TableReporteDiarioAuditoria() {
 
   async function handlerFetch(limit, page) {
 
-    const local = "http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria";
-    const server = "https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria";
-
-    const urlParams = new URLSearchParams(window.location.search);
-
-    const filterParams = {};
-    urlParams.forEach((value, key) => {
-      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
-        const fieldName = key.slice(7, -1); // Extraer el nombre de la clave dentro de "filter[]"
-        filterParams[fieldName] = value;
-      }
-    });
-
-    const stg = Object.keys(filterParams)
-      .filter(key => filterParams[key] !== undefined && filterParams[key] !== null) // Filtrar valores nulos o indefinidos
-      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`) // Codificar clave=valor
-      .join("&"); // Unir con &
-    console.log(stg ? 'existen' : 'no existen')
-
-
-    const roleQueries = {
-      "Asesor de Verificación": `&cuentaVerificador=${userDB.cuenta}`,
-      "Asesor de Cobranza": `&cuentaCobrador=${userDB.cuenta}`,
-      // "Asesor de Auditoria": `&cuentaAuditor=${userDB.cuenta}`,
-    };
-
-    const query2 = roleQueries[user?.rol] || '';
-
-    console.log("query2", query2)
-
-    const defaultLimit = 5; // Valor predeterminado para limit
-    const defaultPage = 1; // Valor predeterminado para page
-
-    const finalLimit = limit || defaultLimit;
-    const finalPage = page || defaultPage;
-
-    const dataParams = `${stg || query2 || local.includes("?") ? "&" : "?"
-      }limit=${finalLimit}&page=${finalPage}`;
-    console.log("dataParamas: ", dataParams);
-    const urlLocal = stg
-      ? local.includes('?')
-        ? `${local.split('?')[0]}?${stg}${query2}${dataParams}`
-        : `${local}?${stg}${query2}${dataParams}`
-      : `${local}${query2}${dataParams}`
-
-    const urlServer = stg
-      ? server.includes('?')
-        ? `${server.split('?')[0]}?${stg}${query2}${dataParams}`
-        : `${server}?${stg}${query2}${dataParams}`
-      : `${server}${query2}${dataParams}`
-
-    console.log("url local reporte diario: ", urlLocal);
-    console.log("url server reporte diario: ", urlServer);
-
     const res = await fetch(
-      window?.location?.href?.includes('localhost') ? `${urlLocal}` : `${urlServer}`
-    )
-    const data = await res.json()
-    console.log("datausers: ", data);
-
-    setData(data)
-    setCurrentPage(data.currentPage);
-    setTotalPages(data.totalPages);
-    setTotalDocuments(data.totalDocuments);
+      window?.location?.href?.includes("localhost")
+        ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=${limit}&page=${page}`
+        : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Auditoria&limit=${limit}&page=${page}`
+    );
+    const result = await res.json();
+    console.log("data: ", result);
+    setData(result);
+    setCurrentPage(result.currentPage);
+    setTotalPages(result.totalPages);
+    setTotalDocuments(result.totalDocuments);
     setLoader(false)
   }
 
@@ -106,10 +53,9 @@ export default function TableReporteDiarioAuditoria() {
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
       .join("&");
 
-    // console.log("querys: ", urlParams);
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3002/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&fechaDeAuditoria=${today}&limit=1000`
-      : `https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&fechaDeAuditoria=${today}&limit=1000`;
+      ? `http://localhost:3002/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=1000${queryString ? `&${queryString}` : `&fechaDeAuditoria=${today}`}`
+      : `https://api.fastcash-mx.com/api/authSystem/users?tipoGrupo=Asesor%20de%20Verificación,Asesor%20de%20Cobranza&limit=1000${queryString ? `&${queryString}` : `&fechaDeAuditoria=${today}`}`;
 
     const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
     console.log("url local solicitada: ", finalURL);
@@ -122,18 +68,38 @@ export default function TableReporteDiarioAuditoria() {
       console.error("Error al obtener datos: ", error)
       setLoader(false);
     }
-    // const result = await res.json();
-    // console.log(data)
   }
 
   console.log("cases: ", cases);
 
 
   async function handlerFetchDetails() {
-    const res = await fetch(
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterParams = {};
+
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1);
+        filterParams[fieldName] = value;
+      }
+    });
+
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+
+    const baseUrl =
       window?.location?.href?.includes('localhost')
         ? 'http://localhost:3006/api/users/multas/reporte'
-        : 'https://api.fastcash-mx.com/api/users/multas/reporte')
+        : 'https://api.fastcash-mx.com/api/users/multas/reporte'
+
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+    console.log("url reportes: ", url);
+
+    const res = await fetch(url)
     const data = await res.json()
     console.log(data)
     setDetails(data.data)
@@ -142,10 +108,28 @@ export default function TableReporteDiarioAuditoria() {
   }
 
   async function handlerFetchTotales() {
-    const res = await fetch(
-      window?.location?.href?.includes('localhost')
-        ? 'http://localhost:3006/api/users/multas/reporteTotales'
-        : 'https://api.fastcash-mx.com/api/users/multas/reporteTotales')
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const filterParams = {};
+
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1);
+        filterParams[fieldName] = value;
+      }
+    });
+
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
+
+    const baseUrl = window?.location?.href?.includes('localhost')
+      ? 'http://localhost:3006/api/users/multas/reporteTotales'
+      : 'https://api.fastcash-mx.com/api/users/multas/reporteTotales'
+
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
+
+    const res = await fetch(url)
     const data = await res.json()
     setTotales(data.totalesGenerales)
   }
@@ -154,11 +138,8 @@ export default function TableReporteDiarioAuditoria() {
     handlerFetchTotales()
     handlerFetch(itemsPerPage, currentPage);
     handlerFetchVerification();
-  }, [loader, searchParams, itemsPerPage, currentPage])
-
-  useEffect(() => {
     handlerFetchDetails()
-  }, [loader])
+  }, [loader, searchParams, itemsPerPage, currentPage])
 
   function handlerSelectCheck(e, item) {
     if (e.target.checked) {
