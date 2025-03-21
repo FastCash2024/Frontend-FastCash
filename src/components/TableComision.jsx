@@ -25,11 +25,11 @@ export default function TableComision() {
 
     console.log("url limit: ", limit);
     console.log("url page: ", page);
-    
+
 
     const baseUrl = window?.location?.href?.includes("localhost")
-      ? `http://localhost:3007/api/loansBuckup/getcasos?limit=${limit}&page=${page}`
-      : `https://api.fastcash-mx.com/api/loansBuckup/getcasos?limit=${limit}&page=${page}`;
+      ? `http://localhost:3007/api/loansBuckup/getcasos?email=${user.email}&limit=${limit}&page=${page}`
+      : `https://api.fastcash-mx.com/api/loansBuckup/getcasos?email=${user.email}limit=${limit}&page=${page}`;
 
     const res = await fetch(baseUrl);
 
@@ -40,7 +40,7 @@ export default function TableComision() {
     setData(result);
     setCurrentPage(result.currentPage);
     setTotalPages(result.totalPages);
-    setTotalDocuments(result.totalDocuments);
+    setTotalDocuments(result.totalDocs);
   }
 
   async function handlerFetchVerification() {
@@ -71,7 +71,6 @@ export default function TableComision() {
       const result = await res.json();
 
       setCases(result.data);
-      setTotalDocuments(result.totalDocuments);
     } catch (error) {
       console.error("Error al obtener datos: ", error)
       setLoader(false);
@@ -166,32 +165,24 @@ export default function TableComision() {
                     onChange={(e) => handlerSelectCheck(e, i)}
                   />
                 </td>
-                <td className="px-4 py-2">{formatearFecha(i.fecha)}</td>
-                <td className="px-4 py-2">{i.cuentaOperativa}</td>
-                <td className="px-4 py-2">{i.cuentaPersonal}</td>
-                <td className="px-4 py-2">
-                  {
-                    cases?.filter((it) =>
-                      it.cuentaCobrador === i.cuentaOperativa || it.cuentaVerificador === i.cuentaOperativa).length
-                  }
-                </td>
+                <td className="px-4 py-2">{formatearFecha(i.fechaBackup)}</td>
+                <td className="px-4 py-2">{i.cuenta}</td>
+                <td className="px-4 py-2">{obtenerSegmento(i.cuenta)}</td>
+                <td className="px-4 py-2">{i.cantidadDeCasosAsignados}</td>
 
                 <td className="px-4 py-2">
-                  {i.totalCasos}</td>
+                  {i.cantidadCasosPagados}</td>
                 <td className="px-4 py-2">
-                  {cases?.filter((it) =>
-                    it.cuentaCobrador === i.cuentaOperativa || it.cuentaVerificador === i.cuentaOperativa
-                  ).length > 0
-                    ? ((i.totalCasos / cases?.filter((it) =>
-                      it.cuentaCobrador === i.cuentaOperativa || it.cuentaVerificador === i.cuentaOperativa
-                    ).length) * 100).toFixed(2) + "%"
+                  {i.cuenta.length > 0
+                    ? ((i.cantidadCasosPagados / i.cantidadDeCasosAsignados) * 100).toFixed(2) + "%"
                     : "0%"}
+
                 </td>
                 <td className="px-4 py-2">
-                  {filter_1?.find((it) => it.segmento === obtenerSegmento(i.cuentaOperativa))?.comisionPorCobro}
+                  {filter_1?.find((it) => it.segmento === obtenerSegmento(i.cuenta))?.comisionPorCobro}
                 </td>
                 <td className="px-4 py-2">
-                  {(filter_1?.find((it) => it.segmento === obtenerSegmento(i.cuentaOperativa))?.comisionPorCobro) * (i.totalCasos)}
+                  {(filter_1?.find((it) => it.segmento === obtenerSegmento(i.cuenta))?.comisionPorCobro) * (i.cantidadCasosPagados)}
                 </td>
               </tr>
             ))}

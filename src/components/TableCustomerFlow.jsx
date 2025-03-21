@@ -72,7 +72,7 @@ export default function TableCustomerFlow() {
   };
 
   useEffect(() => {
-    const days = [0, 1, 2, 3, 4, 5, 6];
+    const days = [-1, -2, -3, -4, -5, 0];
     const dates = getDays(days);
     fetchCustomers(dates);
   }, []);
@@ -82,7 +82,7 @@ export default function TableCustomerFlow() {
     fetchCustomersFlow();
   }, []);
 
-  const dates = getDays([0, 1, 2, 3, 4, 5]);
+  const dates = getDays([-1, -2, -3, -4, -5, 0]);
 
   const totalCobrado = dates.reduce((acc, date) => {
     const total = filtro_1.reduce((sum, item) => {
@@ -117,7 +117,45 @@ export default function TableCustomerFlow() {
                 scope="col"
                 className=" px-3 py-1 text-gray-700 text-center"
               >
-                {getDay(-6).val}
+                {getDay(-12).val}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-11).val}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-10).val}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-9).val}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-8).val}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-7).val}
+              </th>
+            </tr>
+            <tr className="">
+              <th
+                scope="col"
+                className="w-[50px] px-3 py-1 text-gray-700"
+              >
+                Desembolso
               </th>
               <th
                 scope="col"
@@ -149,49 +187,11 @@ export default function TableCustomerFlow() {
               >
                 {getDay(-1).val}
               </th>
-            </tr>
-            <tr className="">
-              <th
-                scope="col"
-                className="w-[50px] px-3 py-1 text-gray-700"
-              >
-                Desembolso
-              </th>
               <th
                 scope="col"
                 className=" px-3 py-1 text-gray-700 text-center"
               >
                 {getDay(0).val}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(1).val}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(2).val}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(3).val}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(4).val}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(5).val}
               </th>
             </tr>
             <tr className="">
@@ -205,37 +205,37 @@ export default function TableCustomerFlow() {
                 scope="col"
                 className=" px-3 py-1 text-gray-700 text-center"
               >
+                {getDay(-5).day}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-4).day}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-3).day}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-2).day}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
+                {getDay(-1).day}
+              </th>
+              <th
+                scope="col"
+                className=" px-3 py-1 text-gray-700 text-center"
+              >
                 {getDay(0).day}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(1).day}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(2).day}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(3).day}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(4).day}
-              </th>
-              <th
-                scope="col"
-                className=" px-3 py-1 text-gray-700 text-center"
-              >
-                {getDay(5).day}
               </th>
             </tr>
           </thead>
