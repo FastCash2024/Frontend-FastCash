@@ -24,7 +24,7 @@ import { getBackgroundClass } from '@/utils/colors';
 import ControlCasesTools from './ControlCasesTools';
 import { obtenerSegmento } from '@/utils';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, userDB, setApplicationTipo, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const { user, userDB, setApplicationTipo, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected, setAppComisionVerification } = useAppContext()
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
@@ -41,6 +41,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [totalesCobro, setTotalesCobro] = useState({})
     const [details, setDetails] = useState([])
     const [totales, setTotales] = useState({});
+    const [comisionV, setComisionV] = useState({});
 
 
     const fetchCustomersFlow = async () => {
@@ -349,6 +350,35 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         } else {
             setModal("Realizar Backoup verificacion")
         }
+    }
+
+    const comisionVerification = async () => {
+        try {
+            const res = await fetch(
+                window?.location?.href?.includes('localhost')
+                    ? 'http://localhost:3006/api/users/comisionVerification'
+                    : 'https://api.fastcash-mx.com/api/users/comisionVerification'
+            );
+
+            if (!res.ok) throw new Error('Error al obtener la comisión');
+
+            const data = await res.json();
+            setComisionV(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+
+    useEffect(() => {
+        if (item === "Comisión") {
+            comisionVerification();
+        }
+    }, [loader]);
+
+    const handleComision = (i) => {
+        setModal("Editar comision verificacion");
+        setAppComisionVerification(i);
     }
 
     return (
@@ -1006,8 +1036,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {/* ---------------------------------'CONTABILIDAD' --------------------------------- */}
 
             {item === 'Comisión' && <div>
-                <div className='pt-3 flex space-x-3 w-[20%]'>
-                    <Button type="button" theme="MiniPrimary" click={() => setModal('Agregar comision')} >Generar Comisión</Button>
+                <div className='flex flex-row'>
+                    <div className='pt-3 flex space-x-3 w-[20%]'>
+                        <Button type="button" theme="MiniPrimary" click={() => setModal('Agregar comision')} >Generar Comisión</Button>
+                    </div>
+                    {
+                        comisionV.length > 0 ?
+                            <div className='pt-3 flex space-x-3 w-[30%]'>
+                                <Button type="button" theme="MiniPrimary" click={() => handleComision(comisionV[0])} >Editar Comisión verificador</Button>
+                            </div>
+                            :
+                            <div className='pt-3 flex space-x-3 w-[30%]'>
+                                <Button type="button" theme="MiniPrimary" click={() => setModal('Agregar comision verificacion')} >Generar Comisión verificador</Button>
+                            </div>
+                    }
+                    <div className='pt-3 pl-4 flex space-x-3 w-[30%] text-gray-950'>
+                        <p>Comision verificador: <strong>{comisionV[0]?.comisionPorAprobacion}</strong></p>
+                    </div>
                 </div>
             </div>}
 

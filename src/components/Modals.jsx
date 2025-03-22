@@ -85,6 +85,8 @@ import FormDistributionAuditors from './formModals/FormDistributionMasiveAuditor
 import FormPagado from './formModals/FormPagado'
 import FormPagadoExtension from './formModals/FormPagadoExtension'
 import FormAsignarCuentaAuditor from './formModals/FormAsignarCuentaAuditor'
+import FormAddComisionVerificacion from './formModals/FormAddComisionVerificacion'
+import FormUpdateComisionVerification from './formModals/FormUpdateComisionVerification'
 
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
@@ -563,6 +565,8 @@ export default function Home() {
             {/* ---------------------------------'GESTION DE COMISIONES' --------------------------------- */}
 
             {modal === 'Agregar comision' && <FormAddComision />}
+            {modal === 'Agregar comision verificacion' && <FormAddComisionVerificacion />}
+            {modal === 'Editar comision verificacion' && <FormUpdateComisionVerification />}
             {modal === 'Editar comision' && <FormUpdateComision />}
             {modal === 'Eliminar comision' && <ModalDeleteComision />}
         </div>

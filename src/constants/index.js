@@ -114,6 +114,7 @@ const menuArray = {
         { subtitle: "Gestion de auditoria", icon: <OutlineUsersIcon className="h-5 w-5" /> },
         { subtitle: "Asistencia", icon: <OutlineUsersIcon className="h-5 w-5" /> },
         { subtitle: "Comision", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
+        { subtitle: "Comision Verificacion", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
         { subtitle: "Informacion personal", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
       ],
       length: 'h-[0px]'

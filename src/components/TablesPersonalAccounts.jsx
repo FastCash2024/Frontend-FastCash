@@ -61,6 +61,7 @@ import {
 import Newslater from '@/components/Newslater';
 import TableComision from './TableComision'
 import TableGestionDeAuditoria from './TableGestionDeAuditoria'
+import TableComisionVerification from './TableComisionVerification'
 
 
 export default function Home() {
@@ -682,6 +683,7 @@ export default function Home() {
 
 
             {user?.rol === 'Cuenta Personal' && item === 'Comision' && <TableComision /> }
+            {user?.rol === 'Cuenta Personal' && item === 'Comision Verificacion' && <TableComisionVerification /> }
 
             {/* ---------------------------------TABLAS--------------------------------- */}
 

@@ -43,40 +43,6 @@ export default function TableComision() {
     setTotalDocuments(result.totalDocs);
   }
 
-  // async function handlerFetchVerification() {
-  //   const urlParams = new URLSearchParams(window.location.search);
-
-  //   const filterParams = {};
-
-  //   urlParams.forEach((value, key) => {
-  //     if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
-  //       const fieldName = key.slice(7, -1);
-  //       filterParams[fieldName] = value;
-  //     }
-  //   });
-
-  //   const queryString = Object.keys(filterParams)
-  //     .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
-  //     .join("&");
-
-  //   // console.log("querys: ", urlParams);
-  //   const baseUrl = window?.location?.href?.includes("localhost")
-  //     ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`
-  //     : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado&limit=1000`;
-
-  //   const finalURL = queryString ? `${baseUrl}&${queryString}` : baseUrl;
-  //   console.log("url local solicitada: ", finalURL);
-  //   try {
-  //     const res = await fetch(finalURL);
-  //     const result = await res.json();
-
-  //     setCases(result.data);
-  //   } catch (error) {
-  //     console.error("Error al obtener datos: ", error)
-  //     setLoader(false);
-  //   }
-  // }
-
   async function handlerFetchComision() {
 
     const baseUrl =
