@@ -503,8 +503,6 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                               )
                             }
 
-
-
                             {/* Icon */}
                             {it.toLowerCase() === "icon" &&
                               item?.toLowerCase().includes("aplicacion") && (
@@ -523,6 +521,28 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                 {
                                   diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO())
                                 }
+                              </div>
+                            )}
+                            {/* DIas vencidos */}
+                            {it.toLowerCase() === "días vencidos" && (
+                              <div className="flex justify-center min-w-[60px]">
+                                { 
+                                  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) === 5 && "D2"
+                                }
+                                { 
+                                  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) === 6 && "D1"
+                                }
+                                { 
+                                  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) === 7 && "D0"
+                                }
+                                { 
+                                  (diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) > 7 &&  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) < 15) && "S1"
+                                }
+                                { 
+                                  (diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) > 14 &&  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) <= 22) && "S2"
+                                }
+                                
+                                
                               </div>
                             )}
 
