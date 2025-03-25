@@ -71,7 +71,7 @@ export default function FormUpdateComisionVerification() {
             <div className='flex flex-row justify-between w-full gap-4'>
                 <div className='flex flex-row justify-center items-center'>
                     <label htmlFor="comisionPorCobro" className={`mr-1 text-[10px] text-gray-950`}>
-                        Comisión por cobro:
+                        Comisión por verificación:
                     </label>
                     <Input
                         type="number"
