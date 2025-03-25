@@ -100,7 +100,7 @@ export default function Home() {
 
         <div className='w-full flex justify-center'>
           <ReCAPTCHA
-            sitekey="6LdcOwwqAAAAAPEqYv1NDkUpgJRRSaEna_ER9YTT"
+            sitekey="6LeTEAArAAAAAMiYFI19mZMvCF_gmO6nH4I4pM8f"
             onChange={onChange}
           />
         </div>
