@@ -23,7 +23,7 @@ export default function TableControl() {
   const date = getCurrentDate();
   const [data, setData] = useState([]); // Aquí solo debe almacenar el array de datos, no más propiedades
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
 

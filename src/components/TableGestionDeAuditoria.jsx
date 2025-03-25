@@ -10,7 +10,7 @@ export default function TableGestionDeAuditoria() {
   const item = searchParams.get("item");
   const seccion = searchParams.get("seccion");
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const [dataMultas, setDataMultas] = useState([])

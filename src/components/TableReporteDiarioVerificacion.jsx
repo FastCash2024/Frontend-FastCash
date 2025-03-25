@@ -80,7 +80,7 @@ export default function Home() {
   let menu = user?.rol ? menuArray[user.rol].filter(i => i.hash === seccion) : ''
   const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const [totales, setTotales] = useState({})

@@ -10,7 +10,7 @@ export default function TableReporteDiarioAuditoria() {
   const [details, setDetails] = useState([])
   const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const searchParams = useSearchParams()
