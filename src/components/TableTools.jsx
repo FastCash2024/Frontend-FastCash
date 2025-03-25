@@ -289,8 +289,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     const calcularTotalesPorSegmento = () => {
         const totalesPorSegmento = {};
-
-        Object.keys(details).forEach((cuenta) => {
+        const safeDetails = details || {};
+        Object?.keys(safeDetails).forEach((cuenta) => {
             const segmento = obtenerSegmento(cuenta);
             if (!segmento) {
                 console.log(`Segmento no encontrado para cuenta: ${cuenta}`);
