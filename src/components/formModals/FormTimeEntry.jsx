@@ -25,13 +25,13 @@ export default function FormTimeEntry() {
     function calcularEstadosDeAsistencia(horaEntrada) {
         const [hora, minuto] = horaEntrada.split(":").map(Number);
         const entrada = hora * 60 + minuto;
-        const salida = entrada + 8 * 60; // 8 horas después de la entrada
+        const salida = entrada + 10 * 60; // 8 horas después de la entrada
 
         const estados = [
-            { rango: `${formatTime(entrada)}-${formatTime(entrada + 14)}`, estado: "Operando" },
-            { rango: `${formatTime(entrada + 15)}-${formatTime(entrada + 20)}`, estado: "Atraso-1" },
-            { rango: `${formatTime(entrada + 21)}-${formatTime(entrada + 25)}`, estado: "Atraso-2" },
-            { rango: `${formatTime(entrada + 26)}-${formatTime(salida)}`, estado: "Falta" }
+            { rango: `${formatTime(entrada)}-${formatTime(entrada + 5)}`, estado: "Operando" },
+            { rango: `${formatTime(entrada + 6)}-${formatTime(entrada + 10)}`, estado: "Atraso-1" },
+            { rango: `${formatTime(entrada + 11)}-${formatTime(entrada + 15)}`, estado: "Atraso-2" },
+            { rango: `${formatTime(entrada + 16)}-${formatTime(salida)}`, estado: "Falta" }
         ];
 
         setData(prevData => ({
@@ -66,7 +66,7 @@ export default function FormTimeEntry() {
             const response = await fetch(window?.location?.href.includes("localhost")
                 ? `http://localhost:3006/api/users/entryhour/register`
                 : `https://api.fastcash-mx.com/api/users/entryhour/register`, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },

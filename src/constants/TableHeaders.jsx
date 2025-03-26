@@ -4,7 +4,7 @@ export const encabezadoCasosDeCobranza = () => {
     return !user?.rol?.includes('Usuario')
         ? [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
-            "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
+            "Estado de credito", "Nombre del cliente", "Número de teléfono móvil",
             "Cliente nuevo", "Valor Enviado", "Importe pagado (Rp)", "Nombre del producto", "Fecha de reembolso",
             "Días Vencidos", "fecha de tramitacion de cobro", "Fecha de creación de la tarea",
             "Fecha de tramitación del caso", "Nombre de la empresa", "Cuenta Cobrador (Asesor)",
@@ -12,7 +12,7 @@ export const encabezadoCasosDeCobranza = () => {
         ]
         : [
             "Seleccionar", "Contactos", "Número de préstamo", "ID de sub-factura",
-            "Estado de credito (rembolso)", "Nombre del cliente", "Número de teléfono móvil",
+            "Estado de credito", "Nombre del cliente", "Número de teléfono móvil",
             "Cliente nuevo", "Valor Enviado", "Importe pagado (Rp)",
              "nombreDelProducto", "Fecha de reembolso",
             "Días Vencidos", "fecha de tramitacion de cobro", "Fecha de creación de la tarea",
@@ -42,7 +42,7 @@ export const encabezadoGestionDeCuentasDeColección = () => [
 // ];
 
 export const encabezadoRegistroDeSMS = () => [
-    "Seleccionar", "Remitente de sms", "número de teléfono móvil", "Canal de envío",
+    "Remitente de sms", "número de teléfono móvil", "Canal de envío",
     "Código de producto", "Contenido", "Fecha de envío", "Estado de envio de SMS"
 ];
 

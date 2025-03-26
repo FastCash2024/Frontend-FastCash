@@ -140,7 +140,27 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
             <div>
                 <div className="w-full   relative  scroll-smooth mb-2 ">
-                    <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                    <div className='grid grid-cols-4 gap-x-5 gap-y-2 w-[1250px]'>
+                        <div className='w-[330px] space-y-2'>
+                            <SearchInput
+                                label="Número de teléfono:"
+                                name="numeroDeTelefonoMovil"
+                                value={filter['numeroDeTelefonoMovil'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="Buscar por numero de teléfono"
+                                required
+                            />
+                            <SearchInput
+                                label="Número de prestamo:"
+                                name="numeroDePrestamo"
+                                value={filter['numeroDePrestamo'] || ''}
+                                onChange={onChangeHandler}
+                                theme={theme}
+                                placeholder="Número de prestamo"
+                                required
+                            />
+                        </div>
                         <div className='w-[330px] space-y-2'>
                             <div className='flex justify-end items-center'>
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
