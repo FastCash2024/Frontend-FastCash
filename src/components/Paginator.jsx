@@ -143,7 +143,7 @@ export const Paginator = ({ totalItems, itemsPerPage, currentPage, onPageChange,
           onChange={handleItemsPerPageChange}
           className="w-20 h-7 px-2 text-center border border-gray-300 rounded  text-black"
         >
-          {[5, 10, 20, 50].map((size) => (
+          {[10, 20, 50, 100].map((size) => (
             <option key={size} value={size} className="text-black">
               {size}/page
             </option>

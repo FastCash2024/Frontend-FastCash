@@ -7,6 +7,7 @@ import { useState } from 'react'
 import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 const templates = [
+    "Seleciona una platilla porfavor",
     "Plantilla 1: Recordatorio amistoso\nHola, [name]. Te recordamos que el pago de [producto], con vencimiento el [fecha], está pendiente por un valor de [valor_de_pago]. Por favor, realiza tu pago para evitar inconvenientes. Si ya lo hiciste, ¡ignora este mensaje! 😊",
     "Plantilla 2: Aviso de vencimiento próximo\nHola, [name]. Queremos informarte que el pago de [producto] vence el [fecha]. El monto es de [valor_de_pago]. Por favor, realiza tu pago antes de la fecha indicada para mantener todo en orden.",
     "Plantilla 3: Pago vencido\nHola, [name]. El pago de [producto], con vencimiento el [fecha], aún no ha sido registrado. El monto pendiente es de [valor_de_pago]. Por favor, ponte en contacto con nosotros para regularizarlo lo antes posible.",

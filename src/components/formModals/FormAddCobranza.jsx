@@ -13,10 +13,10 @@ const optionsArray = [
     "Por favor elige",
     "Sin contactar",
     "No contactable",
-    "Contactado",
-    "Propósito de retrasar",
-    "Propósito de pagar",
-    "Promete a pagar",
+    "Buzon de voz",
+    "Fuera de servicio",
+    "Responde tercera persona",
+    "Promesa de pago",
     "Pagará pronto",
 ];
 
