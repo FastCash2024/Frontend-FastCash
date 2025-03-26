@@ -237,7 +237,33 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         const db = { ...filter, startDate, endDate };
         setFilter(db);
         setQuery(objectToQueryString(db));
+    }
 
+    function handlerWeekChangeFlujo(event) {
+        const week = event.target.value;
+        const year = parseInt(week.substring(0, 4));
+        const weekNumber = parseInt(week.substring(6));
+
+        // Calcula la fecha del primer día del año
+        const firstDayOfYear = new Date(year, 0, 1);
+        const daysOffset = (weekNumber - 1) * 7;
+        const firstDayOfWeek = new Date(firstDayOfYear.setDate(firstDayOfYear.getDate() + daysOffset));
+
+        // Obtener el lunes de la semana seleccionada
+        const monday = new Date(firstDayOfWeek.setDate(firstDayOfWeek.getDate() - firstDayOfWeek.getDay() + 1));
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+
+        // Formatear las fechas a formato 'YYYY-MM-DD'
+        const startDate = monday.toISOString().split('T')[0];
+        const endDate = sunday.toISOString().split('T')[0];
+
+        // Enviar el rango como fechaDeReembolso en formato 'startDate,endDate'
+        const db = { ...filter, fechaDeReembolso: `${startDate}, ${endDate}` };
+
+        // Actualizar el filtro y la query
+        setFilter(db);
+        setQuery(objectToQueryString(db));
     }
 
     function handlerDateChange(event, name) {
@@ -1188,6 +1214,38 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                         </div>
                                     </>
                                 )}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>}
+            {(user?.rol === 'Admin' || user.rol === 'Super Admin' || user?.rol === 'Recursos Humanos' || user.rol === 'Manager de Cobranza' || user.rol === 'Manager de Auditoria' || user.rol === 'Manager de Verificación') && item === 'Flujo de Clientes' &&
+                <div>
+
+
+                    <div className="w-full   relative  scroll-smooth mb-2 ">
+                        <div className='grid grid-cols-3 gap-x-5 gap-y-2 w-[1050px]'>
+                            <div className='w-[330px] space-y-2'>
+
+                                <div className='flex justify-end items-center'>
+                                    <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                        buscar por Fecha :
+                                    </label>
+                                    <input type='week' id="week" className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px] text-gray-950" onChange={handlerWeekChangeFlujo} required />
+                                </div>
+
+                            </div>
+                            <div className='w-[300px] space-y-2'>
+
+                                <div className='flex justify-center space-x-3'>
+                                    <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
+                                        <button type="button" className="w-full text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Consultar</button>
+                                    </Link>
+                                    <Link href={`?seccion=${seccion}&item=${item}`}>
+                                        <button onClick={resetFilter} type="button" className="w-full text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2">Restablecer</button>
+                                    </Link>
+                                </div>
                             </div>
                         </div>
 

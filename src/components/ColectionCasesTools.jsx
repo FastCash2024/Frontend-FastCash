@@ -14,6 +14,8 @@ import {
     refunds, historial,
     menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
 } from '@/constants/index'
+import { calcularFecha } from '@/utils/dates-filters';
+import SelectSegment from './SelectSegment';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const searchParams = useSearchParams()
@@ -32,6 +34,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
 
     function onChangeHandlerDate(e) {
+        console.log('etarget', e.target);
+
         const { name, value } = e.target;
 
         setFilter((prevFilter) => {
@@ -135,13 +139,80 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     function handlerFetch() {
         setLoader(true)
     }
+
+    // seccion para obtener por segmento 
+    const [selectedFecha, setSelectedFecha] = useState("Elije por favor");
+    const options = ["Elige por favor", "D0", "D1", "D2", "S1", "S2"];
+
+    const onChangeHandlerDateBySegment = (name, selectedValue, uuid) => {
+        let fechaInicio, fechaFin;
+
+        switch (selectedValue) {
+            case "D0":
+                fechaInicio = calcularFecha(0);
+                fechaFin = null;
+                break;
+            case "D1":
+                fechaInicio = calcularFecha(1);
+                fechaFin = null;
+                break;
+            case "D2":
+                fechaInicio = calcularFecha(2);
+                fechaFin = null;
+                break;
+            case "S1":
+                fechaInicio = calcularFecha(-15);
+                fechaFin = calcularFecha(-3);
+                break;
+            case "S2":
+                fechaInicio = calcularFecha(-22);
+                fechaFin = calcularFecha(-15);
+                break;
+            default:
+                fechaInicio = null;
+                fechaFin = null;
+                break;
+        }
+
+        // Guardamos el valor seleccionado en el select
+        setSelectedFecha(selectedValue);
+
+        // Actualizamos el filtro de la siguiente manera:
+        setFilter((prevFilter) => {
+            // Obtener el valor previo si existe (el valor de fechas anteriores)
+            const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
+
+            let updatedValues;
+            if (fechaFin) {
+                // Si tenemos fechaFin (rango), enviamos ambas fechas
+                updatedValues = [fechaInicio, fechaFin];
+            } else {
+                // Si solo tenemos una fecha, enviamos solo fechaInicio
+                updatedValues = [fechaInicio];
+            }
+
+            // Creamos el filtro actualizado
+            const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
+
+            // Actualizamos la query con el nuevo filtro
+            setQuery(objectToQueryString(updatedFilter));
+
+            return updatedFilter;
+        });
+
+        console.log("Fecha de inicio:", fechaInicio);
+        if (fechaFin) {
+            console.log("Fecha de fin:", fechaFin);
+        }
+    };
+
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
             <div>
                 <div className="w-full   relative  scroll-smooth mb-2 ">
-                    <div className='grid grid-cols-4 gap-x-5 gap-y-2 w-[1250px]'>
-                        <div className='w-[330px] space-y-2'>
+                    <div className='grid grid-cols-5 gap-x-5 gap-y-2 w-[1350px]'>
+                        <div className='w-[260px] space-y-2'>
                             <SearchInput
                                 label="Número de teléfono:"
                                 name="numeroDeTelefonoMovil"
@@ -161,7 +232,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 required
                             />
                         </div>
-                        <div className='w-[330px] space-y-2'>
+                        <div className='w-[260px] space-y-2'>
                             <div className='flex justify-end items-center'>
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Codigo del producto:
@@ -175,12 +246,20 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <SelectSimple arr={['Elije por favor', 'Si', 'No']} name='clienteNuevo' click={handlerSelectClick} defaultValue={filter['Cliente nuevo']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                         </div>
-                        <div className='w-[300px] space-y-2'>
+                        <div className='w-[260px] space-y-2'>
                             <div className='flex justify-end items-center'>
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de credito:
                                 </label>
-                                <SelectSimple arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple
+                                    arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado']}
+                                    name='estadoDeCredito'
+                                    click={handlerSelectClick}
+                                    defaultValue={filter['estadoDeCredito']}
+                                    uuid='123' label='Filtro 1'
+                                    position='absolute left-0 top-[25px]'
+                                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
+                                    required />
                             </div>
                             <SearchInput
                                 label="Número de páginas:"
@@ -192,6 +271,21 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 placeholder="Buscar por numero de páginas"
                                 required
                             />
+                        </div>
+                        <div className='w-[260px] space-y-2'>
+                            <div className='flex justify-end items-center'>
+                                <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
+                                    Segmento:
+                                </label>
+                                <SelectSegment
+                                    options={options} // Opciones dinámicas
+                                    name="fechaDeReembolso"
+                                    selectedValue={selectedFecha} // Valor seleccionado
+                                    onChangeHandler={onChangeHandlerDateBySegment} // Manejador de cambio
+                                    uuid="123" // Aquí se puede poner un valor dinámico si es necesario
+                                />
+
+                            </div>
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <MultipleInput

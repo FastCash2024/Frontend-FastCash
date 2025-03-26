@@ -91,6 +91,7 @@ export default function TableAttendance() {
             const existingStartDate = params.get('startDate');
             setBaseDate(existingStartDate);
         };
+
         if (!stg.includes(`endDate=`)) dataParams.push(`endDate=${endDate}`);
         const dataParamsString = dataParams.join('&');
         console.log("dataParamsString: ", dataParamsString);
@@ -128,7 +129,8 @@ export default function TableAttendance() {
     };
 
     const handleReload = () => {};
-
+    console.log(baseDate);
+    
     return (
         <>
             <table className="w-full min-w-[1000px] bg-white text-[14px] text-left text-gray-500 border-t-4  shadow">

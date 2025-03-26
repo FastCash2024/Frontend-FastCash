@@ -1,7 +1,13 @@
+import { useAppContext } from '@/context/AppContext';
 import { getDay, getDays } from '@/utils/getDates';
+import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 
 export default function TableCustomerFlow() {
+  const { loader, setModal, setAttendance } = useAppContext();
+  const searchParams = useSearchParams();
+  const seccion = searchParams.get("seccion");
+  const item = searchParams.get("item");
   const [filtro_1, setFiltro_1] = useState([]);
   const [filtro_2, setFiltro_2] = useState({});
 
@@ -36,46 +42,113 @@ export default function TableCustomerFlow() {
   const fetchCustomers = async (dates) => {
     const local = 'http://localhost:3003/api/loans/verification/customer';
     const server = 'https://api.fastcash-mx.com/api/loans/verification/customer';
-
+  
     try {
       // Seleccionar la URL correcta
       const baseUrl = window?.location?.href?.includes("localhost") ? local : server;
-
-      const results = await Promise.all(
-        dates.map(async (date) => {
-          const response = await fetch(`${baseUrl}?fechaDeReembolso=${date}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-
-          if (!response.ok) {
-            throw new Error('Error en la solicitud');
-          }
-
-          const result = await response.json();
-          return { date, data: result };
-        })
-      );
-
-      const combinedResults = results.reduce((acc, { date, data }) => {
-        acc[date] = data;
+  
+      // Obtener los parámetros de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+  
+      const filterParams = {};
+  
+      urlParams.forEach((value, key) => {
+        if (
+          key.startsWith("filter[") &&
+          value !== "Elije por favor" &&
+          value !== "Todo"
+        ) {
+          const fieldName = key.slice(7, -1); // Extraer el nombre de la clave dentro de "filter[]"
+          filterParams[fieldName] = value;
+        }
+      });
+  
+      const stg = Object.keys(filterParams)
+        .filter(
+          (key) => filterParams[key] !== undefined && filterParams[key] !== null
+        ) // Filtrar valores nulos o indefinidos
+        .map(
+          (key) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}` // Codificar clave=valor
+        )
+        .join("&"); // Unir con &
+  
+      // Si hay 'fechaDeReembolso' en la URL, extraemos ese parámetro
+      let urlFechaDeReembolso = stg.includes('fechaDeReembolso')
+        ? filterParams['fechaDeReembolso'] // Usamos la fecha de reembolso de la URL
+        : null;
+  
+      // Si no hay fechaDeReembolso en la URL, usamos el valor de 'dates' pasado como argumento
+      if (!urlFechaDeReembolso) {
+        urlFechaDeReembolso = dates;
+      }
+  
+      // Verificar si 'urlFechaDeReembolso' es un array o una fecha individual
+      if (Array.isArray(urlFechaDeReembolso)) {
+        // Si 'urlFechaDeReembolso' es un array de fechas, hacemos la solicitud por cada una
+        const results = await Promise.all(
+          urlFechaDeReembolso.map(async (date) => {
+            const response = await fetch(`${baseUrl}?fechaDeReembolso=${date}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+  
+            if (!response.ok) {
+              throw new Error('Error en la solicitud');
+            }
+  
+            const result = await response.json();
+            return { date, data: result };
+          })
+        );
+  
+        // Combinamos los resultados
+        const combinedResults = results.reduce((acc, { date, data }) => {
+          acc[date] = data;
+          return acc;
+        }, {});
+  
+        console.log('Resultados combinados:', combinedResults);
+        setFiltro_2(combinedResults);
+      } else {
+        // Si 'urlFechaDeReembolso' es una sola fecha (no un array), hacemos una sola solicitud
+        const response = await fetch(`${baseUrl}?fechaDeReembolso=${urlFechaDeReembolso}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+  
+        if (!response.ok) {
+          throw new Error('Error en la solicitud');
+        }
+  
+        const result = await response.json();
+        const groupedByFecha = Object.values(result).reduce((acc, item) => {
+        const fecha = item.fechaDeReembolso; // Obtener la fecha de reembolso de cada item
+        if (!acc[fecha]) {
+          acc[fecha] = {}; // Si no existe, inicializamos el objeto vacío
+        }
+        acc[fecha][item.nombreDelProducto] = item; // Asignar el producto al objeto bajo la fecha
         return acc;
       }, {});
 
-      console.log('Resultados combinados:', combinedResults);
-      setFiltro_2(combinedResults);
+        console.log("resultado sin combinar", groupedByFecha);
+        
+        setFiltro_2(groupedByFecha);
+      }
     } catch (error) {
       console.error('Error al obtener los clientes:', error);
     }
   };
-
+  
   useEffect(() => {
     const days = [-1, -2, -3, -4, -5, 0];
     const dates = getDays(days);
     fetchCustomers(dates);
-  }, []);
+  }, [item, searchParams, loader]);
 
   useEffect(() => {
     // fetchCustomers(formatDateToISO(getDay(0).val));
