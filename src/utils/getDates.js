@@ -27,6 +27,19 @@ export function getDay(dias) {
     return { val: formatDate(dt), day: diasSemana[index] };
 }
 
+export function getTodayDate() {
+    const today = new Date();
+
+    // Convertir la fecha a la zona horaria de México
+    return today.toLocaleDateString('es-MX', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        timeZone: 'America/Mexico_City' // Asegura la zona horaria
+    }).split('/').reverse().join('-'); // Formato YYYY-MM-DD
+}
+
+
 export const getDays = (days) => {
     const dates = [];
     const today = new Date();
@@ -58,6 +71,23 @@ export function getDayWeek(baseDate, offset) {
     return { val: targetDate.toISOString().split('T')[0] };
 }
 
+export function getDayWeekCustom(dateString) {
+    const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+        throw new Error("Fecha inválida");
+    }
+
+    let diaReal = date.getDay(); // 0 = Domingo, 1 = Lunes, ..., 6 = Sábado
+
+    // Ajuste para que Lunes sea el primer día y Domingo el último
+    let diaIndex = diaReal === 0 ? 6 : diaReal - 1;
+    console.log('diaIndex: ', diaIndex);
+    console.log('diasSemana[diaIndex]: ', diasSemana[diaIndex]);    
+
+    return diasSemana[diaIndex];
+}
 
 export function getMondayOfCurrentWeek() {
     const today = new Date();
@@ -66,12 +96,13 @@ export function getMondayOfCurrentWeek() {
     const monday = new Date(today.setDate(diff));
     return monday.toISOString().split('T')[0]; // Formato YYYY-MM-DD
 }
+
 export function obtenerFechaMexicoISO() {
     // Obtener la fecha actual en UTC
     const fechaUTC = new Date();
 
     // Obtener la fecha en la zona horaria de México
-    const opciones = { 
+    const opciones = {
         timeZone: "America/Mexico_City",
         year: "numeric",
         month: "2-digit",
