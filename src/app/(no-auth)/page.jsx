@@ -29,6 +29,13 @@ export default function Home() {
   const onSubmitWithReCAPTCHA = async (e) => {
     e.preventDefault();
     console.log('Login')
+
+    if (captcha.length < 10 && !window?.location?.href.includes('localhost')) {
+      setErrorMessage('Por favor, verifica el captcha')
+      return
+    }
+
+
     try {
       let cuenta = e.target[0].value
       let password = e.target[1].value
@@ -40,7 +47,7 @@ export default function Home() {
         password,
       });
       if (response.status === 200) {
-        console.log('response.data.user',response.data.user)
+        console.log('response.data.user', response.data.user)
         setUser({ rol: response.data.user.tipoDeGrupo })
         setUserDB(response.data.user)
         // Guardar el JWT en sessionStorage
@@ -52,7 +59,6 @@ export default function Home() {
       setErrorMessage(error.response?.data?.message || 'Error al iniciar sesión');
     }
 
-    // captcha.length > 10 && router.push('/Home?seccion=coleccion&item=Casos%20de%20Cobranza')
   }
 
   // // console.log(user)
@@ -100,7 +106,7 @@ export default function Home() {
 
         <div className='w-full flex justify-center'>
           <ReCAPTCHA
-            sitekey="6LdcOwwqAAAAAPEqYv1NDkUpgJRRSaEna_ER9YTT"
+            sitekey="6LeTEAArAAAAAMiYFI19mZMvCF_gmO6nH4I4pM8f"
             onChange={onChange}
           />
         </div>
