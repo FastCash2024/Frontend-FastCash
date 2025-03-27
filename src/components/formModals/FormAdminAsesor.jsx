@@ -117,7 +117,7 @@ export default function AddAccount() {
 
             await fetch(window?.location?.href?.includes('localhost')
                 ? 'http://localhost:3005/api/notifications/email/send'
-                : `https://api.fastcash-mx.com/api/email/send`, {
+                : `https://api.fastcash-mx.com/api/notifications/email/send`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

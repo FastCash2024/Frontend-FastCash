@@ -26,6 +26,24 @@ export const formatearFecha = (fechaISO, timeZone = "America/Mexico_City") => {
     }).format(fecha);
 };
 
+export const formatearFechaYHora = (fechaISO, timeZone = "America/Mexico_City") => {
+    if (!fechaISO) return "Fecha no disponible"; 
+
+    const fecha = new Date(fechaISO);
+    
+    if (isNaN(fecha.getTime())) return "Fecha inválida"; 
+
+    return new Intl.DateTimeFormat("es-ES", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone
+    }).format(fecha);
+};
+
 // funcion para obtener la fecha actual y devolver en el formato yyyy-mm-dd
 export function getCurrentDate() {
     const date = new Date();

@@ -6,7 +6,7 @@ import { PhoneIcon, XIcon, DocumentTextIcon, DevicePhoneMobileIcon, StatusOnline
 import { useSearchParams } from 'next/navigation'
 import SelectSimple from '@/components/SelectSimple'
 import { useAppContext } from '@/context/AppContext';
-import { formatearFecha } from '@/utils';
+import { formatearFecha, formatearFechaYHora } from '@/utils';
 import { fetchAuditById } from '@/lib';
 
 
@@ -29,6 +29,7 @@ const PaymentInfoCard = () => {
         fetchAuditById(caso)
             .then(setAudit)
     }, []);
+
     const paymentInfo = {
         clientId: 'f5d743b5ed45489798e0c445b030d5a4',
         orderId: '15160932',
@@ -155,8 +156,7 @@ const PaymentInfoCard = () => {
         fetchData();
     }, [])
 
-    console.log("CLientDATA", clientData)
-    console.log("photoURL", clientData?.photoURLs?.[0])
+    console.log("audit: ", audit)
 
 
     return (
@@ -378,12 +378,12 @@ const PaymentInfoCard = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {audit?.acotacionesCobrador?.map((item, index) => (
+                            {caseData?.acotacionesCobrador?.map((item, index) => (
                                 <tr key={index} className='w-full '>
-                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{audit.cuentaCobrador}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{audit.numeroDePrestamo}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm font-medium text-gray-900">{item.cuenta}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{caseData.numeroDePrestamo}</td>
                                     <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.acotacion}</td>
-                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{item.fecha}</td>
+                                    <td className="px-6 py-4 whitespace-normal text-sm text-gray-500">{formatearFechaYHora(item.fecha)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -468,7 +468,7 @@ const PaymentInfoCard = () => {
                             <div className="space-y-4  w-full">
                                 <li className="">
                                     <span className="font-semibold">Nombre del producto:</span>
-                                    <span>{caseData.nombreDelProducto}</span>
+                                    <span>{caseData?.nombreDelProducto}</span>
                                 </li>
                                 <li className="">
                                     <span className="font-semibold">Periodo:</span>
@@ -476,21 +476,21 @@ const PaymentInfoCard = () => {
                                 </li>
                                 <li className="">
                                     <span className="font-semibold">Estado de credito:</span>
-                                    <span>{caseData.estadoDeCredito}</span>
+                                    <span>{caseData?.estadoDeCredito}</span>
                                 </li>
                             </div>
                             <div className="space-y-4  w-full">
                                 <li className="">
                                     <span className="font-semibold">Monto de prestamo:</span>
-                                    <span>{caseData.valorSolicitado}</span>
+                                    <span>{caseData?.valorSolicitado}</span>
                                 </li>
                                 <li className="">
                                     <span className="font-semibold">Monto liquido de dispersion:</span>
-                                    <span>{caseData.valorPrestamoMenosInteres}</span>
+                                    <span>{caseData?.valorPrestamoMenosInteres}</span>
                                 </li>
                                 <li className="">
                                     <span className="font-semibold">Valor de extencion:</span>
-                                    <span>{caseData.valorExtension}</span>
+                                    <span>{caseData?.valorExtension}</span>
                                 </li>
 
 
@@ -499,15 +499,15 @@ const PaymentInfoCard = () => {
 
                                 <li className="">
                                     <span className="font-semibold">Tasa de interes:</span>
-                                    <span>{caseData.valorPrestamoMenosInteres/7}</span>
+                                    <span>{caseData?.valorPrestamoMenosInteres/7}</span>
                                 </li>
                                 <li className="">
                                     <span className="font-semibold">Nombre de banco:</span>
-                                    <span>{caseData.nombreBanco}</span>
+                                    <span>{caseData?.nombreBanco}</span>
                                 </li>
                                 <li className="">
                                     <span className="font-semibold">Numero de tarjeta bancaria:</span>
-                                    <span>{caseData.numeroDeCuenta}</span>
+                                    <span>{caseData?.numeroDeCuenta}</span>
                                 </li>
                             </div>
                         </ul>
