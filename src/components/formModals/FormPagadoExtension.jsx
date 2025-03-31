@@ -35,7 +35,7 @@ export default function FormPagadoExtension() {
             cuentaOperadora: userDB.cuenta,
             cuentaPersonal: userDB.emailPersonal,
             codigoDeSistema: itemSelected.nombreDelProducto,
-            codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
+            codigoDeOperacion: 'CC01EXT',
             contenidoDeOperacion: `Se ha registrado el pago para el caso ${itemSelected.numeroDePrestamo}.`,
             fechaDeOperacion: obtenerFechaMexicoISO()
         };

@@ -5,17 +5,20 @@ import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from '@/components/Input'
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 
 
 
 export default function FormAddTipoApp() {
-    const { setAlerta, setModal, setLoader, applicationTipo } = useAppContext()
+    const { setAlerta, setModal, setLoader, applicationTipo, userDB } = useAppContext()
     const { theme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
 
-    console.log("application: ", applicationTipo.data.length)
+    console.log("application: ", applicationTipo)
 
-   
+
 
     function onChangeHandler(e) {
         const { name, value } = e.target;
@@ -35,7 +38,7 @@ export default function FormAddTipoApp() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoader('Guardando...');
-    
+
         const payload = {
             valorPrestadoMasInteres: data.valorPrestadoMasInteres,
             valorDepositoLiquido: data.valorDepositoLiquido,
@@ -45,14 +48,14 @@ export default function FormAddTipoApp() {
             valorExtencion: data.valorExtencion,
             nivelDePrestamo: data.nivelDePrestamo,
         };
-        
+
         console.log("data enviada: ", payload);
-        
+
         try {
             const urlBase = window?.location?.href?.includes('localhost')
                 ? `http://localhost:3006/api/users/applications/addtipoaplicacion`
                 : `https://api.fastcash-mx.com/api/users/applications/addtipoaplicacion`;
-    
+
             const response = await fetch(`${urlBase}/${applicationTipo._id}`, {
                 method: 'POST',
                 headers: {
@@ -60,26 +63,35 @@ export default function FormAddTipoApp() {
                 },
                 body: JSON.stringify(payload),
             });
-    
+
             if (!response.ok) {
                 throw new Error(`Error en la carga: ${response.statusText}`);
             }
-    
-            const result = await response.json();
+
+            await response.json();
+            const tackingData = {
+                descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+                cuentaOperadora: userDB.cuenta,
+                cuentaPersonal: userDB.emailPersonal,
+                codigoDeSistema: applicationTipo.nombre,
+                codigoDeOperacion: 'CC09EDAPP',
+                contenidoDeOperacion: `El usuario ${userDB.emailPersonal} ha agregado un nuevo nivel para la aplicación ${applicationTipo.nombre}`,
+                fechaDeOperacion: obtenerFechaMexicoISO()
+            }
+            await postTracking(tackingData);
             setModal('');
             setLoader('');
             setAlerta('Operación exitosa!');
-            console.log('Respuesta del servidor:', result);
         } catch (error) {
             console.error('Error al agregar nivel:', error.message);
             setLoader('');
             setAlerta('Error al agregar el nivel');
         }
     };
-    
+
 
     console.log("data add nivel: ", data);
-    
+
 
     return (
         <FormLayout>

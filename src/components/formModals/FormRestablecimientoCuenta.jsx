@@ -7,107 +7,131 @@ import FormLayout from '@/components/formModals/FormLayout'
 
 import Button from '@/components/Button'
 import { useSearchParams } from 'next/navigation'
+import { postTracking } from '@/app/service/TrackingApi/tracking.service'
+import { getLocalISOString } from '@/utils/getDates'
 export default function Modal({ children, funcion, alert, cancelText, successText, seccion }) {
 
-    const { setAlerta, checkedArr, setModal, loader, setLoader } = useAppContext()
+    const { setAlerta, checkedArr, setModal, loader, setLoader, userDB } = useAppContext()
     const searchParams = useSearchParams()
     const seccionParam = searchParams.get('seccion')
     const item = searchParams.get('item')
 
-    const restabecimientoTotal = () => {
-
-        checkedArr.map(async (i) => {
-
-            try {
-
+    const restabecimientoTotal = async () => {
+        try {
+            await Promise.all(checkedArr.map(async (i) => {
                 const bodyData = item === 'Casos de Cobranza' ? {
                     cuentaCobrador: "no asignado",
                     nombreDeLaEmpresa: "no asignado",
-                    fechaDeTramitacionDeCobro: ""
+                    fechaDeTramitacionDeCobro: null
                 } : item === 'Recolección y Validación de Datos' ? {
                     cuentaVerificador: "no asignado",
                     nombreDeLaEmpresa: "no asignado",
                     fechaDeTramitacionDelCaso: null
                 } : {};
 
-                const response = await fetch(window?.location?.href?.includes('localhost')
-                    ? `http://localhost:3003/api/loans/verification/${i._id}`
-                    : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(bodyData), // Datos a enviar en el cuerpo de la petición
-                });
+                const response = await fetch(
+                    window?.location?.href?.includes('localhost')
+                        ? `http://localhost:3003/api/loans/verification/${i._id}`
+                        : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`,
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(bodyData),
+                    }
+                );
 
-                if (response.ok) {
-                    checkedArr.length && setAlerta('Operación exitosa!')
-                    checkedArr.length && setModal('')
-                    checkedArr.length && setLoader('')
-                    // navigate('/dashboard');
-                } else {
-                    setLoader('')
-                    setAlerta('Error de datos!')
+                if (!response.ok) throw new Error(`Error: ${response.status} - ${response.statusText}`);
+                console.log("Actualización exitosa:", await response.json());
+            }));
 
-                    throw new Error(`Error: ${response.status} - ${response.statusText}`);
-                }
-                const result = await response.json(); // Si el servidor devuelve JSON
-                console.log("Actualización exitosa:", result);
-                return result;
-            } catch (error) {
-                console.error("Error al realizar la solicitud:", error);
-            }
-        })
+            // ✅ Tracking después de todas las actualizaciones
+            const trackingData = {
+                descripcionDeExcepcion: "Restablecimiento total realizado",
+                subID: checkedArr.map(i => i._id).join(", "),
+                cuentaOperadora: "Sistema",
+                cuentaPersonal: "Admin",
+                codigoDeSistema: "GESTION",
+                codigoDeOperacion: "CC01RMCAS",
+                contenidoDeOperacion: `Se restablecieron ${checkedArr.length} cuentas.`,
+                fechaDeOperacion: getLocalISOString(),
+            };
 
+            await postTracking(trackingData);
 
+            setAlerta('Operación exitosa!');
+            setModal('');
+            setLoader('');
+
+        } catch (error) {
+            console.error("Error en la operación:", error);
+            setLoader('');
+            setAlerta('Error de datos!');
+        }
     };
 
     const restablecimientoIndividual = async () => {
         try {
-            //GENERACION DE NUEVA CONTRASEÑA
-            let password = generarContrasena()
+            let password = generarContrasena();
             const response = await fetch(
                 window?.location?.href?.includes('localhost')
                     ? `http://localhost:3002/api/authSystem/register/${checkedArr[0]._id}`
-                    : `https://api.fastcash-mx.com/api/authSystem/register/${checkedArr[0]._id}`, {
-                method: 'PUT', // El método es PUT para actualizar
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando JWT
-                },
-                body: JSON.stringify({ nombrePersonal: "No asignado", emailPersonal: "No Asignado", password }), // Los datos que queremos actualizar
-            });
-            if (!response.ok) {
-                setLoader('')
-                setAlerta('Error de datos!')
-                throw new Error('Registration failed');
-            }
-            // Verificar si la respuesta es exitosa
-            if (response.ok) {
-                setAlerta('Operación exitosa!')
-                setModal('')
-                setLoader('')
-                // navigate('/dashboard');
-            } else {
-                setLoader('')
-                setAlerta('Error de datos!')
-                throw new Error('Registration failed');
-            }
-        } catch (error) {
-            setLoader('')
-            setAlerta('Error de datos!')
-            console.log(error)
-            throw new Error(error);
-        }
-        return
-    };
-    function save(e) {
-        e.preventDefault();
-        setLoader('Guardando...')
+                    : `https://api.fastcash-mx.com/api/authSystem/register/${checkedArr[0]._id}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify({ nombrePersonal: "No asignado", emailPersonal: "No Asignado", password }),
+                }
+            );
 
-        seccion === "verificacion individual" && restablecimientoIndividual()
-        seccion === "verificacion total" && restabecimientoTotal()
-    }
+            if (!response.ok) throw new Error('Registration failed');
+
+            const trackingData = {
+                descripcionDeExcepcion: "Restablecimiento individual realizado",
+                subID: checkedArr[0]._id,
+                cuentaOperadora: "Sistema",
+                cuentaPersonal: "Admin",
+                codigoDeSistema: "GESTION",
+                codigoDeOperacion: "CC01RMCAS",
+                contenidoDeOperacion: `Se restableció los casos.`,
+                fechaDeOperacion: getLocalISOString(),
+            };
+
+            await postTracking(trackingData);
+
+            setAlerta('Operación exitosa!');
+            setModal('');
+            setLoader('');
+
+        } catch (error) {
+            console.error("Error en la operación:", error);
+            setLoader('');
+            setAlerta('Error de datos!');
+        }
+    };
+
+    // Función principal
+    const save = (e) => {
+        e.preventDefault();
+        setLoader('Guardando...');
+
+        if (seccion === "verificacion individual") {
+            restablecimientoIndividual();
+        } else if (seccion === "verificacion total") {
+            restabecimientoTotal();
+        }
+    };
+
+
+    // function save(e) {
+    //     e.preventDefault();
+    //     setLoader('Guardando...')
+
+    //     seccion === "verificacion individual" && restablecimientoIndividual()
+    //     seccion === "verificacion total" && restabecimientoTotal()
+    // }
     return (
         <FormLayout>
             <div className="p-6 text-center">

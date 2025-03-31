@@ -12,6 +12,7 @@ import { toast } from 'react-hot-toast';
 import Input from '@/components/Input'
 import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
 import { getLocalISOString } from "@/utils/getDates";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
 
 export default function AddAccount({ section, query, cuenta }) {
@@ -79,66 +80,80 @@ export default function AddAccount({ section, query, cuenta }) {
         setSelectAccount(i)
     }
 
-    const saveAccount = (e) => {
+    const saveAccount = async (e) => {
         e.preventDefault();
 
         let body = {
             nombreDeLaEmpresa: selectAccount.origenDeLaCuenta
-          };
-        
-          if (selectAccount.tipoDeGrupo === "Asesor de Verificación") {
+        };
+
+        if (selectAccount.tipoDeGrupo === "Asesor de Verificación") {
             body.cuentaVerificador = selectAccount.cuenta;
-            body.fechaDeTramitacionDelCaso=getLocalISOString();
-          } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
+            body.fechaDeTramitacionDelCaso = getLocalISOString();
+        } else if (selectAccount.tipoDeGrupo === "Asesor de Cobranza") {
             body.cuentaCobrador = selectAccount.cuenta;
             body.fechaDeTramitacionDeCobro = getLocalISOString();
-          }
-          body.historialDeAsesores = [
-            ...(checkedArr.historialDeAsesores || []), // Mantener los anteriores si existen
+        }
+
+        body.historialDeAsesores = [
+            ...(checkedArr.historialDeAsesores || []),
             {
-              nombreAsesor: selectAccount.nombrePersonal,
-              cuentaOperativa: selectAccount.cuenta,
-              cuentaPersonal: selectAccount.emailPersonal,
-              fecha: getLocalISOString(),
+                nombreAsesor: selectAccount.nombrePersonal,
+                cuentaOperativa: selectAccount.cuenta,
+                cuentaPersonal: selectAccount.emailPersonal,
+                fecha: getLocalISOString(),
             }
-          ];
-        console.log("data enviada: ", body)
+        ];
 
-        setLoader('Guardando...')
+        console.log("data enviada: ", body);
+        setLoader('Guardando...');
 
-        checkedArr.map(async (i) => {
-            if (selectAccount?.cuenta !== undefined && selectAccount?.origenDeLaCuenta !== undefined)
-                try {
-                    const response = await fetch(window?.location?.href?.includes('localhost')
-                        ? `http://localhost:3003/api/loans/verification/${i._id}`
-                        : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(body), // Datos a enviar en el cuerpo de la petición
-                    });
+        try {
+            // Realizar todas las actualizaciones en paralelo
+            await Promise.all(checkedArr.map(async (i) => {
+                if (selectAccount?.cuenta !== undefined && selectAccount?.origenDeLaCuenta !== undefined) {
+                    const response = await fetch(
+                        window?.location?.href?.includes('localhost')
+                            ? `http://localhost:3003/api/loans/verification/${i._id}`
+                            : `https://api.fastcash-mx.com/api/loans/verification/${i._id}`,
+                        {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(body),
+                        }
+                    );
 
-                    console.log(response)
-
-                    if (response.ok) {
-                        checkedArr.length && setAlerta('Asignado correctamente!')
-                        checkedArr.length && setModal('')
-                        checkedArr.length && setLoader('')
-                        // navigate('/dashboard');
-                    } else {
-                        setLoader('')
-                        setAlerta('Error al asignar!')
-
+                    if (!response.ok) {
                         throw new Error(`Error: ${response.status} - ${response.statusText}`);
                     }
-                    const result = await response.json(); // Si el servidor devuelve JSON
-                    console.log("Actualización exitosa:", result);
-                    return result;
-                } catch (error) {
-                    console.error("Error al realizar la solicitud:", error);
+
+                    console.log("Actualización exitosa:", await response.json());
                 }
-        })
+            }));
+
+            // ✅ Tracking único después de completar todas las asignaciones
+            const trackingData = {
+                descripcionDeExcepcion: "Asignación de casos masiva realizada",
+                subID: checkedArr.map(i => i._id).join(", "), // IDs de todas las asignaciones
+                cuentaOperadora: selectAccount.cuenta,
+                cuentaPersonal: selectAccount.emailPersonal,
+                codigoDeSistema: selectAccount.origenDeLaCuenta,
+                codigoDeOperacion: selectAccount.tipoDeGrupo === "Asesor de Verificación" ? 'VC01ACUE' : 'CC01ACUE',
+                contenidoDeOperacion: `Se asignaron ${checkedArr.length} cuentas masivamente.`,
+                fechaDeOperacion: getLocalISOString(),
+            };
+
+            await postTracking(trackingData);
+
+            setAlerta('Asignado correctamente!');
+            setModal('');
+            setLoader('');
+
+        } catch (error) {
+            console.error("Error en la asignación:", error);
+            setLoader('');
+            setAlerta('Error al asignar!');
+        }
     };
 
     const fetchUsers = async () => {
@@ -149,7 +164,7 @@ export default function AddAccount({ section, query, cuenta }) {
             );
             setFilterArr(response.data);
             console.log("response: ", response.data);
-            
+
         } catch (error) {
             console.error("Error fetching users:", error);
         }
@@ -167,7 +182,7 @@ export default function AddAccount({ section, query, cuenta }) {
             >
                 X
             </button>
-            <h4 className='w-full text-center text-gray-950'>{item === 'Recolección y Validación de Datos'  ? 'Asignar Cuenta Verificador' : 'Asignar Cuenta Cobrador'}</h4>
+            <h4 className='w-full text-center text-gray-950'>{item === 'Recolección y Validación de Datos' ? 'Asignar Cuenta Verificador' : 'Asignar Cuenta Cobrador'}</h4>
             <div className='flex justify-between w-full max-w-[300px]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Buscar cuenta:

@@ -1,12 +1,15 @@
 import React from 'react';
 import FormLayout from '@/components/formModals/FormLayout';
 import { useAppContext } from '@/context/AppContext';
+import { getDescripcionDeExcepcion } from '@/utils/utility-tacking';
+import { obtenerFechaMexicoISO } from '@/utils/getDates';
+import { postTracking } from '@/app/service/TrackingApi/tracking.service';
 
 export default function ModalDeleteApplication() {
     const { setAlerta, application, setModal, setLoader } = useAppContext();
 
     console.log("eliminar aplicacion: ", application);
-    
+
 
     const handleDelete = async () => {
         setLoader('Eliminando...');
@@ -21,11 +24,20 @@ export default function ModalDeleteApplication() {
                 throw new Error(`Error en la eliminación: ${response.statusText}`);
             }
 
-            const result = await response.json();
+            await response.json();
+            const tackingData = {
+                descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+                cuentaOperadora: userDB.cuenta,
+                cuentaPersonal: userDB.emailPersonal,
+                codigoDeSistema: application.nombre,
+                codigoDeOperacion: 'CC09ELAPP',
+                contenidoDeOperacion: `El usuario ${userDB.emailPersonal} ha eliminado la aplicación ${application.nombre}`,
+                fechaDeOperacion: obtenerFechaMexicoISO()
+            }
+            await postTracking(tackingData);
             setModal('');
             setLoader('');
             setAlerta('Aplicación eliminada exitosamente!');
-            console.log('Respuesta del servidor:', result);
         } catch (error) {
             console.error('Error al eliminar la aplicación:', error.message);
         }

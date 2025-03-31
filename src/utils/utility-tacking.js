@@ -8,6 +8,8 @@ export const getDescripcionDeExcepcion = (cc) => {
             return 'CC08';
         case 'Recolección y Validación de Datos':
             return 'VC01';
+        case 'Gestion de aplicaciones':
+            return 'CC09';
         default:
             return 'DSC00';
     }

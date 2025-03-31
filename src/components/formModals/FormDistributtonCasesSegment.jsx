@@ -13,12 +13,14 @@ import { getLocalISOString } from "@/utils/getDates";
 import { diferenciaEnDias } from "@/utils/getDates";
 import { ajustarFechaInicio, ajustarFechaFinal } from "@/utils";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 export default function FormDistributtonCasesSegment() {
   const {
     user,
     setAlerta,
     setModal,
     setLoader,
+    userDB,
   } = useAppContext();
   const { theme, toggleTheme } = useTheme();
   const [maximoAsignacion, setMaximoAsignacion] = useState({
@@ -219,7 +221,7 @@ export default function FormDistributtonCasesSegment() {
     const fechaActual = new Date();
 
     dataVerification.data.filter(i => i.estadoDeCredito === estadoDeCredito).forEach(caso => {
-      const fechaTramitacion = ajustarFechaInicio(caso.fechaDeTramitacionDelCaso) 
+      const fechaTramitacion = ajustarFechaInicio(caso.fechaDeTramitacionDelCaso)
 
       const fechaOriginal = new Date();
       fechaOriginal.setUTCDate(fechaOriginal.getUTCDate() + 7);
@@ -389,7 +391,22 @@ export default function FormDistributtonCasesSegment() {
       });
 
       // Esperar que todas las peticiones finalicen
-      await Promise.all(requests);
+      const resultados = await Promise.all(requests);
+
+      if (resultados.length > 0) {
+        const trackingData = {
+          descripcionDeExcepcion: "Distribución masiva de asignaciones completada",
+          subID: "ASIGNACION_MASIVA",
+          cuentaOperadora: userDB.cuenta,
+          cuentaPersonal: userDB.emailPersonal,
+          codigoDeSistema: "DISTRIBUCION",
+          codigoDeOperacion: "CC01DSEG",
+          contenidoDeOperacion: `Se ha realziado la asignacion masiva en total se han asignado ${casosAsignados.length} casos.`,
+          fechaDeOperacion: obtenerFechaMexicoISO(),
+        };
+
+        await postTracking(trackingData);
+      }
 
       // Actualizar estado después de completar todas las solicitudes
       setAlerta("Operación exitosa!");
@@ -453,11 +470,11 @@ export default function FormDistributtonCasesSegment() {
     <FormLayout>
       <h4 className="text-gray-950">Distribuir Casos de Cobranza</h4>
 
-     {!calculate && (  <div className="bg-gray-100 w-full p-3">
+      {!calculate && (<div className="bg-gray-100 w-full p-3">
 
 
-    
-     
+
+
         <>
           <div className="flex italic text-[10px]">
             <span className="inline-block ml-5">Casos: {calculo?.D2?.dividendo}</span>
@@ -557,14 +574,14 @@ export default function FormDistributtonCasesSegment() {
         </>
 
 
-     
-      <div className="flex w-full mt-4">
-        {!calculate && <Button theme="MiniPrimary" click={() => assignCasesBySegment("equaly")}>Asignación Igualitaria</Button>}
-        {!calculate && <Button theme="Success" click={() => assignCasesBySegment("totaly")}>Asignación Total</Button>}
-        {/* {!calculate && <Button theme="Info" click={assignCasesBySegment}>Asignación Igualitaria</Button>} */}
-      </div>
 
-      </div> )}
+        <div className="flex w-full mt-4">
+          {!calculate && <Button theme="MiniPrimary" click={() => assignCasesBySegment("equaly")}>Asignación Igualitaria</Button>}
+          {!calculate && <Button theme="Success" click={() => assignCasesBySegment("totaly")}>Asignación Total</Button>}
+          {/* {!calculate && <Button theme="Info" click={assignCasesBySegment}>Asignación Igualitaria</Button>} */}
+        </div>
+
+      </div>)}
       {Object.keys(casosPorSegmento).length > 0 && <div className="mt-4  border border-gray-300 py-4 px-10 flex flex-col items-center">
         <h4 className="text-semibold text-green-500 pb-5 text-[12px]"> Casos por segmento </h4>
 

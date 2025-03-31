@@ -155,7 +155,7 @@ export default function TableCustomerFlow() {
   };
 
   useEffect(() => {
-    const days = [-1, -2, -3, -4, -5, 0];
+    const days = [-6, -5, -1, -3, -2, -1, 0];
     const dates = getDays(days);
     fetchCustomers(dates);
   }, [item, searchParams, loader]);
@@ -165,7 +165,7 @@ export default function TableCustomerFlow() {
     fetchCustomersFlow();
   }, []);
 
-  const dates = getDays([-1, -2, -3, -4, -5, 0]);
+  const dates = getDays([-6, -5, -1, -3, -2, -1, 0]);
 
   const totalCobrado = dates.reduce((acc, date) => {
     const total = filtro_1.reduce((sum, item) => {

@@ -12,6 +12,8 @@ import Input from "@/components/Input";
 import { toast } from 'react-hot-toast';
 
 import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
 
 export default function AddAccount() {
@@ -90,7 +92,7 @@ export default function AddAccount() {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`, // Si estás usando JWT
                 },
-                body: JSON.stringify({ nombrePersonal: selectAccount.nombreCompleto, emailPersonal: selectAccount.email, password,fotoURL:selectAccount.fotoURL, numeroDeTelefonoMovil:selectAccount.numeroDeTelefonoMovil }), // Los datos que queremos actualizar
+                body: JSON.stringify({ nombrePersonal: selectAccount.nombreCompleto, emailPersonal: selectAccount.email, password, fotoURL: selectAccount.fotoURL, numeroDeTelefonoMovil: selectAccount.numeroDeTelefonoMovil }), // Los datos que queremos actualizar
             });
             if (!response.ok) {
                 setLoader('')
@@ -145,6 +147,18 @@ export default function AddAccount() {
                     }),
                 });
 
+                const trackingData = {
+                    descripcionDeExcepcion: "CC06",
+                    cuentaOperadora: userDB?.cuenta,
+                    cuentaPersonal: userDB?.emailPersonal,
+                    codigoDeSistema: checkedArr[0].origenDeLaCuenta,
+                    codigoDeOperacion: "CC01ASIG",
+                    contenidoDeOperacion: `Se ha asignado la ceunta ${selectAccount.email} a la cuenta operativa ${checkedArr[0].cuenta}.`,
+                    fechaDeOperacion: obtenerFechaMexicoISO(),
+                };
+
+                await postTracking(trackingData);
+
                 setAlerta('Operación exitosa!')
                 setModal('')
                 setLoader('')
@@ -178,9 +192,9 @@ export default function AddAccount() {
         }
     };
 
-    console.log("filtraciones: ", filterArr);
+    console.log("filtraciones: ", userDB);
     console.log("filtraciones: ", checkedArr);
-    
+
 
     useEffect(() => {
         if (data?.email?.length > 0 || data?.nombreCompleto?.length > 0) { fetchUsers() };

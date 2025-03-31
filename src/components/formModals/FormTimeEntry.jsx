@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { getBackgroundClass } from "@/utils/colors";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
 export default function FormTimeEntry() {
-    const { setAlerta, setLoader, setModal } = useAppContext();
+    const { setAlerta, setLoader, setModal, user, userDB } = useAppContext();
     const [data, setData] = useState({
         horaEntrada: "",
         estadosDeAsistencia: [
@@ -81,6 +83,18 @@ export default function FormTimeEntry() {
                 setAlerta("Error al registrar la hora de entrada");
             }
 
+            const trackingData = {
+                descripcionDeExcepcion: "CC07",
+                cuentaOperadora: userDB?.cuenta,
+                cuentaPersonal: userDB?.emailPersonal,
+                codigoDeSistema: userDB.origenDeLaCuenta,
+                codigoDeOperacion: "CC01AMODHE",
+                contenidoDeOperacion: `El usuario ${userDB.cuenta} ha modificado la hora de entrada.`,
+                fechaDeOperacion: obtenerFechaMexicoISO(),
+            };
+
+            await postTracking(trackingData);
+
             setAlerta("Hora de entrada registrada correctamente!");
             setModal("");
             setLoader("");
@@ -90,6 +104,8 @@ export default function FormTimeEntry() {
             console.error("Error al registrar la hora de entrada:", error);
         }
     }
+
+    
 
     return (
         <div

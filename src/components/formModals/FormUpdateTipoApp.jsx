@@ -4,9 +4,12 @@ import { useTheme } from '@/context/ThemeContext';
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 export default function FormUpdateTipoApp() {
-    const { setAlerta, applicationTipo, setModal, setLoader } = useAppContext()
+    const { setAlerta, applicationTipo, setModal, setLoader, userDB } = useAppContext()
 
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
@@ -78,11 +81,20 @@ export default function FormUpdateTipoApp() {
                 throw new Error(`Error en la carga: ${response.statusText}`);
             }
 
-            const result = await response.json();
+            await response.json();
+            const tackingData = {
+                descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+                cuentaOperadora: userDB.cuenta,
+                cuentaPersonal: userDB.emailPersonal,
+                codigoDeSistema: applicationTipo.nombre,
+                codigoDeOperacion: 'CC09APPEDC',
+                contenidoDeOperacion: `El usuario ${userDB.emailPersonal} ha editado el nivel para la aplicación ${applicationTipo.nombre}`,
+                fechaDeOperacion: obtenerFechaMexicoISO()
+            }
+            await postTracking(tackingData);
             setModal('');
             setLoader('');
             setAlerta('Operación exitosa!');
-            console.log('Respuesta del servidor:', result);
         } catch (error) {
             console.error('Error al actualizar:', error.message);
             setLoader('');

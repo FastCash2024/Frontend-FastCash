@@ -6,8 +6,7 @@ import SelectSimple from "@/components/SelectSimple";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { useSearchParams } from "next/navigation";
-import { getLocalISOString } from "@/utils/getDates";
-import {obtenerFechaMexicoISO} from "@/utils/getDates";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 const optionsArray = [
     "Por favor elige",
@@ -63,13 +62,11 @@ export default function FormAddCobranza() {
             cuenta: userDB.cuenta,
             asesor: user.nombreCompleto,
             emailAsesor: user.email,
-            fecha: getLocalISOString(),
+            fecha: obtenerFechaMexicoISO(),
         });
 
-        console.log("nuevas acotaciones: ", nuevasAcotaciones);
-
         const upadateData = {
-            fechaRegistroComunicacion: getLocalISOString(),
+            fechaRegistroComunicacion: obtenerFechaMexicoISO(),
             estadoDeComunicacion: value,
             acotacionesCobrador: nuevasAcotaciones
         };
@@ -82,26 +79,21 @@ export default function FormAddCobranza() {
                     ? `http://localhost:3003/api/loans/verification/${itemSelected._id}`
                     : `https://api.fastcash-mx.com/api/loans/verification/${itemSelected._id}`,
                 {
-                    method: "PUT", // El método es PUT para actualizar
+                    method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`, // Si estás usando JWT
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
-                    body: JSON.stringify(upadateData), // Los datos que queremos actualizar
+                    body: JSON.stringify(upadateData),
                 }
             );
 
-            // console.log("response cobrador: ", response.ok, response.status);
-
-            // Verificar si la respuesta es exitosa
             if (response.ok) {
-                // console.log("response ok: ", response);
 
                 setAlerta("Operación exitosa!");
                 setModal("");
                 setLoader("");
 
-                // Registrar el seguimiento
                 const trackingData = {
                     descripcionDeExcepcion: getDescripcionDeExcepcion(item),
                     subID: itemSelected._id,
@@ -114,13 +106,11 @@ export default function FormAddCobranza() {
                 };
 
                 await postTracking(trackingData);
-                // console.log("resp cobrador tacking: ", resp);
-
             }
         } catch (error) {
             setLoader("");
             setAlerta("Error de datos!");
-            console.error("Error:", error); // Agregar un log para el error
+            console.error("Error:", error);
         }
     }
 

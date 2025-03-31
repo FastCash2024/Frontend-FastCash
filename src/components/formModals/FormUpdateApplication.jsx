@@ -6,9 +6,12 @@ import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from "@/components/Input";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
 export default function FormUpdateAplication() {
-    const { setAlerta, application, setModal, setLoader } = useAppContext()
+    const { setAlerta, application, setModal, setLoader, userDB } = useAppContext()
 
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
@@ -96,16 +99,24 @@ export default function FormUpdateAplication() {
                 throw new Error(`Error en la carga: ${response.statusText}`);
             }
 
-            const result = await response.json();
+            await response.json();
+            const tackingData = {
+                descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+                cuentaOperadora: userDB.cuenta,
+                cuentaPersonal: userDB.emailPersonal,
+                codigoDeSistema: data.nombre,
+                codigoDeOperacion: 'CC09EDAPP',
+                contenidoDeOperacion: `El usuario ${userDB.emailPersonal} ha editado la aplicación ${data.nombre}`,
+                fechaDeOperacion: obtenerFechaMexicoISO()
+            }
+            await postTracking(tackingData);
             setModal('')
             setLoader('')
             setAlerta('Operación exitosa!')
-            console.log('Respuesta del servidor:', result);
         } catch (error) {
             console.error('Error al subir archivo:', error.message);
         }
     };
-    console.log(selectedImage)
     return (
         <FormLayout>
             <h4 className='w-full text-center text-gray-950'>Editar Aplicación</h4>

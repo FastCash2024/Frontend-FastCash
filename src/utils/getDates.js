@@ -131,6 +131,7 @@ export function obtenerFechaMexicoISO() {
     // Convertir a formato ISO con el offset correcto
     return fechaMexico.toISOString().replace("Z", offsetStr);
 }
+
 export function diferenciaEnDias(fecha1, fecha2) {
     // Crear objetos Date para las fechas de inicio y fin
     const inicio = new Date(fecha1);
@@ -148,6 +149,7 @@ export function diferenciaEnDias(fecha1, fecha2) {
     // Convertir a días y redondear
     return Math.round(diferenciaMs / (1000 * 60 * 60 * 24));
 }
+
 export function getStartAndEndOfWeek() {
     const today = new Date();
     const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1)); // Lunes

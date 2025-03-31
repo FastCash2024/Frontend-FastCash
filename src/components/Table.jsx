@@ -324,13 +324,14 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       cuentaOperadora: userDB.cuenta,
       cuentaPersonal: userDB.emailPersonal,
       codigoDeSistema: itemSelected.nombreDelProducto,
-      codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
-      contenidoDeOperacion: `El caso ${itemSelected.numeroDePrestamo} ha sido visitado.`,
+      codigoDeOperacion: seccion === 'Gestion de aplicaciones' ? 'CC09VEAPP' : '00VE',
+      contenidoDeOperacion: seccion === 'Gestion de aplicaciones' ? `La aplicación ${itemSelected.nombre} ha sido visitado.` : `El caso ${itemSelected.numeroDePrestamo} ha sido visitado.`,
       fechaDeOperacion: obtenerFechaMexicoISO(),
     }
 
     await postTracking(data);
   }
+
 
   return (
     access && (
@@ -769,6 +770,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   </button>
                                   <Link href={`/Home?seccion=coleccion&item=Gestion de aplicacion&application=${i._id}`}>
                                     <button
+                                      onClick={() => registerTracking(i)}
                                       type="button"
                                       className="w-full max-w-[70px] text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br foco-4 focus:outline-none foco-cyan-300 dark:foco-cyan-800 font-medium rounded-lg text-[10px] px-5 py-2 text-center me-2 mb-2"
                                     >

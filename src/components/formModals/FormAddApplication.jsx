@@ -5,11 +5,14 @@ import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from '@/components/Input'
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
+import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 
 
 
 export default function AddAccount() {
-    const { setAlerta, setModal, setLoader } = useAppContext()
+    const { setAlerta, setModal, setLoader, userDB } = useAppContext()
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
     const [selectedFile, setSelectedFile] = useState(null);
@@ -68,7 +71,7 @@ export default function AddAccount() {
         formData.append('calificacion', data.calificacion);
         formData.append('prestamoMaximo', data.prestamoMaximo);
         formData.append('interesDiarioMaximo', data.interesDiarioMaximo);
-        
+
         try {
             // url: https://api.fastcash-mx.com/api/authApk/register
             const response = await fetch(window?.location?.href?.includes('localhost')
@@ -82,18 +85,24 @@ export default function AddAccount() {
                 throw new Error(`Error en la carga: ${response.statusText}`);
             }
 
-            const result = await response.json();
-
+            await response.json();
+            const tackingData = {
+                descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+                cuentaOperadora: userDB.cuenta,
+                cuentaPersonal: userDB.emailPersonal,
+                codigoDeSistema: data.nombre,
+                codigoDeOperacion: 'CC09CRAPP',
+                contenidoDeOperacion: `El usuario ${userDB.emailPersonal} ha registrado una nueva aplicación`,
+                fechaDeOperacion: obtenerFechaMexicoISO()
+            }
+            await postTracking(tackingData);
             setModal('')
             setLoader('')
             setAlerta('Operación exitosa!')
-            console.log('Respuesta del servidor:', result);
         } catch (error) {
             console.error('Error al subir archivo:', error.message);
         }
     };
-
-
 
     return (
         <FormLayout>
@@ -171,7 +180,7 @@ export default function AddAccount() {
                     type="number"
                     name="interesDiarioMaximo"
                     onChange={onChangeHandler}
-                    placeholder="Interes diario máximo" 
+                    placeholder="Interes diario máximo"
                     required
                 />
             </div>

@@ -88,7 +88,7 @@ export default function AddAccount() {
             const db = {
                 ...data,
             };
-            // console.log(db);
+            
             const id = itemSelected._id
             const response = await fetch(
                 window?.location?.href?.includes('localhost') 

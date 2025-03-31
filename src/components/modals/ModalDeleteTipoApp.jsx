@@ -2,9 +2,12 @@ import React from 'react';
 import FormLayout from '@/components/formModals/FormLayout';
 import { useAppContext } from '@/context/AppContext';
 import { useSearchParams } from 'next/navigation';
+import { postTracking } from '@/app/service/TrackingApi/tracking.service';
+import { obtenerFechaMexicoISO } from '@/utils/getDates';
+import { getDescripcionDeExcepcion } from '@/utils/utility-tacking';
 
 export default function ModalDeleteTipoApp() {
-    const { setAlerta, applicationTipo, setModal, setLoader } = useAppContext();
+    const { setAlerta, applicationTipo, setModal, setLoader, userDB } = useAppContext();
     const searchParams = useSearchParams()
     const applicationId = searchParams.get('application');
 
@@ -21,7 +24,17 @@ export default function ModalDeleteTipoApp() {
                 throw new Error(`Error en la eliminación: ${response.statusText}`);
             }
 
-            const result = await response.json();
+            await response.json();
+            const tackingData = {
+                descripcionDeExcepcion: getDescripcionDeExcepcion(item),
+                cuentaOperadora: userDB.cuenta,
+                cuentaPersonal: userDB.emailPersonal,
+                codigoDeSistema: applicationTipo.nombre,
+                codigoDeOperacion: 'CC09APPEDC',
+                contenidoDeOperacion: `El usuario ${userDB.emailPersonal} ha eliminado el nivel para la aplicación ${applicationTipo.nombre}`,
+                fechaDeOperacion: obtenerFechaMexicoISO()
+            }
+            await postTracking(tackingData);
             setModal('');
             setLoader('');
             setAlerta('Tipo de Aplicación eliminada exitosamente!');

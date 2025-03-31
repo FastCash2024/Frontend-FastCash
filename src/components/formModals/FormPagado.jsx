@@ -32,7 +32,7 @@ export default function FormPagado() {
             cuentaOperadora: userDB.cuenta,
             cuentaPersonal: userDB.emailPersonal,
             codigoDeSistema: itemSelected.nombreDelProducto,
-            codigoDeOperacion: seccion === 'verificacion' ? '00VE' : '00RE',
+            codigoDeOperacion: 'CC01PG',
             contenidoDeOperacion: `Se ha registrado el pago para el caso ${itemSelected.numeroDePrestamo}.`,
             fechaDeOperacion: obtenerFechaMexicoISO()
         };
