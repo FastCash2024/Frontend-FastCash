@@ -205,6 +205,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             console.log("Fecha de fin:", fechaFin);
         }
     };
+    
 
     return (
         <div>
@@ -278,11 +279,11 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Segmento:
                                 </label>
                                 <SelectSegment
-                                    options={options} // Opciones dinámicas
-                                    name="fechaDeReembolso"
-                                    selectedValue={selectedFecha} // Valor seleccionado
-                                    onChangeHandler={onChangeHandlerDateBySegment} // Manejador de cambio
-                                    uuid="123" // Aquí se puede poner un valor dinámico si es necesario
+                                    options={options}
+                                    name="segmento"
+                                    selectedValue={selectedFecha}
+                                    onChangeHandler={onChangeHandlerDateBySegment}
+                                    uuid="123"
                                 />
 
                             </div>
@@ -313,7 +314,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         <div className='grid grid-cols-3 gap-x-0 gap-y-2 w-[1050px] pt-1.5'>
                             <div className='w-[330px] space-y-2'>
                                 <div className='flex justify-between space-x-3'>
-                                    {/* <Button type="button" theme={'Success'} click={() => setModal('Distribuir Casos')}>Distribuir</Button> */}
                                     <Button type="button" theme={checkedArr.length > 0 ? 'Success' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Asignar Cuenta Cobrador')}>Asignar cuenta</Button>
                                 </div>
                             </div>
@@ -327,10 +327,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     <Button type="button" theme={checkedArr.length > 0 ? 'Danger' : 'Disable'} click={() => checkedArr.length > 0 && setModal('Restablecimiento Masivo Cuenta')}>Restablecimiento Masivo</Button>
                                 </div>
                             </div>
-                            {/* <div className='w-[300px] space-y-2'>
-                            <div className='flex justify-between flex space-x-3'>
-                            </div>
-                            </div> */}
                         </div>
                     )}
                 </div>
