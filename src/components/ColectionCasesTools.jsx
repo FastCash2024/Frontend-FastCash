@@ -34,7 +34,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
 
     function onChangeHandlerDate(e) {
-        console.log('etarget', e.target);
 
         const { name, value } = e.target;
 
@@ -253,7 +252,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Estado de credito:
                                 </label>
                                 <SelectSimple
-                                    arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado']}
+                                    arr={['Dispersado', 'Pendiente', 'Aprobado', 'Reprobado']}
                                     name='estadoDeCredito'
                                     click={handlerSelectClick}
                                     defaultValue={filter['estadoDeCredito']}

@@ -25,6 +25,8 @@ function Home({ children }) {
     const fetchProfile = async () => {
         console.log('fetchProfile')
         const token = sessionStorage.getItem('token'); // Obtener el JWT desde sessionStorage
+        console.log('token', token);
+        
         try {
             const response = await fetch(window?.location?.href.includes('localhost')
                 ? 'http://localhost:3002/api/authSystem/validate'

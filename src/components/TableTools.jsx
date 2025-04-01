@@ -528,7 +528,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </div>
                             </div>
                             <MultipleInput
-                                key={query}
+                                // key={query}
                                 defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
                                 defaultValue2={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[1] : ""}
                                 handlerSelectClick={onChangeHandlerDate}
@@ -539,7 +539,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             />
 
                             <MultipleInput
-                                key={query}
+                                // key={query}
                                 defaultValue1={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[0] : ""}
                                 defaultValue2={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[1] : ""}
                                 handlerSelectClick={onChangeHandlerDate}
