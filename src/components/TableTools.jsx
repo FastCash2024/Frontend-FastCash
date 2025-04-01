@@ -66,7 +66,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             const result = await response.json();
             console.log('Clientes:', result);
 
-            setFiltro_1(result);
+            setFiltro_1(["Elige porfavor", ...result]);
         } catch (error) {
             console.error('Error al obtener los clientes:', error);
         }
@@ -468,10 +468,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                         <div className='w-[350px] space-y-2'>
                             <div className='flex items-center justify-end '>
-                                <label htmlFor="" className={`ql-align-right mr-2 text-[10px] text-right `}>
+                                <label htmlFor="" className={`ql-align-right mr-2 text-[10px] text-right text-gray-950`}>
                                     Codigo del Producto:
                                 </label>
-                                <SelectSimple click={handlerSelectClick} arr={filtro_1} name='nombreDelProducto' defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple
+                                    click={handlerSelectClick}
+                                    arr={filtro_1}
+                                    name='nombreDelProducto'
+                                    defaultValue={filter['nombreDelProducto']}
+                                    uuid='123'
+                                    label='Filtro 1'
+
+                                    position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                             </div>
                             <SearchInput
                                 label="Número de teléfono:"
@@ -486,7 +494,17 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <label htmlFor="" className={`ql-align-right mr-2 text-[10px] ${theme === 'light' ? '  text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de credito:
                                 </label>
-                                <SelectSimple arr={['Dispersado', 'Pagado', 'Pagado por extencion', 'Pago parcial', 'Liquidado por sistema']} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple
+                                    arr={['Dispersado', 'Pendiente', 'Aprobado', 'Reprobado']}
+                                    name='estadoDeCredito'
+                                    click={handlerSelectClick}
+                                    defaultValue={filter['estadoDeCredito'] || (filter['estadoDeCredito'] = 'Dispersado')}
+                                    uuid='123'
+                                    label='Filtro 1'
+                                    position='absolute left-0 top-[25px]'
+                                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
+                                    required
+                                />
                             </div>
                             <SearchInput
                                 label="Número de prestamo:"

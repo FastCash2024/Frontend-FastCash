@@ -97,7 +97,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             const result = await response.json();
             console.log('Clientes:', result);
 
-            setFiltro_1(result);
+            setFiltro_1(["Elige por favor", ...result]);
         } catch (error) {
             console.error('Error al obtener los clientes:', error);
         }
@@ -134,7 +134,17 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Estado de credito:
                                 </label>
-                                <SelectSimple arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado', "Error de dispercion STP"]} name='estadoDeCredito' click={handlerSelectClick} defaultValue={filter['estadoDeCredito']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple
+                                    arr={['Elije por favor', 'Pendiente', 'Aprobado', 'Reprobado', 'Dispersado', "Error de dispercion STP"]}
+                                    name='estadoDeCredito'
+                                    click={handlerSelectClick}
+                                    defaultValue={filter['estadoDeCredito'] || (filter['estadoDeCredito'] = 'Pendiente')}
+                                    // defaultValue={filter['estadoDeCredito']} 
+                                    uuid='123'
+                                    label='Filtro 1'
+                                    position='absolute left-0 top-[25px]'
+                                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
+                                    required />
                             </div>
                             <div className='flex justify-end items-center'>
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>

@@ -155,7 +155,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     const query2 = roleQueries[user?.rol] || "";
     console.log("query2", query2);
 
-    const defaultLimit = 5; // Valor predeterminado para limit
+    const defaultLimit = 10; // Valor predeterminado para limit
     const defaultPage = 1; // Valor predeterminado para page
 
     const finalLimit = limit || defaultLimit;
@@ -165,7 +165,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
       }limit=${finalLimit}&page=${finalPage}`;
     console.log("dataParamas: ", dataParams);
 
-    console.log("local: ", local);
+    console.log("local url original: ", local.includes("?"));
     console.log("limit: ", limit);
 
     const urlLocal = stg
@@ -199,7 +199,6 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setTotalDocuments(result.totalDocuments);
     setLoader(false);
   }
-  console.log("useeeeeeeeeeeeeeeer: ", user);
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {

@@ -25,7 +25,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
     const [query, setQuery] = useState('')
-    const [filtro_1, setFiltro_1] = useState([]);
+    const [filtro_1, setFiltro_1] = useState(["Elige por favor"]);
 
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }
@@ -78,28 +78,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setQuery('');
     }
 
-    // function objectToQueryString(obj) {
-    //     if (!obj || typeof obj !== "object") {
-    //         throw new Error("La entrada debe ser un objeto.");
-    //     }
-    //     return Object.keys(obj)
-    //         .filter(key => obj[key] !== undefined && obj[key] !== null) // Filtrar valores nulos o indefinidos
-    //         .map(key => {
-    //             const createQueryString = useCallback(
-    //                 (name, value) => {
-    //                     const params = new URLSearchParams(searchParams.toString())
-    //                     params.set(name, value)
-
-    //                     return params.toString()
-    //                 },
-    //                 [searchParams]
-    //             )
-    //         }) // Codificar clave=valor
-    // }
-
-    // Get a new searchParams string by merging the current
-    // searchParams with a provided key/value pair
-
     const fetchCustomersFlow = async () => {
         const local = 'http://localhost:3006/api/users/applications/customers';
         const server = 'https://api.fastcash-mx.com/api/users/applications/customers';
@@ -122,7 +100,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             const result = await response.json();
             console.log('Clientes:', result);
 
-            setFiltro_1(result);
+            setFiltro_1(["Elige por favor", ...result]);
         } catch (error) {
             console.error('Error al obtener los clientes:', error);
         }
@@ -204,7 +182,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             console.log("Fecha de fin:", fechaFin);
         }
     };
-    
+
 
     return (
         <div>
@@ -237,7 +215,16 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                     Codigo del producto:
                                 </label>
-                                <SelectSimple arr={filtro_1} name='nombreDelProducto' click={handlerSelectClick} defaultValue={filter['nombreDelProducto']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                                <SelectSimple
+                                    arr={filtro_1}
+                                    name='nombreDelProducto'
+                                    click={handlerSelectClick}
+                                    defaultValue={filter['nombreDelProducto']}
+                                    uuid='123'
+                                    label='Filtro 1'
+                                    position='absolute left-0 top-[25px]'
+                                    bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
+                                    required />
                             </div>
                             <div className='flex justify-end items-center'>
                                 <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
@@ -255,11 +242,14 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     arr={['Dispersado', 'Pendiente', 'Aprobado', 'Reprobado']}
                                     name='estadoDeCredito'
                                     click={handlerSelectClick}
-                                    defaultValue={filter['estadoDeCredito']}
-                                    uuid='123' label='Filtro 1'
+                                    defaultValue={filter['estadoDeCredito'] || (filter['estadoDeCredito'] = 'Dispersado')}
+                                    uuid='123'
+                                    label='Filtro 1'
                                     position='absolute left-0 top-[25px]'
                                     bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
-                                    required />
+                                    required
+                                />
+
                             </div>
                             <SearchInput
                                 label="Número de páginas:"

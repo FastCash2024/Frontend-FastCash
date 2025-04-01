@@ -40,9 +40,13 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
 
     function resetFilter() {
-        setFilter({});
+        setFilter({
+            tipoDeGrupo: getDefaultTipoDeGrupo(item)
+        });
         setQuery('');
     }
+    
+    
     function objectToQueryString(obj) {
         if (!obj || typeof obj !== "object") {
             throw new Error("La entrada debe ser un objeto.");
@@ -52,9 +56,38 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             .map(key => `filter[${encodeURIComponent(key)}]=${encodeURIComponent(obj[key])}`) // Codificar clave=valor
             .join("&"); // Unir con &
     }
-    // function handlerFetch() {
-    //     setLoader(true)
-    // }
+
+    const getDefaultTipoDeGrupo = (item) => {
+        return arrTipoDeGrupo[item]?.[0] || ''; // Toma el primer valor del array o una cadena vacía si no existe
+    };
+
+    // Cuando `item` cambia, actualizar el filtro
+    useEffect(() => {
+        setFilter(prev => ({
+            ...prev,
+            tipoDeGrupo: getDefaultTipoDeGrupo(item),
+        }));
+    }, [item]);
+
+    const arrTipoDeGrupo = {
+        'Gestión de administradores': ['Admin'],
+        'Gestión de cuentas de Colección': ['Asesor de Cobranza'],
+        'Gestión de RH': ['Recursos Humanos'],
+        'Gestión de managers': [
+            'Manager',
+            'Manager de Auditoria',
+            'Manager de Cobranza',
+            'Manager de Verificación',
+        ],
+        'Gestión de asesores': [
+            'Asesor',
+            'Asesor de Auditoria',
+            'Asesor de Cobranza',
+            'Asesor de Verificación',
+        ],
+        'Gestión de cuentas personales': ['Cuenta personal'],
+    };
+
 
     return (
         <div>
@@ -97,7 +130,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             <label htmlFor="situacionLaboral" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Estado de Usuario:
                             </label>
-                            <SelectSimple arr={['En el trabajo', 'Dimitir', 'Reposo']} name='situacionLaboral' click={handlerSelectClick} defaultValue={filter['situacionLaboral']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                            <SelectSimple
+                                arr={['Elige por favor', 'En el trabajo', 'Dimitir', 'Reposo']} name='situacionLaboral' click={handlerSelectClick} defaultValue={filter['situacionLaboral']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
                         </div>
                     </div>
                     <div className='w-[300px] space-y-2'>
@@ -105,7 +139,18 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             <label htmlFor="tipoDeGrupo" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                 Tipo de Usuario:
                             </label>
-                            <SelectSimple arr={['Asesor de Verificación', 'Asesor de Cobranza', 'Asesor de Auditoria']} name='tipoDeGrupo' click={handlerSelectClick} defaultValue={filter['tipoDeGrupo']} uuid='123' label='Filtro 1' position='absolute left-0 top-[25px]' bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`} required />
+                            <SelectSimple
+                                arr={arrTipoDeGrupo[item] || []}
+                                name='tipoDeGrupo'
+                                click={handlerSelectClick}
+                                defaultValue={filter['tipoDeGrupo']}
+                                uuid='123'
+                                label='Filtro 1'
+                                position='absolute left-0 top-[25px]'
+                                bg={`${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}
+                                required
+                            />
+
                         </div>
                         <div className='flex justify-end space-x-3'>
                             <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
