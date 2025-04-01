@@ -448,7 +448,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                                     {segmento} <br /> Segmento.
                                                 </p>
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
-                                                    {casosPagados} <br /> Casos cobrados.
+                                                    {casosPagados}/{casosTotal} <br /> Casos cobrados.
                                                 </p>
                                             </div>
                                             <div className="flex-grow flex items-center justify-center">

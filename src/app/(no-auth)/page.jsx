@@ -14,6 +14,8 @@ import Alert from '@/components/Alert';
 import Link from 'next/link';
 
 import ReCAPTCHA from "react-google-recaptcha";
+import { postTracking } from '../service/TrackingApi/tracking.service';
+import { obtenerFechaMexicoISO } from '@/utils/getDates';
 
 
 
@@ -46,6 +48,7 @@ export default function Home() {
         cuenta,
         password,
       });
+
       if (response.status === 200) {
         console.log('response.data.user', response.data.user)
         setUser({ rol: response.data.user.tipoDeGrupo })
@@ -53,9 +56,30 @@ export default function Home() {
         // Guardar el JWT en sessionStorage
         sessionStorage.setItem('token', response.data.token);
 
+        const trackingData = {
+          descripcionDeExcepcion: "Inicio de sesión exitoso",
+          cuentaOperadora: response.data.user.cuenta,
+          cuentaPersonal: response.data.user.emailPersonal,
+          codigoDeSistema: "Sistema FastCash",
+          codigoDeOperacion: "LOGIN_SUCCESS",
+          contenidoDeOperacion: `El usuario ${response.data.user.cuenta} inició sesión correctamente.`,
+          fechaDeOperacion: obtenerFechaMexicoISO()
+        };
+
+        await postTracking(trackingData);
         router.push('/Home')
       }
     } catch (error) {
+      const trackingData = {
+        descripcionDeExcepcion: error.response?.data?.message || "Error desconocido al iniciar sesión",
+        cuentaOperadora: e.target[0].value,
+        cuentaPersonal: "No disponible",
+        codigoDeSistema: "Sistema FastCash",
+        codigoDeOperacion: "LOGIN_FAILED",
+        contenidoDeOperacion: `El usuario ${e.target[0].value} con la contraseña ${e.target[1].value} intentó ingresar al sistema con las credenciales proporcionadas.`,
+        fechaDeOperacion: obtenerFechaMexicoISO()
+      };
+      await postTracking(trackingData);
       setErrorMessage(error.response?.data?.message || 'Error al iniciar sesión');
     }
 

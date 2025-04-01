@@ -708,7 +708,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                         </button>
                                         <button
                                           className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
-                                          onClick={() => handlerItemPE("Registro Pago Extension", i)}
+                                          onClick={() => handlerItemPE("Extension", i)}
                                         >
                                           Extensión
                                         </button>

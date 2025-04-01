@@ -239,7 +239,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Estado de credito:
                                 </label>
                                 <SelectSimple
-                                    arr={['Dispersado', 'Pendiente', 'Aprobado', 'Reprobado']}
+                                    arr={['Dispersado', 'Pagado', 'Pagado con Extensión']}
                                     name='estadoDeCredito'
                                     click={handlerSelectClick}
                                     defaultValue={filter['estadoDeCredito'] || (filter['estadoDeCredito'] = 'Dispersado')}

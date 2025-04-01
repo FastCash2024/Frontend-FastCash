@@ -133,7 +133,7 @@ export default function Home() {
   // console.log("filtro_1: ", filtro_1);
 
   let menu = user?.rol
-    ? menuArray[user.rol].filter((i) => i.hash === seccion)
+    ? menuArray[user.rol]?.filter((i) => i.hash === seccion)
     : "";
 
   const prev = () => {

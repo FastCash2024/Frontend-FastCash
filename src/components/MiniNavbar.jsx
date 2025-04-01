@@ -18,7 +18,7 @@ export default function Home() {
     const { theme, toggleTheme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
-    let menu = user?.rol ? menuArray[user.rol].filter(i => i.hash === seccion) : ''
+    let menu = user?.rol ? menuArray[user.rol]?.filter(i => i.hash === seccion) : ''
 
 
 
@@ -31,7 +31,7 @@ export default function Home() {
     // --------------------- MINI BARRA DE NAVEGACION ---------------------
 
         <nav className='fixed left-0 top-[60px] w-full px-5 bg-gray-900 z-20 py-1'>
-            {menu.length === 1 && <ul className='flex justify-around space-x-5'>
+            {menu?.length === 1 && <ul className='flex justify-around space-x-5'>
                 {menu[0].options.map((i, index) => {
                     return <li key={index} className='text-gray-300 flex items-center text-[12px] cursor-pointer' onClick={() => router.replace(`/Home?seccion=${menu[0].hash}&item=${i.subtitle}`)}>
                         <span

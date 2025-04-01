@@ -13,6 +13,8 @@ import axios from "axios";
 import Link from "next/link";
 import ReCAPTCHA from "react-google-recaptcha";
 import Alert from "@/components/Alert"; // Importar el componente Alert
+import { postTracking } from "@/app/service/TrackingApi/tracking.service";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 export default function Home() {
   const {user, setUser, userDB, setUserDB, theme, setTheme} = useAppContext();
@@ -25,33 +27,62 @@ export default function Home() {
   const onSubmitWithReCAPTCHA = async (e) => {
     e.preventDefault();
     try {
-      let email = e.target[0].value;
-      let password = e.target[1].value;
-      const response = await axios.post(
-        window?.location?.href.includes("localhost")
-          ? "http://localhost:3002/api/authSystem/loginPersonal"
-          : "https://api.fastcash-mx.com/api/authSystem/loginPersonal",
-        {
-          email,
-          password,
-        },
-      );
-      console.log(response);
-      if (response.status === 200) {
-        console.log("entra aqui")
-        console.log(response.data.user)
-        setUser({rol: response.data.user.codificacionDeRoles});
-        setUserDB(response.data.user);
-        sessionStorage.setItem("token", response.data.token);
-        router.push("/Account");
-      }
-    } catch (error) {
-      setErrorMessage(error.response?.data?.message || "Login failed"); // Establecer el mensaje de error
-      toast.error(error.response?.data?.message || "Login failed");
-    }
+        let email = e.target[0].value;
+        let password = e.target[1].value;
 
-    // captcha.length > 10 && router.push('/Home?seccion=coleccion&item=Casos%20de%20Cobranza')
-  };
+        const response = await axios.post(
+            window?.location?.href.includes("localhost")
+                ? "http://localhost:3002/api/authSystem/loginPersonal"
+                : "https://api.fastcash-mx.com/api/authSystem/loginPersonal",
+            { email, password }
+        );
+
+        if (response.status === 200) {
+            console.log("Login exitoso:", response.data.user);
+
+            // Guardar datos del usuario
+            setUser({ rol: response.data.user.codificacionDeRoles });
+            setUserDB(response.data.user);
+
+            // Guardar el JWT en sessionStorage
+            sessionStorage.setItem("token", response.data.token);
+
+            const trackingData = {
+                descripcionDeExcepcion: "Inicio de sesión exitoso",
+                cuentaOperadora: email,
+                cuentaPersonal: email,
+                codigoDeSistema: "Sistema FastCash",
+                codigoDeOperacion: "LOGIN_PERSONAL_SUCCESS",
+                contenidoDeOperacion: `El usuario ${email} inició sesión correctamente.`,
+                fechaDeOperacion: obtenerFechaMexicoISO()
+            };
+
+            await postTracking(trackingData);
+
+            // Redirigir al usuario
+            router.push("/Account");
+        }
+    } catch (error) {
+        console.error("Error en login personal:", error);
+
+        const trackingData = {
+            descripcionDeExcepcion: error.response?.data?.message || "Error desconocido al iniciar sesión",
+            cuentaOperadora: email, 
+            cuentaPersonal: email,
+            codigoDeSistema: "Sistema FastCash",
+            codigoDeOperacion: "LOGIN_PERSONAL_FAILED",
+            contenidoDeOperacion: `El usuario ${email} con la contraseña ${password} intentó ingresar con las credenciales proporcionadas.`,
+            fechaDeOperacion: obtenerFechaMexicoISO()
+        };
+
+        await postTracking(trackingData);
+
+        // Mostrar error
+        setErrorMessage(error.response?.data?.message || "Login failed");
+        toast.error(error.response?.data?.message || "Login failed");
+    }
+};
+
 
   // console.log(userDB)
 
