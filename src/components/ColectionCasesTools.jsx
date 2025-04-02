@@ -280,13 +280,13 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         <div className='w-[300px] space-y-2'>
                             <MultipleInput
                                 key={query}
-                                defaultValue1={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[0] : ""}
-                                defaultValue2={filter['fechaDeReembolso'] ? filter['fechaDeReembolso'].split(", ")[1] : ""}
+                                defaultValue1={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[0] : ""}
+                                defaultValue2={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[1] : ""}
                                 handlerSelectClick={onChangeHandlerDate}
                                 handlerSelectClick2={onChangeHandlerDate}
-                                name1="fechaDeReembolso"
-                                name2="fechaDeReembolso"
-                                label="Fecha de Reembolso: "
+                                name1="fechaDeCobro"
+                                name2="fechaDeCobro"
+                                label="Fecha de Cobro: "
                             />
                             <div className='flex gap-2 space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
