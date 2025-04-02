@@ -539,7 +539,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                   (diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) > 7 &&  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) < 15) && "S1"
                                 }
                                 { 
-                                  (diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) > 14 &&  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) <= 22) && "S2"
+                                  (diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) > 14 &&  diferenciaEnDias(i.fechaDeTramitacionDelCaso, obtenerFechaMexicoISO()) < 22) && "S2"
                                 }
                                 
                                 
