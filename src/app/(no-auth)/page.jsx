@@ -85,9 +85,6 @@ export default function Home() {
 
   }
 
-  // // console.log(user)
-
-
   function onChange(value) {
     setCaptcha(value);
   }

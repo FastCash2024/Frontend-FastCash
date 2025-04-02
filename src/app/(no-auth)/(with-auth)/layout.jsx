@@ -16,21 +16,16 @@ import TimeDisplay from '@/components/TimeDisplay'
 import { Turret_Road } from 'next/font/google'
 // import Whatsapp from '@/components/Whatsapp'
 import { MoonIcon, SunIcon, WindowIcon } from '@heroicons/react/24/solid';
+import useSessionWatcher from '@/hooks/useSessionWatcher';
 
 function Home({ children }) {
     const router = useRouter()
-    const { user, setUser, userDB, setUserDB, setUserProfile,
-        fondoPrimario, setFondoPrimario,
-        fondoSecundario, setFondoSecundario,
-        fondoTerciario, setFondoTerciario, setUserCart, isOpen, setIsOpen, isOpen2, setIsOpen2, businessData, idioma, setIdioma, setUserProduct, setRecetaDB, precioJustoPDB, setPrecioJustoPDB, whatsapp, setWhatsapp, setUserData, filter, setFilter, nav, setNav, modal, setModal, cart, introClientVideo, setIntroClientVideo, recetaDBP, setRecetaDBP, productDB, search, setSearch, videoClientRef, setFilterQR, webScann, setWebScann, setTienda, setBusinessData, isBack, setBack } = useAppContext()
+    const { user, setUser, userDB, setUserDB, setUserProfile, isOpen, setIsOpen, isOpen2, setIsOpen2, businessData, idioma, setIdioma, setUserProduct, setRecetaDB, setPrecioJustoPDB, setWhatsapp, setUserData, setFilter, nav, setNav, setModal, setIntroClientVideo, setSearch, videoClientRef, setFilterQR, setTienda } = useAppContext()
 
     const { theme, toggleTheme } = useTheme();
 
 
     const pathname = usePathname()
-
-
-
 
     const redirectHandler = (ref) => {
         router.push(ref)
@@ -105,7 +100,7 @@ function Home({ children }) {
         setUser(null)
         setUserDB(null)
     }
-    
+
 
 
     // useEffect(() => {
@@ -140,50 +135,65 @@ function Home({ children }) {
     //     };
     //     fetchProfile();
     // }, []);
+
+    useEffect(() => {
+        if (!userDB) {
+            setUserDB(null)
+        }
+    }, [userDB])
+
     console.log(pathname)
     useEffect(() => {
-        user?.rol 
+        user?.rol
             ? pathname === '/' && router.replace('/Home')
             : user?.rol !== undefined && pathname !== '/' && router.replace('/')
     }, [user])
 
+    // if (userDB?.id) {
+    useSessionWatcher(userDB?.id, router, setUserDB);
+    // }
+
+
+
+    console.log("socket user", userDB?.id);
+
     return (
 
         <div>
-            
+
 
             <div className={`h-screen  ${theme === 'light' ? ' bg-gray-200' : 'bg-gray-50 '} dark:bg-gray-800 z-40`}>
-                {(userDB?.situacionLaboral === 'Dimitir' ||  userDB?.situacionLaboral === 'Reposo') && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm pointer-events-auto z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black flex flex-col">
-                        <h2 className="text-center font-bold">Estado de la cuenta : <span >{userDB?.situacionLaboral}</span> </h2>
-                        <p className="mt-2 text-center font-light">Comuniquese con el administrador de la cuenta para obtener más información.</p>
-                        <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handlerSignOut()}>
-                            Salir
-                        </button>
-                    </div>
-                </div>
-                )}
-                
-                {(userDB?.tipoDeGrupo && !!userDB?.tipoDeGrupo.includes('Asesor')  ) 
-                ? (!userDB.emailPersonal || !userDB.fotoURL || !userDB.numeroDeTelefonoMovil) 
-                    ? ( 
-                        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm pointer-events-auto z-50">
-                            <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black flex flex-col">
-                                <h2 className="text-center font-bold">Datos cuenta personal incompletos</h2>
-                                <p className="mt-2 text-center font-light">Debe registar sus datos personales para poder acceder a esta cuenta.</p>
-                                <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handlerSignOut()}>
-                                    Salir
-                                </button>
-                            </div>
+                {(userDB?.situacionLaboral === 'Dimitir' || userDB?.situacionLaboral === 'Reposo') && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm pointer-events-auto z-50">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black flex flex-col">
+                            <h2 className="text-center font-bold">Estado de la cuenta : <span >{userDB?.situacionLaboral}</span> </h2>
+                            <p className="mt-2 text-center font-light">Comuniquese con el administrador de la cuenta para obtener más información.</p>
+                            <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handlerSignOut()}>
+                                Salir
+                            </button>
                         </div>
-                    )
-                    :(
+                    </div>
+                )}
+
+                {(userDB?.tipoDeGrupo && !!userDB?.tipoDeGrupo.includes('Asesor'))
+                    ? (!userDB.emailPersonal || !userDB.fotoURL || !userDB.numeroDeTelefonoMovil)
+                        ? (
+                            <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm pointer-events-auto z-50">
+                                <div className="bg-white p-6 rounded-lg shadow-lg w-96 text-black flex flex-col">
+                                    <h2 className="text-center font-bold">Datos cuenta personal incompletos</h2>
+                                    <p className="mt-2 text-center font-light">Debe registar sus datos personales para poder acceder a esta cuenta.</p>
+                                    <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => handlerSignOut()}>
+                                        Salir
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                        : (
+                            null
+                        )
+                    : (
                         null
-                    ) 
-                :(
-                    null 
-                )
+                    )
                 }
                 <div className={`fixed top-0 w-[220px] lg:w-[280px] py-4 shadow-white  transition-all	z-50  h-screen overflow-y-scroll ${theme === 'light' ? 'bg-gray-300 text-black' : 'bg-gray-800 text-white '} ${nav ? 'left-0  ' : 'left-[-220px] lg:left-[-280px] '}`} >
                     {user && user !== undefined && <Navbar rol={user.rol} />}
@@ -308,7 +318,7 @@ function Home({ children }) {
                         </div>
 
                     </nav>
-                    
+
                     <div className="lg:px-[20px] pt-[85px] pb-[65px] md:pt-[65px] md:pb-0 h-screen w-full overflow-y-auto">
                         {children}
                     </div>
