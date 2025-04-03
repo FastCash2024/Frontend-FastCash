@@ -139,12 +139,12 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 fechaFin = null;
                 break;
             case "S1":
-                fechaInicio = calcularFecha(-15);
-                fechaFin = calcularFecha(-3);
+                fechaInicio = calcularFecha(-14);
+                fechaFin = calcularFecha(-1);
                 break;
             case "S2":
                 fechaInicio = calcularFecha(-22);
-                fechaFin = calcularFecha(-15);
+                fechaFin = calcularFecha(-16);
                 break;
             default:
                 fechaInicio = null;
