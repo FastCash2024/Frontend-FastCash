@@ -100,8 +100,10 @@ export default function FormDistributtonCasesSegment() {
 
   const assignMaximEqualy = async () => {
 
-
-    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`);
+    const url = window?.location?.href?.includes("localhost")
+            ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
+            : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`;
+    const resUsers = await fetch(url);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
 
@@ -204,8 +206,10 @@ export default function FormDistributtonCasesSegment() {
   const assignCasesBySegment = async (mode) => {
     setCalculate(true);
     setType("BySegment");
-
-    const resUsers = await fetch(`https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`);
+    const url = window?.location?.href?.includes("localhost")
+            ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
+            : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`;
+    const resUsers = await fetch(url);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
 
