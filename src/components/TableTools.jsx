@@ -495,7 +495,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     Estado de credito:
                                 </label>
                                 <SelectSimple
-                                    arr={['Dispersado', 'Pendiente', 'Aprobado', 'Reprobado']}
+                                    arr={['Dispersado', 'Pagado', 'Pagado con Extensión']}
                                     name='estadoDeCredito'
                                     click={handlerSelectClick}
                                     defaultValue={filter['estadoDeCredito'] || (filter['estadoDeCredito'] = 'Dispersado')}
@@ -558,13 +558,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
                             <MultipleInput
                                 // key={query}
-                                defaultValue1={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[0] : ""}
-                                defaultValue2={filter['fechaDeTramitacionDelCaso'] ? filter['fechaDeTramitacionDelCaso'].split(", ")[1] : ""}
+                                defaultValue1={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[0] : ""}
+                                defaultValue2={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[1] : ""}
                                 handlerSelectClick={onChangeHandlerDate}
                                 handlerSelectClick2={onChangeHandlerDate}
-                                name1="fechaDeTramitacionDelCaso"
-                                name2="fechaDeTramitacionDelCaso"
-                                label="Fecha de asignación: "
+                                name1="fechaDeCobro"
+                                name2="fechaDeCobro"
+                                label="Fecha de cobro: "
+                            />
+                            <MultipleInput
+                                // key={query}
+                                defaultValue1={filter['fechaDeDispersion'] ? filter['fechaDeDispersion'].split(", ")[0] : ""}
+                                defaultValue2={filter['fechaDeDispersion'] ? filter['fechaDeDispersion'].split(", ")[1] : ""}
+                                handlerSelectClick={onChangeHandlerDate}
+                                handlerSelectClick2={onChangeHandlerDate}
+                                name1="fechaDeDispersion"
+                                name2="fechaDeDispersion"
+                                label="Fecha de dispersión: "
                             />
 
                             <div className='flex justify-end space-x-3  pr-0'>

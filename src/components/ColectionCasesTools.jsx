@@ -74,6 +74,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
 
     function resetFilter() {
+        setSelectedFecha("Elije por favor");
         setFilter({});
         setQuery('');
     }
@@ -269,7 +270,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </label>
                                 <SelectSegment
                                     options={options}
-                                    name="segmento"
+                                    name="fechaDeCobro"
                                     selectedValue={selectedFecha}
                                     onChangeHandler={onChangeHandlerDateBySegment}
                                     uuid="123"
