@@ -322,11 +322,17 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                 console.log(`Segmento no encontrado para cuenta: ${cuenta}`);
                 return;
             }
+
             const pagosTotal = details[cuenta]?.pagosTotal;
             const casosTotales = details[cuenta]?.casosTotales;
+            const casosFueraDeHorario = details[cuenta]?.casosFueraDeHorario;
 
             if (!totalesPorSegmento[segmento]) {
-                totalesPorSegmento[segmento] = { casosPagados: 0, casosTotal: 0 };
+                totalesPorSegmento[segmento] = {
+                    casosPagados: 0,
+                    casosTotal: 0,
+                    casosFueraDeHorario: 0
+                };
             }
 
             if (typeof pagosTotal === "number" && !isNaN(pagosTotal)) {
@@ -340,13 +346,21 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             } else {
                 console.log(`No se encontró casos totales válidos para la cuenta: ${cuenta}`);
             }
+
+            if (typeof casosFueraDeHorario === "number" && !isNaN(casosFueraDeHorario)) {
+                totalesPorSegmento[segmento].casosFueraDeHorario += casosFueraDeHorario;
+            }
         });
 
         const segmentosPosibles = ["D0", "D1", "D2", "S1", "S2"];
 
         segmentosPosibles.forEach((segmento) => {
             if (!totalesPorSegmento[segmento]) {
-                totalesPorSegmento[segmento] = { casosPagados: 0, casosTotal: 0 };
+                totalesPorSegmento[segmento] = { 
+                    casosPagados: 0, 
+                    casosTotal: 0,
+                    casosFueraDeHorario: 0, 
+                };
             }
         });
 
@@ -354,6 +368,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             obj[segmento] = {
                 casosPagados: totalesPorSegmento[segmento].casosPagados || 0,
                 casosTotal: totalesPorSegmento[segmento].casosTotal || 0,
+                casosFueraDeHorario: totalesPorSegmento[segmento].casosFueraDeHorario || 0,
             };
             return obj;
         }, {});
@@ -422,9 +437,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     : 0
                             )}></Velocimetro>
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 text-[#55abf1] `}>Tasa de recuperación de caso</h4>
-                            <div className='grid grid-cols-2 w-[300px]'>
+                            <div className='grid grid-cols-3 w-[300px]'>
                                 <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.pagosTotal ?? 0} <br />Cobro de hoy.</p>
-                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.totalesConAsesor ?? 0} <br /> Número total de casos.</p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.casosFueraDeHorario ?? 0} <br /> Número casos fuera de horario.</p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{(totalesCobro?.totalesConAsesor + totalesCobro?.casosFueraDeHorario) ?? 0} <br /> Número total de casos.</p>
                             </div>
                         </div>
                         <div className='pl-12 px-2'>
@@ -437,18 +453,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 </h4>
 
                                 {Object.keys(totales).map((segmento) => {
-                                    const { casosPagados = 0, casosTotal = 0 } = totales[segmento] || {};
+                                    console.log("totalespor segmento: ", totales);
+
+                                    const { casosPagados = 0, casosTotal = 0, casosFueraDeHorario = 0 } = totales[segmento] || {};
 
                                     const porcentaje = casosTotal > 0 ? (casosPagados / casosTotal) * 100 : 0;
 
                                     return (
                                         <div key={segmento} className="flex flex-row w-[500px] gap-6 mb-2">
-                                            <div className="grid grid-cols-2 w-[200px]">
+                                            <div className="grid grid-cols-3 w-[200px]">
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
                                                     {segmento} <br /> Segmento.
                                                 </p>
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
                                                     {casosPagados}/{casosTotal} <br /> Casos cobrados.
+                                                </p>
+                                                <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
+                                                    {casosFueraDeHorario} <br /> Casos cobrados FH.
                                                 </p>
                                             </div>
                                             <div className="flex-grow flex items-center justify-center">

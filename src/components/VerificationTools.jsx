@@ -155,7 +155,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <MultipleInput
-                                key={query}
+                                // key={query}
                                 defaultValue1={filter['fechaDeCreacionDeLaTarea'] ? filter['fechaDeCreacionDeLaTarea'].split(", ")[0] : ""}
                                 defaultValue2={filter['fechaDeCreacionDeLaTarea'] ? filter['fechaDeCreacionDeLaTarea'].split(", ")[1] : ""}
                                 handlerSelectClick={onChangeHandlerDate}

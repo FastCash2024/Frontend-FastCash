@@ -75,9 +75,12 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
     function resetFilter() {
         setSelectedFecha("Elije por favor");
-        setFilter({});
+        setFilter({
+            fechaDeCobro: "",
+        });
         setQuery('');
     }
+    
 
     const fetchCustomersFlow = async () => {
         const local = 'http://localhost:3006/api/users/applications/customers';
@@ -280,7 +283,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                         </div>
                         <div className='w-[300px] space-y-2'>
                             <MultipleInput
-                                key={query}
                                 defaultValue1={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[0] : ""}
                                 defaultValue2={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[1] : ""}
                                 handlerSelectClick={onChangeHandlerDate}
@@ -288,7 +290,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                 name1="fechaDeCobro"
                                 name2="fechaDeCobro"
                                 label="Fecha de Cobro: "
+                                value1={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[0] : ""}
+                                value2={filter['fechaDeCobro'] ? filter['fechaDeCobro'].split(", ")[1] : ""}
                             />
+
                             <div className='flex gap-2 space-x-3'>
                                 <Link href={`?seccion=${seccion}&item=${item}&${query}`}>
                                     <Button type="button" theme={'Success'} >Consultar</Button>
