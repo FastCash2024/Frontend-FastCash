@@ -12,13 +12,11 @@ const SECRET_KEY = "mi-clave-segura";
 
 export default function FormAddPago() {
     const {
-        user,
         userDB,
         itemSelected,
         setAlerta,
         setModal,
-        setLoader,
-        theme
+        setLoader
     } = useAppContext();
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
@@ -59,9 +57,6 @@ export default function FormAddPago() {
         setModal('')
         setLoader('')
     }
-
-    console.log("itemSelected: ", itemSelected);
-
 
     return (
         <div

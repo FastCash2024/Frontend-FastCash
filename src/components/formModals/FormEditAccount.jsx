@@ -3,67 +3,30 @@
 import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 
-import { toast } from 'react-hot-toast';
 import FormLayout from '@/components/formModals/FormLayout'
 
-
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, checkedArr, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected,multa } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { setAlerta, checkedArr, setModal, setLoader, multa } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
-    const [value1, setValue1] = useState('Por favor elige')
-    const [value2, setValue2] = useState('Por favor elige')
-    const [value3, setValue3] = useState('Por favor elige')
     const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('');
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-  
-    const searchParams = useSearchParams()
 
+    const searchParams = useSearchParams()
 
     const seccion = searchParams.get('seccion')
 
     const item = searchParams.get('item')
-    const codificacionDeRoles = {
-        'Recursos Humanos': ['Recursos Humanos'],
-        'Admin': ['Admin'],
-        'Manager de Auditoria': ['Manager de Auditoria'],
-        'Manager de Cobranza': ['Manager de Cobranza'],
-        'Manager de Verificación': ['Manager de Verificación'],
-        'Asesor de Auditoria': ['Asesor de Auditoria'],
-        'Asesor de Cobranza': [
-            'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
-            'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
-            'D0 = DIA DE LA FECHA DE COBRO',
-            'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
-            'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
-        ],
-        'Asesor de Verificación': ['Asesor de Verificación'],
-        'Cuenta personal': ['Cuenta personal'],
-    }
+
     function handleCheckboxChange(index) {
         setSelectedCheckbox(index);
     };
     function onChangeHandler(e) {
-        // console.log(e.target.value)
         setData({ ...data, [e.target.name]: e.target.value })
     }
-    function handlerSelectClick2(name, i, uuid) {
-        if (name === 'Origen de la cuenta') {
-            setValue1(i)
-        }
-        if (name === 'Tipo de grupo') {
-            setValue2(i)
-            setValue3('Por favor elige')
-        }
-        if (name === 'Codificación de roles') {
-            setValue3(i)
-        }
-    }
+
     const generarContrasena = (clave) => {
         const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
         let contrasenaGenerada = '';
@@ -83,17 +46,15 @@ export default function AddAccount() {
 
     const saveAccount = async (e) => {
         e.preventDefault();
-        setLoader('Guardando...') 
-        if(checkedArr.length === 0 && multa){
+        setLoader('Guardando...')
+        if (checkedArr.length === 0 && multa) {
             saveAllAccounts(multa)
         } else {
             checkedArr.map((db, index) => {
                 saveAllAccounts(db)
             })
         }
-        
 
-        
     };
 
     const saveAllAccounts = async (db) => {
@@ -132,7 +93,7 @@ export default function AddAccount() {
             // Verificar si la respuesta es exitosa
             if (response.ok) {
 
-                const res = await fetch(window?.location?.href?.includes('localhost')
+                await fetch(window?.location?.href?.includes('localhost')
                     ? 'http://localhost:3005/api/notifications/email/send'
                     : 'https://api.fastcash-mx.com/api/notifications/email/send', {
                     method: 'POST',
@@ -193,33 +154,6 @@ export default function AddAccount() {
         }
     };
 
-
-    const arrTipoDeGrupo = {
-
-        ['Gestión de administradores']: [
-            'Admin',
-        ],
-        ['Gestión de RH']: [
-            'Recursos Humanos',
-        ],
-        ['Gestión de managers']: [
-            'Por favor elige',
-            'Manager de Auditoria',
-            'Manager de Cobranza',
-            'Manager de Verificación',
-        ],
-        ['Gestión de asesores']: [
-            'Por favor elige',
-            'Asesor de Auditoria',
-            'Asesor de Cobranza',
-            'Asesor de Verificación',
-            'Cuenta personal'
-        ],
-        ['Gestión de cuentas personales']: [
-            'Cuenta personal'
-        ],
-    }
-
     return <FormLayout>
         <h4 className='w-full text-center text-gray-950'>Añadir cuenta</h4>
         <div className='flex justify-between items-center space-x-2'>
@@ -275,6 +209,3 @@ export default function AddAccount() {
     </FormLayout>
 
 }
-
-
-

@@ -11,7 +11,7 @@ import { obtenerFechaMexicoISO } from "@/utils/getDates";
 export default function FormUpdateTipoApp() {
     const { setAlerta, applicationTipo, setModal, setLoader, userDB } = useAppContext()
 
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
     const searchParams = useSearchParams()
     const applicationId = searchParams.get('application');
@@ -29,9 +29,6 @@ export default function FormUpdateTipoApp() {
             });
         }
     }, [applicationTipo]);
-
-    console.log("data update: ", data)
-
 
     function onChangeHandler(e) {
         const { name, value } = e.target;

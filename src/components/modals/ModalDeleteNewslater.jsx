@@ -5,9 +5,6 @@ import { useAppContext } from '@/context/AppContext';
 export default function ModalDeleteNewslater() {
     const { setAlerta, newslater, setModal, setLoader } = useAppContext();
 
-    console.log("eliminar aplicacion: ", newslater);
-    
-
     const handleDelete = async () => {
         setLoader('Eliminando...');
         try {

@@ -14,8 +14,8 @@ const optionsArray = [
 ];
 
 export default function FormUpdateMulta() {
-    const { multa, userDB, itemSelected, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { multa, userDB, setAlerta, setModal, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
@@ -34,7 +34,6 @@ export default function FormUpdateMulta() {
             setValue(multa.observaciones)
         }
     }, [multa]);
-    console.log("multa selected: ", multa);
 
     function handlerSelectClick(name, i, uuid) {
         setValue(i);

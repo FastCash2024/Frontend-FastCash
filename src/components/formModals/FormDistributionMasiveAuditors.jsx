@@ -5,11 +5,11 @@ import { useSearchParams } from "next/navigation";
 import FormLayout from "@/components/formModals/FormLayout";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { obtenerSegmento } from "@/utils";
-import { getLocalISOString, today } from "@/utils/getDates";
+import { getLocalISOString } from "@/utils/getDates";
+
 export default function FormDistributionAuditors() {
-  const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-  const { theme, toggleTheme } = useTheme();
+  const { setAlerta, setModal, setLoader } = useAppContext()
+  const { theme } = useTheme();
   const [maximoAsignacion, setMaximoAsignacion] = useState(2);
   const [usuariosConAsignacion, setusuariosConAsignacion] = useState([]);
   const [casosNoAsignados, setCasosNoAsignados] = useState([]);
@@ -17,18 +17,9 @@ export default function FormDistributionAuditors() {
   const [calculate, setCalculate] = useState(false);
   const [type, setType] = useState('');
 
-
   const searchParams = useSearchParams()
   const seccion = searchParams.get('seccion')
   const item = searchParams.get('item')
-
-
-
-  const cuentaUpdate = seccion === 'auditoria'
-    ? 'cuentaAuditor'
-    : seccion === 'coleccion'
-      ? 'cuentaCobrador'
-      : 'cuentaAuditor'
 
   const tipoDeGrupo = seccion === 'auditoria'
     ? 'Asesor de Auditoria'
@@ -36,19 +27,6 @@ export default function FormDistributionAuditors() {
       ? 'Asesor de Cobranza'
       : 'Asesor de Auditoria'
 
-  // const estadoDeCredito = seccion === 'Verificacion'
-  //     ? 'Pendiente'
-  //     : seccion === 'coleccion'
-  //         ? 'Dispersado'
-  //         : 'Pendiente'
-
-  // const query = seccion === 'Verificacion'
-  //     ? 'Asesor de Verificación'
-  //     : seccion === 'coleccion'
-  //         ? 'Asesor de Cobranza'
-  //         : 'Asesor de Auditoria'
-
-  console.log(user)
   const countByItemsLength = (data) => {
     const counts = {};
     data.forEach((obj) => {
@@ -60,7 +38,6 @@ export default function FormDistributionAuditors() {
       objectsCount: count,
     }));
   };
-
 
   //DIVISION para reparticion igualitaria maxima
   function dividir(a, b) {
@@ -137,11 +114,6 @@ export default function FormDistributionAuditors() {
       index = (index + 1) % totalAuditores;
     });
   
-    // Filtrar los casos no asignados
-    // const casosNoAsignados = unassignedCases.filter(caso => !caso.cuentaAuditor);
-
-    console.log("casos asignados: ", unassignedCases);
-    
   
     setusuariosConAsignacion(auditores);
     setCasosAsignados(unassignedCases);

@@ -14,23 +14,19 @@ import MultipleInput from "@/components/MultipleInput";
 import ProgressBarComponent from "@/components/ProgressBar";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
-import {
-    refunds, historial,
-    menuArray, tipoDeGrupo, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
-} from '@/constants/index'
+import { tipoDeGrupo, filterCliente, factura, Jumlah } from '@/constants/index'
 import Link from 'next/link';
 import SelectField from './SelectField';
 import { getBackgroundClass } from '@/utils/colors';
 import ControlCasesTools from './ControlCasesTools';
 import { obtenerSegmento } from '@/utils';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, userDB, setApplicationTipo, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected, setAppComisionVerification } = useAppContext()
+    const { user, setApplicationTipo, checkedArr, setModal, loader, setAppComisionVerification } = useAppContext()
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const applicationId = searchParams.get('application');
-    const [copied, setCopied] = useState(false);
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     const [filter, setFilter] = useState({})
     const [dataApplication, setDataApplication] = useState(null)
     const [filtro_1, setFiltro_1] = useState([]);
@@ -155,9 +151,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setQuery(objectToQueryString(db))
     }
 
-    console.log("query: ", query);
-
-
     function onChangeHandlerDate(e) {
         const { name, value } = e.target;
 
@@ -266,19 +259,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setQuery(objectToQueryString(db));
     }
 
-    function handlerDateChange(event, name) {
-        const date = event.target.value;
-        const formattedDate = new Date(date).toISOString().split('T')[0]; // Formato YYYY-MM-DD
-
-        const db = { ...filter, [name]: formattedDate }; // Usar el nombre variable
-        setFilter(db);
-        setQuery(objectToQueryString(db));
-
-        console.log(`Fecha seleccionada (${name}):`, formattedDate);
-    }
-    console.log("datos filtrados: ", filter);
-    console.log("datos query: ", query);
-
     const handlerApplication = () => {
         setModal('Modal Agregar Tipo Aplicaion');
         setApplicationTipo(dataApplication);
@@ -356,10 +336,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
 
         segmentosPosibles.forEach((segmento) => {
             if (!totalesPorSegmento[segmento]) {
-                totalesPorSegmento[segmento] = { 
-                    casosPagados: 0, 
+                totalesPorSegmento[segmento] = {
+                    casosPagados: 0,
                     casosTotal: 0,
-                    casosFueraDeHorario: 0, 
+                    casosFueraDeHorario: 0,
                 };
             }
         });
@@ -469,7 +449,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                                     {casosPagados}/{casosTotal} <br /> Casos cobrados.
                                                 </p>
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
-                                                    {casosFueraDeHorario} <br /> Casos cobrados FH.
+                                                    {casosFueraDeHorario}/{casosTotal} <br /> Casos cobrados FH.
                                                 </p>
                                             </div>
                                             <div className="flex-grow flex items-center justify-center">

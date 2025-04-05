@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import SelectSimple from '@/components/SelectSimple'
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from '@/components/Input'
@@ -13,7 +13,6 @@ const dataRoles = [
   'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
   'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
 ]
-
 
 export default function FormUpdateComision() {
   const { theme, setLoader, setAlerta, setModal, appComision } = useAppContext();
@@ -45,7 +44,6 @@ export default function FormUpdateComision() {
       }));
     }
   }
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,7 +87,6 @@ export default function FormUpdateComision() {
       setAlerta('Error al registra comision');
     }
   }
-
 
   return (
     <FormLayout>

@@ -1,22 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { useTheme } from "@/context/ThemeContext";
-import SelectSimple from "@/components/SelectSimple";
-import { domainToASCII } from "url";
 import { useSearchParams } from "next/navigation";
-import { toast } from "react-hot-toast";
 import FormLayout from "@/components/formModals/FormLayout";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import { obtenerSegmento } from "@/utils";
-import { getLocalISOString } from "@/utils/getDates";
-import { diferenciaEnDias } from "@/utils/getDates";
-import { ajustarFechaInicio, ajustarFechaFinal } from "@/utils";
+import { ajustarFechaInicio } from "@/utils";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 export default function FormDistributtonCasesSegment() {
   const {
-    user,
     setAlerta,
     setModal,
     setLoader,
@@ -44,13 +37,6 @@ export default function FormDistributtonCasesSegment() {
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
 
-  const cuentaUpdate =
-    seccion === "Verificacion"
-      ? "cuentaVerificador"
-      : seccion === "coleccion"
-        ? "cuentaCobrador"
-        : "cuentaAuditor";
-
   const tipoDeGrupo =
     seccion === "Verificacion"
       ? "Asesor de Verificación"
@@ -72,37 +58,11 @@ export default function FormDistributtonCasesSegment() {
         ? "Asesor de Cobranza"
         : "Asesor de Auditoria";
 
-  console.log(user);
-  const countByItemsLength = (data) => {
-    const counts = {};
-    data.forEach((obj) => {
-      const length = obj.idCasosAsignados.length;
-      counts[length] = (counts[length] || 0) + 1;
-    });
-    return Object.entries(counts).map(([length, count]) => ({
-      itemsCount: parseInt(length, 10),
-      objectsCount: count,
-    }));
-  };
-
-  //DIVISION para reparticion igualitaria maxima
-  function dividir(a, b) {
-    if (b === 0) {
-      return "Error: No se puede dividir entre 0";
-    }
-    const cociente = Math.floor(a / b);
-    const residuo = a % b;
-    if (cociente === 0) {
-      return "Error: toca a 0";
-    }
-    return cociente;
-  }
-
   const assignMaximEqualy = async () => {
 
     const url = window?.location?.href?.includes("localhost")
-            ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
-            : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`;
+      ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
+      : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`;
     const resUsers = await fetch(url);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
@@ -165,9 +125,7 @@ export default function FormDistributtonCasesSegment() {
         asesoresPorSegmento.S2.push(asesor);
       }
     });
-    console.log("verificadores", verificadores)
 
-    console.log("asesoresPorSegmento", asesoresPorSegmento)
     const resultado = {};
 
     for (const segmento in casosPorSegmento) {
@@ -207,8 +165,8 @@ export default function FormDistributtonCasesSegment() {
     setCalculate(true);
     setType("BySegment");
     const url = window?.location?.href?.includes("localhost")
-            ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
-            : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`;
+      ? `http://localhost:3002/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`
+      : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=${query}&limit=1000`;
     const resUsers = await fetch(url);
     const dataUsers = await resUsers.json();
     const verificadores = dataUsers.data.filter(i => i.tipoDeGrupo === tipoDeGrupo);
@@ -257,9 +215,6 @@ export default function FormDistributtonCasesSegment() {
         casosPorSegmento.S2.push(caso);
       }
     });
-
-
-    console.log("casosPorSegmento", casosPorSegmento)
 
     mode !== "equaly"
       ? Object.keys(casosPorSegmento).map(segmento => {
@@ -341,7 +296,6 @@ export default function FormDistributtonCasesSegment() {
       return assignedUser ? { ...caso, cuentaCobrador: assignedUser.cuenta, nombreDeLaEmpresa: assignedUser.origenDeLaCuenta, fechaDeTramitacionDeCobro } : caso;
     });
 
-
     asignacionesFinales = [...asignacionesFinales, ...updatedCases]
     usuariosConCasos = [...usuariosConCasos, ...updatedUsers]
     casosSinAsignacion = [...casosSinAsignacion, ...unassignedCases]
@@ -350,10 +304,8 @@ export default function FormDistributtonCasesSegment() {
     setCasosNoAsignados(casosSinAsignacion)
     setCasosAsignados(updatedCases)
   }
-  console.log("casosSinAsignacion:", casosNoAsignados)
 
   async function saveAsignation() {
-    console.log("Cantidad de usuarios asignados: ", casosAsignados);
 
     setLoader("Guardando...");
 
@@ -422,51 +374,6 @@ export default function FormDistributtonCasesSegment() {
     }
   }
 
-
-
-  const casosPorSegmentoSinAsignar = { D0: [], D1: [], D2: [], S1: [], S2: [] };
-
-
-  function counterUnsignadedCases() {
-    const fechaActual = new Date();
-
-    casosNoAsignados.filter(i => i.estadoDeCredito === "Dispersado").forEach(caso => {
-      const fechaTramitacion = ajustarFechaInicio(caso.fechaDeTramitacionDelCaso)
-
-      const fechaOriginal = new Date();
-      fechaOriginal.setUTCDate(fechaOriginal.getUTCDate() + 7);
-
-      const diferenciaDiasTramitacion = Math.round((new Date(fechaTramitacion) - fechaActual) * (-1) / (1000 * 60 * 60 * 24));
-
-      // Validación: Si la fecha de tramitación es hoy, no se asigna
-      if (diferenciaDiasTramitacion === 0) {
-        console.log(`El caso ${caso.numeroDePrestamo} es reciente y no puede asignarse.`);
-        return;
-      }
-
-      // Validación: Solo se asignan casos cuya fecha de tramitación tenga al menos 5 días
-      if (diferenciaDiasTramitacion < 5) {
-        console.log(`El caso ${caso.numeroDePrestamo} aún no puede asignarse. Se necesita esperar ${5 - diferenciaDiasTramitacion} días más.`);
-        return;
-      }
-
-
-      if (diferenciaDiasTramitacion === 7) {
-        casosPorSegmentoSinAsignar.D0.push(caso);
-      } else if (diferenciaDiasTramitacion === 6) {
-        casosPorSegmentoSinAsignar.D1.push(caso);
-      } else if (diferenciaDiasTramitacion === 5) {
-        casosPorSegmentoSinAsignar.D2.push(caso);
-      } else if (diferenciaDiasTramitacion > 7 && diferenciaDiasTramitacion < 15) {
-        casosPorSegmentoSinAsignar.S1.push(caso);
-      } else if (diferenciaDiasTramitacion > 14 && diferenciaDiasTramitacion <= 22) {
-        casosPorSegmentoSinAsignar.S2.push(caso);
-      }
-    });
-
-    return { ...casosPorSegmentoSinAsignar }
-  }
-
   useEffect(() => {
     assignMaximEqualy()
   }, [])
@@ -475,9 +382,6 @@ export default function FormDistributtonCasesSegment() {
       <h4 className="text-gray-950">Distribuir Casos de Cobranza</h4>
 
       {!calculate && (<div className="bg-gray-100 w-full p-3">
-
-
-
 
         <>
           <div className="flex italic text-[10px]">
@@ -577,8 +481,6 @@ export default function FormDistributtonCasesSegment() {
           </div>
         </>
 
-
-
         <div className="flex w-full mt-4">
           {!calculate && <Button theme="MiniPrimary" click={() => assignCasesBySegment("equaly")}>Asignación Igualitaria</Button>}
           {!calculate && <Button theme="Success" click={() => assignCasesBySegment("totaly")}>Asignación Total</Button>}
@@ -617,29 +519,6 @@ export default function FormDistributtonCasesSegment() {
             </tbody>
           </table>
         </div>
-
-
-        {/* <div className="w-[300px] min-h-[50px] max-h-[200px] overflow-y-auto bg-white">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-100">
-                <th className="text-[10px] p-2">Segmento</th>
-                <th className="text-[10px] p-2">Sin asignar</th>
-
-              </tr>
-            </thead>
-            <tbody>
-              {console.log(counterUnsignadedCases())}
-              {Object.keys(counterUnsignadedCases()).map((seg, index) => (
-                <tr key={index} className="bg-white">
-                  {console.log("SIN SG", counterUnsignadedCases[seg])}
-                  <td className="text-center text-[10px] p-1">{seg}</td>
-                  <td className="text-center text-[10px] p-1">{counterUnsignadedCases[seg]?.length}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div> */}
 
         <br />
 

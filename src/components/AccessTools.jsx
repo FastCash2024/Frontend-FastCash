@@ -88,7 +88,6 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         'Gestión de cuentas personales': ['Cuenta personal'],
     };
 
-
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}

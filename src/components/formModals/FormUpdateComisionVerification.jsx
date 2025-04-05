@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import SelectSimple from '@/components/SelectSimple'
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from '@/components/Input'
 import { useSearchParams } from 'next/navigation';
 import { useAppContext } from '@/context/AppContext';
-import { extraerCodigo } from '@/utils/tableTools';
 
 export default function FormUpdateComisionVerification() {
-    const { theme, setLoader, setAlerta, setModal, appComisionVerification } = useAppContext();
+    const { setLoader, setAlerta, setModal, appComisionVerification } = useAppContext();
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
@@ -32,7 +30,6 @@ export default function FormUpdateComisionVerification() {
             const dataComision = {
                 ...data
             }
-            console.log("data comision: ", dataComision);
 
             const url = window?.location?.href?.includes('localhost')
                 ? `http://localhost:3006/api/users/comisionVerification/${appComisionVerification._id}`
@@ -63,7 +60,6 @@ export default function FormUpdateComisionVerification() {
             setAlerta('Error al registra comision');
         }
     }
-
 
     return (
         <FormLayout>

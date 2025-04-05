@@ -3,18 +3,15 @@
 import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 
-import { toast } from 'react-hot-toast';
 import  FormLayout  from  '@/components/formModals/FormLayout'  
 import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { user, userDB, setAlerta, setModal, setLoader, itemSelected } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
     const [value, setValue] = useState('Por favor elige')
 

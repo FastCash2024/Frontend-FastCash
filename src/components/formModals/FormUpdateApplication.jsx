@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
 import FormLayout from '@/components/formModals/FormLayout'
 import Input from "@/components/Input";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
@@ -13,7 +12,7 @@ import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 export default function FormUpdateAplication() {
     const { setAlerta, application, setModal, setLoader, userDB } = useAppContext()
 
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
@@ -64,10 +63,6 @@ export default function FormUpdateAplication() {
             updatedData.interesDiario = interesDiario;
         }
         setData(updatedData)
-    }
-    function handlerSelectClick2(name, i, uuid) {
-        setData({ ...data, [name]: i })
-
     }
 
     const handleSubmit = async (event) => {
@@ -160,84 +155,7 @@ export default function FormUpdateAplication() {
                     required
                 />
             </div>
-            {/* <div className='flex justify-between w-[100%]'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Valor Prestamo:
-                </label>
-                <Input
-                    type="number"
-                    name='valorPrestado'
-                    onChange={onChangeHandler}
-                    value={data.valorPrestado || ''}
-                    placeholder='5000'
-                    required />
-            </div>
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Valor depositado liquido:
-                </label>
-                <Input
-                    type="number"
-                    name='valorDepositoLiquido'
-                    onChange={onChangeHandler}
-                    value={data.valorDepositoLiquido || ''}
-                    placeholder='1200'
-                    required
-                />
-            </div>
 
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="interesTotal" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Interes Total:
-                </label>
-                <Input
-                    type="text"
-                    name='interesTotal'
-                    onChange={onChangeHandler}
-                    value={data.interesTotal || ''}
-                    placeholder='5000'
-                    required
-                />
-            </div>
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="interesDiario" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Interes Diario:
-                </label>
-                <input
-                    name='interesDiario'
-                    className={`h-[25px] max-w-[173px] w-full text-black px-3 border border-gray-400 rounded-[5px] text-[10px]  ${theme === 'light' ? ' text-gray-950 bg-gray-200' : ' text-black bg-gray-200'} dark:text-gray-950  dark:bg-transparent`}
-                    value={data.interesDiario || ''}
-                    readOnly
-                    placeholder='Mathew'
-                    required
-                />
-            </div>
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Prestamo menos interes:
-                </label>
-                <Input
-                    type="number"
-                    name="prestamoMenosInteres"
-                    value={data?.valorPrestado * 1 - data?.interesTotal * 1}
-                    onChange={onChangeHandler}
-                    placeholder="Valor de deposito liquido"
-                    required
-                />
-            </div>
-            <div className='flex justify-between w-[100%]'>
-                <label htmlFor="valorDepositoLiquido" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
-                    Extension de pago:
-                </label>
-                <Input
-                    type="number"
-                    name="extencionDePago"
-                    value={data?.valorPrestado * 1 - data?.valorDepositoLiquido * 1}
-                    onChange={onChangeHandler}
-                    placeholder="Valor de deposito liquido"
-                    required
-                />
-            </div> */}
             <div className='flex justify-between  w-[100%]'>
                 <label htmlFor="" className={`mr-5 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-gray-950`}>
                     Calificación:

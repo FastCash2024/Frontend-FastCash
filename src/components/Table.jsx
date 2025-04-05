@@ -7,17 +7,14 @@ import { CheckCircleIcon } from '@/icons_SVG';
 
 import Link from "next/link";
 import {
-  ChatIcon,
-  PhoneIcon,
   ClipboardDocumentCheckIcon,
   CurrencyDollarIcon,
-  DocumentTextIcon,
   UserCircleIcon,
   ChatBubbleLeftEllipsisIcon,
 } from "@heroicons/react/24/solid";
 import { Paginator } from "./Paginator";
 import { formatearFecha } from "@/utils";
-import { extraerCodigo, reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
+import { reestructurarArray, reestructurarArrayForBody } from "@/utils/tableTools";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
@@ -28,30 +25,15 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     user,
     userDB,
     loader,
-    setUserProfile,
-    users,
     setLoader,
-    setUsers,
     checkedArr,
     setCheckedArr,
     setModal,
-    itemSelected,
     setItemSelected,
-    setUserSuccess,
-    success,
-    setUserData,
-    postsIMG,
-    setUserPostsIMG,
-    divisas,
-    setDivisas,
-    exchange,
-    setExchange,
-    destinatario,
     setMulta,
     setDestinatario,
     setApplication,
-    setApplicationTipo,
-    theme, setAccount, setAppComision
+    setApplicationTipo,setAppComision
   } = useAppContext();
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
@@ -90,17 +72,13 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
 
     setActiveMenu(activeMenu === id ? null : id);
   };
+
   const toggleMenu2 = (id, tipo) => {
     console.log("id: ", id);
 
     setActiveMenu(activeMenu === id ? null : id);
     setOperarCobro(tipo)
   };
-
-  function handlerCobroBalance(i) {
-    setModal("Registrar Cobor y Blance");
-    setItemSelected(i);
-  }
 
   function handlerAcount(mod, i) {
     setModal(mod);
@@ -115,7 +93,6 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
     setModal(mod);
     setItemSelected(i);
   }
-
 
   async function handlerFetch(limit, page) {
     // Obtener los parámetros de la URL

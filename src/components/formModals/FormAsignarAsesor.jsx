@@ -3,74 +3,32 @@
 import { useState, useEffect } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
 import { generarContrasena } from '@/utils'
 import Input from "@/components/Input";
-import { toast } from 'react-hot-toast';
 
-import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import { UserCircleIcon } from '@heroicons/react/24/solid';
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
 
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { userDB, setAlerta, setModal, checkedArr, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
-    const [value1, setValue1] = useState('Por favor elige')
-    const [value2, setValue2] = useState('Por favor elige')
-    const [value3, setValue3] = useState('Por favor elige')
-    const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('');
-    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
     const [filterArr, setFilterArr] = useState([])
     const [selectAccount, setSelectAccount] = useState(null);
 
-
     const searchParams = useSearchParams()
-
 
     const seccion = searchParams.get('seccion')
 
     const item = searchParams.get('item')
-    const codificacionDeRoles = {
-        'Recursos Humanos': ['Recursos Humanos'],
-        'Admin': ['Admin'],
-        'Manager de Auditoria': ['Manager de Auditoria'],
-        'Manager de Cobranza': ['Manager de Cobranza'],
-        'Manager de Verificación': ['Manager de Verificación'],
-        'Usuario de Auditoria': ['Usuario de Auditoria'],
-        'Usuario de Cobranza': [
-            'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
-            'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
-            'D0 = DIA DE LA FECHA DE COBRO',
-            'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
-            'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
-        ],
-        'Usuario de Verificación': ['Usuario de Verificación'],
-        'Cuenta personal': ['Cuenta personal'],
-    }
-    function handleCheckboxChange(index) {
-        setSelectedCheckbox(index);
-    };
+    
     function onChangeHandler(e) {
         // console.log(e.target.value)
         setData({ ...data, [e.target.name]: e.target.value })
-    }
-    function handlerSelectClick2(name, i, uuid) {
-        if (name === 'Origen de la cuenta') {
-            setValue1(i)
-        }
-        if (name === 'Tipo de grupo') {
-            setValue2(i)
-            setValue3('Por favor elige')
-        }
-        if (name === 'Codificación de roles') {
-            setValue3(i)
-        }
     }
 
     function handlerSelectAccount(i) {
@@ -100,7 +58,6 @@ export default function AddAccount() {
                 throw new Error('Registration failed');
             }
 
-            // Verificar si la respuesta es exitosa
             if (response.ok) {
 
                 const res = await fetch(window?.location?.href?.includes('localhost')
@@ -192,13 +149,10 @@ export default function AddAccount() {
         }
     };
 
-    console.log("filtraciones: ", userDB);
-    console.log("filtraciones: ", checkedArr);
-
-
     useEffect(() => {
         if (data?.email?.length > 0 || data?.nombreCompleto?.length > 0) { fetchUsers() };
     }, [data]);
+
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>
         <div className='relative flex flex-col items-center justify-center bg-gray-200 w-[450px] h-[450px] p-5 px-12 space-y-3 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
             <button

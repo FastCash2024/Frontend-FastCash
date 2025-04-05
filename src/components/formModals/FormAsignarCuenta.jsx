@@ -3,79 +3,27 @@
 import { useState, useEffect } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios';
-import { generarContrasena } from '@/utils'
-import { toast } from 'react-hot-toast';
 import Input from '@/components/Input'
-import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import { UserCircleIcon } from '@heroicons/react/24/solid';
 import { getLocalISOString } from "@/utils/getDates";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
-
 export default function AddAccount({ section, query, cuenta }) {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
-    const [data, setData] = useState({})
-    const [value1, setValue1] = useState('Por favor elige')
-    const [value2, setValue2] = useState('Por favor elige')
-    const [value3, setValue3] = useState('Por favor elige')
-    const [showPassword, setShowPassword] = useState(false)
+    const { setAlerta, setModal, checkedArr, loader, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const [filter, setFilter] = useState('');
-    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
     const [filterArr, setFilterArr] = useState([])
     const [selectAccount, setSelectAccount] = useState(null);
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
 
-
-
-    // console.log("select account: ", selectAccount);
-    // console.log("select case: ", checkedArr);
-
-    console.log("query: ", query);
-
-    const codificacionDeRoles = {
-        'Recursos Humanos': ['Recursos Humanos'],
-        'Admin': ['Admin'],
-        'Manager de Auditoria': ['Manager de Auditoria'],
-        'Manager de Cobranza': ['Manager de Cobranza'],
-        'Manager de Verificación': ['Manager de Verificación'],
-        'Usuario de Auditoria': ['Usuario de Auditoria'],
-        'Usuario de Cobranza': [
-            'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
-            'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
-            'D0 = DIA DE LA FECHA DE COBRO',
-            'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
-            'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
-        ],
-        'Usuario de Verificación': ['Usuario de Verificación'],
-        'Cuenta personal': ['Cuenta personal'],
-    }
-    function handleCheckboxChange(index) {
-        setSelectedCheckbox(index);
-    };
     function onChangeHandler(e) {
-        // console.log(e.target.value)
         setFilter(e.target.value)
     }
-    function handlerSelectClick2(name, i, uuid) {
-        if (name === 'Origen de la cuenta') {
-            setValue1(i)
-        }
-        if (name === 'Tipo de grupo') {
-            setValue2(i)
-            setValue3('Por favor elige')
-        }
-        if (name === 'Codificación de roles') {
-            setValue3(i)
-        }
-    }
-
-
+    
     function handlerSelectAccount(i) {
         setSelectAccount(i)
     }
@@ -105,11 +53,9 @@ export default function AddAccount({ section, query, cuenta }) {
             }
         ];
 
-        console.log("data enviada: ", body);
         setLoader('Guardando...');
 
         try {
-            // Realizar todas las actualizaciones en paralelo
             await Promise.all(checkedArr.map(async (i) => {
                 if (selectAccount?.cuenta !== undefined && selectAccount?.origenDeLaCuenta !== undefined) {
                     const response = await fetch(
@@ -131,7 +77,6 @@ export default function AddAccount({ section, query, cuenta }) {
                 }
             }));
 
-            // ✅ Tracking único después de completar todas las asignaciones
             const trackingData = {
                 descripcionDeExcepcion: "Asignación de casos masiva realizada",
                 subID: checkedArr.map(i => i._id).join(", "), // IDs de todas las asignaciones

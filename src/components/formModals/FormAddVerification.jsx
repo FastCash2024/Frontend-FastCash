@@ -9,8 +9,8 @@ import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { getLocalISOString } from "@/utils/getDates";
 
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { user, userDB, setAlerta, setModal, setLoader, itemSelected } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
     const [value, setValue] = useState('Por favor elige')
 
@@ -31,13 +31,6 @@ export default function AddAccount() {
         }));
     }
 
-    // function handlerSelectClick2(name, i, uuid) {
-    //     setValue(i);
-    // }
-
-    console.log("user: ", user);
-    console.log("user: ", userDB);
-
     async function updateUser() {
         if (!data.acotacionVerificador) {
             setAlerta('Falta acotación!')
@@ -48,10 +41,8 @@ export default function AddAccount() {
             return
         }
         const upadateData = {
-            // datos a actualizar en verificaction
             estadoDeCredito: value,
 
-            //datos para actualizar el tracking de operaciones
             descripcionDeExcepcion: getDescripcionDeExcepcion(item),
             subID: itemSelected._id,
             cuentaOperadora: userDB.cuenta,
@@ -61,8 +52,6 @@ export default function AddAccount() {
             contenidoDeOperacion: `Credito ${itemSelected.numeroDePrestamo} ${value} con exito.`,
             fechaDeOperacion: getLocalISOString()
         }
-
-        console.log("update Data: ", upadateData);
 
         try {
             setLoader('Guardando...')
@@ -85,7 +74,6 @@ export default function AddAccount() {
                 throw new Error('Registration failed');
             }
 
-            // Verificar si la respuesta es exitosa
             if (response.ok) {
                 setAlerta('Operación exitosa!')
                 setModal('')

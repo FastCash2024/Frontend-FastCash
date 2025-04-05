@@ -2,7 +2,6 @@ import React from 'react'
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import Input from "@/components/Input";
-import CryptoJS from "crypto-js";
 import { useSearchParams } from "next/navigation";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
@@ -10,7 +9,6 @@ import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
 export default function FormPagadoExtension() {
     const {
-        user,
         userDB,
         itemSelected,
         setAlerta,

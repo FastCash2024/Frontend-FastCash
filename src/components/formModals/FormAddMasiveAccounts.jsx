@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation'
 
 export default function AddAccount() {
     const {  setAlerta, setModal,setLoader } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     const [data, setData] = useState({})
     const [value1, setValue1] = useState('Por favor elige')
     const [value2, setValue2] = useState('Por favor elige')
@@ -134,23 +134,18 @@ export default function AddAccount() {
                 throw new Error('Registration failed');
             }
 
-            const result = await response.json();
-            // console.log(result);
+            await response.json();
 
             const counterName = value2 === 'Asesor de Cobranza' ? nameDocument[value3.split(' ')[0]] : nameDocument[value3]
 
-            // Hacer la solicitud GET al servidor para obtener el contador
             const res = await fetch(
                 window?.location?.href?.includes('localhost')
                     ? `http://localhost:3003/api/loans/counter/${counterName}`
                     : `https://api.fastcash-mx.com/api/loans/counter/${counterName}`);
 
-            // Verificar si la respuesta fue exitosa (status 200)
             if (res.ok) {
                 const data = await res.json();
-                // console.log(`El valor del contador ${counterName} es:`, data.count);
-
-                // Hacer la solicitud PUT al servidor para actualizar el contador
+               
                 const response = await fetch(
                     window?.location?.href?.includes('localhost')
                         ? `http://localhost:3003/api/loans/counter/${counterName}/increment`
@@ -159,14 +154,12 @@ export default function AddAccount() {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ count: data.count + 1 * 1 }), // Enviar el nuevo valor
+                    body: JSON.stringify({ count: data.count + 1 * 1 }),
                 });
 
-                // Verificar si la respuesta fue exitosa (status 200)
                 if (response.ok) {
-                    const data = await response.json();
-                    // console.log(`El contador ${counterName} se actualizó a:`, data.count);
-
+                    await response.json();
+                    
                     index === newAccounts.length - 1 && setAlerta('Operación exitosa!')
                     index === newAccounts.length - 1 && setModal('')
                     index === newAccounts.length - 1 && setLoader('')
@@ -229,21 +222,18 @@ export default function AddAccount() {
 
     function* infiniteSequence(start = 0) {
         const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        let level = 1;  // Nivel de profundidad de la combinación de letras (A, AA, AAA, etc.)
-        const suffix = "1";  // El sufijo constante que se añade a cada secuencia
-        let index = start;  // Índice para comenzar desde la posición deseada
+        let level = 1;
+        const suffix = "1";
+        let index = start;
 
         while (true) {
-            // Calcula el rango de combinaciones para el nivel actual
             const maxIndexAtLevel = Math.pow(26, level);
 
-            // Si el índice de inicio está dentro del nivel actual, generar desde esa posición
             if (index < maxIndexAtLevel) {
                 for (let i = index; i < maxIndexAtLevel; i++) {
                     let seq = "";
                     let n = i;
 
-                    // Genera una combinación de letras de acuerdo al nivel actual
                     for (let j = 0; j < level; j++) {
                         seq = alphabet[n % 26] + seq;
                         n = Math.floor(n / 26);
@@ -252,14 +242,11 @@ export default function AddAccount() {
                     yield `${seq}${suffix}`;
                 }
 
-                // Resetea el índice para comenzar desde el inicio en el próximo nivel
                 index = 0;
             } else {
-                // Resta el número de combinaciones en el nivel actual del índice inicial
                 index -= maxIndexAtLevel;
             }
 
-            // Aumenta el nivel de profundidad para el siguiente conjunto de combinaciones
             level += 1;
         }
     }

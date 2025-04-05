@@ -8,7 +8,7 @@
  
  export default function Attendance() {
      const { setAlerta, setModal, setLoader, attendance } = useAppContext()
-     const { theme, toggleTheme } = useTheme();
+     const { theme } = useTheme();
      const [data, setData] = useState({estadoDeAsistencia:''})
  
     useEffect(() => {
