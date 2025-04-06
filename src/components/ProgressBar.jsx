@@ -1,7 +1,7 @@
 import './ProgressBar.css'
 import ProgressBar from "@ramonak/react-progress-bar";
 
-export default function ProgressBarComponent({ value = 80 }) {
+export default function ProgressBarComponent({ value = 0 }) {
     return <div className='progressBar h-[10px] '>
         <ProgressBar
             height={'10px'}

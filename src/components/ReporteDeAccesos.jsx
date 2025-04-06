@@ -7,7 +7,6 @@ export default function Home() {
     console.log("usersSystem", usersSystem)
     return (
         <div>
-            <h1>Usuarios en línea:</h1>
             <div className="max-h-[calc(100vh-120px)] pb-2 overflow-y-auto relative scroll-smooth drop-shadow-2xl border">
                 <table className="min-w-full shadow border-collapse drop-shadow-2xl ">
                     <thead className="bg-[#e0e0e0] text-[10px] uppercase sticky top-[0px] z-10">
@@ -23,7 +22,7 @@ export default function Home() {
                     </thead>
                     <tbody>
                         {usersSystem?.map((user) => (
-                            <tr
+                          user.id &&  <tr
                                 key={user?.id}
                                 className="text-[12px] border-b bg-white"
                             >

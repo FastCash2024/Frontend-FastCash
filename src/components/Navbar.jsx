@@ -85,9 +85,9 @@ export default function Navbar({ rol }) {
     }
     const Header = () => {
         return <li className="flex flex-col justify-center items-center px-[10px] py-5 border-b border-gray-[1px]  w-full">
-            <img src={user.fotoURL || userDB.fotoURL} className='h-[150px] w-[150px] rounded-full' alt="" />
+            <img src={userDB?.fotoURL} className='h-[150px] w-[150px] rounded-full' alt="" />
             <h1 className='16px font-medium text-center text-gray-100 py-[10px]'></h1>
-            <h3 className={` text-center  ${theme === 'light' ? ' text-black' : 'text-gray-100 '} dark:text-gray-100`}>{user.nombreCompleto || userDB.nombreCompleto}</h3>
+            <h3 className={` text-center  ${theme === 'light' ? ' text-black' : 'text-gray-100 '} dark:text-gray-100`}>{user?.nombreCompleto || userDB?.nombreCompleto}</h3>
             <h3 className={` text-center text-[12px]  ${theme === 'light' ? ' text-black' : 'text-gray-100 '} dark:text-gray-100`}>{rol}</h3>
             {user?.rol !== "Super Admin" && user?.rol !== "Cuenta Personal" && <div className='mt-3'>
                 <Button theme="Success" click={handlerAsistencia}>Marcar asitencia</Button>
