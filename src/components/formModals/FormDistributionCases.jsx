@@ -3,20 +3,15 @@
 import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
-import { toast } from 'react-hot-toast';
 import FormLayout from '@/components/formModals/FormLayout'
 import Button from '@/components/Button'
 import Input from "@/components/Input";
 import {obtenerFechaMexicoISO} from "@/utils/getDates";
 
-
-
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { user, setAlerta, setModal, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const [maximoAsignacion, setMaximoAsignacion] = useState(2);
     const [usuariosConAsignacion, setusuariosConAsignacion] = useState([]);
     const [casosNoAsignados, setCasosNoAsignados] = useState([]);
@@ -43,11 +38,6 @@ export default function AddAccount() {
             ? 'Asesor de Cobranza'
             : 'Asesor de Auditoria'
 
-    // const estadoDeCredito = seccion === 'Verificacion'
-    //     ? 'Pendiente'
-    //     : seccion === 'coleccion'
-    //         ? 'Dispersado'
-    //         : 'Pendiente'
     const estadoDeCredito = 'Pendiente'
 
     const query = seccion === 'Verificacion'
@@ -166,8 +156,6 @@ export default function AddAccount() {
         });
         setusuariosConAsignacion(administracion)
         setCasosAsignados(asignacionesConUsuarios)
-        // setCasosNoAsignados(unassignedCases)
-        // console.log({ asignacionesConUsuarios, administracion })
     }
 
     const abortAssignment = () => {

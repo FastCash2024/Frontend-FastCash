@@ -1,5 +1,5 @@
 'use client'
-// import style from '../styles/Loader.module.css' 
+
 import { useAppContext } from '@/context/AppContext.js'
 import { generarContrasena } from '@/utils'
 
@@ -11,9 +11,8 @@ import { postTracking } from '@/app/service/TrackingApi/tracking.service'
 import { getLocalISOString } from '@/utils/getDates'
 export default function Modal({ children, funcion, alert, cancelText, successText, seccion }) {
 
-    const { setAlerta, checkedArr, setModal, loader, setLoader, userDB } = useAppContext()
+    const { setAlerta, checkedArr, setModal, loader, setLoader } = useAppContext()
     const searchParams = useSearchParams()
-    const seccionParam = searchParams.get('seccion')
     const item = searchParams.get('item')
 
     const restabecimientoTotal = async () => {
@@ -124,14 +123,6 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
         }
     };
 
-
-    // function save(e) {
-    //     e.preventDefault();
-    //     setLoader('Guardando...')
-
-    //     seccion === "verificacion individual" && restablecimientoIndividual()
-    //     seccion === "verificacion total" && restabecimientoTotal()
-    // }
     return (
         <FormLayout>
             <div className="p-6 text-center">
@@ -153,9 +144,5 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                 </Button>
             </div>
         </FormLayout>
-
-
-
-
     )
 }

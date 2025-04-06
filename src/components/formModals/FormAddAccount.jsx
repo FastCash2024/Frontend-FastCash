@@ -5,29 +5,19 @@ import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import SelectSimple from '@/components/SelectSimple'
 import Input from '@/components/Input'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 
-import { toast } from 'react-hot-toast';
-
-
-
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { setAlerta, setModal, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
     const [value1, setValue1] = useState('Por favor elige')
     const [value2, setValue2] = useState('Por favor elige')
     const [value3, setValue3] = useState('Por favor elige')
     const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('');
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
 
-
     const searchParams = useSearchParams()
-
-
-    const seccion = searchParams.get('seccion')
 
     const item = searchParams.get('item')
     const codificacionDeRoles = {
@@ -109,12 +99,7 @@ export default function AddAccount() {
                 throw new Error('Registration failed');
             }
 
-            const result = await response.json();
-            // console.log(result);
-
-
-
-            const res = await fetch(window?.location?.href.includes('localhost')
+            await fetch(window?.location?.href.includes('localhost')
                 ? 'http://localhost:3005/api/notifications/email/send'
                 : 'https://api.fastcash-mx.com/api/notifications/email/send', {
                 method: 'POST',
@@ -161,7 +146,6 @@ export default function AddAccount() {
             setAlerta('Operación exitosa!')
             setModal('')
             setLoader('')
-            // navigate('/dashboard');
         } catch (error) {
             setLoader('')
             setAlerta('Error de datos!')
@@ -196,12 +180,6 @@ export default function AddAccount() {
             'Asesor de Cobranza'
         ],
     }
-
-
-
-
-    console.log("item: ", arrTipoDeGrupo[item])
-
 
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>
         <div className='relative flex flex-col items-start justify-center bg-gray-200 w-[450px] h-[450px] p-5 px-12 space-y-3 rounded-[5px]' onClick={(e) => e.stopPropagation()}>

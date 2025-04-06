@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 import FormLayout from '@/components/formModals/FormLayout'
@@ -9,16 +9,10 @@ import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 
-
-
 export default function FormAddTipoApp() {
     const { setAlerta, setModal, setLoader, applicationTipo, userDB } = useAppContext()
     const { theme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
-
-    console.log("application: ", applicationTipo)
-
-
 
     function onChangeHandler(e) {
         const { name, value } = e.target;
@@ -32,8 +26,6 @@ export default function FormAddTipoApp() {
         }
         setData(updatedData)
     }
-
-
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -88,10 +80,6 @@ export default function FormAddTipoApp() {
             setAlerta('Error al agregar el nivel');
         }
     };
-
-
-    console.log("data add nivel: ", data);
-
 
     return (
         <FormLayout>

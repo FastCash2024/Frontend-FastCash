@@ -30,10 +30,6 @@ export default function FormAddComision() {
   }
 
   function handlerSelectClick2(name, i, uuid) {
-    // if (name === "aplicacion") {
-    //   setValue(i)
-    // } else {
-    // }
     setValue2(i)
   }
 
@@ -46,7 +42,6 @@ export default function FormAddComision() {
       }
       setLoader("Guardando...");
       const dataComision = {
-        // aplicacion: value,
         segmento: value2,
         ...data
       }

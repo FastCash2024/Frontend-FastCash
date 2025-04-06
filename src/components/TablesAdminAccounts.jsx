@@ -1,69 +1,19 @@
 "use client";
 import { useAppContext } from "@/context/AppContext";
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-
-import Loader from "@/components/Loader";
-import SelectSimple from "@/components/SelectSimple";
 
 import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
-import { useTheme } from "@/context/ThemeContext";
-import InputPass from "@/components/InputPass";
 import Table from "@/components/Table";
 import TableReporteDiario from "@/components/TableReporteDiario";
 
-// import Velocimetro from '@/components/Velocimetro'
-const Velocimetro = dynamic(() => import("@/components/Velocimetro"), {
-  ssr: false,
-});
-import FormAddAccount from "@/components/formModals/FormAddAccount";
-import FormAddMasiveAccounts from "@/components/formModals/FormAddMasiveAccounts";
-import FormAddPersonalAccount from "@/components/formModals/FormAddPersonalAccount";
-import FormAddPersonalData from "@/components/formModals/FormAddPersonalData";
-import FormAddVerification from "@/components/formModals/FormAddVerification";
-import FormAdminAccount from "@/components/formModals/FormAdminAccount";
-import FormDistributionCases from "@/components/formModals/FormDistributionCases";
-import FormAsignarAsesor from "@/components/formModals/FormAsignarAsesor";
-import TableTools from "@/components/TableTools";
 import TableReporteDiarioVerificacion from "@/components/TableReporteDiarioVerificacion";
-import Alert from "@/components/Alert";
-import TableTracking from "@/components/TableTracking";
+
 import ReporteDeAccesos from "@/components/ReporteDeAccesos";
 
 import {
-  refunds,
-  historial,
   menuArray,
-  // filtro_1,
-  rangesArray,
-  cobrador,
-  filterCliente,
-  factura,
-  Jumlah,
-  estadoRembolso,
 } from "@/constants/index";
-import { useRouter } from "next/navigation";
-import {
-  ChatIcon,
-  PhoneIcon,
-  ClipboardDocumentCheckIcon,
-  FolderPlusIcon,
-  CurrencyDollarIcon,
-  DocumentTextIcon,
-  UserCircleIcon,
-  ChatBubbleLeftEllipsisIcon,
-} from "@heroicons/react/24/solid";
-import Speedometer, {
-  Background,
-  Arc,
-  DangerPath,
-  Needle,
-  Progress,
-  Marks,
-  Indicator,
-} from "react-speedometer";
 import {
   encabezadoCasosDeCobranza,
   encabezadoIncurrirEnUnaEstaciónDeTrabajo,
@@ -73,16 +23,13 @@ import {
   encabezadoRegistroHistorico,
   encabezadoMonitoreoDeTransacciones,
   encabezadoControlDeCumplimiento,
-  encabezadoAuditoriaPeriodica,
   encabezadoCasosDeVerificacion,
-  encabezadoListaFinal,
   encabezadoGestionDeAccesos,
   encabezadoGestionDeAccesosPersonales,
   encabezadoDeAplicaciones,
   encabezadoDeAplicacion,
   encabezadoComision,
 } from "@/constants/TableHeaders.jsx";
-import { Paginator } from "./Paginator";
 import TableAtencionAlCliente from "./TableAtencionAlCliente";
 import TableControl from "./TableControl";
 import TableCustomerFlow from "./TableCustomerFlow";
@@ -94,107 +41,18 @@ export default function Home() {
 
   const {
     user,
-    userDB,
-    setUserProfile,
-    users,
-    alerta,
-    setAlerta,
-    modal,
-    setModal,
-    loader,
-    setLoader,
-    setUsers,
-    setUserSuccess,
-    success,
-    setUserData,
-    postsIMG,
-    setUserPostsIMG,
-    divisas,
-    setDivisas,
-    exchange,
-    setExchange,
-    destinatario,
-    setDestinatario,
-    itemSelected,
-    setItemSelected,
-    setAttendance
+    userDB
   } = useAppContext();
   const refFirst = useRef(null);
   const searchParams = useSearchParams();
   const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
   const application = searchParams.get("application");
-  const [trabajo] = useState([])
-
-  console.log("id aplicacion: ", application);
-  console.log("id aplicacion: ", item);
-  // console.log("trabajo: ", trabajo);
-  // console.log("item: ", item);
-  // console.log("date: ", baseDate);
-  // console.log("filtro_1: ", filtro_1);
-
-  let menu = user?.rol
-    ? menuArray[user.rol]?.filter((i) => i.hash === seccion)
-    : "";
-
-  const prev = () => {
-    requestAnimationFrame(() => {
-      if (refFirst.current) {
-        const scrollLeft = refFirst.current.scrollLeft;
-        // console.log(scrollLeft);
-        const itemWidth = screen.width - 50;
-        refFirst.current.scrollLeft = scrollLeft - itemWidth;
-      }
-    });
-  };
-  const next = () => {
-    requestAnimationFrame(() => {
-      if (refFirst.current) {
-        const scrollLeft = refFirst.current.scrollLeft;
-        // console.log(scrollLeft);
-        const itemWidth = screen.width - 50;
-        // console.log(itemWidth);
-        refFirst.current.scrollLeft = scrollLeft + itemWidth;
-      }
-    });
-  };
-
-  function formatDateToISO(dateStr) {
-    const [day, month, year] = dateStr.split('/');
-    return `${year}-${month}-${day}`;
-  }
-
-  console.log(formatDateToISO(getDay(-2).val));
-
-
-
-
-
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handleItemsPerPageChange = (itemsPerPage) => {
-    setItemsPerPage(itemsPerPage);
-    setCurrentPage(1);
-  };
-
-  const handleReload = () => { };
-
-  console.log("userDB: ", userDB);
-  console.log("user: ", user);
-
 
   return (
     <div className="overflow-x-auto">
       <main className={` h-full pt-[10px] `}>
-        {/* <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block left-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-30 lg:left-[8px]' onClick={prev}>{'<'}</button>
-                <button className='fixed text-[20px] text-gray-500 h-[50px] w-[50px] rounded-full inline-block right-[0px] top-0 bottom-0 my-auto bg-[#00000010] z-30 lg:right-[8px]' onClick={next}>{'>'}</button>
-                */}
+
         {/* --------------------------------- TABLAS FASTCASH--------------------------------- */}
 
         <div className="overflow-x-auto shadow-2xl">

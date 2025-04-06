@@ -13,14 +13,10 @@ import { toast } from 'react-hot-toast';
 
 
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { setAlerta, setModal, setLoader, itemSelected } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
-    const [value1, setValue1] = useState('Por favor elige')
-    const [value2, setValue2] = useState('Por favor elige')
-    const [value3, setValue3] = useState('Por favor elige')
     const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('');
     const [selectedCheckbox, setSelectedCheckbox] = useState(null);
 
 
@@ -30,42 +26,11 @@ export default function AddAccount() {
     const seccion = searchParams.get('seccion')
 
     const item = searchParams.get('item')
-    const codificacionDeRoles = {
-        'Recursos Humanos': ['Recursos Humanos'],
-        'Admin': ['Admin'],
-        'Manager de Auditoria': ['Manager de Auditoria'],
-        'Manager de Cobranza': ['Manager de Cobranza'],
-        'Manager de Verificación': ['Manager de Verificación'],
-        'Usuario de Auditoria': ['Usuario de Auditoria'],
-        'Usuario de Cobranza': [
-            'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
-            'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
-            'D0 = DIA DE LA FECHA DE COBRO',
-            'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
-            'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
-        ],
-        'Usuario de Verificación': ['Usuario de Verificación'],
-        'Cuenta personal': ['Cuenta personal'],
-    }
-    function handleCheckboxChange(index) {
-        setSelectedCheckbox(index);
-    };
+    
     function onChangeHandler(e) {
-        // console.log(e.target.value)
         setData({ ...data, [e.target.name]: e.target.value })
     }
-    function handlerSelectClick2(name, i, uuid) {
-        if (name === 'Origen de la cuenta') {
-            setValue1(i)
-        }
-        if (name === 'Tipo de grupo') {
-            setValue2(i)
-            setValue3('Por favor elige')
-        }
-        if (name === 'Codificación de roles') {
-            setValue3(i)
-        }
-    }
+  
     const generarContrasena = () => {
         const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
         let contrasenaGenerada = '';
@@ -78,8 +43,6 @@ export default function AddAccount() {
         setData({ ...data, password: contrasenaGenerada })
 
     };
-
-
 
     const saveAccount = async (e) => {
         e.preventDefault();
@@ -101,8 +64,6 @@ export default function AddAccount() {
                 body: JSON.stringify(db),
             });
 
-
-
             if (!response.ok) {
                 setLoader('')
                 setAlerta('Error de datos!')
@@ -110,11 +71,8 @@ export default function AddAccount() {
             }
 
             const result = await response.json();
-            console.log(result);
 
-
-
-            const res = await fetch(window?.location?.href?.includes('localhost') 
+            await fetch(window?.location?.href?.includes('localhost') 
             ? 'http://localhost:3005/api/notifications/email/send'
             : `https://api.fastcash-mx.com/api/notifications/email/send`, {
                 method: 'POST',
@@ -161,16 +119,12 @@ export default function AddAccount() {
             setAlerta('Operación exitosa!')
             setModal('')
             setLoader('')
-            // navigate('/dashboard');
         } catch (error) {
             setLoader('')
             setAlerta('Error de datos!')
 
         }
     };
-
-
-
 
     return <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-40' onClick={() => setModal('')}>
         <div className='relative flex flex-col items-start justify-center bg-gray-200 w-[450px] h-[250px] p-5 px-12 space-y-3 rounded-[5px]' onClick={(e) => e.stopPropagation()}>
@@ -226,8 +180,6 @@ export default function AddAccount() {
                     Generar
                 </button>
             </div>
-
-
 
             <button type="button"
                 class="w-[300px] relative left-0 right-0 mx-auto text-white bg-gradient-to-br from-blue-600 to-blue-400 hover:bg-gradient-to-bl foco-4 focus:outline-none foco-blue-300 dark:foco-blue-800 font-medium rounded-lg text-[10px] px-5 py-1.5 text-center  mb-2"

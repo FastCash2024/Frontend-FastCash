@@ -6,7 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 import Input from "@/components/Input";
 import SelectSimple from "@/components/SelectSimple";
 import { useSearchParams } from "next/navigation";
-import { getDay, getLocalISOString, today } from "@/utils/getDates";
+import { getLocalISOString } from "@/utils/getDates";
 
 const optionsArray = [
     "Sin Observaciones",
@@ -14,8 +14,8 @@ const optionsArray = [
 ];
 
 export default function FormAddMulta() {
-    const { user, userDB, itemSelected, setAlerta, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { userDB, itemSelected, setAlerta, setModal, loader, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
@@ -76,7 +76,6 @@ export default function FormAddMulta() {
                 observaciones: data.observaciones,
                 seccionMulta: item
             };
-            console.log("data a enviaaaaaaaaaaaaaaaaaaaaaaaaaar: ", multaData);
 
             const response = await fetch(window?.location?.href?.includes('localhost')
                 ? `http://localhost:3006/api/users/multas/multas`
@@ -99,7 +98,6 @@ export default function FormAddMulta() {
             setAlerta('Operación exitosa!');
             setModal('');
             setLoader('');
-            // navigate('/dashboard');
         } catch (error) {
             setLoader('');
             setAlerta('Error de datos!');

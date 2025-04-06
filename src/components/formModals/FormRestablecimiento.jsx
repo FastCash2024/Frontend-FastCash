@@ -1,5 +1,4 @@
 'use client'
-// import style from '../styles/Loader.module.css' 
 import { useAppContext } from '@/context/AppContext.js'
 import { generarContrasena } from '@/utils'
 
@@ -8,9 +7,7 @@ import FormLayout from '@/components/formModals/FormLayout'
 import Button from '@/components/Button'
 export default function Modal({ children, funcion, alert, cancelText, successText, seccion }) {
 
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-
-    console.log("seccion: ", seccion);
+    const { setAlerta, checkedArr, setModal, setLoader } = useAppContext()
 
     const realizarBackup = async (tipo) => {
         try {
@@ -171,10 +168,6 @@ export default function Modal({ children, funcion, alert, cancelText, successTex
                 </Button>
             </div>
         </FormLayout>
-
-
-
-
     )
 }
 

@@ -13,7 +13,6 @@ const SECRET_KEY = "mi-clave-segura";
 
 export default function FormAddExtension() {
     const {
-        user,
         userDB,
         itemSelected,
         setAlerta,
@@ -60,9 +59,6 @@ export default function FormAddExtension() {
         setModal('')
         setLoader('')
     }
-
-    console.log("itemSelected: ", itemSelected);
-
 
     return (
         <div
@@ -128,7 +124,6 @@ export default function FormAddExtension() {
                     />
                 </div>
 
-                {/* Días de prórroga */}
                 <div className="flex justify-between items-center w-[100%]">
                     <label
                         htmlFor="cantidadAsignacionIgualitaria"

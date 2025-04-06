@@ -8,8 +8,8 @@ import axios from 'axios';
 import { getLocalISOString } from '@/utils/getDates';
 
 export default function FormAsignarCuentaAuditor() {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { setAlerta, setModal, checkedArr, loader, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const [filter, setFilter] = useState('');
     const [filterArr, setFilterArr] = useState([])
     const [selectAccount, setSelectAccount] = useState(null);
@@ -18,7 +18,6 @@ export default function FormAsignarCuentaAuditor() {
     const item = searchParams.get('item')
 
     function onChangeHandler(e) {
-        // console.log(e.target.value)
         setFilter(e.target.value)
     }
 
@@ -35,12 +34,8 @@ export default function FormAsignarCuentaAuditor() {
             cuentaPersonalAuditor: selectAccount.emailPersonal,
             fechaDeAuditoria: getLocalISOString()
         };
-        console.log("data enviada: ", body)
 
         setLoader('Guardando...')
-
-        console.log("data enviada selecionada: ", checkedArr);
-
 
         checkedArr.map(async (i) => {
             if (selectAccount?.cuenta !== undefined && selectAccount?.origenDeLaCuenta !== undefined)

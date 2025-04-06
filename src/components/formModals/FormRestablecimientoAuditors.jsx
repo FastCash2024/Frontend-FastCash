@@ -7,7 +7,7 @@ import FormLayout from '@/components/formModals/FormLayout'
 import Button from '@/components/Button'
 
 export default function FormRestablecimientoAuditors({ successText, seccion }) {
-    const { setAlerta, checkedArr, setModal, loader, setLoader } = useAppContext()
+    const { setAlerta, checkedArr, setModal, setLoader } = useAppContext()
 
     const restabecimientoTotal = () => {
 
@@ -27,14 +27,10 @@ export default function FormRestablecimientoAuditors({ successText, seccion }) {
                     }), // Datos a enviar en el cuerpo de la petición
                 });
 
-
-
-
                 if (response.ok) {
                     checkedArr.length && setAlerta('Operación exitosa!')
                     checkedArr.length && setModal('')
                     checkedArr.length && setLoader('')
-                    // navigate('/dashboard');
                 } else {
                     setLoader('')
                     setAlerta('Error de datos!')
@@ -97,6 +93,7 @@ export default function FormRestablecimientoAuditors({ successText, seccion }) {
         seccion === "verificacion individual" && restablecimientoIndividual()
         seccion === "auditoria" && restabecimientoTotal()
     }
+
     return (
         <FormLayout>
             <div className="p-6 text-center">
@@ -118,9 +115,6 @@ export default function FormRestablecimientoAuditors({ successText, seccion }) {
                 </Button>
             </div>
         </FormLayout>
-
-
-
-
+        
     )
 }

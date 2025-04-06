@@ -3,73 +3,29 @@
 import { useState } from "react"
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
 import { useSearchParams } from 'next/navigation'
 import Input from "@/components/Input";
 
-import { toast } from 'react-hot-toast';
-
-
-
 export default function AddAccount() {
-    const { user, userDB, setUserProfile, setAlerta, checkedArr, users, modal, setModal, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { setAlerta, checkedArr, setModal, setLoader } = useAppContext()
+    const { theme } = useTheme();
     const [data, setData] = useState({})
-    const [value1, setValue1] = useState('Por favor elige')
-    const [value2, setValue2] = useState('Por favor elige')
-    const [value3, setValue3] = useState('Por favor elige')
     const [showPassword, setShowPassword] = useState(false)
-    const [password, setPassword] = useState('');
-    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-
 
     const searchParams = useSearchParams()
-
 
     const seccion = searchParams.get('seccion')
 
     const item = searchParams.get('item')
-    const codificacionDeRoles = {
-        'Recursos Humanos': ['Recursos Humanos'],
-        'Admin': ['Admin'],
-        'Manager de Auditoria': ['Manager de Auditoria'],
-        'Manager de Cobranza': ['Manager de Cobranza'],
-        'Manager de Verificación': ['Manager de Verificación'],
-        'Usuario de Auditoria': ['Usuario de Auditoria'],
-        'Usuario de Cobranza': [
-            'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
-            'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
-            'D0 = DIA DE LA FECHA DE COBRO',
-            'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
-            'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
-        ],
-        'Usuario de Verificación': ['Usuario de Verificación'],
-        'Cuenta personal': ['Cuenta personal'],
-    }
-    function handleCheckboxChange(index) {
-        setSelectedCheckbox(index);
-    };
+    
     function onChangeHandler(e) {
-        // console.log(e.target.value)
         setData({ ...data, [e.target.name]: e.target.value })
     }
-    function handlerSelectClick2(name, i, uuid) {
-        if (name === 'Origen de la cuenta') {
-            setValue1(i)
-        }
-        if (name === 'Tipo de grupo') {
-            setValue2(i)
-            setValue3('Por favor elige')
-        }
-        if (name === 'Codificación de roles') {
-            setValue3(i)
-        }
-    }
+    
     const generarContrasena = () => {
         const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
         let contrasenaGenerada = '';
-        const longitud = 16; // Longitud de la contraseña
+        const longitud = 16;
 
         for (let i = 0; i < longitud; i++) {
             const indice = Math.floor(Math.random() * caracteres.length);
@@ -93,8 +49,6 @@ export default function AddAccount() {
                 ? `http://localhost:3002/api/authSystem/registerPersonal/${checkedArr._id}`
                 : `https://api.fastcash-mx.com/api/authSystem/registerPersonal/${checkedArr._id}`;
 
-            console.log("imprimir url: ", finalURL);
-
             const response = await fetch(finalURL, {
                 method: 'PUT',
                 headers: {
@@ -103,17 +57,13 @@ export default function AddAccount() {
                 body: JSON.stringify(db),
             });
 
-            console.log("imprimir response: ", response.ok);
-
-
             if (!response.ok) {
                 setLoader('')
                 setAlerta('Error de datos!')
                 throw new Error('Registration failed');
             }
 
-            const result = await response.json();
-            console.log("imprimir result: ", result);
+            await response.json();
 
             await fetch(window?.location?.href?.includes('localhost')
                 ? 'http://localhost:3005/api/notifications/email/send'
@@ -159,12 +109,9 @@ export default function AddAccount() {
                 }),
             });
 
-            // console.log("imprimir email: ", responseEmail);
-            
             setAlerta('Cambios realizados correctamente!')
             setModal('')
             setLoader('')
-            // navigate('/dashboard');
         } catch (error) {
             setLoader('')
             setAlerta('Usuario existente!')

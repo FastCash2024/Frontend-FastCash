@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import SelectSimple from "@/components/SelectSimple";
-import {obtenerFechaMexicoISO} from "@/utils/getDates";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 const optionsArray = [
     "Por favor elige",
@@ -25,7 +25,7 @@ export default function FormEditCyB() {
     function onChangeHandler(e) {
         setData({ ...data, [e.target.name]: e.target.value });
     }
-    
+
     function handlerSelectClick(name, i, uuid) {
         setValue(i);
         setData((prevData) => ({
@@ -33,9 +33,6 @@ export default function FormEditCyB() {
             estadoDeCredito: i,
         }));
     }
-    
-    
-    console.log("itemSelected: ", itemSelected);
 
     async function updateCobro() {
 
@@ -73,8 +70,7 @@ export default function FormEditCyB() {
                 },
             ],
         };
-        console.log("update data: ", upadateData);
-        
+
         try {
             setLoader("Guardando...");
             const response = await fetch(

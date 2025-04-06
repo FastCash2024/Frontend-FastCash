@@ -7,7 +7,7 @@ import { obtenerFechaMexicoISO } from "@/utils/getDates";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 
 export default function FormTimeEntry() {
-    const { setAlerta, setLoader, setModal, user, userDB } = useAppContext();
+    const { setAlerta, setLoader, setModal, userDB } = useAppContext();
     const [data, setData] = useState({
         horaEntrada: "",
         estadosDeAsistencia: [
@@ -104,8 +104,6 @@ export default function FormTimeEntry() {
             console.error("Error al registrar la hora de entrada:", error);
         }
     }
-
-    
 
     return (
         <div

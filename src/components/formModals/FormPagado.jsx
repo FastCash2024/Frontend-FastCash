@@ -4,17 +4,15 @@ import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
-import {obtenerFechaMexicoISO} from "@/utils/getDates";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 export default function FormPagado() {
     const {
-        user,
         userDB,
         itemSelected,
         setAlerta,
         setModal,
-        setLoader,
-        theme
+        setLoader
     } = useAppContext();
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
@@ -42,8 +40,6 @@ export default function FormPagado() {
             fechaDeReembolso: obtenerFechaMexicoISO(),
         };
 
-        console.log("update Data: ", updateData);
-
         try {
             setLoader('Guardando...');
             const response = await fetch(
@@ -59,8 +55,6 @@ export default function FormPagado() {
                     body: JSON.stringify(updateData),
                 }
             );
-
-            console.log("respuesta dispersion: ", response);
 
             if (!response.ok) {
                 setLoader('');
@@ -85,9 +79,6 @@ export default function FormPagado() {
             console.error("Error:", error);
         }
     }
-
-    console.log("itemSelected: ", itemSelected);
-
 
     return (
         <div

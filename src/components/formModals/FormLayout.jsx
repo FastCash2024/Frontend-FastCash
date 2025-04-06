@@ -1,21 +1,10 @@
 'use client'
 
-import { useState, useEffect } from "react"
-import { useAppContext } from '@/context/AppContext'
-import { useTheme } from '@/context/ThemeContext';
-import SelectSimple from '@/components/SelectSimple'
-import { domainToASCII } from "url";
-import { useSearchParams } from 'next/navigation'
-import axios from 'axios';
-import { generarContrasena } from '@/utils'
-import { toast } from 'react-hot-toast';
-
-import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
-
+import { useAppContext } from '@/context/AppContext';
+import { useSearchParams } from 'next/navigation';
 
 export default function AddAccount({ children }) {
-    const { user, userDB, setUserProfile, setAlerta, users, modal, setModal, checkedArr, setUsers, loader, setLoader, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { setModal } = useAppContext()
 
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')

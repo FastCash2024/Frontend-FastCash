@@ -1,4 +1,5 @@
 'use client'
+
 import { postTracking } from '@/app/service/TrackingApi/tracking.service';
 import { useAppContext } from '@/context/AppContext.js'
 import { getDescripcionDeExcepcion } from '@/utils/utility-tacking';
@@ -16,18 +17,9 @@ const templates = [
     "Plantilla 6: Notificación urgente\n[name], este es un aviso final sobre tu deuda de [producto], vencida desde el [fecha]. El monto de [valor_de_pago] debe ser pagado inmediatamente. De lo contrario, iniciaremos procedimientos de recuperación."
 ];
 
-const templateIds = [
-    "7992bee2",
-    "5731a165",
-    "fae02113",
-    "231bfb0c",
-    "5452a72b",
-    "a82fda1d"
-];
-
 export default function FormSendSms() {
 
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const { userDB, setAlerta, setModal, loader, setLoader, destinatario } = useAppContext()
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
@@ -107,9 +99,6 @@ export default function FormSendSms() {
             .replace('[valor_de_pago]', destinatario.valorEnviado);
         setSmsText(filledTemplate);
     }
-
-    console.log("destinatario: ", destinatario);
-
 
     return (
         <div className='fixed flex justify-center items-center top-0 left-0 bg-[#0000007c] h-screen w-screen z-50' onClick={() => setModal('')}>

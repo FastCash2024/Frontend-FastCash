@@ -1,64 +1,18 @@
 'use client'
 import { useAppContext } from '@/context/AppContext'
 import React, { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 
 import Loader from '@/components/Loader'
-import SelectSimple from '@/components/SelectSimple'
 
 import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/context/ThemeContext';
-import InputPass from '@/components/InputPass'
-import Table from '@/components/Table'
-import TableReporteDiario from '@/components/TableReporteDiario'
-
-// import Velocimetro from '@/components/Velocimetro'
 const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });
-import FormAddAccount from '@/components/formModals/FormAddAccount'
-import FormAddMasiveAccounts from '@/components/formModals/FormAddMasiveAccounts'
-import FormAddPersonalAccount from '@/components/formModals/FormAddPersonalAccount'
 import FormAddPersonalData from '@/components/formModals/FormAddPersonalData'
-import FormAddVerification from '@/components/formModals/FormAddVerification'
-import FormAdminAccount from '@/components/formModals/FormAdminAccount'
 
-import FormAsignarAsesor from '@/components/formModals/FormAsignarAsesor'
-import TableTools from '@/components/TableTools'
-
-import Alert from '@/components/Alert'
 import ViewPersonalInfo from '@/components/ViewPersonalInfo'
-import {
-    refunds, historial,
-    menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
-} from '@/constants/index'
+import { menuArray } from '@/constants/index'
 import { useRouter } from 'next/navigation';
-import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
-import Speedometer, {
-    Background,
-    Arc, DangerPath,
-    Needle,
-    Progress,
-    Marks,
-    Indicator,
-} from 'react-speedometer';
-import {
-    encabezadoCasosDeCobranza,
-    encabezadoIncurrirEnUnaEstaciónDeTrabajo,
-    encabezadoGestionDeCuentasDeColección,
-    encabezadoRegistroDeSMS,
-    encabezadoCobroYValance,
-    encabezadoRegistroHistorico,
-    encabezadoMonitoreoDeTransacciones,
-    encabezadoControlDeCumplimiento,
-    encabezadoAuditoriaPeriodica,
-    encabezadoCasosDeVerificacion,
-    encabezadoListaFinal,
-    encabezadoGestionDeAccesos,
-    encabezadoDeAplicaciones
-} from '@/constants/TableHeaders.jsx'
-
-import Newslater from '@/components/Newslater';
 import TableComision from './TableComision'
 import TableGestionDeAuditoria from './TableGestionDeAuditoria'
 import TableComisionVerification from './TableComisionVerification'
@@ -70,7 +24,7 @@ export default function Home() {
 
     const router = useRouter()
     const [texto, setTexto] = useState('');
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const { user, modal } = useAppContext()
     const [filter, setFilter] = useState({
         nombreProducto: 'Todo',
         ['Minimo dias vencido']: 0,
@@ -80,23 +34,11 @@ export default function Home() {
         ['Nombre del cliente']: '',
         ['Número de teléfono']: ''
     })
-    const [filter2, setFilter2] = useState({
-        nombreProducto: 'Todo',
-        ['Minimo dias vencido']: 0,
-        ['Maximo dias vencido']: 10000000000,
-        ['Estado de reembolso']: '',
-        ['Cliente nuevo']: '',
-        ['Nombre del cliente']: '',
-        ['Número de teléfono']: ''
-    })
+
     const [state, setState] = useState({})
-    const [editItem, setEditItem] = useState(undefined)
-    const [remesasDB, setRemesasDB] = useState(undefined)
     const refFirst = useRef(null);
-    const [profileIMG, setProfileIMG] = useState('')
     const searchParams = useSearchParams()
     const [copied, setCopied] = useState(false);
-    const { theme, toggleTheme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [trabajo, setTrabajo] = useState([])
@@ -221,56 +163,8 @@ export default function Home() {
         handlerFetch();
     }, []);
 
-    console.log("trabajo: ", trabajo);
-
     let menu = user?.rol ? menuArray[user.rol].filter(i => i.hash === seccion) : ''
 
-    function sortArray(x, y) {
-        if (x['translation']['spa']['common'].toLowerCase() < y['translation']['spa']['common'].toLowerCase()) { return -1 }
-        if (x['translation']['spa']['common'].toLowerCase() > y['translation']['spa']['common'].toLowerCase()) { return 1 }
-        return 0
-    }
-    function handlerSelect(name, i, uuid) {
-        setState({ ...state, [uuid]: { [name]: i } })
-    }
-
-    function handlerSelected(position, index) {
-        if (position === 'LEFT') {
-            selectedLeft === index ? setSelectedLeft(-1) : setSelectedLeft(index)
-        }
-        if (position === 'RIGHT') {
-            selectedLeft === index ? setSelectedRight(-1) : setSelectedRight(index)
-        }
-    }
-    const prev = () => {
-        requestAnimationFrame(() => {
-            if (refFirst.current) {
-                const scrollLeft = refFirst.current.scrollLeft;
-                // console.log(scrollLeft);
-                const itemWidth = screen.width - 50;
-                refFirst.current.scrollLeft = scrollLeft - itemWidth;
-            }
-        });
-    };
-    const next = () => {
-        requestAnimationFrame(() => {
-            if (refFirst.current) {
-                const scrollLeft = refFirst.current.scrollLeft;
-                // console.log(scrollLeft);
-                const itemWidth = screen.width - 50;
-                // console.log(itemWidth);
-                refFirst.current.scrollLeft = scrollLeft + itemWidth;
-            }
-        });
-    };
-    function handlerSelectClick(name, i, uuid) {
-        setFilter({ ...filter, [name]: i })
-    }
-    // console.log(filter)
-    function onChangeHandler(e) {
-        // console.log(e.target.value)
-        setFilter({ ...filter, [e.target.name]: e.target.value })
-    }
     function formatDate(date) {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -278,88 +172,9 @@ export default function Home() {
 
         return `${day}/${month}/${year}`;
     }
-    function getDay(dias) {
-        var dt = new Date();
 
-
-        const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado",];
-
-        // // console.log('Fecha Actual: ' + dt);
-        //restando los dias deseados
-        const dat = dt.setDate(dt.getDate() + dias);
-        const index = new Date(dat).getDay()
-        //mostrando el resultado
-        return { val: formatDate(dt), day: diasSemana[index] }
-    }
     //fecha actual
     const [value, setValue] = useState({})
-    const [value2, setValue2] = useState('Por favor elige')
-
-    function handlerSelectClick2(name, i, uuid) {
-        if (name === 'Tipo de grupo') {
-            setValue({ ...value, [name]: i, ['Codificación de roles']: 'Por favor elige' })
-        } else {
-            setValue({ ...value, [name]: i })
-        }
-
-    }
-    function handlerSelectClick3(name, i, uuid) {
-        setValue2(i)
-    }
-    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-
-    function handleCheckboxChange(index) {
-        setSelectedCheckbox(index);
-    };
-    const [isGreen, setIsGreen] = useState(true);
-    const handleClick = () => {
-        setIsGreen(!isGreen);
-    };
-    const optionsArray = [
-        "Por favor elige",
-        "Sin contactar",
-        "No contactable",
-        "Contactado",
-        "Propósito de retrasar",
-        "Propósito de pagar",
-        "Promete a pagar",
-        "Pagará pronto"
-    ];
-
-    // console.log(user)
-
-    const copyToClipboard = (textToCopy) => {
-        navigator.clipboard.writeText(textToCopy).then(() => {
-            setCopied(textToCopy);
-            setTimeout(() => setCopied(false), 3000); // Ocultar el mensaje después de 2 segundos
-        });
-    };
-    const marks = Array.from({ length: 11 }, (_, i) => i * 10); // Genera marcas cada 10 unidades
-    const radius = 100; // Radio del arco del velocímetro
-    const manejarCambio = (event) => {
-        setTexto(event.target.value);
-    };
-    const [password, setPassword] = useState('');
-
-    const generarContrasena = () => {
-        const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+[]{}|;:,.<>?';
-        let contrasenaGenerada = '';
-        const longitud = 16; // Longitud de la contraseña
-
-        for (let i = 0; i < longitud; i++) {
-            const indice = Math.floor(Math.random() * caracteres.length);
-            contrasenaGenerada += caracteres[indice];
-        }
-
-        // console.log(contrasenaGenerada);
-    };
-
-    function onChangePass(e) {
-        setPassword(e.target.value)
-    }
-
-    const [showPassword, setShowPassword] = useState(false)
-    // console.log(selectedLeft)
 
     const getBackgroundClass = (estado) => {
         switch (estado) {
@@ -378,42 +193,9 @@ export default function Home() {
         }
     };
 
-    const auditoriaPeriodica2 = [
-        "16184477",
-        "Alan Montenegro",
-        "Alan001",
-        "Kiara Palacios",
-        "Con observacion",
-        "Operativa",
-        "$ 10.00",
-        "Aprobado",
-        "12/12/2024 12:00 pm"
-    ];
     const [isMounted, setIsMounted] = useState(false);
-    // console.log(item)
 
-
-    const codificacionDeRoles = {
-        'Recursos Humanos': ['Recursos Humanos'],
-        'Admin': ['Admin'],
-        'Manager de Auditoria': ['Manager de Auditoria'],
-        'Manager de Cobranza': ['Manager de Cobranza'],
-        'Manager de Verificación': ['Manager de Verificación'],
-        'Usuario de Auditoria': ['Usuario de Auditoria'],
-        'Usuario de Cobranza': [
-            'D2 = 2 DIAS ANTES DE LA FECHA DE COBRO',
-            'D1 = 1 DIA ANTES DE LA FECHA DE COBRO',
-            'D0 = DIA DE LA FECHA DE COBRO',
-            'S1 = 1 - 7 DIAS DE MORA EN EL SISTEMA',
-            'S2 = 8 - 16 DIAS DE MORA EN EL SISTEMA'
-        ],
-        'Usuario de Verificación': ['Usuario de Verificación'],
-        'Cuenta Personal': ['Cuenta Personal'],
-    }
-
-
-
- const cobradores = [
+    const cobradores = [
         {
             id: "S0",
             nombre: "Alvarez Puente Gabriela Geomar",
@@ -633,19 +415,6 @@ export default function Home() {
     ];
 
 
-
-
-    function handlerDistribution() {
-        Object.values(rolesMenuResult_set).map((i) => { return <a href={`https://m1.prestamomaximo.mx/M1_system/view/main/index.html?time=1731468668303&auditor=M1-fydi01/?v=1731468668303#${i.url}?v=1731468668303`}></a> })
-    }
-
-
-
-
-
-
-    console.log(user)
-
     // console.log(modal)
     useEffect(() => {
         setIsMounted(true);
@@ -658,32 +427,10 @@ export default function Home() {
     return (
         user?.rol && <main className={` h-full pt-[20px] `}>
 
-
-            {/* 
-            <nav className='fixed left-0 top-[60px] w-full px-5 bg-gray-900 z-20 py-1'>
-                {menu.length === 1 && <ul className='flex justify-around space-x-5'>
-                    {menu[0].options.map((i, index) => {
-                        return <li className='text-gray-300 flex items-center text-[12px] cursor-pointer' onClick={() => router.replace(`/Home?seccion=${menu[0].hash}&item=${i.subtitle}`)}
-                        >
-                            <span
-                                className={`inline-block w-[8px] h-[8px] mr-2 rounded-full cursor-pointer transition-colors duration-300 ${i.subtitle === item ? 'bg-green-500' : 'bg-gray-500'}`}
-                            ></span>
-                            <span className={` ${i.subtitle === item ? 'text-green-400' : 'text-gray-200'}`}>{i.subtitle}</span> </li>
-                    })}
-                </ul>}
-
-            </nav> */}
-
-
-
             {modal === 'Guardando...' && <Loader> {modal} </Loader>}
 
-
-
-
-
-            {user?.rol === 'Cuenta Personal' && item === 'Comision' && <TableComision /> }
-            {user?.rol === 'Cuenta Personal' && item === 'Comision Verificacion' && <TableComisionVerification /> }
+            {user?.rol === 'Cuenta Personal' && item === 'Comision' && <TableComision />}
+            {user?.rol === 'Cuenta Personal' && item === 'Comision Verificacion' && <TableComisionVerification />}
 
             {/* ---------------------------------TABLAS--------------------------------- */}
 
@@ -752,32 +499,6 @@ export default function Home() {
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">SÁBADO</th>
                                 <th colSpan="1" className="px-4 py-2 text-white text-center">DOMINGO</th>
                             </tr>
-                            {/* <tr>
-
-                                <th colSpan="1" className="px-4 py-2 text-white text-center">SEMANA</th>
-                                <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                                    {getDay((-2)).val}
-                                </th>
-                                <th scope="col" className=" px-3 py-1 text-white text-center">
-                                    {getDay((11)).val}
-                                </th>
-                                <th scope="col" className=" px-3 py-1 text-white text-center text-blue-500">
-                                    {getDay((0)).val}
-                                </th>
-                                <th scope="col" className=" px-3 py-1 text-white text-center">
-                                    {getDay((1)).val}
-                                </th>
-                                <th scope="col" className=" px-3 py-1 text-white text-center">
-                                    {getDay((2)).val}
-                                </th>
-                                <th scope="col" className=" px-3 py-1 text-white text-center">
-                                    {getDay((3)).val}
-                                </th>
-                                <th scope="col" className=" px-3 py-1 text-white text-center">
-                                    {getDay((4)).val}
-                                </th>
-
-                            </tr> */}
                         </thead>
                         <tbody>
                             {attendance.data?.map((item, index) => (
@@ -791,7 +512,7 @@ export default function Home() {
                             ))}
                         </tbody>
                     </table>}
-                    {user?.rol === 'Cuenta Personal' && item === 'Gestion de auditoria' && <TableGestionDeAuditoria /> }
+                    {user?.rol === 'Cuenta Personal' && item === 'Gestion de auditoria' && <TableGestionDeAuditoria />}
                     {user?.rol === 'Cuenta Personal' && item === 'Informacion personal' && <ViewPersonalInfo></ViewPersonalInfo>}
                 </div>}
             </div>

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAppContext } from '@/context/AppContext';
 import TextEditor from '@/components/TextEditor';
-import Button from '@/components/Button';
-import FormLayoutEdit from '@/components/formModals/FormLayoutEdit'; // Importa el nuevo FormLayoutEdit
+import FormLayoutEdit from '@/components/formModals/FormLayoutEdit';
 
 export default function ModalEditNewslater() {
     const { newslater, setModal, setLoader, setAlerta } = useAppContext();

@@ -8,29 +8,12 @@ export default function AddAccount() {
   const {
     user,
     userDB,
-    setUserProfile,
     setAlerta,
-    users,
-    modal,
     setModal,
-    setUsers,
-    loader,
     setLoader,
-    setUserSuccess,
-    success,
     setUserData,
-    postsIMG,
-    setUserPostsIMG,
-    divisas,
-    setDivisas,
-    exchange,
-    setExchange,
-    destinatario,
-    setDestinatario,
-    itemSelected,
-    setItemSelected,
   } = useAppContext();
-  const {theme, toggleTheme} = useTheme();
+  const { theme } = useTheme();
 
   const [data, setData] = useState({});
   const [base64, setBase64] = useState("");

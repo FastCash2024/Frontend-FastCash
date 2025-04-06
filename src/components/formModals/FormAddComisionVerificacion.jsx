@@ -4,7 +4,7 @@ import Input from '@/components/Input'
 import { useAppContext } from '@/context/AppContext';
 
 export default function FormAddComisionVerificacion() {
-    const { theme, setLoader, setAlerta, setModal } = useAppContext();
+    const { setLoader, setAlerta, setModal } = useAppContext();
     const [data, setData] = useState({})
 
     function onChangeHandler(e) {
@@ -22,7 +22,6 @@ export default function FormAddComisionVerificacion() {
           }
           setLoader("Guardando...");
           const dataComision = {
-            // aplicacion: value,
             segmento: value2,
             ...data
           }
@@ -57,7 +56,6 @@ export default function FormAddComisionVerificacion() {
           setAlerta('Error al registra comision');
         }
       }
-    
 
     return (
         <FormLayout>
