@@ -1,8 +1,10 @@
 'use client'
 
-import { useState, useRef, useMemo, useContext, createContext } from 'react'
+import { useState, useEffect, useRef, useMemo, useContext, createContext } from 'react'
+import { useRouter } from 'next/navigation'
 
 // const Context = createContext(
+import io from 'socket.io-client';
 
 
 
@@ -14,7 +16,7 @@ export function AppProvider({ children }) {
 	const [user, setUser] = useState(null)
 	const [users, setUsers] = useState(null)
 	const [data, setData] = useState(null)
-	const [userDB, setUserDB] = useState({cuenta: 'tester'})
+	const [userDB, setUserDB] = useState(null)
 	const [subItemNav, setSubItemNav] = useState('Casos de Cobranza')
 	const [alerta, setAlerta] = useState('')
 	const [theme, setTheme] = useState('light');
@@ -24,7 +26,7 @@ export function AppProvider({ children }) {
 
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpen2, setIsOpen2] = useState(false);
-    const [checkedArr, setCheckedArr] = useState([]);
+	const [checkedArr, setCheckedArr] = useState([]);
 
 
 	const [fondoPrimario, setFondoPrimario] = useState('#000000')
@@ -99,9 +101,6 @@ export function AppProvider({ children }) {
 
 
 
-
-
-
 	const setUserSuccess = (data) => {
 
 		if (success === null) {
@@ -115,6 +114,82 @@ export function AppProvider({ children }) {
 		}
 
 	}
+
+	// const socket = useMemo(() => io("http://localhost:4000"), []);
+	const socket = useMemo(() =>
+		io("http://localhost:4000", {
+			transports: ["websocket"],
+			reconnection: true,
+			reconnectionAttempts: 5,
+			reconnectionDelay: 2000,
+		})
+		, []);
+	const router = useRouter()
+	const [usersSystem, setUsersSystem] = useState([]); // Lista de usuarios con sesión activa
+
+
+
+
+
+
+	useEffect(() => {
+		const token = sessionStorage.getItem("token");
+		if (!token) return;
+		console.log("user",user)
+		console.log("userDB",userDB)
+		// Registrar usuario (asegúrate de que "user" esté definido)
+		if (userDB && userDB.id) {
+			socket.emit("register", {
+				id: userDB.id,
+				cuenta: userDB.cuenta,
+				rol: userDB.tipoDeGrupo,
+				emailPersonal: userDB.emailPersonal,
+				numeroDeTelefonoMovil: userDB.numeroDeTelefonoMovil,
+				nombrePersonal: userDB.nombrePersonal,
+				fotoURL: userDB.fotoURL,
+			});
+		} else {
+			console.error("El usuario no está definido o no tiene un ID válido.");
+		}
+
+
+		// Escuchar el evento de "onlineUsers" para actualizar la lista de usuarios conectados
+		socket.on("onlineUsers", (users) => {
+			setUsersSystem(users);
+			console.log("onlineUsers", users)
+		});
+
+		// Escuchar el evento "logout"
+		socket.on("logout", () => {
+			console.log("🔴 Se ha cerrado la sesión en otro dispositivo.");
+			sessionStorage.removeItem("token");
+			setUser(null);
+			alert("Se ha cerrado sesión en otro dispositivo.");
+			router.replace("/");
+		});
+
+		return () => {
+			socket.off("onlineUsers");
+			socket.off("logout");
+		};
+	}, [socket, router, userDB]);
+
+
+
+
+	useEffect(() => {
+		socket.on("onlineUsers", (users) => {
+			setUsersSystem(users);
+			console.log("🟢 Lista de usuarios online:", users);
+		});
+		return () => {
+			socket.off("onlineUsers");
+		};
+	}, [socket, router, usersSystem]); // Solo al montar una vez
+
+
+
+
 
 	const value = useMemo(() => {
 		return ({
@@ -189,8 +264,8 @@ export function AppProvider({ children }) {
 			setState,
 			setUser,
 			setUserDB,
-			setUserSuccess
-
+			setUserSuccess,
+			usersSystem
 		})
 
 	}, [user, userDB,
@@ -215,8 +290,8 @@ export function AppProvider({ children }) {
 		enviosDB,
 		loader,
 		cambiosDB, time_stamp,
-		notificaciones])
-		
+		notificaciones, usersSystem])
+
 	return (
 		<AppContext.Provider value={value} >
 			{children}

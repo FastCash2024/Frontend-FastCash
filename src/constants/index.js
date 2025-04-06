@@ -178,6 +178,8 @@ const menuArray = {
         { subtitle: "Gestión de managers", icon: <OutlineUsersIcon className="h-5 w-5" /> },
         { subtitle: "Gestión de asesores", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
         { subtitle: "Gestión de cuentas personales", icon: <OutlineUserGroupIcon className="h-5 w-5" /> },
+        { subtitle: "Reporte de accesos", icon: <OutlineDocumentCheckIcon className="h-5 w-5" /> }
+
       ],
       length: 'h-[0px]'
     },

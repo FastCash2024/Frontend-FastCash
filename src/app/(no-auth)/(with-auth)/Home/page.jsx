@@ -11,6 +11,7 @@ import Alerts from '@/components/Alerts'
 import TablesAdminAccounts from '@/components/TablesAdminAccounts'
 import TablesPersonalAccounts from '@/components/TablesPersonalAccounts'
 import Newslater from '@/components/Newslater'
+import ReporteDeAccesos from '@/components/ReporteDeAccesos'
 
 export default function Home() {
     const router = useRouter()
@@ -25,6 +26,17 @@ export default function Home() {
     return (
         user?.rol &&
         <>
+
+
+
+
+
+
+
+
+
+
+        
             <Alerts />
             {/*--------------------- MODAL FORMS --------------------- */}
             <Modals />

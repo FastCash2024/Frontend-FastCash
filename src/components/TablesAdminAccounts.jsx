@@ -30,6 +30,7 @@ import TableTools from "@/components/TableTools";
 import TableReporteDiarioVerificacion from "@/components/TableReporteDiarioVerificacion";
 import Alert from "@/components/Alert";
 import TableTracking from "@/components/TableTracking";
+import ReporteDeAccesos from "@/components/ReporteDeAccesos";
 
 import {
   refunds,
@@ -202,6 +203,12 @@ export default function Home() {
               className="max-h-[calc(100vh-40px)] pb-2 overflow-y-auto relative scroll-smooth  "
               ref={refFirst}
             >
+
+
+
+
+
+
               {/* ---------------------------------COLECCION DE CASOS--------------------------------- */}
               {item === "Casos de Cobranza" && (
                 <Table
@@ -301,16 +308,7 @@ export default function Home() {
                 />
               )}
               {/* --------------------------------- AUDITORIA Y CONTROL DE CALIDAD --------------------------------- */}
-              {/* {item === "Registro Histórico" && (
-                <TableTracking
-                  access={true}
-                  headArray={encabezadoRegistroHistorico}
-                  dataArray={[""]}
-                  dataFilter={(i) => true}
-                  local={"http://localhost:3000/api/loans/verification"}
-                  server={"https://api.fastcash-mx.com/api/loans/verification"}
-                />
-              )} */}
+          
               {item === "Registro Histórico" && (
                 <Table
                   access={true}
@@ -333,27 +331,17 @@ export default function Home() {
               )}
               {item === "Control de Cumplimiento" && (
                 <TableControl />
-                // <Table
-                //   access={true}
-                //   headArray={encabezadoControlDeCumplimiento}
-                //   dataArray={[""]}
-                //   dataFilter={(i) => true}
-                //   local={
-                //     "http://localhost:3000/api/multas/multas"
-                //   }
-                //   server={"https://api.fastcash-mx.com/api/multas/multas"}
-                // />
               )}
               {item?.toLowerCase().includes("auditoria") && (
-                  <Table
-                    access={true}
-                    headArray={encabezadoControlDeCumplimiento}
-                    dataArray={[""]}
-                    dataFilter={(i) => user?.email === i?.cuentaPersonal}
-                    local={"http://localhost:3006/api/users/multas/multas"}
-                    server={"https://api.fastcash-mx.com/api/users/multas/multas"}
-                  />
-                )
+                <Table
+                  access={true}
+                  headArray={encabezadoControlDeCumplimiento}
+                  dataArray={[""]}
+                  dataFilter={(i) => user?.email === i?.cuentaPersonal}
+                  local={"http://localhost:3006/api/users/multas/multas"}
+                  server={"https://api.fastcash-mx.com/api/users/multas/multas"}
+                />
+              )
               }
               {/* --------------------------------- VERIFICACION DE CREDITOS --------------------------------- */}
               {item === "Recolección y Validación de Datos" && (
@@ -392,7 +380,11 @@ export default function Home() {
                 user.rol === "Asesor de Auditoria"
               ) &&
                 (seccion === "Auditoria" || seccion === "auditoria") &&
-                item === "Reporte diario" && <TableReporteDiarioAuditoria />}
+                item === "Reporte diario" && <TableReporteDiarioAuditoria />
+              }
+              {item === "Atención al Cliente" && seccion === "auditoria" && (
+                <TableAtencionAlCliente />
+              )}
 
               {item === "Lista final" && (
                 <Table
@@ -407,6 +399,7 @@ export default function Home() {
                   }
                 />
               )}
+
               {/* --------------------------------- GESTION DE ACCESOS --------------------------------- */}
               {item === "Gestión de administradores" && (
                 <Table
@@ -474,9 +467,14 @@ export default function Home() {
                   }
                 />
               )}
-              {item === "Atención al Cliente" && seccion === "auditoria" && (
-                <TableAtencionAlCliente />
+
+
+              {item === "Reporte de accesos" && (
+                <ReporteDeAccesos />
               )}
+
+
+
               {/* --------------------------------- TABLAS EN MAS DE DOS SECCIONES --------------------------------- */}
               {(user?.rol === "Admin" ||
                 user.rol === "Super Admin" ||
@@ -490,16 +488,7 @@ export default function Home() {
                 )}
             </div>
           )}
-          {/* {trabajo.length > 0 && item === "Asistencia" && user.rol !== "Cuenta Personal" && (
-            <Paginator
-              totalItems={trabajo.length}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
-              onReload={handleReload}
-            />
-          )} */}
+         
         </div>
       </main>
     </div>
