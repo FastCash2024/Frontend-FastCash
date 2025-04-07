@@ -14,6 +14,8 @@ export const useSocket = (userDB, setUser, setUsersSystem, router) => {
 
         // Configura el socket.io
         const socketConnection = io('https://api.fastcash-mx.com', {
+        // const socketConnection = io('http://localhost:4000', {
+
             path: '/api/socket',
             transports: ['websocket'],
             reconnection: true,
