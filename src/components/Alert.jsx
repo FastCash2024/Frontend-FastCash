@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
 const Alert = ({ children, textColor,type = 'success', duration = 5000, onClose }) => {
-  const { theme } = useTheme()
   const [show, setShow] = useState(true);
 
   useEffect(() => {

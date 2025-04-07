@@ -36,6 +36,11 @@ export default function AddAccount() {
             setAlerta('Falta acotación!')
             return
         }
+
+        if (!userDB.cuentaPersonal) {
+            setAlerta('El usuario no esta autorizado para realizar esta operación!');
+            return;
+        }
         if (value === 'Por favor elige') {
             setAlerta('Falta estado de verificación!')
             return
@@ -71,7 +76,6 @@ export default function AddAccount() {
             if (!response.ok) {
                 setLoader('')
                 setAlerta('Error de datos!')
-                throw new Error('Registration failed');
             }
 
             if (response.ok) {
@@ -81,12 +85,10 @@ export default function AddAccount() {
             } else {
                 setLoader('')
                 setAlerta('Error de datos!')
-                throw new Error('Registration failed');
             }
         } catch (error) {
             setLoader('')
             setAlerta('Error de datos!')
-            throw new Error('Registration failed');
         }
     }
 

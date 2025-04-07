@@ -7,7 +7,7 @@ import { useState } from 'react'
 import style from '@/components/ModatMSG.module.css'
 
 export default function Modal({ children, theme, button, funcion, alert }) {
-    const { nav, setNav, user, userDB, setUserProfile, state, setState, modal, setModal } = useAppContext()
+    const { setModal } = useAppContext()
 
     const [textEditor, setTextEditor] = useState("")
 

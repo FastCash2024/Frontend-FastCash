@@ -2,58 +2,25 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useAppContext } from '@/context/AppContext'
-import SelectSimple from '@/components/SelectSimple'
 import { useSearchParams } from 'next/navigation'
-import Velocimetro from '@/components/Velocimetro'
 import Button from '@/components/Button'
 import Link from 'next/link';
 import SearchInput from "@/components/SearchInput";
-import MultipleInput from '@/components/MultipleInput';
 
 const ControlCasesTools = () => {
-    const { checkedArr, setModal, loader, setLoader, user } = useAppContext()
+    const { checkedArr, setModal, user } = useAppContext()
     const searchParams = useSearchParams()
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
     const [query, setQuery] = useState('')
-    const [filtro_1, setFiltro_1] = useState([]);
 
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }
         setFilter(db)
         setQuery(objectToQueryString(db))
     }
-
-    function onChangeHandlerDate(e) {
-        const { name, value } = e.target;
-
-        setFilter((prevFilter) => {
-            const prevValue = prevFilter[name] ? prevFilter[name].split(", ") : [];
-
-            let updatedValues;
-            if (prevValue.length >= 2) {
-                updatedValues = [prevValue[0], value];
-            } else {
-                updatedValues = [...prevValue, value];
-            }
-
-            const updatedFilter = { ...prevFilter, [name]: updatedValues.join(", ") };
-            setQuery(objectToQueryString(updatedFilter));
-            return updatedFilter;
-        });
-    }
-
-
-    function handlerSelectClick(name, i, uuid) {
-        const db = { ...filter, [name]: i }
-        setFilter(db)
-        setQuery(objectToQueryString(db))
-    }
-
-    console.log('query:', setQuery);
-
 
     function objectToQueryString(obj) {
         if (!obj || typeof obj !== "object") {
@@ -70,10 +37,6 @@ const ControlCasesTools = () => {
         setQuery('');
     }
 
-
-    function handlerFetch() {
-        setLoader(true)
-    }
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}

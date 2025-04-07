@@ -1,8 +1,5 @@
 'use client';
 
-import style from './Tag.module.css'
-
-
 export default function Button({ theme, click, children }) {
 
 

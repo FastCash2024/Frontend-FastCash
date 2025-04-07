@@ -1,12 +1,11 @@
 import { useAppContext } from '@/context/AppContext';
-import { getDateSixDaysAgo, getDay, getDays, getDayWeek, getDayWeekCustom, getMondayOfCurrentWeek, getTodayDate } from '@/utils/getDates';
+import { getDays, getDayWeek, getDayWeekCustom, getTodayDate } from '@/utils/getDates';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react'
 
 export default function TableCustomerFlow() {
-  const { loader, setModal, setAttendance } = useAppContext();
+  const { loader } = useAppContext();
   const searchParams = useSearchParams();
-  const seccion = searchParams.get("seccion");
   const [baseDate, setBaseDate] = useState(getTodayDate());
   const item = searchParams.get("item");
   const [filtro_1, setFiltro_1] = useState([]);
@@ -120,7 +119,6 @@ export default function TableCustomerFlow() {
           return acc;
         }, {});
 
-        console.log('Resultados combinados:', combinedResults);
         setFiltro_2(combinedResults);
       } else {
         // Si 'urlFechaDeReembolso' es una sola fecha (no un array), hacemos una sola solicitud
@@ -144,9 +142,6 @@ export default function TableCustomerFlow() {
           acc[fecha][item.nombreDelProducto] = item; // Asignar el producto al objeto bajo la fecha
           return acc;
         }, {});
-
-        console.log("resultado combinado", groupedByFecha);
-
         setFiltro_2(groupedByFecha);
       }
     } catch (error) {
@@ -182,8 +177,6 @@ export default function TableCustomerFlow() {
     acc[date] = total;
     return acc;
   }, {});
-
-  console.log('getdata: ', filtro_2);
 
   const formattedDates = useMemo(() => {
     return [-6, -5, -1, -3, -2, -1, 0].map(offset => getDayWeek(baseDate, offset).val);

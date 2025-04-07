@@ -1,7 +1,5 @@
 'use client';
-import { useAppContext } from '@/context/AppContext'
-import { useState, useEffect } from 'react'
-import style from './Select.module.css'
+import { useState } from 'react'
 
 
 export default function Page({ arr, name, click, defaul, uuid }) {

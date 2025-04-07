@@ -18,9 +18,7 @@ export default function TableControl() {
   const [cases, setCases] = useState([]);
   const [cuentas, setCuentas] = useState([]);
   const searchParams = useSearchParams();
-  const seccion = searchParams.get("seccion");
   const item = searchParams.get("item");
-  const date = getCurrentDate();
   const [data, setData] = useState([]); // Aquí solo debe almacenar el array de datos, no más propiedades
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -34,11 +32,6 @@ export default function TableControl() {
       setCheckedArr(checkedArr.filter(it => it.cuenta !== item.cuenta));
     }
   }
-
-  console.log("usuario url: ", user);
-  console.log("usuario db url: ", userDB);
-
-  console.log("item tipo", item);
 
   async function handlerFetch(limit, page) {
     const isLocalhost = window?.location?.href?.includes("localhost");
@@ -136,8 +129,6 @@ export default function TableControl() {
     setItemSelected(item);
     setModal(modal);
   }
-
-  // console.log('data arr:', checkedArr);
 
   return (
     <>

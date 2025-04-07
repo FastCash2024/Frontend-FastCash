@@ -4,23 +4,17 @@ import { useTheme } from '@/context/ThemeContext';
 import { useAppContext } from '@/context/AppContext'
 import SelectSimple from '@/components/SelectSimple'
 import { useSearchParams } from 'next/navigation'
-import Velocimetro from '@/components/Velocimetro'
 import Button from '@/components/Button'
 import Link from 'next/link';
 import SearchInput from "@/components/SearchInput";
 import MultipleInput from '@/components/MultipleInput';
 
-import {
-    refunds, historial,
-    menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
-} from '@/constants/index'
 import { calcularFecha } from '@/utils/dates-filters';
 import SelectSegment from './SelectSegment';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
+    const { user, checkedArr, setModal, setLoader } = useAppContext()
     const searchParams = useSearchParams()
-    const [copied, setCopied] = useState(false);
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})

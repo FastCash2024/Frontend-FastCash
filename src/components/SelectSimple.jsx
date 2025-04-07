@@ -1,20 +1,21 @@
 'use client';
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation';
+import { useState } from 'react'
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
 
 
 export default function Select({ arr, name, click, defaultValue, uuid, label, position, bg, required }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
-    const router = useRouter()
-    const { select, setSelect, languaje, success} = useAppContext()
+    const { select, setSelect} = useAppContext()
+    
     const [state, setState] = useState(defaultValue ? defaultValue : arr[0])
+    
     function handlerSelect() {
         select === name ? setSelect('') : setSelect(name)
     }
+
     function handlerUserState(name, i) {
         setState(i)
         if (typeof click === 'function') {
@@ -23,6 +24,7 @@ export default function Select({ arr, name, click, defaultValue, uuid, label, po
             console.error('no es una funcion');
         }
     }
+    
     return (
         <div className='relative '>
                 <div id={label}

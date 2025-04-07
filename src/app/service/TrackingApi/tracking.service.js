@@ -1,5 +1,7 @@
 // const baseUrl = "https://api.fastcash-mx.com/api/users";
-const baseUrl = "http://localhost:3006/api/users";
+const baseUrl = window.location.hostname.includes('localhost') 
+    ? "http://localhost:3006/api/users" 
+    : "https://api.fastcash-mx.com/api/users";
 
 export const postTracking = async (data) => {
     try {

@@ -2,7 +2,7 @@ import { useTheme } from '@/context/ThemeContext';
 import React from 'react'
 
 export default function SelectSegment({ label, options, name, onChangeHandler, selectedValue, uuid }) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     return (
         <select
             name={name}

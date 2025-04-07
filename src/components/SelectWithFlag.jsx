@@ -1,25 +1,17 @@
 'use client'
 // import CurrencyFlag from 'react-currency-flags';
 // import CurrencyList from 'currency-list';
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useAppContext } from '@/context/AppContext'
 
-import { writeUserData, getSpecificData } from "@/firebase/database"
-import divisasJSON from '@/utils/divisas'
-
 export default function App({ placeholder, value, onChange, propHandlerSelect, propSelect, propIsSelect, propHandlerIsSelect, defaultValue }) {
-  const { userDB, currency, setCurrency, setUserSuccess, select, setSelect, select2, setSelect2, transferencia, setTransferencia, comision, setComision, success, setuserSuccess, divisas, setDivisas, isSelect, setIsSelect, isSelect2, setIsSelect2, } = useAppContext()
-
-
-
-
+  const { select, select2, transferencia, setTransferencia, setComision, divisas } = useAppContext()
 
   function handlerUserSelect(e, i) {
-    // e.nativeEvent.stopImmediatePropagation()
-    // e.stopPropagation()
 
     propHandlerSelect(i.code)
   }
+
   function handlerIsSelect(e, i) {
     e.stopPropagation()
     propHandlerIsSelect()
@@ -35,20 +27,6 @@ export default function App({ placeholder, value, onChange, propHandlerSelect, p
     (divisas && divisas[select] && divisas[select2] && (e.target.value * divisas['USD'].compra / divisas[select].venta).toFixed(2)) > 100000 && setComision('CONTACTESE CON SOPORTE');
 
   }
-  // console.log(comision)
-  // // console.log(Object.values(divisasJSON))
-  // useEffect(() => {
-  //   // writeUserData('divisas', divisasJSON, setUserSuccess)
-  //   // setCurrency(CurrencyList.getAll('es_US'))
-  //   divisas === undefined && getSpecificData('currencies', setDivisas)
-  // }, [divisas, propSelect]);
-  // // console.log(select)
-  // // console.log(propSelect)
-
-  // console.log(value && divisas && divisas[select] && divisas[select2] && (transferencia * divisas[select2].compra / divisas[select].venta).toFixed(2))
-  // // console.log(divisas[select2].cambio)
-  // console.log(divisas)
-  // console.log(divisas[select].venta)
 
   return (
     <div className={`relative w-[100%] sm:max-w-[380px] bg-transparent border border-gray-300 text-gray-900 text-[14px] rounded-xl focus:ring-blue-500 focus:border-blue-500 block  p-0 `} >

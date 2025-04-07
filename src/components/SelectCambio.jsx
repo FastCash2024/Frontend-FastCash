@@ -7,7 +7,7 @@ import React, { useState, useEffect } from "react";
 import { useAppContext } from '@/context/AppContext'
 
 export default function App({ placeholder, value, onChange, propHandlerSelect, propSelect, propIsSelect, propHandlerIsSelect, defaultValue }) {
-  const { userDB, currency, setCurrency, setUserSuccess, select, setSelect, select2, setSelect2, transferencia, setTransferencia, success, setuserSuccess, divisas, setDivisas, isSelect, setIsSelect, isSelect2, setIsSelect2, } = useAppContext()
+  const { select, select2, transferencia, setTransferencia, divisas } = useAppContext()
 
   // const [currency, setCurrency] = useState("BOB");
   // const [select, setSelect] = useState('BOB')

@@ -6,19 +6,16 @@ import style from '@/app/(layout)/style.module.css'
 
 export default function Button({ mobile }) {
 
-
-    const { nav, setNav, user, userDB, setUserProfile, state, setState, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, modal, setModal, transferencia } = useAppContext()
-  const router = useRouter()
+    const { setState } = useAppContext()
+    const router = useRouter()
 
     const pathname = usePathname()
-
 
     function handlerMode(e, data) {
         setState(data)
         router.push(data)
         // console.log('click')
-      }
-
+    }
 
     return (
         <div className={`w-full flex justify-center items-end z-20 ${style.translate} ${mobile ? 'lg:hidden' : 'hidden lg:flex'}`}>
