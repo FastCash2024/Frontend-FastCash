@@ -47,7 +47,7 @@ export function AppProvider({ children }) {
 	const [navItem, setNavItem] = useState(undefined)
 	const [item, setItem] = useState(null)
 	const [itemSelected, setItemSelected] = useState(null)
-
+	const [select, setSelect,] = useState(null)
 	const [fecha, setFecha] = useState(null)
 
 
@@ -113,7 +113,9 @@ export function AppProvider({ children }) {
 			setUser,
 			setUserDB,
 			setUserSuccess,
-			usersSystem
+			usersSystem,
+			select, 
+			setSelect,
 		})
 
 	}, [user, userDB,
@@ -141,7 +143,8 @@ export function AppProvider({ children }) {
 		navItem,
 		loader,
 		time_stamp,
-		usersSystem])
+		usersSystem,
+		select])
 
 	return (
 		<AppContext.Provider value={value} >
