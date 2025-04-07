@@ -16,7 +16,6 @@ import Link from 'next/link';
 import ReCAPTCHA from "react-google-recaptcha";
 import { postTracking } from '../service/TrackingApi/tracking.service';
 import { obtenerFechaMexicoISO } from '@/utils/getDates';
-// import { io } from "socket.io-client";
 
 
 
@@ -27,14 +26,9 @@ export default function Home() {
   const [captcha, setCaptcha] = useState('')
   const router = useRouter()
   const [errorMessage, setErrorMessage] = useState(null);
-  const recaptchaRef = React.useRef();
 
 
-  // const socket = io(
-  //   window?.location?.href.includes("localhost")
-  //     ? "http://localhost:4000"
-  //     : "https://api.fastcash-mx.com" // Cambia esto al servidor WebSockets real
-  // );
+
   
   const onSubmitWithReCAPTCHA = async (e) => {
     e.preventDefault();
@@ -65,18 +59,7 @@ export default function Home() {
   
         // 🔹 Guardar el JWT en sessionStorage
         sessionStorage.setItem("token", response.data.token);
-  
-        // 🔹 Conectar WebSockets y registrar el usuario
-        // socket.emit("register", response.data.user.id);
-  
-        // 🔹 Escuchar el evento de cierre de sesión en tiempo real
-        // socket.on("logout", () => {
-        //   alert("Se inició sesión en otro dispositivo. Cerrando sesión...");
-        //   sessionStorage.removeItem("token");
-        //   socket.disconnect();
-        //   router.push("/login"); // Redirigir al login
-        // });
-  
+
         const trackingData = {
           descripcionDeExcepcion: "Inicio de sesión exitoso",
           cuentaOperadora: response.data.user.cuenta,
