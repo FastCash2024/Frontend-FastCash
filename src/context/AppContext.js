@@ -7,9 +7,7 @@ import { useRouter } from 'next/navigation'
 import io from 'socket.io-client';
 
 
-
 const AppContext = createContext();
-
 
 export function AppProvider({ children }) {
 
@@ -80,14 +78,32 @@ export function AppProvider({ children }) {
 			reconnectionDelay: 2000,
 		})
 		, []); 
+
+	// const [socket, setSocket] = useState(null);  // Estado para almacenar el socket
+
+	// useEffect(() => {
+	//   if (typeof window !== 'undefined' ) {
+	// 	const socketInstance = io(
+	// 	  window?.location?.href.includes("localhost")
+	// 		? "http://localhost:4000/api/socket"
+	// 		: "https://api.fastcash-mx.com/api/socket", {
+	// 		  path: "/api/socket",
+	// 		  transports: ["websocket"], // Solo WebSocket, si no quieres otros protocolos como long polling
+	// 		}
+	// 	);
+	// 	setSocket(socketInstance);  // Asignamos el socket al estado
+	//   }
+	// }, [userDB]); // Solo se ejecuta en el cliente
+
 	const router = useRouter()
 	const [usersSystem, setUsersSystem] = useState([]); // Lista de usuarios con sesión activa
 
 	useEffect(() => {
+		if (!socket) return; // Asegúrate de que el socket esté definido
 		const token = sessionStorage.getItem("token");
 		if (!token) return;
-		console.log("user",user)
-		console.log("userDB",userDB)
+		console.log("user", user)
+		console.log("userDB", userDB)
 		// Registrar usuario (asegúrate de que "user" esté definido)
 		if (userDB && userDB.id) {
 			socket.emit("register", {
@@ -126,6 +142,7 @@ export function AppProvider({ children }) {
 	}, [socket, router, userDB]);
 
 	useEffect(() => {
+		if (!socket) return; // Asegúrate de que el socket esté definido
 		socket.on("onlineUsers", (users) => {
 			setUsersSystem(users);
 			console.log("🟢 Lista de usuarios online:", users);
@@ -160,7 +177,7 @@ export function AppProvider({ children }) {
 			userNav, setUserNav,
 			filter, setFilter,
 			isSelect, setIsSelect,
-			fecha, setFecha, 
+			fecha, setFecha,
 			application, setApplication,
 			applicationTipo, setApplicationTipo,
 			account, setAccount,
@@ -186,24 +203,24 @@ export function AppProvider({ children }) {
 		alerta,
 		fondoPrimario,
 		fondoSecundario,
-		fondoTerciario, subItemNav, success, 
-		nav, userNav, modal, 
-		isSelect, 
-		users, 
-		attendance, applicationTipo, application, multa, filtro_1, 
-		item, 
+		fondoTerciario, subItemNav, success,
+		nav, userNav, modal,
+		isSelect,
+		users,
+		attendance, applicationTipo, application, multa, filtro_1,
+		item,
 		account,
 		appComision,
 		appComisionVerification,
 		idioma,
-		fecha, 
+		fecha,
 		filter,
 		checkedArr,
 		newslater,
 		local,
-		isOpen, 
-		isOpen2, 
-		navItem, 
+		isOpen,
+		isOpen2,
+		navItem,
 		loader,
 		time_stamp,
 		usersSystem])

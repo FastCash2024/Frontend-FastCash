@@ -29,26 +29,12 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState(null);
   const recaptchaRef = React.useRef();
 
-  // const [socket, setSocket] = useState(null);  // Estado para almacenar el socket
 
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     const socketInstance = io(
-  //       window?.location?.href.includes("localhost")
-  //         ? "http://localhost:4000/api/socket"
-  //         : "https://api.fastcash-mx.com/api/socket"
-  //     );
-  //     setSocket(socketInstance);  // Asignamos el socket al estado
-  //   }
-  // }, []); // Solo se ejecuta en el cliente
-  const socket = io(
-    window?.location?.href.includes("localhost")
-      ? "http://localhost:4000/api/socket"
-      : "https://api.fastcash-mx.com/api/socket", {
-        path: "/api/socket",
-        transports: ["websocket"], // Solo WebSocket, si no quieres otros protocolos como long polling
-      }
-  );
+  // const socket = io(
+  //   window?.location?.href.includes("localhost")
+  //     ? "http://localhost:4000"
+  //     : "https://api.fastcash-mx.com" // Cambia esto al servidor WebSockets real
+  // );
   
   const onSubmitWithReCAPTCHA = async (e) => {
     e.preventDefault();
@@ -81,15 +67,15 @@ export default function Home() {
         sessionStorage.setItem("token", response.data.token);
   
         // 🔹 Conectar WebSockets y registrar el usuario
-        socket.emit("register", response.data.user.id);
+        // socket.emit("register", response.data.user.id);
   
         // 🔹 Escuchar el evento de cierre de sesión en tiempo real
-        socket.on("logout", () => {
-          alert("Se inició sesión en otro dispositivo. Cerrando sesión...");
-          sessionStorage.removeItem("token");
-          socket.disconnect();
-          router.replace("/"); // Redirigir al login
-        });
+        // socket.on("logout", () => {
+        //   alert("Se inició sesión en otro dispositivo. Cerrando sesión...");
+        //   sessionStorage.removeItem("token");
+        //   socket.disconnect();
+        //   router.push("/login"); // Redirigir al login
+        // });
   
         const trackingData = {
           descripcionDeExcepcion: "Inicio de sesión exitoso",

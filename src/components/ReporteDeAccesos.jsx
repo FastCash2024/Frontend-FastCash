@@ -1,10 +1,48 @@
 // pages/index.js o algún componente
 'use client';
 import { useAppContext } from "@/context/AppContext";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-    const { usersSystem } = useAppContext()
-    console.log("usersSystem", usersSystem)
+
+    const {usersSystem} = useAppContext()
+
+    // const [usersSystem, setUsersSystem] = useState([]); // Lista de usuarios con sesión activa
+    // const [socket, setSocket] = useState(null);  // Estado para almacenar el socket
+
+    // console.log("usersSystem", usersSystem)
+
+    // useEffect(() => {
+    //     if (typeof window !== 'undefined') {
+    //         const socketInstance = io(
+    //             window?.location?.href.includes("localhost")
+    //                 ? "http://localhost:4000/api/socket"
+    //                 : "https://api.fastcash-mx.com/api/socket", {
+    //             path: "/api/socket",
+    //             transports: ["websocket"], // Solo WebSocket, si no quieres otros protocolos como long polling
+    //         }
+    //         );
+    //         setSocket(socketInstance);  // Asignamos el socket al estado
+    //     }
+    // }, [userDB]); // Solo se ejecuta en el cliente
+
+
+    // useEffect(() => {
+    //     if (!socket) return; // Asegúrate de que el socket esté definido
+    //     socket.on("onlineUsers", (users) => {
+    //         setUsersSystem(users);
+    //         console.log("🟢 Lista de usuarios online:", users);
+    //     });
+    //     return () => {
+    //         socket.off("onlineUsers");
+    //     };
+    // }, [socket, router, usersSystem]); // Solo al montar una vez
+
+
+
+
+
+
     return (
         <div>
             <div className="max-h-[calc(100vh-120px)] pb-2 overflow-y-auto relative scroll-smooth drop-shadow-2xl border">
@@ -22,7 +60,7 @@ export default function Home() {
                     </thead>
                     <tbody>
                         {usersSystem?.map((user) => (
-                          user.id &&  <tr
+                            user.id && <tr
                                 key={user?.id}
                                 className="text-[12px] border-b bg-white"
                             >
