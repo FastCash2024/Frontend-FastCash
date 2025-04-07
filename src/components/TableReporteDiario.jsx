@@ -3,18 +3,13 @@ import { useAppContext } from "@/context/AppContext";
 import React, { useState, useEffect, useRef } from "react";
 
 import { useSearchParams } from "next/navigation";
-import { useTheme } from "@/context/ThemeContext";
-
-import {
-  menuArray,
-} from "@/constants/index";
-import { useRouter } from "next/navigation";
 
 import { Paginator } from "./Paginator";
 import { obtenerSegmento } from "@/utils";
 import { today } from "@/utils/getDates";
 
 export default function Home() {
+  const { loader, setCheckedArr, setLoader } = useAppContext();
   const [selectedLeft, setSelectedLeft] = useState(-1);
  
   const searchParams = useSearchParams();

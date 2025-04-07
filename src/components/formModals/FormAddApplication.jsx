@@ -8,17 +8,16 @@ import Input from '@/components/Input'
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
-
-
+import { useSearchParams } from "next/navigation";
 
 export default function AddAccount() {
     const { setAlerta, setModal, setLoader, userDB } = useAppContext()
+    const searchParams = useSearchParams()
+    const item = searchParams.get('item')
     const { theme, toggleTheme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);
-
-    // console.log("image selected: ", selectedFile)
 
     console.log("data register: ", data)
     const handleImageUpload = (event) => {

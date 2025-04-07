@@ -340,10 +340,6 @@ export default function Home() {
                 )}
             </div>
           )}
-<<<<<<< HEAD
-=======
-         
->>>>>>> 269401431350a970b1bd361ff08fc877b297110a
         </div>
       </main>
     </div>
