@@ -2,19 +2,11 @@
 import Wifi from '@/components/Wifi'
 import { useAppContext } from '@/context/AppContext'
 import { useTheme } from '@/context/ThemeContext';
-
-// import LoaderWithLogo from '@/components/LoaderWithLogo'
-import { useState, useEffect } from 'react'
-// import style from './Medico.module.css'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-// import BottomNavigation from '@/components/BottomNavigation'
 import Navbar from '@/components/Navbar'
 import TimeDisplay from '@/components/TimeDisplay'
-// import VideoClient from '@/components/Vide'
-import { Turret_Road } from 'next/font/google'
-// import Whatsapp from '@/components/Whatsapp'
 import { MoonIcon, SunIcon, WindowIcon } from '@heroicons/react/24/solid';
 import useSessionWatcher from '@/hooks/useSessionWatcher';
 
@@ -23,76 +15,19 @@ function Home({ children }) {
     const { user, setUser, userDB, setUserDB, setUserProfile, isOpen, setIsOpen, isOpen2, setIsOpen2, businessData, idioma, setIdioma, setUserProduct, setRecetaDB, setPrecioJustoPDB, setWhatsapp, setUserData, setFilter, nav, setNav, setModal, setIntroClientVideo, setSearch, videoClientRef, setFilterQR, setTienda } = useAppContext()
 
     const { theme, toggleTheme } = useTheme();
-
-
     const pathname = usePathname()
 
-    const redirectHandler = (ref) => {
-        router.push(ref)
-    }
-
-    const handlerFilter = (e) => {
-        const data = e.target.value
-        data.length > 0 ? setSearch(true) : setSearch(false)
-        setFilter(data)
-        setFilterQR('')
-    }
-    const back = () => {
-        router.back()
-    }
     function openNav(e) {
         e.preventDefault()
         e.stopPropagation()
         setNav(!nav)
     }
 
-    const signOutConfirm = async () => {
-        await signOut()
-        setUserProfile(null)
-        setUserProduct(undefined),
-            setRecetaDB(undefined),
-            setPrecioJustoPDB(undefined)
-        setUserData(undefined)
-        setModal('')
-        setTienda(undefined)
-
-
-    }
-
-    function sortArray(x, y) {
-        if (x['nombre de producto 1'].toLowerCase() < y['nombre de producto 1'].toLowerCase()) { return -1 }
-        if (x['nombre de producto 1'].toLowerCase() > y['nombre de producto 1'].toLowerCase()) { return 1 }
-        return 0
-    }
-    function handlerSearchFilter(data) {
-        setFilter(data)
-        setSearch(false)
-    }
-    function handlerClientVideo(data) {
-
-        videoClientRef.current.pause()
-        setIntroClientVideo(false)
-        setWhatsapp(false)
-    }
-
-    function handlerWhatsapp() {
-        videoClientRef.current.pause()
-        setIntroClientVideo(false)
-        setWhatsapp(false)
-    }
-
-    const soporte = () => {
-        businessData && window.open(`https://api.whatsapp.com/send?phone=${businessData.whatsapp.replaceAll(' ', '')}&text=hola%20necesito%20un%20implante%20de%20osteosintesis%20y%20mi%20cuenta%20esta%20bloqueada%20¿Pueden%20ayudarme?%20`, '_blank')
-        setNav(false)
-        // setWhatsapp(!whatsapp)
-    }
     function handlerPageClick() {
         setNav(false)
         setIsOpen(false)
         setIsOpen2(false)
     }
-    // // console.log(theme)
-
 
     const handlerSignOut = () => {
         sessionStorage.removeItem('token'); // Eliminar el token
@@ -100,41 +35,6 @@ function Home({ children }) {
         setUser(null)
         setUserDB(null)
     }
-
-
-
-    // useEffect(() => {
-    //     const fetchProfile = async () => {
-    //         const token = sessionStorage.getItem('token'); // Obtener el JWT desde sessionStorage
-    //         // // console.log(token)
-
-    //         try {
-    //             const response = await fetch(window?.location?.href.includes('localhost')
-    //                 ? 'http://localhost:3000/api/authSystem/validate'
-    //                 : 'https://api.fastcash-mx.com/api/authSystem/validate', {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     'Authorization': token,  // Enviar el JWT en el encabezado de autorización
-    //                 },
-    //             });
-
-    //             if (response.ok) {
-
-    //                 const data = await response.json();
-    //                 // // console.log(data)
-    //                 setUser({ rol: data.user.tipoDeGrupo })
-    //                 setUserDB(data.user)
-    //                 pathname !== '/' && router.replace('/Home')
-
-    //             } else {
-    //                 // console.log('No autorizado o sesión expirada');
-    //             }
-    //         } catch (error) {
-    //             // console.log('Error al cargar el perfil');
-    //         }
-    //     };
-    //     fetchProfile();
-    // }, []);
 
     useEffect(() => {
         if (!userDB) {
@@ -149,19 +49,11 @@ function Home({ children }) {
             : user?.rol !== undefined && pathname !== '/' && router.replace('/')
     }, [user])
 
-    // if (userDB?.id) {
     useSessionWatcher(userDB?.id, router, setUserDB);
-    // }
-
-
-
-    console.log("socket user", userDB?.id);
 
     return (
 
         <div>
-
-
             <div className={`h-screen  ${theme === 'light' ? ' bg-gray-200' : 'bg-gray-50 '} dark:bg-gray-800 z-40`}>
                 {(userDB?.situacionLaboral === 'Dimitir' || userDB?.situacionLaboral === 'Reposo') && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm pointer-events-auto z-50">
@@ -174,7 +66,6 @@ function Home({ children }) {
                         </div>
                     </div>
                 )}
-
                 {(userDB?.tipoDeGrupo && !!userDB?.tipoDeGrupo.includes('Asesor'))
                     ? (!userDB.emailPersonal || !userDB.fotoURL || !userDB.numeroDeTelefonoMovil)
                         ? (
@@ -198,7 +89,6 @@ function Home({ children }) {
                 <div className={`fixed top-0 w-[220px] lg:w-[280px] py-4 shadow-white  transition-all	z-50  h-screen overflow-y-scroll ${theme === 'light' ? 'bg-gray-300 text-black' : 'bg-gray-800 text-white '} ${nav ? 'left-0  ' : 'left-[-220px] lg:left-[-280px] '}`} >
                     {user && user !== undefined && <Navbar rol={user.rol} />}
                 </div>
-
                 <main className={`relative w-screen min-w-screen  lg:pb-0  lg:min-w-auto my-[0px]  lg:min-h-screen ${theme === 'light' ? '' : ''} ${nav ? 'w-screen pl-[220px] lg:pl-[280px] ' : '  lg:px-[0px]'}`} onClick={handlerPageClick} style={{ transition: 'all 0.5' }}>
                     <nav className={`w-screen fixed left-0 top-0  shadow-sm flex items-center justify-between  p-0 h-[60px] z-30    ${theme === 'light' ? 'bg-gray-300 text-black' : 'bg-gray-900'} dark:bg-gray-900 `} onClick={() => setNav(false)}>
                         {pathname !== '/Cliente' && <div className='flex  hidden lg:block'>
@@ -214,15 +104,11 @@ function Home({ children }) {
                             </div>
                         </div>
                         }
-
                         <div className='flex items-center mr-5 z-30 '>
-
                             <Wifi />
-
                             <TimeDisplay />
-
+                            {/* --------------------------------------------------LANGUAGE */}
                             <div className='z-10'>
-
                                 <button className='flex items-center text-white h-[35px]  bg-gray-800 hover:bg-gradient-to-br focus:ring-2 focus:outline-none focus:ring-gray-500    transition-all  rounded-[5px] border    text-center  p-2 px-5'
                                     onClick={(e) => { e.stopPropagation(); setIsOpen(!isOpen); setIsOpen2(false) }}
                                 >
@@ -235,7 +121,6 @@ function Home({ children }) {
                                         Perfil
                                     </span>
                                 </button>
-
                                 <div
                                     className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 transition-all duration-300 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-0 z-50'
                                         }`}
@@ -256,7 +141,6 @@ function Home({ children }) {
                                                 <path d="M17.292 12.188C17.292 12.476 16.947 12.709 16.521 12.709C16.096 12.709 15.75 12.476 15.75 12.188C15.75 11.9 16.095 11.667 16.521 11.667C16.946 11.667 17.292 11.9 17.292 12.188ZM16.105 7.56097C16.155 7.77297 15.878 8.02097 15.486 8.11397C15.094 8.20697 14.736 8.10997 14.685 7.89797C14.635 7.68497 14.912 7.43697 15.303 7.34397C15.696 7.25197 16.055 7.34797 16.105 7.56097Z" fill="#FFCC4D" />
                                                 <path d="M22.533 12.9549C22.623 13.0249 22.776 12.2259 22.753 11.9769C22.753 11.9599 22.724 11.4309 22.836 11.0529C22.905 10.9249 22.909 9.96994 22.803 9.71894C22.887 9.71194 22.988 9.68494 23 9.58294C22.612 9.72594 22.521 8.76594 22.148 8.21394C21.786 7.66094 21.337 7.33894 20.868 7.00294C20.9074 6.90495 20.9621 6.81382 21.03 6.73294C20.455 7.02094 19.559 5.97794 18.235 6.05594C17.938 6.08494 17.797 6.10294 17.721 6.28494C17.474 6.30494 17.223 6.36094 17.223 6.68594C17.223 6.76394 17.294 6.90594 17.452 6.90694C17.668 6.96994 17.844 6.92094 17.991 7.22294L18.03 7.53494C18.03 7.53494 17.837 7.28794 17.731 7.24894L17.796 7.11594C17.696 7.05794 17.519 7.10494 17.519 7.10494C17.519 7.10494 17.134 6.92494 16.825 6.97294L16.765 6.72294C16.711 6.87694 16.59 6.86894 16.573 7.01394C16.539 6.90994 16.494 6.78094 16.462 6.67694C16.353 6.82494 16.385 6.98494 16.346 7.13894C16.304 7.17494 16.218 7.17594 16.196 7.07694C16.185 6.95494 16.17 6.94394 16.17 6.79894C16.092 6.93594 15.998 7.00294 15.967 7.23794L15.884 6.97794C15.887 7.28494 15.623 7.46794 15.373 7.68494C15.302 7.81494 15.384 7.81594 15.39 7.88294L15.522 7.94894L15.759 7.93194C15.798 7.98094 15.766 7.98494 15.869 8.01594C16.145 8.09294 16.489 7.76194 16.759 8.28294C16.635 8.38694 16.51 8.62994 16.55 8.67594C16.6 8.67594 16.45 8.74594 16.652 8.68194C16.442 8.88594 16.3 9.15494 16.3 9.17094C16.276 9.22894 16.384 9.16294 16.362 9.26794L16.412 9.26194C15.933 9.77994 16.396 10.3369 16.345 10.6359C16.425 10.7649 16.435 10.6329 16.535 10.6199C16.619 10.9879 16.861 11.2109 17.009 11.5019L16.697 11.5049C16.704 11.6429 16.829 11.7739 16.928 11.8949L16.719 11.9609C16.5842 12.0273 16.4644 12.1205 16.367 12.2349C16.298 12.4029 16.7 12.4429 16.894 12.4729L16.887 12.6759C17.19 12.7049 17.54 12.6149 17.54 12.5979L17.616 12.5389L17.787 12.6329C17.844 12.6329 17.933 12.4049 17.892 12.2299C18.002 12.3609 18.106 12.5719 18.216 12.7039L18.319 12.6899C18.413 12.8389 18.542 12.9869 18.636 13.1359L18.741 13.1759C18.802 13.1549 18.854 13.1479 18.887 13.0279L18.935 13.1119L19.101 12.9979L19.217 12.9749L19.304 13.1169C19.355 13.0979 19.405 12.9869 19.408 12.8689C19.46 12.9719 19.474 12.9639 19.512 12.9909L19.589 12.8289L20.004 13.2169L20.318 13.2349C20.43 13.3109 20.737 13.3589 20.789 13.2359C21.041 13.3439 21.338 13.2219 21.323 13.1019C21.555 13.1939 21.912 13.1319 21.912 13.1169C21.955 13.1119 22.065 13.0039 21.961 12.9229C21.194 12.3889 20.057 11.5049 19.618 11.2919C19.618 11.1339 19.499 10.5649 19.371 10.4089L19.475 10.2349C19.774 10.5139 19.882 10.4869 20.041 10.5309C20.211 10.6659 20.27 10.8709 20.44 11.0579L20.592 11.0859C20.4677 10.7608 20.2793 10.4639 20.038 10.2129C20.202 10.2949 20.474 10.5139 20.656 10.6729C20.776 10.8739 20.811 11.0339 20.921 11.2859C21.001 11.3369 21.083 11.5239 21.072 11.3689C21.053 11.0779 20.848 10.6169 20.848 10.5839C21.174 10.8419 21.17 11.2439 21.269 11.4889C21.352 11.6129 21.394 11.7789 21.43 11.7399L21.334 10.9839L21.278 10.7069C21.519 10.8459 21.605 11.3759 21.718 12.0119C21.718 12.1129 21.759 12.2239 21.753 12.2889C21.805 12.3529 21.864 12.5299 21.863 12.4249C21.863 12.4249 21.863 11.3909 21.792 11.1539C21.774 11.0269 21.822 10.8209 21.822 10.8209C21.91 11.2499 22.004 11.7149 22.093 12.1429V12.4579L22.225 12.5909C22.25 12.3309 22.28 12.0729 22.306 11.8149L22.207 10.8899V10.6259C22.205 10.5329 22.292 10.5499 22.347 10.6559C22.36 10.8829 22.36 11.0599 22.369 11.2859C22.408 11.5439 22.435 11.7329 22.454 12.0619C22.465 12.3279 22.477 12.9659 22.533 12.9549Z" fill="#C1694F" />
                                             </svg>}
-
                                             {idioma === 'English' && <svg className='mr-5' width="36" height="26" viewBox="0 0 36 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M35.445 2C34.752 0.809 33.477 0 32 0H18V2H35.445ZM0 20H36V22H0V20ZM18 12H36V14H18V12ZM18 8H36V10H18V8ZM0 16H36V18H0V16ZM4 26H32C33.477 26 34.752 25.191 35.445 24H0.555C1.248 25.191 2.523 26 4 26ZM18 4H36V6H18V4Z" fill="#B22334" />
                                                 <path d="M0.068 22.679C0.0846667 22.7723 0.104333 22.8647 0.127 22.956C0.153667 23.056 0.184333 23.1547 0.219 23.252C0.308 23.511 0.416 23.761 0.552 23.995L0.555 24H35.445L35.447 23.996C35.5825 23.7609 35.6938 23.5126 35.779 23.255C35.8439 23.067 35.8947 22.8745 35.931 22.679C35.972 22.459 36 22.233 36 22H0C0 22.233 0.028 22.458 0.068 22.679ZM0 18H36V20H0V18ZM0 14V16H36V14H18H0ZM18 10H36V12H18V10ZM18 6H36V8H18V6ZM0.128 3.044C0.153 2.942 0.188 2.845 0.22 2.747C0.185496 2.84477 0.154806 2.94384 0.128 3.044ZM18 4H36C36 3.767 35.972 3.541 35.931 3.32C35.896 3.1241 35.8448 2.93144 35.778 2.744C35.6926 2.48531 35.581 2.23601 35.445 2H18V4Z" fill="#EEEEEE" />
@@ -264,15 +148,12 @@ function Home({ children }) {
                                                 <path d="M2.00098 2.726L2.61898 3.175L2.38298 3.9L2.99998 3.452L3.61798 3.9L3.38198 3.175L3.99998 2.726H3.23598L2.99998 2L2.76498 2.726H2.00098ZM4.00098 4.726L4.61898 5.175L4.38298 5.9L4.99998 5.452L5.61798 5.9L5.38198 5.175L5.99998 4.726H5.23598L4.99998 4L4.76498 4.726H4.00098ZM8.00098 4.726L8.61898 5.175L8.38298 5.9L8.99998 5.452L9.61798 5.9L9.38198 5.175L9.99998 4.726H9.23598L8.99998 4L8.76498 4.726H8.00098ZM12.001 4.726L12.619 5.175L12.383 5.9L13 5.452L13.618 5.9L13.382 5.175L14 4.726H13.236L13 4L12.765 4.726H12.001ZM4.00098 8.726L4.61898 9.175L4.38298 9.9L4.99998 9.452L5.61798 9.9L5.38198 9.175L5.99998 8.726H5.23598L4.99998 8L4.76498 8.726H4.00098ZM8.00098 8.726L8.61898 9.175L8.38298 9.9L8.99998 9.452L9.61798 9.9L9.38198 9.175L9.99998 8.726H9.23598L8.99998 8L8.76498 8.726H8.00098ZM12.001 8.726L12.619 9.175L12.383 9.9L13 9.452L13.618 9.9L13.382 9.175L14 8.726H13.236L13 8L12.765 8.726H12.001ZM6.00098 2.726L6.61898 3.175L6.38298 3.9L6.99998 3.452L7.61798 3.9L7.38198 3.175L7.99998 2.726H7.23598L6.99998 2L6.76498 2.726H6.00098ZM10.001 2.726L10.619 3.175L10.383 3.9L11 3.452L11.618 3.9L11.382 3.175L12 2.726H11.236L11 2L10.765 2.726H10.001ZM14.001 2.726L14.619 3.175L14.383 3.9L15 3.452L15.618 3.9L15.382 3.175L16 2.726H15.236L15 2L14.765 2.726H14.001ZM2.00098 6.726L2.61898 7.175L2.38298 7.9L2.99998 7.452L3.61798 7.9L3.38198 7.175L3.99998 6.726H3.23598L2.99998 6L2.76498 6.726H2.00098ZM6.38298 7.9L6.99998 7.452L7.61798 7.9L7.38198 7.175L7.99998 6.726H7.23598L6.99998 6L6.76498 6.726H6.00098L6.61898 7.175L6.38298 7.9ZM10.001 6.726L10.619 7.175L10.383 7.9L11 7.452L11.618 7.9L11.382 7.175L12 6.726H11.236L11 6L10.765 6.726H10.001ZM14.001 6.726L14.619 7.175L14.383 7.9L15 7.452L15.618 7.9L15.382 7.175L16 6.726H15.236L15 6L14.765 6.726H14.001ZM2.00098 10.726L2.61898 11.175L2.38298 11.9L2.99998 11.452L3.61798 11.9L3.38198 11.175L3.99998 10.726H3.23598L2.99998 10L2.76498 10.726H2.00098ZM6.38298 11.9L6.99998 11.452L7.61798 11.9L7.38198 11.175L7.99998 10.726H7.23598L6.99998 10L6.76498 10.726H6.00098L6.61898 11.175L6.38298 11.9ZM10.001 10.726L10.619 11.175L10.383 11.9L11 11.452L11.618 11.9L11.382 11.175L12 10.726H11.236L11 10L10.765 10.726H10.001ZM14.001 10.726L14.619 11.175L14.383 11.9L15 11.452L15.618 11.9L15.382 11.175L16 10.726H15.236L15 10L14.765 10.726H14.001Z" fill="white" />
                                             </svg>}
                                             {idioma}
-
-
                                         </button>
                                         <button href="#" className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  ${theme === 'light' ? ' text-gray-800' : 'text-gray-800'} dark:text-white dark:hover:bg-gray-800 `}>
                                             <svg className={`h-6 w-6  mr-5 text-[12px] ${theme === 'light' ? 'stroke-black text-black' : 'stroke-black text-white '}  dark:fill-white dark:stroke-white`} width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M21 5H18M13.75 3V7M13 5H3M7 12H3M10.75 10V14M21 12H11M21 19H18M13.75 17V21M13 19H3" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                             Config
-
                                         </button>
                                         <button href="#" onClick={handlerSignOut} className={`flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100  ${theme === 'light' ? ' text-gray-800' : 'text-gray-800'} dark:text-white dark:hover:bg-gray-800 `}>
                                             <svg className={`h-6 w-6  mr-5 text-[12px] ${theme === 'light' ? 'stroke-black text-black' : 'stroke-black text-white '}  dark:fill-white dark:stroke-white`} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -283,18 +164,14 @@ function Home({ children }) {
                                     </div>
                                 </div>
                             </div>
-
                             {/* --------------------------------------------------THEME */}
                             <div className=''>
-
                                 <button className={`ml-5 mt-2  ${theme === 'light' ? ' text-black' : 'stroke-white'} dark:stroke-white`}
                                     onClick={(e) => { e.stopPropagation(); setIsOpen2(!isOpen2); setIsOpen(false) }}>
                                     <svg width="30" height="30" viewBox="0 0 24 24" className={` ${theme === 'light' ? 'stroke-black text-black' : ' text-white '}`} xmlns="http://www.w3.org/2000/svg">
                                         <path d="M12 6.826C12.2422 6.826 12.4744 6.72981 12.6456 6.55859C12.8168 6.38737 12.913 6.15514 12.913 5.913C12.913 5.67086 12.8168 5.43863 12.6456 5.26741C12.4744 5.09619 12.2422 5 12 5C11.7579 5 11.5257 5.09619 11.3544 5.26741C11.1832 5.43863 11.087 5.67086 11.087 5.913C11.087 6.15514 11.1832 6.38737 11.3544 6.55859C11.5257 6.72981 11.7579 6.826 12 6.826ZM18.088 6.826C18.2079 6.826 18.3266 6.80238 18.4374 6.7565C18.5482 6.71062 18.6488 6.64337 18.7336 6.55859C18.8184 6.47381 18.8856 6.37316 18.9315 6.26239C18.9774 6.15162 19.001 6.0329 19.001 5.913C19.001 5.7931 18.9774 5.67438 18.9315 5.56361C18.8856 5.45284 18.8184 5.35219 18.7336 5.26741C18.6488 5.18263 18.5482 5.11538 18.4374 5.0695C18.3266 5.02362 18.2079 5 18.088 5C17.8459 5 17.6137 5.09619 17.4424 5.26741C17.2712 5.43863 17.175 5.67086 17.175 5.913C17.175 6.15514 17.2712 6.38737 17.4424 6.55859C17.6137 6.72981 17.8459 6.826 18.088 6.826ZM5.91202 6.826C6.03192 6.826 6.15064 6.80238 6.26141 6.7565C6.37218 6.71062 6.47283 6.64337 6.55761 6.55859C6.64239 6.47381 6.70964 6.37316 6.75553 6.26239C6.80141 6.15162 6.82502 6.0329 6.82502 5.913C6.82502 5.7931 6.80141 5.67438 6.75553 5.56361C6.70964 5.45284 6.64239 5.35219 6.55761 5.26741C6.47283 5.18263 6.37218 5.11538 6.26141 5.0695C6.15064 5.02362 6.03192 5 5.91202 5C5.66988 5 5.43766 5.09619 5.26643 5.26741C5.09521 5.43863 4.99902 5.67086 4.99902 5.913C4.99902 6.15514 5.09521 6.38737 5.26643 6.55859C5.43766 6.72981 5.66988 6.826 5.91202 6.826ZM12 12.913C12.2422 12.913 12.4744 12.8168 12.6456 12.6456C12.8168 12.4744 12.913 12.2421 12.913 12C12.913 11.7579 12.8168 11.5256 12.6456 11.3544C12.4744 11.1832 12.2422 11.087 12 11.087C11.7579 11.087 11.5257 11.1832 11.3544 11.3544C11.1832 11.5256 11.087 11.7579 11.087 12C11.087 12.2421 11.1832 12.4744 11.3544 12.6456C11.5257 12.8168 11.7579 12.913 12 12.913ZM18.088 12.913C18.3302 12.913 18.5624 12.8168 18.7336 12.6456C18.9048 12.4744 19.001 12.2421 19.001 12C19.001 11.7579 18.9048 11.5256 18.7336 11.3544C18.5624 11.1832 18.3302 11.087 18.088 11.087C17.8459 11.087 17.6137 11.1832 17.4424 11.3544C17.2712 11.5256 17.175 11.7579 17.175 12C17.175 12.2421 17.2712 12.4744 17.4424 12.6456C17.6137 12.8168 17.8459 12.913 18.088 12.913ZM5.91202 12.913C6.15417 12.913 6.38639 12.8168 6.55761 12.6456C6.72883 12.4744 6.82502 12.2421 6.82502 12C6.82502 11.7579 6.72883 11.5256 6.55761 11.3544C6.38639 11.1832 6.15417 11.087 5.91202 11.087C5.66988 11.087 5.43766 11.1832 5.26643 11.3544C5.09521 11.5256 4.99902 11.7579 4.99902 12C4.99902 12.2421 5.09521 12.4744 5.26643 12.6456C5.43766 12.8168 5.66988 12.913 5.91202 12.913ZM12 19C12.2422 19 12.4744 18.9038 12.6456 18.7326C12.8168 18.5614 12.913 18.3291 12.913 18.087C12.913 17.8449 12.8168 17.6126 12.6456 17.4414C12.4744 17.2702 12.2422 17.174 12 17.174C11.7579 17.174 11.5257 17.2702 11.3544 17.4414C11.1832 17.6126 11.087 17.8449 11.087 18.087C11.087 18.3291 11.1832 18.5614 11.3544 18.7326C11.5257 18.9038 11.7579 19 12 19ZM18.088 19C18.3302 19 18.5624 18.9038 18.7336 18.7326C18.9048 18.5614 19.001 18.3291 19.001 18.087C19.001 17.8449 18.9048 17.6126 18.7336 17.4414C18.5624 17.2702 18.3302 17.174 18.088 17.174C17.8459 17.174 17.6137 17.2702 17.4424 17.4414C17.2712 17.6126 17.175 17.8449 17.175 18.087C17.175 18.3291 17.2712 18.5614 17.4424 18.7326C17.6137 18.9038 17.8459 19 18.088 19ZM5.91202 19C6.15417 19 6.38639 18.9038 6.55761 18.7326C6.72883 18.5614 6.82502 18.3291 6.82502 18.087C6.82502 17.8449 6.72883 17.6126 6.55761 17.4414C6.38639 17.2702 6.15417 17.174 5.91202 17.174C5.66988 17.174 5.43766 17.2702 5.26643 17.4414C5.09521 17.6126 4.99902 17.8449 4.99902 18.087C4.99902 18.3291 5.09521 18.5614 5.26643 18.7326C5.43766 18.9038 5.66988 19 5.91202 19Z" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </button>
-
-
                                 <div
                                     className={`origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transition-all duration-300 text-white  ${theme === 'light' ? ' bg-white' : 'bg-white'} dark:bg-gray-900 ${isOpen2 ? 'opacity-100 scale-100 z-30 ' : 'opacity-0 scale-0 -z-10'
                                         }`}
@@ -316,23 +193,13 @@ function Home({ children }) {
                                 </div>
                             </div>
                         </div>
-
                     </nav>
-
                     <div className="lg:px-[20px] pt-[85px] pb-[65px] md:pt-[65px] md:pb-0 h-screen w-full overflow-y-auto">
                         {children}
                     </div>
-                    {/* {user && user !== undefined && <div className="fixed bottom-0  z-30 w-full h-[65px] bg-[#2A52BE] rounded-t-[40px] border-t-[1px] border-gray-50 border- lg:hidden">
-              <BottomNavigation rol={user.rol} />
-            </div>} */}
-
                 </main>
             </div>
-
-
-
         </div>
-
     )
 }
 

@@ -8,6 +8,8 @@ import TableReporteDiario from "@/components/TableReporteDiario";
 
 import TableReporteDiarioVerificacion from "@/components/TableReporteDiarioVerificacion";
 
+import ReporteDeAccesos from "@/components/ReporteDeAccesos";
+
 import {
   encabezadoCasosDeCobranza,
   encabezadoIncurrirEnUnaEstaciónDeTrabajo,
@@ -53,6 +55,12 @@ export default function Home() {
               className="max-h-[calc(100vh-40px)] pb-2 overflow-y-auto relative scroll-smooth  "
               ref={refFirst}
             >
+
+
+
+
+
+
               {/* ---------------------------------COLECCION DE CASOS--------------------------------- */}
               {item === "Casos de Cobranza" && (
                 <Table
@@ -152,16 +160,7 @@ export default function Home() {
                 />
               )}
               {/* --------------------------------- AUDITORIA Y CONTROL DE CALIDAD --------------------------------- */}
-              {/* {item === "Registro Histórico" && (
-                <TableTracking
-                  access={true}
-                  headArray={encabezadoRegistroHistorico}
-                  dataArray={[""]}
-                  dataFilter={(i) => true}
-                  local={"http://localhost:3000/api/loans/verification"}
-                  server={"https://api.fastcash-mx.com/api/loans/verification"}
-                />
-              )} */}
+          
               {item === "Registro Histórico" && (
                 <Table
                   access={true}
@@ -184,16 +183,6 @@ export default function Home() {
               )}
               {item === "Control de Cumplimiento" && (
                 <TableControl />
-                // <Table
-                //   access={true}
-                //   headArray={encabezadoControlDeCumplimiento}
-                //   dataArray={[""]}
-                //   dataFilter={(i) => true}
-                //   local={
-                //     "http://localhost:3000/api/multas/multas"
-                //   }
-                //   server={"https://api.fastcash-mx.com/api/multas/multas"}
-                // />
               )}
               {item?.toLowerCase().includes("auditoria") && (
                 <Table
@@ -243,7 +232,11 @@ export default function Home() {
                 user.rol === "Asesor de Auditoria"
               ) &&
                 (seccion === "Auditoria" || seccion === "auditoria") &&
-                item === "Reporte diario" && <TableReporteDiarioAuditoria />}
+                item === "Reporte diario" && <TableReporteDiarioAuditoria />
+              }
+              {item === "Atención al Cliente" && seccion === "auditoria" && (
+                <TableAtencionAlCliente />
+              )}
 
               {item === "Lista final" && (
                 <Table
@@ -258,6 +251,7 @@ export default function Home() {
                   }
                 />
               )}
+
               {/* --------------------------------- GESTION DE ACCESOS --------------------------------- */}
               {item === "Gestión de administradores" && (
                 <Table
@@ -325,9 +319,14 @@ export default function Home() {
                   }
                 />
               )}
-              {item === "Atención al Cliente" && seccion === "auditoria" && (
-                <TableAtencionAlCliente />
+
+
+              {item === "Reporte de accesos" && (
+                <ReporteDeAccesos />
               )}
+
+
+
               {/* --------------------------------- TABLAS EN MAS DE DOS SECCIONES --------------------------------- */}
               {(user?.rol === "Admin" ||
                 user.rol === "Super Admin" ||
@@ -341,6 +340,10 @@ export default function Home() {
                 )}
             </div>
           )}
+<<<<<<< HEAD
+=======
+         
+>>>>>>> 269401431350a970b1bd361ff08fc877b297110a
         </div>
       </main>
     </div>

@@ -18,8 +18,7 @@ export default function TableControlDeCasos() {
             .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
             .join("&");
 
-        // console.log("querys: ", urlParams);
-        const baseUrl = window?.location?.href?.includes("localhost")
+            const baseUrl = window?.location?.href?.includes("localhost")
             ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Pagado`
             : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Pagado`;
 
@@ -37,8 +36,6 @@ export default function TableControlDeCasos() {
             console.error("Error al obtener datos: ", error)
             setLoader(false);
         }
-        // const result = await res.json();
-        // console.log(data)
     }
     return (
         <div>TableControlDeCasos</div>

@@ -16,6 +16,7 @@ import Link from 'next/link';
 import ReCAPTCHA from "react-google-recaptcha";
 import { postTracking } from '../service/TrackingApi/tracking.service';
 import { obtenerFechaMexicoISO } from '@/utils/getDates';
+// import { io } from "socket.io-client";
 
 
 
@@ -28,34 +29,54 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState(null);
   const recaptchaRef = React.useRef();
 
+
+  // const socket = io(
+  //   window?.location?.href.includes("localhost")
+  //     ? "http://localhost:4000"
+  //     : "https://api.fastcash-mx.com" // Cambia esto al servidor WebSockets real
+  // );
+  
   const onSubmitWithReCAPTCHA = async (e) => {
     e.preventDefault();
-    console.log('Login')
-
-    if (captcha.length < 10 && !window?.location?.href.includes('localhost')) {
-      setErrorMessage('Por favor, verifica el captcha')
-      return
+    console.log("Login");
+  
+    if (captcha.length < 10 && !window?.location?.href.includes("localhost")) {
+      setErrorMessage("Por favor, verifica el captcha");
+      return;
     }
-
-
+  
     try {
-      let cuenta = e.target[0].value
-      let password = e.target[1].value
+      let cuenta = e.target[0].value;
+      let password = e.target[1].value;
       const response = await axios.post(
-        window?.location?.href.includes('localhost')
-          ? 'http://localhost:3002/api/authSystem/login'
-          : 'https://api.fastcash-mx.com/api/authSystem/login', {
-        cuenta,
-        password,
-      });
-
+        window?.location?.href.includes("localhost")
+          ? "http://localhost:3002/api/authSystem/login"
+          : "https://api.fastcash-mx.com/api/authSystem/login",
+        {
+          cuenta,
+          password,
+        }
+      );
+  
       if (response.status === 200) {
-        console.log('response.data.user', response.data.user)
-        setUser({ rol: response.data.user.tipoDeGrupo })
-        setUserDB(response.data.user)
-        // Guardar el JWT en sessionStorage
-        sessionStorage.setItem('token', response.data.token);
-
+        console.log("response.data.user", response.data.user);
+        setUser({ rol: response.data.user.tipoDeGrupo });
+        setUserDB(response.data.user);
+  
+        // 🔹 Guardar el JWT en sessionStorage
+        sessionStorage.setItem("token", response.data.token);
+  
+        // 🔹 Conectar WebSockets y registrar el usuario
+        // socket.emit("register", response.data.user.id);
+  
+        // 🔹 Escuchar el evento de cierre de sesión en tiempo real
+        // socket.on("logout", () => {
+        //   alert("Se inició sesión en otro dispositivo. Cerrando sesión...");
+        //   sessionStorage.removeItem("token");
+        //   socket.disconnect();
+        //   router.push("/login"); // Redirigir al login
+        // });
+  
         const trackingData = {
           descripcionDeExcepcion: "Inicio de sesión exitoso",
           cuentaOperadora: response.data.user.cuenta,
@@ -63,27 +84,28 @@ export default function Home() {
           codigoDeSistema: "Sistema FastCash",
           codigoDeOperacion: "LOGIN_SUCCESS",
           contenidoDeOperacion: `El usuario ${response.data.user.cuenta} inició sesión correctamente.`,
-          fechaDeOperacion: obtenerFechaMexicoISO()
+          fechaDeOperacion: obtenerFechaMexicoISO(),
         };
-
+  
         await postTracking(trackingData);
-        router.push('/Home')
+        router.push("/Home");
       }
     } catch (error) {
       const trackingData = {
-        descripcionDeExcepcion: error.response?.data?.message || "Error desconocido al iniciar sesión",
+        descripcionDeExcepcion:
+          error.response?.data?.message || "Error desconocido al iniciar sesión",
         cuentaOperadora: e.target[0].value,
         cuentaPersonal: "No disponible",
         codigoDeSistema: "Sistema FastCash",
         codigoDeOperacion: "LOGIN_FAILED",
         contenidoDeOperacion: `El usuario ${e.target[0].value} con la contraseña ${e.target[1].value} intentó ingresar al sistema con las credenciales proporcionadas.`,
-        fechaDeOperacion: obtenerFechaMexicoISO()
+        fechaDeOperacion: obtenerFechaMexicoISO(),
       };
       await postTracking(trackingData);
-      setErrorMessage(error.response?.data?.message || 'Error al iniciar sesión');
+      setErrorMessage(error.response?.data?.message || "Error al iniciar sesión");
     }
-
-  }
+  };
+  
 
   function onChange(value) {
     setCaptcha(value);

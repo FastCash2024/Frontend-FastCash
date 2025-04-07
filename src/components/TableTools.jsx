@@ -446,10 +446,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                                     {segmento} <br /> Segmento.
                                                 </p>
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
-                                                    {casosPagados}/{casosTotal} <br /> Casos cobrados.
+                                                    {casosPagados}/{casosTotal} <br /> C. Cobrados
                                                 </p>
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
-                                                    {casosFueraDeHorario}/{casosTotal} <br /> Casos cobrados FH.
+                                                    {casosFueraDeHorario}/{casosTotal} <br /> C. Cobrados FH
                                                 </p>
                                             </div>
                                             <div className="flex-grow flex items-center justify-center">
