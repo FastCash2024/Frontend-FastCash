@@ -1,7 +1,7 @@
 'use client'
 
-import { Document, Page, View, Text, Image, PDFViewer, StyleSheet, Font } from "@react-pdf/renderer";
-import { useState, useRef, useEffect } from 'react'
+import { Document, Page, View, Text, Image, StyleSheet, Font } from "@react-pdf/renderer";
+import { useState, useEffect } from 'react'
 import { PDFDownloadLink } from "@react-pdf/renderer";
 import Button from '../components/Button'
 import { useAppContext } from '@/context/AppContext.js'
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 })
 
 const PDFView = () => {
-    const { user, userDB, setUserData, setUserSuccess, transactionDB, transferencia, fecha, setFecha, QRurl } = useAppContext()
+    const { transactionDB, QRurl } = useAppContext()
 
     const [isCliente, setisCliente] = useState(false);
 

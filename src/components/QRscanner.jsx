@@ -5,12 +5,12 @@ import { useAppContext } from '@/context/AppContext.js'
 import { getSpecificData } from '@/firebase/database'
 
 const Component = () => {
-  const { setRecetaDBP, setWebScann, setFilter, setFilterQR, setUserSpecificData} = useAppContext()
+  const { setWebScann, setFilterQR } = useAppContext()
 
   const handlerQR = async (result) => {
     if (result) {
       console.log(result)
-      const data = await getSpecificData(`envio/${result}`, setFilterQR)
+      await getSpecificData(`envio/${result}`, setFilterQR)
       setWebScann(false)
     }
   }

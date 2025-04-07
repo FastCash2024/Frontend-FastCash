@@ -6,7 +6,7 @@ import { useTheme } from '@/context/ThemeContext';
 
 const WifiStrength = () => {
     const [wifiStrength, setWifiStrength] = useState('Calculando...');
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     useEffect(() => {
       const updateWifiStrength = () => {

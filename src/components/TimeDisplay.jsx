@@ -4,7 +4,7 @@ import { useTheme } from '@/context/ThemeContext';
 
 const TimeDisplay = () => {
   const [dateTime, setDateTime] = useState({ time: '', date: '' });
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   
   useEffect(() => {
     const intervalId = setInterval(() => {

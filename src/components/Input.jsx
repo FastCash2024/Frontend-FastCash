@@ -5,7 +5,7 @@ import { useTheme } from '@/context/ThemeContext';
 
 
 export default function Input({click, step, value, type, defaultVlue, name, onChange,reference, placeholder, required}) {
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
 
     const router = useRouter()
 

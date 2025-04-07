@@ -4,20 +4,14 @@ import { useTheme } from '@/context/ThemeContext';
 import { useAppContext } from '@/context/AppContext'
 import SelectSimple from '@/components/SelectSimple'
 import { useSearchParams } from 'next/navigation'
-import Velocimetro from '@/components/Velocimetro'
 import Button from '@/components/Button'
 import Link from 'next/link';
 
-import {
-    refunds, historial,
-    menuArray, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
-} from '@/constants/index'
 import MultipleInput from '@/components/MultipleInput';
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, userDB, setUserProfile, users, checkedArr, setModal, loader } = useAppContext()
+    const { user, checkedArr, setModal } = useAppContext()
     const searchParams = useSearchParams()
-    const [copied, setCopied] = useState(false);
-    const { theme, toggleTheme } = useTheme();
+    const { theme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
@@ -108,7 +102,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
             void fetchCustomersFlow();
         }
     }, [item])
-    console.log(user)
+
     return (
         <div>
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}

@@ -1,30 +1,22 @@
 'use client'
 import { useAppContext } from '@/context/AppContext'
 import React, { useState, useEffect, useRef } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
 
 import Loader from '@/components/Loader'
 import SelectSimple from '@/components/SelectSimple'
 
-import { useSearchParams } from 'next/navigation'
 import dynamic from 'next/dynamic';
 import { useTheme } from '@/context/ThemeContext';
-import InputPass from '@/components/InputPass'
-import Table from '@/components/Table'
 
 // import Velocimetro from '@/components/Velocimetro'
-const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });
 import FormAddAccount from '@/components/formModals/FormAddAccount'
 import FormAddMasiveAccounts from '@/components/formModals/FormAddMasiveAccounts'
 import FormAddPersonalAccount from '@/components/formModals/FormAddPersonalAccount'
-import FormAddPersonalData from '@/components/formModals/FormAddPersonalData'
 import FormAddVerification from '@/components/formModals/FormAddVerification'
 import FormAdminAccount from '@/components/formModals/FormAdminAccount'
 import FormAddApplication from '@/components/formModals/FormAddApplication'
 import FormDistributionCases from '@/components/formModals/FormDistributionCases'
 import FormAsignarAsesor from '@/components/formModals/FormAsignarAsesor'
-import TableTools from '@/components/TableTools'
 import FormAsignarCuenta from '@/components/formModals/FormAsignarCuenta'
 import FormAdminAsesor from '@/components/formModals/FormAdminAsesor'
 import FormRestablecimiento from '@/components/formModals/FormRestablecimiento'
@@ -33,35 +25,8 @@ import FormSendSMS from "@/components/formModals/FormSendSms"
 import FormAttendance from "@/components/formModals/FormAttendance"
 import FormTimeEntry from "@/components/formModals/FormTimeEntry"
 
-import {
-    refunds, historial,
-    menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
-} from '@/constants/index'
 import { useRouter } from 'next/navigation';
-import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
-import Speedometer, {
-    Background,
-    Arc, DangerPath,
-    Needle,
-    Progress,
-    Marks,
-    Indicator,
-} from 'react-speedometer';
-import {
-    encabezadoCasosDeCobranza,
-    encabezadoIncurrirEnUnaEstaciónDeTrabajo,
-    encabezadoGestionDeCuentasDeColección,
-    encabezadoRegistroDeSMS,
-    encabezadoCobroYValance,
-    encabezadoRegistroHistorico,
-    encabezadoMonitoreoDeTransacciones,
-    encabezadoControlDeCumplimiento,
-    encabezadoAuditoriaPeriodica,
-    encabezadoCasosDeVerificacion,
-    encabezadoListaFinal,
-    encabezadoGestionDeAccesos,
-    encabezadoDeAplicaciones
-} from '@/constants/TableHeaders.jsx'
+
 import FormEditAccount from '@/components/formModals/FormEditAccount'
 import FormAddAuditor from '@/components/formModals/FormAddAuditor'
 import FormUpdateAplication from '@/components/formModals/FormUpdateApplication'
@@ -89,107 +54,14 @@ import FormAddComisionVerificacion from './formModals/FormAddComisionVerificacio
 import FormUpdateComisionVerification from './formModals/FormUpdateComisionVerification'
 
 export default function Home() {
-    const [selectedLeft, setSelectedLeft] = useState(-1);
-    const [selectedRight, setSelectedRight] = useState(-1);
 
     const router = useRouter()
-    const [texto, setTexto] = useState('');
-    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
-    const [filter, setFilter] = useState({
-        nombreProducto: 'Todo',
-        ['Minimo dias vencido']: 0,
-        ['Maximo dias vencido']: 10000000000,
-        ['Estado de reembolso']: '',
-        ['Cliente nuevo']: '',
-        ['Nombre del cliente']: '',
-        ['Número de teléfono']: ''
-    })
-    const [filter2, setFilter2] = useState({
-        nombreProducto: 'Todo',
-        ['Minimo dias vencido']: 0,
-        ['Maximo dias vencido']: 10000000000,
-        ['Estado de reembolso']: '',
-        ['Cliente nuevo']: '',
-        ['Nombre del cliente']: '',
-        ['Número de teléfono']: ''
-    })
-    const [state, setState] = useState({})
+    const { user, users, modal, setModal, loader } = useAppContext()
+
     const [editItem, setEditItem] = useState(undefined)
-    const [remesasDB, setRemesasDB] = useState(undefined)
-    const refFirst = useRef(null);
-    const [profileIMG, setProfileIMG] = useState('')
-    const searchParams = useSearchParams()
-    const [copied, setCopied] = useState(false);
-    const { theme, toggleTheme } = useTheme();
-    const seccion = searchParams.get('seccion')
-    const item = searchParams.get('item')
-    // let menu = user?.rol ? menuArray[user.rol].filter(i => i.hash === seccion) : ''
 
-    function sortArray(x, y) {
-        if (x['translation']['spa']['common'].toLowerCase() < y['translation']['spa']['common'].toLowerCase()) { return -1 }
-        if (x['translation']['spa']['common'].toLowerCase() > y['translation']['spa']['common'].toLowerCase()) { return 1 }
-        return 0
-    }
-    function handlerSelect(name, i, uuid) {
-        setState({ ...state, [uuid]: { [name]: i } })
-    }
+    const { theme } = useTheme();
 
-    function handlerSelected(position, index) {
-        if (position === 'LEFT') {
-            selectedLeft === index ? setSelectedLeft(-1) : setSelectedLeft(index)
-        }
-        if (position === 'RIGHT') {
-            selectedLeft === index ? setSelectedRight(-1) : setSelectedRight(index)
-        }
-    }
-    const prev = () => {
-        requestAnimationFrame(() => {
-            if (refFirst.current) {
-                const scrollLeft = refFirst.current.scrollLeft;
-                // console.log(scrollLeft);
-                const itemWidth = screen.width - 50;
-                refFirst.current.scrollLeft = scrollLeft - itemWidth;
-            }
-        });
-    };
-    const next = () => {
-        requestAnimationFrame(() => {
-            if (refFirst.current) {
-                const scrollLeft = refFirst.current.scrollLeft;
-                // console.log(scrollLeft);
-                const itemWidth = screen.width - 50;
-                // console.log(itemWidth);
-                refFirst.current.scrollLeft = scrollLeft + itemWidth;
-            }
-        });
-    };
-    function handlerSelectClick(name, i, uuid) {
-        setFilter({ ...filter, [name]: i })
-    }
-    // console.log(filter)
-    function onChangeHandler(e) {
-        // console.log(e.target.value)
-        setFilter({ ...filter, [e.target.name]: e.target.value })
-    }
-    function formatDate(date) {
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-
-        return `${day}/${month}/${year}`;
-    }
-    function getDay(dias) {
-        var dt = new Date();
-
-
-        const diasSemana = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado",];
-
-        // // console.log('Fecha Actual: ' + dt);
-        //restando los dias deseados
-        const dat = dt.setDate(dt.getDate() + dias);
-        const index = new Date(dat).getDay()
-        return { val: formatDate(dt), day: diasSemana[index] }
-    }
     const [value, setValue] = useState({})
 
     function handlerSelectClick2(name, i, uuid) {
@@ -198,18 +70,8 @@ export default function Home() {
         } else {
             setValue({ ...value, [name]: i })
         }
-
     }
 
-    const [selectedCheckbox, setSelectedCheckbox] = useState(null);
-
-    function handleCheckboxChange(index) {
-        setSelectedCheckbox(index);
-    };
-    const [isGreen, setIsGreen] = useState(true);
-    const handleClick = () => {
-        setIsGreen(!isGreen);
-    };
     const optionsArray = [
         "Por favor elige",
         "Sin contactar",
@@ -220,12 +82,6 @@ export default function Home() {
         "Promete a pagar",
         "Pagará pronto"
     ];
-
-
-    function handlerDistribution() {
-        Object.values(rolesMenuResult_set).map((i) => { return <a href={`https://m1.prestamomaximo.mx/M1_system/view/main/index.html?time=1731468668303&auditor=M1-fydi01/?v=1731468668303#${i.url}?v=1731468668303`}></a> })
-    }
-
 
     useEffect(() => {
         user === undefined && router.push('/')
@@ -498,10 +354,10 @@ export default function Home() {
             }
             {
             }
-           { modal === 'SMS' && <FormSendSMS />}
+            {modal === 'SMS' && <FormSendSMS />}
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
 
-            {modal === 'Asignar Cuenta Cobrador' && <FormAsignarCuenta  query='Asesor de Cobranza' cuenta={users} />}
+            {modal === 'Asignar Cuenta Cobrador' && <FormAsignarCuenta query='Asesor de Cobranza' cuenta={users} />}
             {modal === 'Registrar Pago' && <FormAddPago />}
             {modal === 'Extension' && <FormAddExtension />}
 
@@ -513,7 +369,7 @@ export default function Home() {
             {modal === 'Registrar Cobor y Blance' && <FormEditCyB />}
             {modal === 'Añadir aplicacion' && <FormAddApplication />}
             {modal === 'Actualizar aplicacion' && <FormUpdateAplication />}
-            {modal === 'Eliminar aplicacion' && <ModalDeleteApplication  />}
+            {modal === 'Eliminar aplicacion' && <ModalDeleteApplication />}
             {modal === 'Registrar Auditoria Tracking' && <FormAddAuditor />}
 
             {/* ---------------------------------'VERIFICACION DE CREDITOS' --------------------------------- */}
@@ -527,13 +383,13 @@ export default function Home() {
             {modal === 'Restablecimiento Masivo Cuenta' && <FormRestablecimientoCuenta seccion="verificacion total" />}
 
             {modal === 'Asignar Asesor' && <FormAsignarAsesor />}
-            {modal === 'Asignar Cuenta' && <FormAsignarCuenta query="Asesor de Verificación" cuenta="cuentaVerificador"/>}
+            {modal === 'Asignar Cuenta' && <FormAsignarCuenta query="Asesor de Verificación" cuenta="cuentaVerificador" />}
             {modal === 'Asignar Cuenta Auditoria' && <FormAsignarCuentaAuditor />}
 
-            {  modal === 'Distribuir Casos' && <FormDistributionCases query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
-            {  modal === 'Distribuir Casos Segmento' && <FormDistributtonCasesSegment query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
-            {  modal === 'Restablecimiento Masivo Auditoria' && <FormRestablecimientoAuditors seccion="auditoria" />}
-            {  modal === 'Distribuir Casos Auditoria' && <FormDistributionAuditors query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
+            {modal === 'Distribuir Casos' && <FormDistributionCases query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
+            {modal === 'Distribuir Casos Segmento' && <FormDistributtonCasesSegment query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
+            {modal === 'Restablecimiento Masivo Auditoria' && <FormRestablecimientoAuditors seccion="auditoria" />}
+            {modal === 'Distribuir Casos Auditoria' && <FormDistributionAuditors query='?tipoDeGrupo=Asesor%20de%20Verificación' estadoDeCredito='Dispersado' tipoDeGrupo={user.tipoDeGrupo} />}
             {modal === 'Registrar Verificacion' && <FormAddVerification />}
             {modal === 'Registrar Cobranza' && <FormAddCobranza />}
             {modal === 'Añadir cuenta masivas' && <FormAddMasiveAccounts />}
@@ -548,13 +404,13 @@ export default function Home() {
             {/* ---------------------------------'GESTION DE ACCESOS' --------------------------------- */}
 
             {modal === 'Asistencia' && <FormAttendance />}
-            {modal === 'Hora de Entrada' && <FormTimeEntry/>}
+            {modal === 'Hora de Entrada' && <FormTimeEntry />}
             {/* ---------------------------------'GESTION DE APLICACION' --------------------------------- */}
 
             {modal === 'Modal Agregar Tipo Aplicaion' && <FormAddTipoApp />}
             {modal === 'Modal Editar Tipo Aplicaion' && <FormUpdateTipoApp />}
             {modal === 'Eliminar tipo aplicacion' && <ModalDeleteTipoApp />}
-            
+
             {/* ---------------------------------'GESTION DE MULTAS' --------------------------------- */}
 
             {modal === 'Multar cuenta' && <FormAddMulta />}

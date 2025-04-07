@@ -2,17 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 
-
 export default function Button({click, type, name, onChange,reference, minLength, pattern, placeholder, styled, title, required}) {
 
     const router = useRouter()
-
-
-    function handlerButton(e) {
-        e.preventDefault(e)
-        router.push(click)
-    }
-
 
     return (
         <input

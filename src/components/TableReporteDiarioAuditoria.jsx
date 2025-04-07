@@ -6,7 +6,7 @@ import { Paginator } from './Paginator'
 import { today } from '@/utils/getDates'
 
 export default function TableReporteDiarioAuditoria() {
-  const { loader, setCheckedArr, checkedArr, setLoader, user, userDB } = useAppContext()
+  const { loader, setCheckedArr, checkedArr, setLoader, user } = useAppContext()
   const [details, setDetails] = useState([])
   const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,7 +17,6 @@ export default function TableReporteDiarioAuditoria() {
   const seccion = searchParams.get('seccion')
   const item = searchParams.get('item')
   const [selectedLeft, setSelectedLeft] = useState(-1);
-  const [selectedRight, setSelectedRight] = useState(-1);
   const [cases, setCases] = useState([]);
   const [totales, setTotales] = useState({})
 
@@ -69,9 +68,6 @@ export default function TableReporteDiarioAuditoria() {
       setLoader(false);
     }
   }
-
-  console.log("cases: ", cases);
-
 
   async function handlerFetchDetails() {
 
@@ -176,9 +172,6 @@ export default function TableReporteDiarioAuditoria() {
   useEffect(() => {
     setCheckedArr([])
   }, [])
-
-  console.log("array: ", checkedArr);
-
 
   return (
     <>

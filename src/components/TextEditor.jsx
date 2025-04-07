@@ -3,16 +3,9 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-quill/dist/quill.bubble.css';
 import 'react-quill/dist/quill.core.css';
 import React, { useState, useEffect } from 'react';
-// import 'react-quill/dist/quill.Bubble.css';
 import dynamic from 'next/dynamic'
 
 const ReactQuill = dynamic(async () => await import("react-quill"), { ssr: false })
-// import ReactQuill from 'react-quill';
-// var FontAttributor = Quill.import('attributors/class/font');
-// FontAttributor.whitelist = [
-//   'sofia', 'slabo', 'roboto', 'inconsolata', 'ubuntu'
-// ];
-// Quill.register(FontAttributor, true);
 
 export default function TextEditor({ value, setValue, edit }) {
     const [isLoading, setIsLoading] = useState(false)

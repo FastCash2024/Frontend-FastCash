@@ -1,126 +1,24 @@
 "use client";
 import { useAppContext } from "@/context/AppContext";
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-
-import Loader from "@/components/Loader";
-import SelectSimple from "@/components/SelectSimple";
 
 import { useSearchParams } from "next/navigation";
-import dynamic from "next/dynamic";
 import { useTheme } from "@/context/ThemeContext";
-import InputPass from "@/components/InputPass";
-import Table from "@/components/Table";
-// import Velocimetro from '@/components/Velocimetro'
-const Velocimetro = dynamic(() => import("@/components/Velocimetro"), {
-  ssr: false,
-});
-import FormAddAccount from "@/components/formModals/FormAddAccount";
-import FormAddMasiveAccounts from "@/components/formModals/FormAddMasiveAccounts";
-import FormAddPersonalAccount from "@/components/formModals/FormAddPersonalAccount";
-import FormAddPersonalData from "@/components/formModals/FormAddPersonalData";
-import FormAddVerification from "@/components/formModals/FormAddVerification";
-import FormAdminAccount from "@/components/formModals/FormAdminAccount";
-
-import TableTools from "@/components/TableTools";
-
-import Alert from "@/components/Alert";
 
 import {
-  refunds,
-  historial,
   menuArray,
-  filtro_1,
-  rangesArray,
-  cobrador,
-  filterCliente,
-  factura,
-  Jumlah,
-  estadoRembolso,
 } from "@/constants/index";
 import { useRouter } from "next/navigation";
-import {
-  ChatIcon,
-  PhoneIcon,
-  ClipboardDocumentCheckIcon,
-  FolderPlusIcon,
-  CurrencyDollarIcon,
-  DocumentTextIcon,
-  UserCircleIcon,
-  ChatBubbleLeftEllipsisIcon,
-} from "@heroicons/react/24/solid";
-import Speedometer, {
-  Background,
-  Arc,
-  DangerPath,
-  Needle,
-  Progress,
-  Marks,
-  Indicator,
-} from "react-speedometer";
-import {
-  encabezadoCasosDeCobranza,
-  encabezadoIncurrirEnUnaEstaciónDeTrabajo,
-  encabezadoGestionDeCuentasDeColección,
-  encabezadoRegistroDeSMS,
-  encabezadoCobroYValance,
-  encabezadoRegistroHistorico,
-  encabezadoMonitoreoDeTransacciones,
-  encabezadoControlDeCumplimiento,
-  encabezadoAuditoriaPeriodica,
-  encabezadoCasosDeVerificacion,
-  encabezadoListaFinal,
-  encabezadoGestionDeAccesos,
-} from "@/constants/TableHeaders.jsx";
+
 import { Paginator } from "./Paginator";
 import { obtenerSegmento } from "@/utils";
 import { today } from "@/utils/getDates";
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
-  const [selectedRight, setSelectedRight] = useState(-1);
-
-  const router = useRouter();
-  const [texto, setTexto] = useState("");
-  const {
-    user,
-    checkedArr,
-    setCheckedArr,
-    loader,
-    setLoader,
-  } = useAppContext();
-  const [filter, setFilter] = useState({
-    nombreProducto: "Todo",
-    ["Minimo dias vencido"]: 0,
-    ["Maximo dias vencido"]: 10000000000,
-    ["Estado de reembolso"]: "",
-    ["Cliente nuevo"]: "",
-    ["Nombre del cliente"]: "",
-    ["Número de teléfono"]: "",
-  });
-  const [filter2, setFilter2] = useState({
-    nombreProducto: "Todo",
-    ["Minimo dias vencido"]: 0,
-    ["Maximo dias vencido"]: 10000000000,
-    ["Estado de reembolso"]: "",
-    ["Cliente nuevo"]: "",
-    ["Nombre del cliente"]: "",
-    ["Número de teléfono"]: "",
-  });
-  const [state, setState] = useState({});
-  const [editItem, setEditItem] = useState(undefined);
-  const [remesasDB, setRemesasDB] = useState(undefined);
-  const refFirst = useRef(null);
-  const [cases, setCases] = useState([]);
+ 
   const searchParams = useSearchParams();
-  const item = searchParams.get("item");
-  const seccion = searchParams.get("seccion");
-  const [copied, setCopied] = useState(false);
-  const { theme, toggleTheme } = useTheme();
-  let menu = user?.rol
-    ? menuArray[user.rol].filter((i) => i.hash === seccion)
-    : "";
+
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -128,34 +26,6 @@ export default function Home() {
   const [totalDocuments, setTotalDocuments] = useState(0);
   const [details, setDetails] = useState([])
   const [totales, setTotales] = useState({})
-
-  function sortArray(x, y) {
-    if (
-      x["translation"]["spa"]["common"].toLowerCase() <
-      y["translation"]["spa"]["common"].toLowerCase()
-    ) {
-      return -1;
-    }
-    if (
-      x["translation"]["spa"]["common"].toLowerCase() >
-      y["translation"]["spa"]["common"].toLowerCase()
-    ) {
-      return 1;
-    }
-    return 0;
-  }
-  function handlerSelect(name, i, uuid) {
-    setState({ ...state, [uuid]: { [name]: i } });
-  }
-
-  function handlerSelected(position, index) {
-    if (position === "LEFT") {
-      selectedLeft === index ? setSelectedLeft(-1) : setSelectedLeft(index);
-    }
-    if (position === "RIGHT") {
-      selectedLeft === index ? setSelectedRight(-1) : setSelectedRight(index);
-    }
-  }
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
@@ -173,7 +43,6 @@ export default function Home() {
         : `https://api.fastcash-mx.com/api/authSystem/users?tipoDeGrupo=Asesor%20de%20Cobranza&limit=${limit}&page=${page}`
     );
     const result = await res.json();
-    console.log("data: ", result);
     setData(result);
     setCurrentPage(result.currentPage);
     setTotalPages(result.totalPages);

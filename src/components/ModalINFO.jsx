@@ -3,7 +3,7 @@
 import { useAppContext } from '@/context/AppContext.js'
 import Button from '@/components/Button'
 export default function Modal({ children, theme, button, funcion, alert, close }) {
-    const { nav, setNav, user, userDB, setUserProfile, state, setState, modal, setModal } = useAppContext()
+    const { setModal } = useAppContext()
 
 
     return (

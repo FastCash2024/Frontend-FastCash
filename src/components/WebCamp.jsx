@@ -1,7 +1,6 @@
 'use client'
 import Webcam from "react-webcam";
-import React, { useState, useEffect, useRef } from 'react'
-import Button from '@/components/Button'
+import React, { useRef } from 'react'
 import { useAppContext } from '@/context/AppContext.js'
 
 

@@ -5,14 +5,11 @@ import React, { useEffect, useState } from 'react'
 import { Paginator } from './Paginator';
 
 export default function TableComision() {
-  const { user, userDB, loader, selectedLeft, setLoader, setCheckedArr, checkedArr } = useAppContext();
+  const { user, userDB, loader, selectedLeft, setCheckedArr, checkedArr } = useAppContext();
   const searchParams = useSearchParams();
-  const seccion = searchParams.get("seccion");
-  const item = searchParams.get("item");
   const [data, setData] = useState([]);
   const [filter_1, setFilter_1] = useState([])
   const [totalDocuments, setTotalDocuments] = useState(1);
-  const [cases, setCases] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
@@ -22,21 +19,12 @@ export default function TableComision() {
 
 
   async function handlerFetch(limit, page) {
-
-    console.log("url limit: ", limit);
-    console.log("url page: ", page);
-
-
     const baseUrl = window?.location?.href?.includes("localhost")
       ? `http://localhost:3007/api/loansBuckup/getcasos?email=${user.email}&limit=${limit}&page=${page}`
       : `https://api.fastcash-mx.com/api/loansBuckup/getcasos?email=${user.email}limit=${limit}&page=${page}`;
 
     const res = await fetch(baseUrl);
-
-    console.log("url: ", baseUrl);
-
     const result = await res.json();
-    console.log("data: ", result);
     setData(result);
     setCurrentPage(result.currentPage);
     setTotalPages(result.totalPages);

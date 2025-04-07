@@ -1,17 +1,13 @@
 "use client";
 import { useAppContext } from "@/context/AppContext";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 import { useSearchParams } from "next/navigation";
-import dynamic from "next/dynamic";
 import Table from "@/components/Table";
 import TableReporteDiario from "@/components/TableReporteDiario";
 
 import TableReporteDiarioVerificacion from "@/components/TableReporteDiarioVerificacion";
 
-import {
-  menuArray,
-} from "@/constants/index";
 import {
   encabezadoCasosDeCobranza,
   encabezadoIncurrirEnUnaEstaciónDeTrabajo,
@@ -31,15 +27,13 @@ import {
 import TableAtencionAlCliente from "./TableAtencionAlCliente";
 import TableControl from "./TableControl";
 import TableCustomerFlow from "./TableCustomerFlow";
-import { getDay } from "@/utils/getDates";
 import TableAttendance from "./TableAttendance";
 import TableReporteDiarioAuditoria from "./TableReporteDiarioAuditoria";
 
 export default function Home() {
 
   const {
-    user,
-    userDB
+    user
   } = useAppContext();
   const refFirst = useRef(null);
   const searchParams = useSearchParams();
@@ -347,16 +341,6 @@ export default function Home() {
                 )}
             </div>
           )}
-          {/* {trabajo.length > 0 && item === "Asistencia" && user.rol !== "Cuenta Personal" && (
-            <Paginator
-              totalItems={trabajo.length}
-              itemsPerPage={itemsPerPage}
-              currentPage={currentPage}
-              onPageChange={handlePageChange}
-              onItemsPerPageChange={handleItemsPerPageChange}
-              onReload={handleReload}
-            />
-          )} */}
         </div>
       </main>
     </div>

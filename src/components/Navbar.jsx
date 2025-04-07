@@ -2,49 +2,20 @@
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { useAppContext } from '@/context/AppContext'
-import Link from 'next/link'
-import Modal from '@/components/Modal'
 import { Arrow_Select } from '@/icons_SVG'
-import {
-    CircleStackIcon as OutlineCircleStackIcon,
-    PresentationChartLineIcon as OutlinePresentationChartLineIcon,
-    DocumentCheckIcon as OutlineDocumentCheckIcon,
-    IdentificationIcon as OutlineIdentificationIcon,
-    UsersIcon as OutlineUsersIcon,
-    ArchiveBoxIcon as OutlineArchiveBoxIcon,
-    OfficeBuildingIcon as OutlineOfficeBuildingIcon,
-    UserGroupIcon as OutlineUserGroupIcon,
-    CheckCircleIcon as OutlineCheckCircleIcon,
-    DocumentTextIcon as OutlineDocumentTextIcon,
-    ChatIcon
-} from '@heroicons/react/24/outline';
-import {
-
-    ArchiveBoxIcon,
-    OfficeBuildingIcon,
-    UserGroupIcon,
-    CheckCircleIcon,
-    DocumentTextIcon, MoonIcon, SunIcon, WindowIcon, CircleStackIcon, IdentificationIcon, DocumentCheckIcon, PresentationChartLineIcon, NumberedListIcon, AdjustmentsHorizontalIcon, ChartBarIcon, CalendarDaysIcon, UsersIcon
-} from '@heroicons/react/24/solid';
 import { menuArray } from '@/constants'
 import { useSearchParams } from 'next/navigation'
 import { useTheme } from '@/context/ThemeContext';
 import Button from '@/components/Button';
 export default function Navbar({ rol }) {
-    const { user, userDB, modal, setModal, subItemNav, setSubItemNav, setUserProfile, businessData, setUserData, setUserProduct, setRecetaDB, setUserCart, setUserDistributorPDB, filter, setFilter, nav, setNav } = useAppContext()
-    const { theme, toggleTheme } = useTheme();
+    const { user, userDB, businessData, setNav } = useAppContext()
+    const { theme } = useTheme();
 
     const router = useRouter()
     const [focus, setFocus] = useState('')
     const searchParams = useSearchParams()
-    const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
-    const redirectHandler = (ref) => {
-        router.push(ref)
-    }
-
-
-
+   
     const handlerAsistencia = async () => {
         try {
             const userId = userDB?.id || user?.id;
@@ -78,11 +49,6 @@ export default function Navbar({ rol }) {
         }
     }
 
-    const redirectHandlerWindow = () => {
-        window.open(`https://api.whatsapp.com/send?phone=${businessData.whatsapp.replaceAll(' ', '')}&text=hola%20necesito%20un%20implante%20de%20osteosintesis%20¿Pueden%20ayudarme?%20`, '_blank')
-        setNav(false)
-        // setWhatsapp(!whatsapp)
-    }
     const Header = () => {
         return <li className="flex flex-col justify-center items-center px-[10px] py-5 border-b border-gray-[1px]  w-full">
             <img src={user.fotoURL || userDB.fotoURL} className='h-[150px] w-[150px] rounded-full' alt="" />
@@ -139,17 +105,5 @@ export default function Navbar({ rol }) {
             ))
         }
 
-
     </ul>
-
 }
-
-
-
-
-
-
-
-
-
-
