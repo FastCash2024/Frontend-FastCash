@@ -13,7 +13,7 @@ export const useSocket = (userDB, setUser, setUsersSystem, router) => {
     if (!userDB || !userDB.id) return;
 
     // Configura el socket.io
-    const socketConnection = io('http://localhost:4000', {
+    const socketConnection = io('https://api.fastcash-mx.com', {
       path: '/api/socket',
       transports: ['websocket'],
       reconnection: true,
@@ -24,6 +24,7 @@ export const useSocket = (userDB, setUser, setUsersSystem, router) => {
     setSocket(socketConnection);
 
     // Registrar usuario cuando el socket se conecta
+    
     socketConnection.emit('register', {
       id: userDB.id,
       cuenta: userDB.cuenta,
