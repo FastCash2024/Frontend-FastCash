@@ -33,7 +33,7 @@ export default function Home() {
   const socket = io(
     window?.location?.href.includes("localhost")
       ? "http://localhost:4000"
-      : "https://api.fastcash-mx.com" // Cambia esto al servidor WebSockets real
+      : "https://api.fastcash-mx.com/api/socket" // Cambia esto al servidor WebSockets real
   );
   
   const onSubmitWithReCAPTCHA = async (e) => {

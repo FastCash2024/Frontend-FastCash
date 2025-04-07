@@ -72,7 +72,7 @@ export function AppProvider({ children }) {
 
 	// const socket = useMemo(() => io("http://localhost:4000"), []);
 	const socket = useMemo(() =>
-		io("http://localhost:4000", {
+		io("https://api.fastcash-mx.com/api/socket", {
 			transports: ["websocket"],
 			reconnection: true,
 			reconnectionAttempts: 5,
