@@ -5,6 +5,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import Loader from '@/components/Loader'
 
 import { useSearchParams } from 'next/navigation'
+import dynamic from 'next/dynamic';
+import { useTheme } from '@/context/ThemeContext';
+const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });
 import FormAddPersonalData from '@/components/formModals/FormAddPersonalData'
 
 import ViewPersonalInfo from '@/components/ViewPersonalInfo'
@@ -14,14 +17,28 @@ import TableComision from './TableComision'
 import TableGestionDeAuditoria from './TableGestionDeAuditoria'
 import TableComisionVerification from './TableComisionVerification'
 
+
 export default function Home() {
     const [selectedLeft, setSelectedLeft] = useState(-1);
+    const [selectedRight, setSelectedRight] = useState(-1);
 
     const router = useRouter()
+    const [texto, setTexto] = useState('');
     const { user, modal } = useAppContext()
+    const [filter, setFilter] = useState({
+        nombreProducto: 'Todo',
+        ['Minimo dias vencido']: 0,
+        ['Maximo dias vencido']: 10000000000,
+        ['Estado de reembolso']: '',
+        ['Cliente nuevo']: '',
+        ['Nombre del cliente']: '',
+        ['Número de teléfono']: ''
+    })
 
+    const [state, setState] = useState({})
     const refFirst = useRef(null);
     const searchParams = useSearchParams()
+    const [copied, setCopied] = useState(false);
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [trabajo, setTrabajo] = useState([])
@@ -155,6 +172,9 @@ export default function Home() {
 
         return `${day}/${month}/${year}`;
     }
+
+    //fecha actual
+    const [value, setValue] = useState({})
 
     const getBackgroundClass = (estado) => {
         switch (estado) {

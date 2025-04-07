@@ -34,7 +34,6 @@ export function AppProvider({ children }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [isOpen2, setIsOpen2] = useState(false);
 	const [checkedArr, setCheckedArr] = useState([]);
-	const [select, setSelect] = useState('');
 
 	const [fondoPrimario, setFondoPrimario] = useState('#000000')
 	const [fondoSecundario, setFondoSecundario] = useState('#292929')
@@ -85,6 +84,73 @@ export function AppProvider({ children }) {
 
 	const socket = useSocket(userDB, setUser, setUsersSystem, router);
 
+	// // const socket = useMemo(() => io("http://localhost:4000"), []);
+	// const socket = useMemo(() =>
+	// 	io("http://localhost:4000", {
+	// 		path: "/api/socket",
+	// 		transports: ["websocket"],
+	// 		reconnection: true,
+	// 		reconnectionAttempts: 5,
+	// 		reconnectionDelay: 2000,
+	// 	})
+	// 	, []);
+	// console.log(socket)
+
+	// useEffect(() => {
+	// 	if (!socket) return; // Asegúrate de que el socket esté definido
+	// 	const token = sessionStorage.getItem("token");
+	// 	if (!token) return;
+	// 	console.log("user", user)
+	// 	console.log("userDB", userDB)
+	// 	// Registrar usuario (asegúrate de que "user" esté definido)
+	// 	if (userDB && userDB.id) {
+	// 		socket.emit("register", {
+	// 			id: userDB.id,
+	// 			cuenta: userDB.cuenta,
+	// 			rol: userDB.tipoDeGrupo,
+	// 			emailPersonal: userDB.emailPersonal,
+	// 			numeroDeTelefonoMovil: userDB.numeroDeTelefonoMovil,
+	// 			nombrePersonal: userDB.nombrePersonal,
+	// 			fotoURL: userDB.fotoURL,
+	// 		});
+	// 	} else {
+	// 		console.error("El usuario no está definido o no tiene un ID válido.");
+	// 	}
+
+
+	// 	// Escuchar el evento de "onlineUsers" para actualizar la lista de usuarios conectados
+	// 	socket.on("onlineUsers", (users) => {
+	// 		setUsersSystem(users);
+	// 		console.log("onlineUsers", users)
+	// 	});
+
+	// 	// Escuchar el evento "logout"
+	// 	socket.on("logout", () => {
+	// 		console.log("🔴 Se ha cerrado la sesión en otro dispositivo.");
+	// 		sessionStorage.removeItem("token");
+	// 		setUser(null);
+	// 		alert("Se ha cerrado sesión en otro dispositivo.");
+	// 		router.replace("/");
+	// 	});
+
+	// 	return () => {
+	// 		socket.off("onlineUsers");
+	// 		socket.off("logout");
+	// 	};
+	// }, [socket, router, userDB]);
+
+	// useEffect(() => {
+	// 	if (!socket) return; // Asegúrate de que el socket esté definido
+	// 	socket.on("onlineUsers", (users) => {
+	// 		setUsersSystem(users);
+	// 		console.log("🟢 Lista de usuarios online:", users);
+	// 	});
+	// 	return () => {
+	// 		socket.off("onlineUsers");
+	// 	};
+	// }, [socket, router, usersSystem]); // Solo al montar una vez
+
+
 	const value = useMemo(() => {
 		return ({
 			user,
@@ -94,7 +160,6 @@ export function AppProvider({ children }) {
 			nav,
 			modal,
 			users,
-			select, setSelect,
 			itemSelected, setItemSelected,
 			isOpen, setIsOpen, isOpen2, setIsOpen2,
 			loader, setLoader,
@@ -149,7 +214,6 @@ export function AppProvider({ children }) {
 		fecha,
 		filter,
 		checkedArr,
-		select,
 		newslater,
 		local,
 		isOpen,

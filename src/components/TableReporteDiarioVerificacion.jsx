@@ -1,21 +1,83 @@
 'use client'
 import { useAppContext } from '@/context/AppContext'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import Loader from '@/components/Loader'
+import SelectSimple from '@/components/SelectSimple'
+
 import { useSearchParams } from 'next/navigation'
+import dynamic from 'next/dynamic';
+import { useTheme } from '@/context/ThemeContext';
+import InputPass from '@/components/InputPass'
+import Table from '@/components/Table'
+// import Velocimetro from '@/components/Velocimetro'
+const Velocimetro = dynamic(() => import("@/components/Velocimetro"), { ssr: false, });
+import FormAddAccount from '@/components/formModals/FormAddAccount'
+import FormAddMasiveAccounts from '@/components/formModals/FormAddMasiveAccounts'
+import FormAddPersonalAccount from '@/components/formModals/FormAddPersonalAccount'
+import FormAddPersonalData from '@/components/formModals/FormAddPersonalData'
+import FormAddVerification from '@/components/formModals/FormAddVerification'
+import FormAdminAccount from '@/components/formModals/FormAdminAccount'
+
+import TableTools from '@/components/TableTools'
+
+import Alert from '@/components/Alert'
+
+import {
+  refunds, historial,
+  menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
+} from '@/constants/index'
+import { useRouter } from 'next/navigation';
+import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
+import Speedometer, {
+  Background,
+  Arc, DangerPath,
+  Needle,
+  Progress,
+  Marks,
+  Indicator,
+} from 'react-speedometer';
+import {
+  encabezadoCasosDeCobranza,
+  encabezadoIncurrirEnUnaEstaciónDeTrabajo,
+  encabezadoGestionDeCuentasDeColección,
+  encabezadoRegistroDeSMS,
+  encabezadoCobroYValance,
+  encabezadoRegistroHistorico,
+  encabezadoMonitoreoDeTransacciones,
+  encabezadoControlDeCumplimiento,
+  encabezadoAuditoriaPeriodica,
+  encabezadoCasosDeVerificacion,
+  encabezadoListaFinal,
+  encabezadoGestionDeAccesos,
+} from '@/constants/TableHeaders.jsx'
 import { obtenerSegmento } from '@/utils'
 import { Paginator } from './Paginator';
 import { today } from '@/utils/getDates'
 
 export default function Home() {
   const [selectedLeft, setSelectedLeft] = useState(-1);
+  const [selectedRight, setSelectedRight] = useState(-1);
 
-  const { user, checkedArr, setCheckedArr, loader, setLoader } = useAppContext()
+  const router = useRouter()
+  const [texto, setTexto] = useState('');
+  const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setCheckedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
   const [cases, setCases] = useState([])
   const [details, setDetails] = useState([])
 
+  const [state, setState] = useState({})
+  const [editItem, setEditItem] = useState(undefined)
+  const [remesasDB, setRemesasDB] = useState(undefined)
+  const refFirst = useRef(null);
+  const [profileIMG, setProfileIMG] = useState('')
   const searchParams = useSearchParams()
+  const [copied, setCopied] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const seccion = searchParams.get('seccion')
   const item = searchParams.get('item')
+  let menu = user?.rol ? menuArray[user.rol].filter(i => i.hash === seccion) : ''
   const [data, setData] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -23,9 +85,49 @@ export default function Home() {
   const [totalDocuments, setTotalDocuments] = useState(0);
   const [totales, setTotales] = useState({})
 
+  function sortArray(x, y) {
+    if (x['translation']['spa']['common'].toLowerCase() < y['translation']['spa']['common'].toLowerCase()) { return -1 }
+    if (x['translation']['spa']['common'].toLowerCase() > y['translation']['spa']['common'].toLowerCase()) { return 1 }
+    return 0
+  }
+  function handlerSelect(name, i, uuid) {
+    setState({ ...state, [uuid]: { [name]: i } })
+  }
+
+  function handlerSelected(position, index) {
+    if (position === 'LEFT') {
+      selectedLeft === index ? setSelectedLeft(-1) : setSelectedLeft(index)
+    }
+    if (position === 'RIGHT') {
+      selectedLeft === index ? setSelectedRight(-1) : setSelectedRight(index)
+    }
+  }
+  const prev = () => {
+    requestAnimationFrame(() => {
+      if (refFirst.current) {
+        const scrollLeft = refFirst.current.scrollLeft;
+        // console.log(scrollLeft);
+        const itemWidth = screen.width - 50;
+        refFirst.current.scrollLeft = scrollLeft - itemWidth;
+      }
+    });
+  };
+  const next = () => {
+    requestAnimationFrame(() => {
+      if (refFirst.current) {
+        const scrollLeft = refFirst.current.scrollLeft;
+        // console.log(scrollLeft);
+        const itemWidth = screen.width - 50;
+        // console.log(itemWidth);
+        refFirst.current.scrollLeft = scrollLeft + itemWidth;
+      }
+    });
+  };
+
   useEffect(() => {
     setCheckedArr([])
   }, [])
+
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {
@@ -37,6 +139,7 @@ export default function Home() {
     }
   }
 
+  console.log("arr: ", checkedArr)
   async function handlerFetch(limit, page) {
     const res = await fetch(
       window?.location?.href?.includes('localhost')
@@ -66,6 +169,7 @@ export default function Home() {
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
       .join("&");
 
+    console.log("today: ", today);
     const baseUrl = window?.location?.href?.includes("localhost")
       ? `http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000${queryString ? `&${queryString}` : `&fechaDeTramitacionDelCaso=${today}`}`
       : `https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado,Aprobado,Reprobado,Pendiente&limit=1000${queryString ? `&${queryString}` : `&fechaDeTramitacionDelCaso=${today}`}`;
@@ -169,6 +273,7 @@ export default function Home() {
   const handleReload = () => {
     handlerFetch(itemsPerPage, currentPage);
   }
+  console.log("array: ", checkedArr);
 
   return (
     <>

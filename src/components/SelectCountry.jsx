@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useAppContext } from '@/context/AppContext'
+import { writeUserData, getSpecificData } from "@/firebase/database"
 
 export default function App({ propIsSelect, propHandlerIsSelect, operation, click }) {
     const { countries } = useAppContext()
@@ -40,3 +41,67 @@ export default function App({ propIsSelect, propHandlerIsSelect, operation, clic
         </div>
     );
 }
+
+// --------------------------------IMPORTANTE-----------------------
+
+// const fetchdata = async (e) => {
+//     const res = await fetch('https://restcountries.com/v3.1/all')
+//     const db = await res.json()
+
+//     // console.log(db)
+//     const data = db.reduce((acc, i) => {
+//         const obj = {
+//             cambioUSD: 0,
+//             cambio: false,
+//             cca2: i.cca2,
+//             cca3: i.cca3,
+//             ccn3: i.ccn3 ? i.ccn3 : 'non exist',
+//             cioc: i.cioc !== undefined ? i.cioc : i.status,
+//             remesas: false,
+//             code: i.currencies && Object.keys(i.currencies)[0] !== null && Object.keys(i.currencies)[0] !== undefined ? Object.keys(i.currencies)[0] : i.cca3,
+//             symbol: i.currencies && i.currencies[Object.keys(i.currencies)[0]].symbol ? i.currencies[Object.keys(i.currencies)[0]].symbol : 'non exist',
+//             currency: i.currencies && i.currencies[Object.keys(i.currencies)[0]].name ? i.currencies[Object.keys(i.currencies)[0]].name : 'non exist',
+//             flagSVG: i.flags.svg,
+//             flagPNG: i.flags.png,
+//             translation: i.translations
+//         }
+//         // console.log(obj)
+//         return { ...acc, [obj.cca3]: obj }
+//     }, {})
+
+//     return writeUserData('currencies', data, setUserSuccess)
+// }
+
+// -------------------------------------------------
+
+
+// const fetchdata = async (e) => {
+//     const res = await fetch('https://restcountries.com/v3.1/all')
+//     const db = await res.json()
+
+//     // console.log(db)
+//     const data = db.reduce((acc, i) => {
+//         const obj = {
+//             cambioUSD: 0,
+//             cambio: false,
+//             cca2: i.cca2,
+//             cca3: i.cca3,
+//             ccn3: i.ccn3,
+//             cioc: i.cioc !== undefined ? i.cioc : i.status,
+//             remesas: false,
+//             code: i.currencies && Object.keys(i.currencies)[0] !== null && Object.keys(i.currencies)[0] !== undefined ? Object.keys(i.currencies)[0] : i.cca3,
+//             symbol: i.currencies && i.currencies[Object.keys(i.currencies)[0]].symbol ? i.currencies[Object.keys(i.currencies)[0]].symbol : 'non exist',
+//             currency: i.currencies && i.currencies[Object.keys(i.currencies)[0]].name ? i.currencies[Object.keys(i.currencies)[0]].name : 'non exist',
+//             flagSVG: i.flags.svg,
+//             flagPNG: i.flags.png,
+//             translation: i.transalations ? i.transalations : 'non exist',
+//         }
+//         // console.log(obj)
+//         return { ...acc, [obj.code !== null && obj.code !== undefined ? obj.code : obj.ccn3]: obj }
+//     }, {})
+
+//     return writeUserData('currencies', data, setUserSuccess)
+// }
+
+
+

@@ -4,16 +4,20 @@ import { useAppContext } from '@/context/AppContext'
 import { useSearchParams } from 'next/navigation'
 
 import Link from 'next/link';
+import { ChatIcon, PhoneIcon, ClipboardDocumentCheckIcon, FolderPlusIcon, CurrencyDollarIcon, DocumentTextIcon, UserCircleIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/24/solid';
 import { formatearFecha } from '@/utils';
 import { Paginator } from './Paginator';
 
 const Table = ({
     headArray,
+    dataArray,
     dataFilter,
+    access,
     local,
-    server
+    server,
+    query
 }) => {
-    const { user, userDB, loader, setLoader, checkedArr, setCheckedArr, setModal, setItemSelected } = useAppContext()
+    const { user, userDB, loader, setUserProfile, users, setLoader, setUsers, checkedArr, setCheckedArr, setModal, itemSelected, setItemSelected, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario } = useAppContext()
     const searchParams = useSearchParams()
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
@@ -31,11 +35,22 @@ const Table = ({
         }));
     };
 
+    const toCamelCase = (str) => {
+        let cleanedStr = str.toLowerCase();
+        cleanedStr = cleanedStr.replace(/\([^)]*\)/g, '');
+        cleanedStr = cleanedStr.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        cleanedStr = cleanedStr.replace(/-/g, ' ');
+        return cleanedStr
+            .replace(/[_\s]+(.)?/g, (_, char) => char ? char.toUpperCase() : '')
+            .replace(/^[A-Z]/, firstChar => firstChar.toLowerCase());
+    };
+
     function handlerVerification(i) {
         setModal('Multar cuenta')
         setItemSelected(i)
     }
 
+    console.log(userDB)
     async function handlerFetch(limit, page) {
         // Obtener los parámetros de la URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -139,6 +154,9 @@ const Table = ({
     const handleReload = () => {
         handlerFetch(itemsPerPage, currentPage);
     }
+
+    // console.log("data: tracking", data.data.length);
+    // console.log("data: tracking", itemsPerPage);
 
     return (
         <>

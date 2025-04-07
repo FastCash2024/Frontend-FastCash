@@ -1,4 +1,3 @@
-"use client";
 // hooks/useSocket.js
 
 import { useState, useEffect, useMemo } from 'react';
@@ -44,7 +43,7 @@ export const useSocket = (userDB, setUser, setUsersSystem, router) => {
         // Escuchar el evento "logout"
         socketConnection.on('logout', () => {
             sessionStorage.removeItem('token');
-            setUser(null);     
+            setUser(null);
 
             alert('Se ha cerrado sesión en otro dispositivo.');
             if (router) {

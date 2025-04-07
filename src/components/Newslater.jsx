@@ -14,7 +14,7 @@ import { EditIcon, DeleteIcon } from '@/icons_SVG/index.js';
 import ModalEditNewslater from '@/components/modals/ModalEditNewslater'; // Importa el modal de edición
 
 export default function Newslater() {
-    const { user, modal, setModal, loader, setLoader, setAlerta, setNewslater } = useAppContext()
+    const { user, modal, setUserSuccess, setModal, loader, setLoader, setAlerta, setNewslater } = useAppContext()
 
     const [data, setData] = useState([])
     const [textEditor2, setTextEditor2] = useState("Redactar...")
@@ -52,6 +52,10 @@ export default function Newslater() {
         getData()
     }, [loader])
 
+    const handleselect = (i) => {
+        setTextEditor2(i)
+    }
+
     const saveedit = async () => {
         setLoader('Guardando...')
         if (item === null || item === undefined) {
@@ -77,6 +81,7 @@ export default function Newslater() {
         setModal("Editar newslater"); // Abre el modal de edición
     }
 
+    console.log('data', data)
     return (seccion === 'comunicacion' && <div className={`h-full w-full flex flex-col justify-center items-center px-4 overflow-x-hidden overflow-y-auto `}>
         {modal === 'Guardando...' && <Loader> {modal} </Loader>}
         {modal === 'Eliminando...' && <Loader> {modal} </Loader>}

@@ -1,8 +1,9 @@
 "use client";
 import { useAppContext } from "@/context/AppContext";
-import React, { useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useSearchParams } from "next/navigation";
+import dynamic from "next/dynamic";
 import Table from "@/components/Table";
 import TableReporteDiario from "@/components/TableReporteDiario";
 
@@ -10,6 +11,9 @@ import TableReporteDiarioVerificacion from "@/components/TableReporteDiarioVerif
 
 import ReporteDeAccesos from "@/components/ReporteDeAccesos";
 
+import {
+  menuArray,
+} from "@/constants/index";
 import {
   encabezadoCasosDeCobranza,
   encabezadoIncurrirEnUnaEstaciónDeTrabajo,
@@ -29,13 +33,15 @@ import {
 import TableAtencionAlCliente from "./TableAtencionAlCliente";
 import TableControl from "./TableControl";
 import TableCustomerFlow from "./TableCustomerFlow";
+import { getDay } from "@/utils/getDates";
 import TableAttendance from "./TableAttendance";
 import TableReporteDiarioAuditoria from "./TableReporteDiarioAuditoria";
 
 export default function Home() {
 
   const {
-    user
+    user,
+    userDB
   } = useAppContext();
   const refFirst = useRef(null);
   const searchParams = useSearchParams();
@@ -340,6 +346,7 @@ export default function Home() {
                 )}
             </div>
           )}
+         
         </div>
       </main>
     </div>

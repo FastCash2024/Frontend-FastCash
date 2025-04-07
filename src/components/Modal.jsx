@@ -5,7 +5,7 @@ import { useAppContext } from '@/context/AppContext.js'
 
 export default function Modal ({children, funcion, alert, cancelText, successText}) {
 
-    const { msg, setModal } = useAppContext()
+    const { user, setUserUuid, userDB, msg, setMsg,  modal, setModal, temporal, setTemporal, distributorPDB, setUserDistributorPDB, setUserItem, setUserData, setUserSuccess, } = useAppContext()
 
     return (
         <div  className="h-screen w-screen flex justify-center items-center bg-[#000000c2] fixed top-0 left-0  z-50  p-4 overflow-x-hidden overflow-y-auto md:inset-0">

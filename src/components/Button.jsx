@@ -1,6 +1,8 @@
 'use client';
+// import style from '@/app/(layout)/style.module.css'
 
 export default function Button({ theme, styled, click, children, type }) {
+
 
     switch (theme) {
         case 'Transparent':

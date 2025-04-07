@@ -8,12 +8,10 @@ import Input from "@/components/Input";
 import { obtenerFechaMexicoISO } from "@/utils/getDates";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
-import { useSearchParams } from "next/navigation";
 
 export default function FormUpdateAplication() {
     const { setAlerta, application, setModal, setLoader, userDB } = useAppContext()
-    const searchParams = useSearchParams()
-    const item = searchParams.get('item')
+
     const { theme } = useTheme();
     const [data, setData] = useState({ categoria: 'libre' })
     const [selectedFile, setSelectedFile] = useState(null);
@@ -51,6 +49,9 @@ export default function FormUpdateAplication() {
         }
     };
 
+    console.log("File selected: ", selectedFile)
+    console.log("Image selected: ", selectedImage)
+
     function onChangeHandler(e) {
         const { name, value } = e.target;
         const updatedData = { ...data, [name]: value };
@@ -81,6 +82,7 @@ export default function FormUpdateAplication() {
         formData.append('categoria', data.categoria);
 
         try {
+            // url: https://api.fastcash-mx.com/api/authApk/register
             const response = await fetch(window?.location?.href?.includes('localhost')
                 ? `http://localhost:3006/api/users/applications/update/${application._id}`
                 : `https://api.fastcash-mx.com/api/users/applications/update/${application._id}`, {
@@ -103,9 +105,9 @@ export default function FormUpdateAplication() {
                 fechaDeOperacion: obtenerFechaMexicoISO()
             }
             await postTracking(tackingData);
+            setModal('')
             setLoader('')
             setAlerta('Operación exitosa!')
-            setModal("")
         } catch (error) {
             console.error('Error al subir archivo:', error.message);
         }

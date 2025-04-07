@@ -24,12 +24,14 @@ const getBackgroundClass = (estado) => {
 export default function TableAttendance() {
     const { loader, setModal, setAttendance } = useAppContext();
     const searchParams = useSearchParams();
+    const seccion = searchParams.get("seccion");
     const item = searchParams.get("item");
     const [baseDate, setBaseDate] = useState(getMondayOfCurrentWeek());
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [trabajo, setTrabajo] = useState([])
     const [selectedLeft, setSelectedLeft] = useState(-1);
+    const [selectedRight, setSelectedRight] = useState(-1);
 
     // paginacion
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -44,6 +46,8 @@ export default function TableAttendance() {
         setItemsPerPage(itemsPerPage);
         setCurrentPage(1);
     };
+
+
 
     async function handlerFetch(startDate, endDate) {
 

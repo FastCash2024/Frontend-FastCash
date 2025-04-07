@@ -9,27 +9,27 @@ import { CheckCircleIcon } from '@/icons_SVG';
 export default function Home() {
   const { alerta, setAlerta, modal, loader } = useAppContext();
 
-  // const [showUrlCopied, setShowUrlCopied] = useState(false);
+  const [showUrlCopied, setShowUrlCopied] = useState(false);
 
-  // useEffect(() => {
-  //   if (alerta === "Operación exitosa!") {
-  //     setShowUrlCopied(true);
-  //     setTimeout(() => {
-  //       setShowUrlCopied(false);
-  //     }, 3000);
-  //   }
-  // }, [alerta]);
+  useEffect(() => {
+    if (alerta === "Operación exitosa!") {
+      setShowUrlCopied(true);
+      setTimeout(() => {
+        setShowUrlCopied(false);
+      }, 3000);
+    }
+  }, [alerta]);
 
   return (
     <>
-    {/* {showUrlCopied && (
+    {showUrlCopied && (
         <div className="fixed inset-0 flex items-center justify-center z-[9999] pointer-events-none">
           <div className="bg-white px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 border border-gray-200">
             <CheckCircleIcon className="w-5 h-5 text-green-500" />
             <span className="text-red-600">URL-copiado</span>
           </div>
         </div>
-      )} */}
+      )}
       {(alerta === "Operación exitosa!" ||
         alerta === "Cuenta creada!" ||
         alerta === "Cambios realizados correctamente!"||

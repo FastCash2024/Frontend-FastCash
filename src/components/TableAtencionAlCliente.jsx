@@ -7,7 +7,9 @@ import { Paginator } from "./Paginator";
 import Link from "next/link";
 
 export default function TableAtencionAlCliente() {
-  const { checkedArr, setCheckedArr, loader, setLoader } = useAppContext();
+  const [selectedLeft, setSelectedLeft] = useState(-1);
+  const [selectedRight, setSelectedRight] = useState(-1);
+  const { user, checkedArr, setCheckedArr, loader, setLoader } = useAppContext();
   
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -15,6 +17,8 @@ export default function TableAtencionAlCliente() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalDocuments, setTotalDocuments] = useState(0);
   const searchParams = useSearchParams();
+  const seccion = searchParams.get("seccion");
+  const item = searchParams.get("item");
 
   function handlerSelectCheck(e, i) {
     if (e.target.checked) {

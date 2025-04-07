@@ -4,18 +4,28 @@ import { useTheme } from '@/context/ThemeContext';
 import { useAppContext } from '@/context/AppContext'
 import SelectSimple from '@/components/SelectSimple'
 import { useSearchParams } from 'next/navigation'
+import Velocimetro from '@/components/Velocimetro'
 import Button from '@/components/Button'
 import Link from 'next/link';
 import SearchInput from '@/components/SearchInput';
 
+import {
+    refunds, historial,
+    menuArray, filtro_1, rangesArray, cobrador, filterCliente, factura, Jumlah, estadoRembolso
+} from '@/constants/index'
 const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
-    const { user, checkedArr, setModal } = useAppContext()
+    const { user, userDB, setUserProfile, users, alerta, setAlerta, modal, checkedArr, setModal, loader, setLoader, setUsers, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, divisas, setDivisas, exchange, setExchange, destinatario, setDestinatario, itemSelected, setItemSelected } = useAppContext()
     const searchParams = useSearchParams()
-    const { theme } = useTheme();
+    const [copied, setCopied] = useState(false);
+    const { theme, toggleTheme } = useTheme();
     const seccion = searchParams.get('seccion')
     const item = searchParams.get('item')
     const [filter, setFilter] = useState({})
     const [query, setQuery] = useState('')
+
+
+    console.log("filter: ", filter);
+    console.log("filter query: ", query);
 
     function onChangeHandler(e) {
         const db = { ...filter, [e.target.name]: e.target.value }

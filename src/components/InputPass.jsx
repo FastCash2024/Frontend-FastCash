@@ -1,12 +1,22 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react'
+import { useState, inputRef } from 'react'
+import { usePathname } from 'next/navigation'
+
 
 export default function Button({ click, type, name, onChange, reference, placeholder, require, defValue, valu, disabled }) {
 
     const router = useRouter()
     const [showPassword, setShowPassword] = useState(false)
+    const pathname = usePathname()
+
+
+    function handlerButton(e) {
+        e.preventDefault(e)
+        router.push(click)
+    }
+
 
     return (
         <span className='relative inline-block w-full'>

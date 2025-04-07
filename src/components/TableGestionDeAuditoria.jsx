@@ -5,9 +5,10 @@ import { Paginator } from './Paginator';
 import { formatearFecha } from '@/utils';
 
 export default function TableGestionDeAuditoria() {
-  const { user, loader, setLoader } = useAppContext();
+  const { selectedLeft, user, loader, setLoader } = useAppContext();
   const searchParams = useSearchParams();
   const item = searchParams.get("item");
+  const seccion = searchParams.get("seccion");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
@@ -52,13 +53,29 @@ export default function TableGestionDeAuditoria() {
       // console.error("Error al obtener datos: ", error)
       setLoader(false);
     }
+    // const result = await res.json();
+    // console.log(data)
   }
 
+  console.log("USEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEER", user)
   useEffect(() => {
     if (item === "Gestion de auditoria") {
       handlerFetchMultas(itemsPerPage, currentPage);
     }
   }, [loader, itemsPerPage, currentPage, searchParams]);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleItemsPerPageChange = (itemsPerPage) => {
+    setItemsPerPage(itemsPerPage);
+    setCurrentPage(1);
+  };
+
+  const handleReload = () => {
+    handlerFetch(itemsPerPage, currentPage);
+  }
 
   return (
     <>
