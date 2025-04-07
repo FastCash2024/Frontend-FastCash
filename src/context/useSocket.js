@@ -1,11 +1,10 @@
 // hooks/useSocket.js
-
+"use client";
 import { useState, useEffect, useMemo } from 'react';
 import dynamic from 'next/dynamic';
 
-// Importa socket.io-client solo en el cliente
-// const io = dynamic(() => import('socket.io-client').then(mod => mod.default), { ssr: false });
 import { io } from "socket.io-client";
+
 export const useSocket = (userDB, setUser, setUsersSystem, router) => {
     const [socket, setSocket] = useState(null);
 
