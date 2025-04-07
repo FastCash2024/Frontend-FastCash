@@ -3,8 +3,11 @@
 import { useState, useEffect, useRef, useMemo, useContext, createContext } from 'react'
 import { useRouter } from 'next/navigation'
 
+import dynamic from 'next/dynamic';
+const io = dynamic(() => import('socket.io-client'), { ssr: false });
+
 // const Context = createContext(
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 
 
 const AppContext = createContext();
@@ -78,22 +81,6 @@ export function AppProvider({ children }) {
 			reconnectionDelay: 2000,
 		})
 		, []); 
-
-	// const [socket, setSocket] = useState(null);  // Estado para almacenar el socket
-
-	// useEffect(() => {
-	//   if (typeof window !== 'undefined' ) {
-	// 	const socketInstance = io(
-	// 	  window?.location?.href.includes("localhost")
-	// 		? "http://localhost:4000/api/socket"
-	// 		: "https://api.fastcash-mx.com/api/socket", {
-	// 		  path: "/api/socket",
-	// 		  transports: ["websocket"], // Solo WebSocket, si no quieres otros protocolos como long polling
-	// 		}
-	// 	);
-	// 	setSocket(socketInstance);  // Asignamos el socket al estado
-	//   }
-	// }, [userDB]); // Solo se ejecuta en el cliente
 
 	const router = useRouter()
 	const [usersSystem, setUsersSystem] = useState([]); // Lista de usuarios con sesión activa
