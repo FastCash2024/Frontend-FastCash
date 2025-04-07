@@ -72,13 +72,14 @@ export function AppProvider({ children }) {
 
 	// const socket = useMemo(() => io("http://localhost:4000"), []);
 	const socket = useMemo(() =>
-		io("https://api.fastcash-mx.com/api/socket", {
+		io("http://localhost:4000", {
+			path: "/api/socket",
 			transports: ["websocket"],
 			reconnection: true,
 			reconnectionAttempts: 5,
 			reconnectionDelay: 2000,
 		})
-		, []);
+		, []); 
 	const router = useRouter()
 	const [usersSystem, setUsersSystem] = useState([]); // Lista de usuarios con sesión activa
 

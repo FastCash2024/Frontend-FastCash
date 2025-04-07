@@ -29,11 +29,25 @@ export default function Home() {
   const [errorMessage, setErrorMessage] = useState(null);
   const recaptchaRef = React.useRef();
 
+  // const [socket, setSocket] = useState(null);  // Estado para almacenar el socket
 
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     const socketInstance = io(
+  //       window?.location?.href.includes("localhost")
+  //         ? "http://localhost:4000/api/socket"
+  //         : "https://api.fastcash-mx.com/api/socket"
+  //     );
+  //     setSocket(socketInstance);  // Asignamos el socket al estado
+  //   }
+  // }, []); // Solo se ejecuta en el cliente
   const socket = io(
     window?.location?.href.includes("localhost")
-      ? "http://localhost:4000"
-      : "https://api.fastcash-mx.com/api/socket" // Cambia esto al servidor WebSockets real
+      ? "http://localhost:4000/api/socket"
+      : "https://api.fastcash-mx.com/api/socket", {
+        path: "/api/socket",
+        transports: ["websocket"], // Solo WebSocket, si no quieres otros protocolos como long polling
+      }
   );
   
   const onSubmitWithReCAPTCHA = async (e) => {
