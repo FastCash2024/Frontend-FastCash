@@ -16,7 +16,7 @@ import Link from 'next/link';
 import ReCAPTCHA from "react-google-recaptcha";
 import { postTracking } from '../service/TrackingApi/tracking.service';
 import { obtenerFechaMexicoISO } from '@/utils/getDates';
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 
 

@@ -2,13 +2,23 @@
 
 import { useState, useEffect, useRef, useMemo, useContext, createContext } from 'react'
 import { useRouter } from 'next/navigation'
+// import dynamic from 'next/dynamic';
+// const io = dynamic(() => import('socket.io-client'), { ssr: false });
 
+// import { io } from "socket.io-client";
+// import dynamic from 'next/dynamic';
+// const io = dynamic(() => import('socket.io-client').then(mod => mod.io), { ssr: false });
 import dynamic from 'next/dynamic';
-const io = dynamic(() => import('socket.io-client'), { ssr: false });
 
-// const Context = createContext(
-// import io from 'socket.io-client';
+// const io = dynamic(() => import('socket.io-client').then((module) => module), { ssr: false });
+// console.log('io',io)
 
+
+const io = dynamic(() => import('socket.io-client').then(mod => mod.default), { 
+  ssr: false,
+});
+
+import { useSocket } from './useSocket'
 
 const AppContext = createContext();
 
@@ -66,78 +76,79 @@ export function AppProvider({ children }) {
 				// console.log('timer')
 				return clearTimeout(timer)
 			}, 6000)
-
 		}
 
 	}
-
-	// const socket = useMemo(() => io("http://localhost:4000"), []);
-	const socket = useMemo(() =>
-		io("http://localhost:4000", {
-			path: "/api/socket",
-			transports: ["websocket"],
-			reconnection: true,
-			reconnectionAttempts: 5,
-			reconnectionDelay: 2000,
-		})
-		, []); 
-
+		const [usersSystem, setUsersSystem] = useState([]); // Lista de usuarios con sesión activa
 	const router = useRouter()
-	const [usersSystem, setUsersSystem] = useState([]); // Lista de usuarios con sesión activa
 
-	useEffect(() => {
-		if (!socket) return; // Asegúrate de que el socket esté definido
-		const token = sessionStorage.getItem("token");
-		if (!token) return;
-		console.log("user", user)
-		console.log("userDB", userDB)
-		// Registrar usuario (asegúrate de que "user" esté definido)
-		if (userDB && userDB.id) {
-			socket.emit("register", {
-				id: userDB.id,
-				cuenta: userDB.cuenta,
-				rol: userDB.tipoDeGrupo,
-				emailPersonal: userDB.emailPersonal,
-				numeroDeTelefonoMovil: userDB.numeroDeTelefonoMovil,
-				nombrePersonal: userDB.nombrePersonal,
-				fotoURL: userDB.fotoURL,
-			});
-		} else {
-			console.error("El usuario no está definido o no tiene un ID válido.");
-		}
+	const socket = useSocket(userDB, setUser, setUsersSystem, router);
+
+	// // const socket = useMemo(() => io("http://localhost:4000"), []);
+	// const socket = useMemo(() =>
+	// 	io("http://localhost:4000", {
+	// 		path: "/api/socket",
+	// 		transports: ["websocket"],
+	// 		reconnection: true,
+	// 		reconnectionAttempts: 5,
+	// 		reconnectionDelay: 2000,
+	// 	})
+	// 	, []);
+	// console.log(socket)
+
+	// useEffect(() => {
+	// 	if (!socket) return; // Asegúrate de que el socket esté definido
+	// 	const token = sessionStorage.getItem("token");
+	// 	if (!token) return;
+	// 	console.log("user", user)
+	// 	console.log("userDB", userDB)
+	// 	// Registrar usuario (asegúrate de que "user" esté definido)
+	// 	if (userDB && userDB.id) {
+	// 		socket.emit("register", {
+	// 			id: userDB.id,
+	// 			cuenta: userDB.cuenta,
+	// 			rol: userDB.tipoDeGrupo,
+	// 			emailPersonal: userDB.emailPersonal,
+	// 			numeroDeTelefonoMovil: userDB.numeroDeTelefonoMovil,
+	// 			nombrePersonal: userDB.nombrePersonal,
+	// 			fotoURL: userDB.fotoURL,
+	// 		});
+	// 	} else {
+	// 		console.error("El usuario no está definido o no tiene un ID válido.");
+	// 	}
 
 
-		// Escuchar el evento de "onlineUsers" para actualizar la lista de usuarios conectados
-		socket.on("onlineUsers", (users) => {
-			setUsersSystem(users);
-			console.log("onlineUsers", users)
-		});
+	// 	// Escuchar el evento de "onlineUsers" para actualizar la lista de usuarios conectados
+	// 	socket.on("onlineUsers", (users) => {
+	// 		setUsersSystem(users);
+	// 		console.log("onlineUsers", users)
+	// 	});
 
-		// Escuchar el evento "logout"
-		socket.on("logout", () => {
-			console.log("🔴 Se ha cerrado la sesión en otro dispositivo.");
-			sessionStorage.removeItem("token");
-			setUser(null);
-			alert("Se ha cerrado sesión en otro dispositivo.");
-			router.replace("/");
-		});
+	// 	// Escuchar el evento "logout"
+	// 	socket.on("logout", () => {
+	// 		console.log("🔴 Se ha cerrado la sesión en otro dispositivo.");
+	// 		sessionStorage.removeItem("token");
+	// 		setUser(null);
+	// 		alert("Se ha cerrado sesión en otro dispositivo.");
+	// 		router.replace("/");
+	// 	});
 
-		return () => {
-			socket.off("onlineUsers");
-			socket.off("logout");
-		};
-	}, [socket, router, userDB]);
+	// 	return () => {
+	// 		socket.off("onlineUsers");
+	// 		socket.off("logout");
+	// 	};
+	// }, [socket, router, userDB]);
 
-	useEffect(() => {
-		if (!socket) return; // Asegúrate de que el socket esté definido
-		socket.on("onlineUsers", (users) => {
-			setUsersSystem(users);
-			console.log("🟢 Lista de usuarios online:", users);
-		});
-		return () => {
-			socket.off("onlineUsers");
-		};
-	}, [socket, router, usersSystem]); // Solo al montar una vez
+	// useEffect(() => {
+	// 	if (!socket) return; // Asegúrate de que el socket esté definido
+	// 	socket.on("onlineUsers", (users) => {
+	// 		setUsersSystem(users);
+	// 		console.log("🟢 Lista de usuarios online:", users);
+	// 	});
+	// 	return () => {
+	// 		socket.off("onlineUsers");
+	// 	};
+	// }, [socket, router, usersSystem]); // Solo al montar una vez
 
 
 	const value = useMemo(() => {
