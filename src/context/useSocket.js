@@ -44,6 +44,7 @@ export const useSocket = (userDB, setUser, setUsersSystem, router) => {
         socketConnection.on('logout', () => {
             sessionStorage.removeItem('token');
             setUser(null);
+            
             alert('Se ha cerrado sesión en otro dispositivo.');
             if (router) {
                 router.replace('/');
