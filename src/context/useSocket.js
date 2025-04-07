@@ -52,6 +52,7 @@ export const useSocket = (userDB, setUser, setUsersSystem, router) => {
                 // Si router no está disponible, usar window.location.href
                 window.location.replace('/');
             }
+            window.location.reload();
         });
 
         return () => {
