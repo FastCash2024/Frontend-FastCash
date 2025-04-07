@@ -44,13 +44,13 @@ export const useSocket = (userDB, setUser, setUsersSystem, router) => {
         socketConnection.on('logout', () => {
             sessionStorage.removeItem('token');
             setUser(null);
-            
+
             alert('Se ha cerrado sesión en otro dispositivo.');
             if (router) {
                 router.replace('/');
             } else {
                 // Si router no está disponible, usar window.location.href
-                window.location.href = '/';
+                window.location.replace('/');
             }
         });
 
