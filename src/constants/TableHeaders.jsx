@@ -25,7 +25,7 @@ export const encabezadoIncurrirEnUnaEstaciónDeTrabajo = () => [
     "Estado de credito", "Nombre del cliente", "Número de teléfono móvil",
     "Cliente nuevo", "valor solicitado (Importe adeudado MXN)", "Cantidad dispersada (Importe pagado MXN)",
     "Nombre Del Producto (Código de producto)", "Días Vencidos", "Fecha de creación de la tarea",  "fecha De Dispersion", "Fecha de tramitación del caso",
-    "fecha de tramitacion de cobro", "Fecha de cobro", "Fecha de reembolso", "Nombre de la empresa",
+    "fecha de tramitacion de cobro", "Fecha de cobro", "Fecha de reembolso", "Nombre de la empresa", "Cuenta Cobrador (Asesor)",
     "Operar"
 ];
 
