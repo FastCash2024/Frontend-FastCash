@@ -129,7 +129,7 @@ export function obtenerFechaMexicoISO() {
     const offsetStr = `${signo}${String(Math.abs(offsetHoras)).padStart(2, "0")}:00`;
 
     // Convertir a formato ISO con el offset correcto
-    console.log("fechaMexico: ", fechaMexico.toISOString().replace("Z", offsetStr));
+    // console.log("fechaMexico: ", fechaMexico.toISOString().replace("Z", offsetStr));
     
     return fechaMexico.toISOString().replace("Z", offsetStr);
 }
@@ -148,7 +148,7 @@ export function diferenciaEnDias(fecha1, fecha2) {
     // Calcular la diferencia en milisegundos
     const diferenciaMs = fin - inicio;
 
-    console.log(Math.round(diferenciaMs / (1000 * 60 * 60 * 24)));
+    // console.log(Math.round(diferenciaMs / (1000 * 60 * 60 * 24)));
     // Convertir a días y redondear
     return Math.round(diferenciaMs / (1000 * 60 * 60 * 24));
 }

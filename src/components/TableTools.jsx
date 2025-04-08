@@ -296,6 +296,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const calcularTotalesPorSegmento = () => {
         const totalesPorSegmento = {};
         const safeDetails = details || {};
+        console.log("details: ", details);
+        
         Object?.keys(safeDetails).forEach((cuenta) => {
             const segmento = obtenerSegmento(cuenta);
             if (!segmento) {
