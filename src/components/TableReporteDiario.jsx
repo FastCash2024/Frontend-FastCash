@@ -78,6 +78,7 @@ import { obtenerSegmento } from "@/utils";
 import { today } from "@/utils/getDates";
 
 export default function Home() {
+  const [totalesCasos, setTotalesCasos] = useState()
   const [selectedLeft, setSelectedLeft] = useState(-1);
   const [selectedRight, setSelectedRight] = useState(-1);
 
@@ -277,24 +278,35 @@ export default function Home() {
     const queryString = Object.keys(filterParams)
       .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
       .join("&");
-    
+
     const baseUrl = window?.location?.href?.includes('localhost')
-    ? 'http://localhost:3003/api/loans/verification/reportecobrados'
-    : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados'
+      ? 'http://localhost:3003/api/loans/verification/reportecobrados'
+      : 'https://api.fastcash-mx.com/api/loans/verification/reportecobrados'
 
     const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
 
     console.log("url reporte cobrado: ", url);
-    
+
     const res = await fetch(url)
     const data = await res.json()
     console.log("data detalle: ", data)
     setDetails(data.data)
   }
 
+  async function handlerFetchVTotales() {
+    const res = await fetch(
+        window?.location?.href?.includes('localhost')
+            ? 'http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado'
+            : 'https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado')
+    const data = await res.json()
+
+    setTotalesCasos(data.totalDocuments)
+}
+
   useEffect(() => {
     handlerFetchDetails();
     setCheckedArr([]);
+    handlerFetchVTotales();
   }, [loader, itemsPerPage, currentPage, searchParams]);
 
   const handleReload = () => {
@@ -313,7 +325,7 @@ export default function Home() {
 
               <th className="px-4 py-2 text-gray-700">Cuenta</th>
 
-              <th className="px-4 py-2 text-gray-700">CASOS FUERA DE HORARIO</th>
+              {/* <th className="px-4 py-2 text-gray-700">CASOS FUERA DE HORARIO</th> */}
               <th className="px-4 py-2 text-gray-700">CASOS</th>
 
               <th className="px-4 py-2 text-yellow-500 ">PAGOS 10:00 am</th>
@@ -372,7 +384,7 @@ export default function Home() {
                 <td className="px-4 py-2">{i.nombrePersonal}</td>
                 <td className="px-4 py-2">{i.cuenta}</td>
 
-                <td className="px-4 py-2">{details[i.cuenta]?.casosFueraDeHorario}</td>
+                {/* <td className="px-4 py-2">{details[i.cuenta]?.casosFueraDeHorario}</td> */}
                 <td className="px-4 py-2">{details[i.cuenta]?.casosTotales}</td>
                 {/* <td className="px-4 py-2">{i.llamadasRealizadas}</td> */}
                 <td className="px-4 py-2  bg-yellow-400">{details[i.cuenta]?.pagos10am}</td>
@@ -400,8 +412,18 @@ export default function Home() {
               <td className='px-4 py-2'></td>
               <td className='px-4 py-2'></td>
               <td className='px-4 py-2'></td>
-              <td className='px-4 py-2'>{totales?.casosFueraDeHorario}</td>
-              <td className='px-4 py-2'>{totales?.totalesConAsesor}</td>
+              {/* <td className='px-4 py-2'></td> */}
+              <td className="flex w-full h-full justify-center items-center">
+                <div className="flex w-full h-full">
+                  <div className="flex-1 bg-black text-white text-center">
+                    {totales?.totalesConAsesor}
+                  </div>
+                  <div className="flex-1 bg-yellow-400 text-white text-center">
+                  {(totalesCasos) ?? 0}
+                  </div>
+                </div>
+              </td>
+              {/* <td className='px-4 py-2'>{totales?.totalesConAsesor}</td> */}
               {/* <td className='px-4 py-2'></td> */}
               <td className="px-4 py-2  bg-yellow-400">{totales?.pagos10am}</td>
               <td className="px-4 py-2">{totales?.ptp10am}</td>
@@ -418,7 +440,18 @@ export default function Home() {
               <td className="px-4 py-2 bg-yellow-400">{totales?.pagos6pm}</td>
               <td className="px-4 py-2">{totales?.ptp6pm}</td>
               <td className="px-4 py-2">{(totales?.tasaRecuperacion6pm)?.toFixed(2)}%</td>
-              <td className="px-4 py-2 bg-yellow-400">{totales?.pagosTotal}</td>
+              <td className="flex w-full h-full justify-center items-center">
+                <div className="flex w-full h-full">
+                  <div className="flex-1 bg-black text-white text-center">
+                    {totales?.pagosTotal}
+                  </div>
+                  <div className="flex-1 bg-yellow-400 text-white text-center">
+                    {totales?.casosFueraDeHorario}
+                  </div>
+                </div>
+              </td>
+
+              {/* <td className="px-4 py-2 bg-yellow-400">{totales?.pagosTotal}/{totales?.casosFueraDeHorario}</td> */}
               <td className="px-4 py-2">{(totales?.tasaRecuperacionTotal)?.toFixed(2)}%</td>
             </tr>
           </tbody>
