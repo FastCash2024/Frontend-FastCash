@@ -35,6 +35,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [horaEntrada, setHoraEntrada] = useState(null);
     const [totalesVerification, setTotalesVerification] = useState({})
     const [totalesCobro, setTotalesCobro] = useState({})
+    const [totalesCasos, setTotalesCasos] = useState()
     const [details, setDetails] = useState([])
     const [totales, setTotales] = useState({});
     const [comisionV, setComisionV] = useState({});
@@ -282,6 +283,15 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         const data = await res.json()
         setTotalesVerification(data.totalesGenerales)
     }
+    async function handlerFetchVTotales() {
+        const res = await fetch(
+            window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3003/api/loans/verification?estadoDeCredito=Dispersado'
+                : 'https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Dispersado')
+        const data = await res.json()
+
+        setTotalesCasos(data.totalDocuments)
+    }
 
     async function handlerFetchDetails() {
         const res = await fetch(
@@ -293,11 +303,24 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setDetails(data.data)
     }
 
+    async function handlerFetchTotales() {
+        const res = await fetch(
+            window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3003/api/loans/verification/reportetotales'
+                : 'https://api.fastcash-mx.com/api/loans/verification/reportetotales')
+        const data = await res.json()
+        setDetails(data.data)
+    }
+
+    useEffect(() => {
+        handlerFetchCTotaless();
+    }, [loader, item]);
+
     const calcularTotalesPorSegmento = () => {
         const totalesPorSegmento = {};
         const safeDetails = details || {};
         console.log("details: ", details);
-        
+
         Object?.keys(safeDetails).forEach((cuenta) => {
             const segmento = obtenerSegmento(cuenta);
             if (!segmento) {
@@ -421,8 +444,12 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                             <h4 className={`text-center text-[14px]  m-0 p-0 pb-2 text-[#55abf1] `}>Tasa de recuperación de caso</h4>
                             <div className='grid grid-cols-3 w-[300px]'>
                                 <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.pagosTotal ?? 0} <br />Cobro de hoy.</p>
-                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.casosFueraDeHorario ?? 0} <br /> Número casos fuera de horario.</p>
-                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{(totalesCobro?.totalesConAsesor + totalesCobro?.casosFueraDeHorario) ?? 0} <br /> Número total de casos.</p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCobro?.casosFueraDeHorario ?? 0} <br /> Número casos pagados fuera de horario.</p>
+                                <p className={`text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
+                                    {(totalesCobro?.totalesConAsesor + totalesCobro?.casosFueraDeHorario || 0)} <br />
+                                    Número total de casos Asignados.
+                                </p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{(totalesCasos) ?? 0} <br /> Número total de casos.</p>
                             </div>
                         </div>
                         <div className='pl-12 px-2'>
