@@ -313,7 +313,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     }
 
     useEffect(() => {
-        handlerFetchCTotales();
+        handlerFetchTotales();
     }, [loader, item]);
 
     const calcularTotalesPorSegmento = () => {
