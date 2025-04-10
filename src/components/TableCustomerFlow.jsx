@@ -1,5 +1,5 @@
 import { useAppContext } from '@/context/AppContext';
-import { getDateSixDaysAgo, getDay, getDays, getDayWeek, getDayWeekCustom, getMondayOfCurrentWeek, getTodayDate } from '@/utils/getDates';
+import { getDateFromWeekNumber, getDateSixDaysAgo, getDay, getDays, getDayWeek, getDayWeekCustom, getMondayOfCurrentWeek, getTodayDate } from '@/utils/getDates';
 import { useSearchParams } from 'next/navigation';
 import React, { useEffect, useMemo, useState } from 'react'
 
@@ -40,119 +40,55 @@ export default function TableCustomerFlow() {
     }
   };
 
-  const fetchCustomers = async (dates) => {
-    const local = 'http://localhost:3003/api/loans/verification/customer';
-    const server = 'https://api.fastcash-mx.com/api/loans/verification/customer';
+  async function fetchCustomers() {
+    const urlParams = new URLSearchParams(window.location.search);
 
-    try {
-      // Seleccionar la URL correcta
-      const baseUrl = window?.location?.href?.includes("localhost") ? local : server;
+    const filterParams = {};
+    let weekNumberFromParams = null; // <- Aquí vamos a capturar la semana si viene
 
-      // Obtener los parámetros de la URL
-      const urlParams = new URLSearchParams(window.location.search);
+    urlParams.forEach((value, key) => {
+      if (key.startsWith("filter[") && value !== "Elije por favor" && value !== "Todo") {
+        const fieldName = key.slice(7, -1);
+        filterParams[fieldName] = value;
 
-      const filterParams = {};
-
-      urlParams.forEach((value, key) => {
-        if (
-          key.startsWith("filter[") &&
-          value !== "Elije por favor" &&
-          value !== "Todo"
-        ) {
-          const fieldName = key.slice(7, -1); // Extraer el nombre de la clave dentro de "filter[]"
-          filterParams[fieldName] = value;
+        // Si el filtro es por semana, guarda el número de semana
+        if (fieldName === "semana") {
+          weekNumberFromParams = value;
         }
-      });
-
-      const stg = Object.keys(filterParams)
-        .filter(
-          (key) => filterParams[key] !== undefined && filterParams[key] !== null
-        ) // Filtrar valores nulos o indefinidos
-        .map(
-          (key) =>
-            `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}` // Codificar clave=valor
-        )
-        .join("&"); // Unir con &
-
-      if (stg.includes('fechaDeReembolso')) {
-        const fechaDeReembolso = stg;
-        const fechas = decodeURIComponent(fechaDeReembolso).split(", "); // Decodifica y separa
-        const segundaFecha = fechas[1];
-        setBaseDate(segundaFecha);
-      } else {
-        setBaseDate(getTodayDate());
       }
+    });
 
-      // Si hay 'fechaDeReembolso' en la URL, extraemos ese parámetro
-      let urlFechaDeReembolso = stg.includes('fechaDeReembolso')
-        ? filterParams['fechaDeReembolso'] // Usamos la fecha de reembolso de la URL
-        : null;
+    const queryString = Object.keys(filterParams)
+      .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(filterParams[key])}`)
+      .join("&");
 
-      // Si no hay fechaDeReembolso en la URL, usamos el valor de 'dates' pasado como argumento
-      if (!urlFechaDeReembolso) {
-        urlFechaDeReembolso = dates;
-      }
+    const baseUrl = window?.location?.href?.includes('localhost')
+      ? 'http://localhost:3003/api/loans/verification/customer'
+      : 'https://api.fastcash-mx.com/api/loans/verification/customer';
 
-      // Verificar si 'urlFechaDeReembolso' es un array o una fecha individual
-      if (Array.isArray(urlFechaDeReembolso)) {
-        // Si 'urlFechaDeReembolso' es un array de fechas, hacemos la solicitud por cada una
-        const results = await Promise.all(
-          urlFechaDeReembolso.map(async (date) => {
-            const response = await fetch(`${baseUrl}?fechaDeReembolso=${date}`, {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
+    const url = queryString ? `${baseUrl}?${queryString}` : baseUrl;
 
-            if (!response.ok) {
-              throw new Error('Error en la solicitud');
-            }
+    console.log("url reporte cobrado: ", url);
 
-            const result = await response.json();
-            return { date, data: result };
-          })
-        );
-
-        // Combinamos los resultados
-        const combinedResults = results.reduce((acc, { date, data }) => {
-          acc[date] = data;
-          return acc;
-        }, {});
-
-        console.log('Resultados combinados:', combinedResults);
-        setFiltro_2(combinedResults);
-      } else {
-        // Si 'urlFechaDeReembolso' es una sola fecha (no un array), hacemos una sola solicitud
-        const response = await fetch(`${baseUrl}?fechaDeReembolso=${urlFechaDeReembolso}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Error en la solicitud');
-        }
-
-        const result = await response.json();
-        const groupedByFecha = Object.values(result).reduce((acc, item) => {
-          const fecha = item.fechaDeReembolso; // Obtener la fecha de reembolso de cada item
-          if (!acc[fecha]) {
-            acc[fecha] = {}; // Si no existe, inicializamos el objeto vacío
-          }
-          acc[fecha][item.nombreDelProducto] = item; // Asignar el producto al objeto bajo la fecha
-          return acc;
-        }, {});
-
-        console.log("resultado combinado", groupedByFecha);
-
-        setFiltro_2(groupedByFecha);
-      }
-    } catch (error) {
-      console.error('Error al obtener los clientes:', error);
+    // --- Aquí resolvemos la fecha base ---
+    if (weekNumberFromParams) {
+      // Si hay semana seleccionada, calcula la fecha base a partir del número de semana
+      const year = new Date().getFullYear(); // o puedes capturar otro año si viene en los filtros
+      const baseDateFromWeek = getDateFromWeekNumber(year, weekNumberFromParams);
+      console.log("Fecha base desde semana:", baseDateFromWeek);
+      setBaseDate(baseDateFromWeek);
+    } else {
+      // Si no hay semana, que sea hoy
+      setBaseDate(getTodayDate());
     }
-  };
+
+    // --- Luego hacemos el fetch ---
+    const res = await fetch(url);
+    const data = await res.json();
+    console.log("data detalle: ", data);
+    setFiltro_2(data);
+  }
+
 
   useEffect(() => {
     const days = [-6, -5, -1, -3, -2, -1, 0];
@@ -167,27 +103,25 @@ export default function TableCustomerFlow() {
 
   const dates = getDays([-6, -5, -1, -3, -2, -1, 0]);
 
-  const totalCobrado = dates.reduce((acc, date) => {
-    const total = filtro_1.reduce((sum, item) => {
-      return sum + (filtro_2[date]?.[item]?.totalCasosCobrados || 0);
-    }, 0);
-    acc[date] = total;
-    return acc;
-  }, {});
+  const formattedDates = Object.keys(filtro_2).sort((a, b) => {
+    // Convertir las fechas a objetos Date para compararlas correctamente
+    return new Date(a) - new Date(b);
+  });
 
-  const totalGeneral = dates.reduce((acc, date) => {
-    const total = filtro_1.reduce((sum, item) => {
-      return sum + (filtro_2[date]?.[item]?.total || 0);
-    }, 0);
-    acc[date] = total;
-    return acc;
-  }, {});
+  const getTotalByDate = (formattedDate) => {
+    console.log("fecha format: ", formattedDate);
 
-  console.log('getdata: ', filtro_2);
+    let totalPagaron = 0;
+    let totalGeneral = 0;
 
-  const formattedDates = useMemo(() => {
-    return [-6, -5, -1, -3, -2, -1, 0].map(offset => getDayWeek(baseDate, offset).val);
-  }, [baseDate]);
+    // Sumar los valores de "pagaron" y "totalPagar" de cada item para la fecha dada
+    filtro_1.forEach((item) => {
+      totalPagaron += filtro_2[formattedDate]?.[item]?.pagaron ?? 0;
+      totalGeneral += filtro_2[formattedDate]?.[item]?.totalPagar ?? 0;
+    });
+
+    return { totalPagaron, totalGeneral };
+  };
 
   return (
     <>
@@ -349,14 +283,11 @@ export default function TableCustomerFlow() {
             {filtro_1.map(
               (item, index) =>
                 item !== "Todo" && (
-                  <tr
-                    key={index}
-                    className={`text-[12px] border-b bg-slate-50`}
-                  >
+                  <tr key={index} className="text-[12px] border-b bg-slate-50">
                     <td className="px-3 py-2">{item}</td>
                     {formattedDates.map((formattedDate, idx) => (
                       <td key={idx} className="px-3 py-2 text-center">
-                        {filtro_2[formattedDate]?.[item]?.totalCasosCobrados}/{filtro_2[formattedDate]?.[item]?.total}
+                        {filtro_2[formattedDate]?.[item]?.pagaron ?? 0}/{filtro_2[formattedDate]?.[item]?.totalPagar ?? 0}
                       </td>
                     ))}
                   </tr>
@@ -364,12 +295,16 @@ export default function TableCustomerFlow() {
             )}
             <tr className="text-[12px] border-t bg-slate-100">
               <td className="px-3 py-2 font-bold">Total</td>
-              
-              {formattedDates.map((formattedDate, idx) => (
-                <td key={idx} className="px-3 py-2 text-center font-bold">
-                  {totalCobrado[formattedDate]}/{totalGeneral[formattedDate]}
-                </td>
-              ))}
+
+              {formattedDates.map((formattedDate, idx) => {
+                const { totalPagaron, totalGeneral } = getTotalByDate(formattedDate);
+
+                return (
+                  <td key={idx} className="px-3 py-2 text-center font-bold">
+                    {totalPagaron}/{totalGeneral}
+                  </td>
+                );
+              })}
             </tr>
           </tbody>
         </table>

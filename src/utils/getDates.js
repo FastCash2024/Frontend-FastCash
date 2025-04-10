@@ -170,3 +170,26 @@ export const getLocalISOString = () => {
     const fechaMexico = new Date().toLocaleString("en-US", { timeZone: "America/Mexico_City" });
     return new Date(fechaMexico).toISOString();
 };
+
+
+export function getDateFromWeekNumber(year, week) {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0: Sunday, 1: Monday, ..., 6: Saturday
+
+    // Obtener el primer día del año
+    const firstDayOfYear = new Date(year, 0, 1);
+
+    // Calcular el primer jueves del año para respetar ISO semanas
+    const firstThursday = new Date(firstDayOfYear);
+    firstThursday.setDate(firstDayOfYear.getDate() + (4 - (firstDayOfYear.getDay() || 7)));
+
+    // Ahora calculamos la fecha base para la semana seleccionada
+    const targetDate = new Date(firstThursday);
+    targetDate.setDate(firstThursday.getDate() + (week - 1) * 7);
+
+    // Ajustamos la fecha base al día específico de la semana (hoy)
+    const difference = dayOfWeek - 4; // Diferencia entre hoy y el jueves de la semana ISO
+    targetDate.setDate(targetDate.getDate() - difference); // Ajustamos al día actual
+
+    return targetDate.toISOString().split("T")[0]; // Devuelve en formato 'yyyy-mm-dd'
+}

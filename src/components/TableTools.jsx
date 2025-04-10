@@ -36,6 +36,7 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
     const [totalesVerification, setTotalesVerification] = useState({})
     const [totalesCobro, setTotalesCobro] = useState({})
     const [totalesCasos, setTotalesCasos] = useState()
+    const [totalesCasosResume, setTotalesCasosResume] = useState()
     const [details, setDetails] = useState([])
     const [totales, setTotales] = useState({});
     const [comisionV, setComisionV] = useState({});
@@ -312,7 +313,19 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setDetails(data.data)
     }
 
+    async function handlerFetchResumeCases() {
+        const res = await fetch(
+            window?.location?.href?.includes('localhost')
+                ? 'http://localhost:3003/api/loans/verification/resumecases'
+                : 'https://api.fastcash-mx.com/api/loans/verification/resumecases')
+        const data = await res.json()
+        console.log("casos: ", data);
+
+        setTotalesCasosResume(data)
+    }
+
     useEffect(() => {
+        handlerFetchResumeCases();
         handlerFetchTotales();
     }, [loader, item]);
 
@@ -427,6 +440,23 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
         setAppComisionVerification(i);
     }
 
+    // Seleccion por semana 
+    const [selectedWeek, setSelectedWeek] = useState("");
+
+    const handlerWeek = (event) => {
+        const selectedDate = event.target.value; // '2025-W14'
+        const weekNumber = selectedDate.split("-")[1].replace("W", ""); // "14"
+    
+        const db = { ...filter, semana: `${weekNumber}` };
+    
+        setSelectedWeek(weekNumber); // (opcional si sigues necesitando la semana aparte)
+        setFilter(db);
+        setQuery(objectToQueryString(db));
+    };
+    
+
+    // console.log("Semana seleccionada Nro: ", selectedWeek);
+
     return (
         <div className='pt-5'>
             {/* ---------------------------------'COLECCION DE CASOS' --------------------------------- */}
@@ -449,7 +479,8 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     {(totalesCobro?.totalesConAsesor + totalesCobro?.casosFueraDeHorario || 0)} <br />
                                     Número total de casos Asignados.
                                 </p>
-                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{(totalesCasos) ?? 0} <br /> Número total de casos.</p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{(totalesCasos) ?? 0} <br /> Número total de casos restantes.</p>
+                                <p className={` text-center text-[10px] ${theme === 'light' ? ' text-gray-500' : ' text-gray-500 '} dark:text-white`}>{totalesCasosResume?.totalCasos ?? 0} <br /> Número total de casos.</p>
                             </div>
                         </div>
                         <div className='pl-12 px-2'>
@@ -475,10 +506,10 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                                     {segmento} <br /> Segmento.
                                                 </p>
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
-                                                    {casosPagados}/{casosTotal} <br /> C. Cobrados
+                                                    {casosPagados}/{totalesCasosResume?.segmentos[segmento]} <br /> C. Cobrados
                                                 </p>
                                                 <p className={`col-span-1 text-center text-[10px] ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'} dark:text-white`}>
-                                                    {casosFueraDeHorario}/{casosTotal} <br /> C. Cobrados FH
+                                                    {casosFueraDeHorario}/{totalesCasosResume?.segmentos[segmento]} <br /> C. Cobrados FH
                                                 </p>
                                             </div>
                                             <div className="flex-grow flex items-center justify-center">
@@ -1290,7 +1321,9 @@ const Alert = ({ children, type = 'success', duration = 5000, onClose }) => {
                                     <label htmlFor="" className={`mr-2 text-[10px] ${theme === 'light' ? ' text-gray-950' : ' text-gray-950 '} dark:text-white`}>
                                         buscar por Fecha :
                                     </label>
-                                    <input type='week' id="week" className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px] text-gray-950" onChange={handlerWeekChangeFlujo} required />
+                                    <input type='week' id="week" className="h-[25px] max-w-[173px] w-full px-2 border border-gray-400 rounded-[5px] text-[10px] text-gray-950"
+                                        onChange={handlerWeek}
+                                        required />
                                 </div>
 
                             </div>

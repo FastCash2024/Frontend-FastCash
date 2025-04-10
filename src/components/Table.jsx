@@ -685,7 +685,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                         </button>
                                         <button
                                           className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
-                                          onClick={() => handlerItemPE("Extension", i)}
+                                          onClick={() => handlerItemPE("Registro Pago Extension", i)}
                                         >
                                           Extensión
                                         </button>
@@ -714,7 +714,7 @@ const Table = ({ headArray, dataFilter, access, local, server, query }) => {
                                         </button>
                                         <button
                                           className="relative px-4 py-1 text-gray-700 hover:bg-gray-100 w-full text-left z-50"
-                                          onClick={() => handlerItemPE("Extension", i)}
+                                          onClick={() => handlerItemPE("Registro Pago Extension", i)}
                                         >
                                           Extensión
                                         </button>

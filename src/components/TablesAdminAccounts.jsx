@@ -183,8 +183,8 @@ export default function Home() {
                   headArray={encabezadoMonitoreoDeTransacciones}
                   dataArray={[""]}
                   dataFilter={(i) => i?.estadoDeCredito === "pendiente"}
-                  local={"http://localhost:3003/api/loans/verification?estadoDeCredito=Pagado,Dispersado"}
-                  server={"https://api.fastcash-mx.com/api/loans/verification?estadoDeCredito=Pagado,Dispersado"}
+                  local={"http://localhost:3003/api/loans/verification/getall?estadoDeCredito=Pagado,Dispersado"}
+                  server={"https://api.fastcash-mx.com/api/loans/verification/getall?estadoDeCredito=Pagado,Dispersado"}
                 />
               )}
               {item === "Control de Cumplimiento" && (

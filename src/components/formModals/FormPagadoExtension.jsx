@@ -5,7 +5,7 @@ import Input from "@/components/Input";
 import { useSearchParams } from "next/navigation";
 import { getDescripcionDeExcepcion } from "@/utils/utility-tacking";
 import { postTracking } from "@/app/service/TrackingApi/tracking.service";
-import {obtenerFechaMexicoISO} from "@/utils/getDates";
+import { obtenerFechaMexicoISO } from "@/utils/getDates";
 
 export default function FormPagadoExtension() {
     const {
@@ -22,10 +22,12 @@ export default function FormPagadoExtension() {
     const [valorDiasDeProrroga, setDiasDeProrroga] = useState("7");
 
     async function updateCobroExtencion() {
-        if (!itemSelected || !itemSelected._id) {
-            setAlerta("Error: No se encontró el préstamo.");
-            return;
-        }
+        console.log("item seleccionada: ", itemSelected);
+
+        // if (!itemSelected || !itemSelected._id) {
+        //     setAlerta("Error: No se encontró el préstamo.");
+        //     return;
+        // }
 
         const trackingData = {
             descripcionDeExcepcion: getDescripcionDeExcepcion(itemSelected),
@@ -46,52 +48,63 @@ export default function FormPagadoExtension() {
         const { _id, ...newCreditData } = {
             ...itemSelected,
             estadoDeCredito: 'Dispersado',
-            fechaDeReembolso: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString()
+            fechaDeCobro: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString()
         };
 
+        console.log("credito nuevo: ", newCreditData);
+        console.log("credito actualizado: ", updateData);
+
         try {
+            console.log("entro");
+
             setLoader('Guardando...');
-            const response = await fetch(
-                window?.location?.href.includes('localhost')
-                    ? `http://localhost:3003/api/loans/verification/creditoaprobado/${itemSelected._id}`
-                    : `https://api.fastcash-mx.com/api/loans/verification/creditoaprobado/${itemSelected._id}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                    },
-                    body: JSON.stringify(updateData),
-                }
+            const urlUpdate = window?.location?.href.includes('localhost')
+                ? `http://localhost:3003/api/loans/verification/creditoaprobado/${itemSelected._id}`
+                : `https://api.fastcash-mx.com/api/loans/verification/creditoaprobado/${itemSelected._id}`
+
+            console.log("url put: ", urlUpdate);
+            const response = await fetch(urlUpdate, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify(updateData),
+            }
             );
 
-            console.log("respuesta dispersion: ", response);
+            console.log("response dispersion: ", response);
 
             if (!response.ok) {
                 setLoader('');
                 setAlerta('Error de datos!');
-                throw new Error('Registration failed');
+                // throw new Error('Registration failed');
             }
 
             if (response.ok) {
-                const newCreditResponse = await fetch(
-                    window?.location?.href.includes('localhost')
-                        ? `http://localhost:3003/api/loans/verification/add`
-                        : `https://api.fastcash-mx.com/api/loans/verification/add`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                        },
-                        body: JSON.stringify(newCreditData),
-                    }
+
+                const urlPost = window?.location?.href.includes('localhost')
+                    ? `http://localhost:3003/api/loans/verification/add`
+                    : `https://api.fastcash-mx.com/api/loans/verification/add`;
+
+                console.log("url post: ", urlPost);
+
+                const newCreditResponse = await fetch(urlPost, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    },
+                    body: JSON.stringify(newCreditData),
+                }
                 );
+
+                console.log("response duplicacion: ", newCreditResponse);
 
                 if (!newCreditResponse.ok) {
                     setLoader('');
                     setAlerta('Error al duplicar el crédito!');
-                    throw new Error('Duplication failed');
+                    // throw new Error('Duplication failed');
                 }
 
                 setAlerta('Operación exitosa!');
@@ -102,12 +115,12 @@ export default function FormPagadoExtension() {
             } else {
                 setLoader('');
                 setAlerta('Error de datos!');
-                throw new Error('Registration failed');
+                // throw new Error('Registration failed');
             }
         } catch (error) {
             setLoader('');
             setAlerta('Error de datos!');
-            console.error("Error:", error);
+            // console.error("Error:", error);
         }
     }
 
@@ -126,7 +139,7 @@ export default function FormPagadoExtension() {
                 >
                     X
                 </button>
-                <h4 className="text-gray-950">Extension</h4>
+                <h4 className="text-gray-950">Extensión</h4>
 
                 {/* Numero de prestamo */}
                 <div className="flex justify-between items-center w-[100%]">
