@@ -1,78 +1,15 @@
 "use client";
 import { useAppContext } from "@/context/AppContext";
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
-import Link from "next/link";
-
-import Loader from "@/components/Loader";
-import SelectSimple from "@/components/SelectSimple";
 
 import { useSearchParams } from "next/navigation";
-import dynamic from "next/dynamic";
 import { useTheme } from "@/context/ThemeContext";
-import InputPass from "@/components/InputPass";
-import Table from "@/components/Table";
-// import Velocimetro from '@/components/Velocimetro'
-const Velocimetro = dynamic(() => import("@/components/Velocimetro"), {
-  ssr: false,
-});
-import FormAddAccount from "@/components/formModals/FormAddAccount";
-import FormAddMasiveAccounts from "@/components/formModals/FormAddMasiveAccounts";
-import FormAddPersonalAccount from "@/components/formModals/FormAddPersonalAccount";
-import FormAddPersonalData from "@/components/formModals/FormAddPersonalData";
-import FormAddVerification from "@/components/formModals/FormAddVerification";
-import FormAdminAccount from "@/components/formModals/FormAdminAccount";
-
-import TableTools from "@/components/TableTools";
-
-import Alert from "@/components/Alert";
 
 import {
-  refunds,
-  historial,
   menuArray,
-  filtro_1,
-  rangesArray,
-  cobrador,
-  filterCliente,
-  factura,
-  Jumlah,
-  estadoRembolso,
 } from "@/constants/index";
 import { useRouter } from "next/navigation";
-import {
-  ChatIcon,
-  PhoneIcon,
-  ClipboardDocumentCheckIcon,
-  FolderPlusIcon,
-  CurrencyDollarIcon,
-  DocumentTextIcon,
-  UserCircleIcon,
-  ChatBubbleLeftEllipsisIcon,
-} from "@heroicons/react/24/solid";
-import Speedometer, {
-  Background,
-  Arc,
-  DangerPath,
-  Needle,
-  Progress,
-  Marks,
-  Indicator,
-} from "react-speedometer";
-import {
-  encabezadoCasosDeCobranza,
-  encabezadoIncurrirEnUnaEstaciónDeTrabajo,
-  encabezadoGestionDeCuentasDeColección,
-  encabezadoRegistroDeSMS,
-  encabezadoCobroYValance,
-  encabezadoRegistroHistorico,
-  encabezadoMonitoreoDeTransacciones,
-  encabezadoControlDeCumplimiento,
-  encabezadoAuditoriaPeriodica,
-  encabezadoCasosDeVerificacion,
-  encabezadoListaFinal,
-  encabezadoGestionDeAccesos,
-} from "@/constants/TableHeaders.jsx";
+
 import { Paginator } from "./Paginator";
 import { obtenerSegmento } from "@/utils";
 import { today } from "@/utils/getDates";
@@ -442,10 +379,10 @@ export default function Home() {
               <td className="px-4 py-2">{(totales?.tasaRecuperacion6pm)?.toFixed(2)}%</td>
               <td className="flex w-full h-full justify-center items-center">
                 <div className="flex w-full h-full">
-                  <div className="flex-1 bg-black text-white text-center">
+                  <div className="flex-1 bg-yellow-400 text-white text-center">
                     {totales?.pagosTotal}
                   </div>
-                  <div className="flex-1 bg-yellow-400 text-white text-center">
+                  <div className="flex-1 bg-black text-white text-center">
                     {totales?.casosFueraDeHorario}
                   </div>
                 </div>
