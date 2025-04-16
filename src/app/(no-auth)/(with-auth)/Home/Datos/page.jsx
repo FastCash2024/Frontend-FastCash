@@ -248,7 +248,7 @@ const PaymentInfoCard = () => {
                     <h3 className="text-xl font-semibold mb-4 text-white bg-gray-900 px-5 py-3">Datos personales</h3>
                     <div className="space-y-2 text-gray-950 grid grid-cols-3">
                         <p><strong>Nombre:</strong> {clientData?.nombres} {clientData?.apellidos}</p>
-                        <p><strong>Número de Cédula de Identidad:</strong> {clientData?.rfcCurp}</p>
+                        <p><strong>Número de Cédula de Identidad:</strong> {clientData?.dni}</p>
                         <p><strong>Fecha de Nacimiento:</strong> {clientData?.fechaNacimiento && calcularEdad(clientData.fechaNacimiento)}</p>
                         <p><strong>Genero:</strong> {clientData?.sexo}</p>
                         <p><strong>Estado Civil:</strong>{clientData?.estadoCivil}</p>
